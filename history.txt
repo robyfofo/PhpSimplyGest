@@ -1,0 +1,17 @@
+
+Versione 1.0.0.
+
+- Bootstrap 3.3.7
+- Bootstrap-select 1.12.2
+- ResponsiveFilemanager 9.11.3
+- Eonasdan/bootstrap-datetimepicker 4.17.45
+- Twig Stable v2.4.4
+- htmLawed 1.1.22 www.bioinformatics.org/phplabware/internal_utilities/htmLawed
+- Startbootstrap SB-Admin-2-1.0.8
+- Font Awesome 4.7.0
+- prettyPhoto 3.1.6
+- bootbox v4.4.0
+- tinymce 4.3.12
+- swiftmailer 6.0.2
+- soundasleep html2text 0.5.0
+

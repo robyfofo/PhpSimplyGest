@@ -1,0 +1,50 @@
+.appCodeVersion {font-size:35%;}
+
+hr.divider-top-module {margin-top:10px;margin-bottom:10px;}
+
+.btn-help-module {margin-top:20px;}
+
+/* FORMS */
+
+.form-horizontal .control-label, 
+.form-horizontal .radio, 
+.form-horizontal .checkbox, 
+.form-horizontal .radio-inline, 
+.form-horizontal .checkbox-inline {
+	padding-top: 2px;
+	}
+
+/* form tabs */
+.tab-pane {padding-top:20px;}
+
+/* help small */
+.row > .help-small {font-size:12px;}
+.row > .help-small-list {font-size:12px;}
+.row > .help-small-form {font-size:12px;padding-bottom:20px;}
+
+
+/* TABLE */
+
+table.listData {position:relative;}
+table.listData > thead > tr > th {position:relative;}
+
+table.listData > thead > tr > th .order {position:absolute;right:10px;color:#BCBCBC;padding:0px 3px;}
+table.listData > thead > tr > th .up {top:5px;}
+table.listData > thead > tr > th .down {bottom:5px;}
+table.listData > thead > tr > th .active {color:#333333;}
+
+table.listData th.id {padding:8px 4px 8px 4px;font-size: 80%;width:30px;text-align:center;}
+table.listData th.ordering {padding:8px 4px 8px 4px;font-size: 80%;width:30px;text-align:center;}
+table.listData td.id {padding:12px 4px 8px 4px;font-size: 80%;width:30px;text-align:center;}
+table.listData td.tree-simbol {padding:8px 4px 8px 4px;width:26px;}
+table.listData td.ordering {padding:10px 4px 6px 4px;width:40px;}
+table.listData td.ordering a {margin-right:2px;}
+table.listData td.actions {text-align:right;white-space:nowrap;}
+table.listData span.parentsTitle {font-size:90%;font-style:italic;}
+table.listData span.categoryTitle {font-weight:bold;}
+table.listData .img-thumbnail,
+form.form-horizontal .img-thumbnail {width:80px;height:80px;}
+
+table.listDataHome .img-thumbnail {width:50px;height:50px;}
+.tab-content table.listData {font-size:13px;}
+

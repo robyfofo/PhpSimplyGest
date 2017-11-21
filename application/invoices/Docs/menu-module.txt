@@ -1,0 +1,7 @@
+<li class="%LICLASS%">
+	<a href="#"><i class="fa fa-picture-o fa-fw"></i> %LABEL%<span class="fa arrow"></span></a>
+	<ul class="nav nav-second-level">
+		<li><a href="%URLSITE%%NAME%/listItev"><i class="fa fa-id-card fa-fw"></i> Fatture Vendite</a></li>
+		<li><a href="%URLSITE%%NAME%/listItep"><i class="fa fa-id-card-o fa-fw"></i> Fatture Acquisti</a></li>
+	</ul>
+</li>
