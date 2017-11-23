@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * admin/classes/class.Sql.php v.1.0.0. 10/11/2017
+ * admin/classes/class.Sql.php v.1.0.0. 22/11/2017
 */
 
 class Sql extends Core {
@@ -172,20 +172,10 @@ class Sql extends Core {
 						$fields[] = $value;
 						$fieldsPrepare[] = '?';		
 					}	
-				}			
-				
-				
+				}							
 			self::$qry = "INSERT INTO ".self::$table." (".implode(',',$fields).") VALUE (".implode(',',$fieldsPrepare).")";				
 			if (self::$debugMode == 1) {
 				echo  '<br>'.self::$qry;
-				/*	
-				print_r($fields);
-				print_r(self::$fieldsValue);
-				print_r($fieldsPrepare);		
-				echo '<br>'.count($fields);
-				echo '<br>'.count(self::$fieldsValue);
-				echo '<br>'.count($fieldsPrepare);
-				*/
 				}
 			try{
 				$pdoCore = self::getInstanceDb();

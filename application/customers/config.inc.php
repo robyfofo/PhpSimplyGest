@@ -30,6 +30,7 @@ $App->params->tables['item']  = DB_TABLE_PREFIX.'customers';
 $App->params->fields['item']  = array(
 	'id'=>array('label'=>'ID','required'=>false,'type'=>'autoinc','primary'=>true),
 	'id_cat'=>array('label'=>'ID Categoria','required'=>true,'type'=>'int'),
+	'id_type'=>array('label'=>'Tipo','required'=>false,'type'=>'int','defValue'=>0,'validate'=>'int'),
 	'name'=>array('label'=>'Nome','searchTable'=>true,'required'=>true,'type'=>'varchar'),
 	'surname'=>array('label'=>'Cognome','searchTable'=>true,'required'=>false,'type'=>'varchar'),
 	'street'=>array('label'=>'Via','searchTable'=>false,'required'=>false,'type'=>'varchar'),
@@ -51,7 +52,6 @@ $App->params->fields['scat']  = array(
 	'id'=>array('label'=>'ID','required'=>false,'type'=>'autoinc','primary'=>true),
 	'parent'=>array('label'=>'Parent','required'=>false,'type'=>'int','defValue'=>0,'validate'=>'int'),
 	'title'=>array('label'=>'Titolo','searchTable'=>true,'required'=>true,'type'=>'varchar'),
-	'id_type'=>array('label'=>'Tipo','required'=>false,'type'=>'int','defValue'=>0,'validate'=>'int'),
 	'created'=>array('label'=>$_lang['creazione'],'searchTable'=>false,'required'=>false,'type'=>'datatime','defValue'=>$App->nowDateTime,'validate'=>'datatimeiso'),
 	'active'=>array('label'=>ucfirst($_lang['attiva']),'required'=>false,'type'=>'int','defValue'=>1,'validate'=>'int')
 	);	

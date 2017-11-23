@@ -1,4 +1,4 @@
-<!-- customers/listScat.tpl.php v.1.0.0. 03/11/2017 -->
+<!-- customers/listScat.tpl.php v.1.0.0. 22/11/2017 -->
 <div class="row">
 	<div class="col-md-3 new">
 		<a href="{{ URLSITE }}{{ CoreRequest.action }}/newScat" title="{{ Lang['inserisci nuova categoria']|capitalize }}" class="btn btn-primary">{{ Lang['nuova categoria']|capitalize }}</a>
@@ -21,7 +21,7 @@
 							<th><small>ID</small></th>						
 						{% endif %}
 						<th>{{ Lang['titolo']|capitalize }}</th>
-						<th>{{ Lang['tipo']|capitalize }}</th>							
+						<th>{{ Lang['clienti']|capitalize }}</th>									
 						<th></th>						
 					</tr>
 				</thead>
@@ -34,7 +34,9 @@
 									<td class="id">{{ value.id }}-{{ value.parent }}</td>
 								{% endif %}								
 								<td class="page-title" style="white-space: nowrap;">{{ value.levelString }}{{ value.title }}</td>
-								<td>{{ App.types[value.id_type].title|capitalize }}</td>																		
+								<td>
+									<a class="btn btn-default btn-circle" href="{{ URLSITE }}{{ CoreRequest.action }}/listItem/{{ value.id }}" title="{{ Lang['clienti associati']|capitalize }}"><i class="fa fa-users"> </i></a>({{ value.items }})			 
+								</td>																							
 								<td class="actions">
 									<a class="btn btn-default btn-circle" href="{{ URLSITE }}{{ CoreRequest.action }}/{{ value.active == 1 ? 'disactive' : 'active' }}Scat/{{ value.id  }}" title="{{ value.active == 1 ? Lang['disattiva %ITEM%']|replace({'%ITEM%': Lang['la categoria']})|capitalize : Lang['attiva %ITEM%']|replace({'%ITEM%': Lang['la categoria']})|capitalize }}"><i class="fa fa-{{ value.active == 1 ? 'unlock' : 'lock' }}"> </i></a>			 
 									<a class="btn btn-default btn-circle" href="{{ URLSITE }}{{ CoreRequest.action }}/modifyScat/{{ value.id }}" title="{{ Lang['modifica %ITEM%']|replace({'%ITEM%': Lang['la categoria']})|capitalize }}"><i class="fa fa-edit"> </i></a>
@@ -44,6 +46,7 @@
 						{% endfor %}
 					{% else %}
 						<tr>
+							<td></td>
 							{% if (App.userLoggedData.is_root is defined) and (App.userLoggedData.is_root is same as(1)) %}<td></td>{% endif %}
 							<td colspan="3">{{ Lang['nessuna voce trovata!']|capitalize }}</td>
 						</tr>

@@ -5,12 +5,17 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * customers/items.php v.1.0.0. 02/11/2017
+ * customers/items.php v.1.0.0. 22/11/2017
 */
 
 if (isset($_POST['itemsforpage']) && isset($_MY_SESSION_VARS[$App->sessionName]['ifp']) && $_MY_SESSION_VARS[$App->sessionName]['ifp'] != $_POST['itemsforpage']) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'ifp',$_POST['itemsforpage']);
 if (isset($_POST['searchFromTable']) && isset($_MY_SESSION_VARS[$App->sessionName]['srcTab']) && $_MY_SESSION_VARS[$App->sessionName]['srcTab'] != $_POST['searchFromTable']) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'srcTab',$_POST['searchFromTable']);
 if (isset($_POST['id_cat']) && isset($_MY_SESSION_VARS[$App->sessionName]['id_cat']) && $_MY_SESSION_VARS[$App->sessionName]['id_cat'] != $_POST['id_cat']) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'id_cat',$_POST['id_cat']);
+
+/* preleva i tipi */
+Sql::initQuery($App->params->tables['type'],array('*'),array(),'active = 1','');
+Sql::setOptions(array('fieldTokeyObj'=>'id'));
+$App->types = Sql::getRecords();
 
 switch(Core::$request->method) {
 	case 'activeItem':
@@ -36,17 +41,13 @@ switch(Core::$request->method) {
 	break;
 	
 	case 'insertItem':
-		if ($_POST) {	
-	   	/* cerca i campi richiesti */
-			Form::checkRequirePostByFields($App->params->fields['item'],$_lang,array());
-			if (Core::$resultOp->error == 0) {					
-				/* parsa i post in base ai campi */
-				Form::parsePostByFields($App->params->fields['item'],$_lang,array());					
-				if (Core::$resultOp->error == 0) {									
-					Sql::insertRawlyPost($App->params->fields['item'],$App->params->tables['item']);
-					if (Core::$resultOp->error == 0) {							   						   							   				
-		   			}
-					}
+		if ($_POST) {   		
+			/* parsa i post in base ai campi */
+			Form::parsePostByFields($App->params->fields['item'],$_lang,array());					
+			if (Core::$resultOp->error == 0) {									
+				Sql::insertRawlyPost($App->params->fields['item'],$App->params->tables['item']);
+				if (Core::$resultOp->error == 0) {							   						   							   				
+	   			}
 				}
 			} else {
 				Core::$resultOp->error = 1;
@@ -61,16 +62,12 @@ switch(Core::$request->method) {
 	
 	case 'updateItem':
 		if ($_POST) {
-			if (!isset($App->itemOld)) $App->itemOld = new stdClass;		   		
-			/* cerca i campi richiesti */
-			Form::checkRequirePostByFields($App->params->fields['item'],$_lang,array());
+			if (!isset($App->itemOld)) $App->itemOld = new stdClass;		   					
+			/* parsa i post in base ai campi */ 	
+			Form::parsePostByFields($App->params->fields['item'],$_lang,array());
 			if (Core::$resultOp->error == 0) {							
-				/* parsa i post in base ai campi */ 	
-				Form::parsePostByFields($App->params->fields['item'],$_lang,array());
-				if (Core::$resultOp->error == 0) {							
-					Sql::updateRawlyPost($App->params->fields['item'],$App->params->tables['item'],'id',$App->id);
-					if (Core::$resultOp->error == 0) {																
-						}
+				Sql::updateRawlyPost($App->params->fields['item'],$App->params->tables['item'],'id',$App->id);
+				if (Core::$resultOp->error == 0) {																
 					}
 				}										
 			} else {

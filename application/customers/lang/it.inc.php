@@ -24,4 +24,6 @@ $_lang['voce attivata'] = "cliente attivato";
 $_lang['voce disattivata'] = "cliente disattivato";
 
 $_lang['la voce']  = "l'cliente";
+
+$_lang['clienti associati']  = "clienti associati";
 ?>

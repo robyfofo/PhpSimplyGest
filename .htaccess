@@ -1,5 +1,5 @@
 RewriteEngine On
-RewriteBase /phpsimplygest/
+RewriteBase /PhpSimplyGest/
 
 # Don't compress images
 SetEnvIfNoCase Request_URI \

@@ -46,6 +46,7 @@
 									<th class="id">ID</th>								
 								{% endif %}	
 								<th>{{ Lang['categoria']|capitalize }}</th>
+								<th>{{ Lang['tipo']|capitalize }}</th>	
 								<th>{{ Lang['nome']|capitalize }}</th>
 								<th>{{ Lang['cognome']|capitalize }}</th>
 								<th>{{ Lang['email']|capitalize }}</th>												
@@ -59,7 +60,8 @@
 										{% if (App.userLoggedData.is_root is defined) and (App.userLoggedData.is_root is same as(1)) %}	
 											<td class="id">{{ value.id }}</td>
 										{% endif %}	
-										<td>{{ value.category }}</td>							
+										<td>{{ value.category }}</td>
+										<td>{{ App.types[value.id_type].title|capitalize }}</td>									
 										<td>{{ value.name }}</td>
 										<td>{{ value.surname }}</td>
 										<td>{{ value.email }}</td>																	
@@ -74,7 +76,7 @@
 							{% else %}
 								<tr>
 									{% if (App.userLoggedData.is_root is defined) and (App.userLoggedData.is_root is same as(1)) %}<td></td>{% endif %}
-									<td colspan="5">{{ Lang['nessuna voce trovata!']|capitalize }}</td>
+									<td colspan="6">{{ Lang['nessuna voce trovata!']|capitalize }}</td>
 								</tr>
 							{% endif %}
 						</tbody>

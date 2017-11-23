@@ -1,4 +1,4 @@
-<!-- customers/formItem.tpl.php v.1.0.0. 02/11/2017 -->
+<!-- customers/formItem.tpl.php v.1.0.0. 22/11/2017 -->
 <div class="row">
 	<div class="col-md-3 new">
  	</div>
@@ -120,6 +120,20 @@
 					    	</div>
 						</div>
 						<hr>
+						<div class="form-group">
+							<label for="typeID" class="col-md-2 control-label">{{ Lang['tipo']|capitalize }}</label>
+							<div class="col-md-7">							
+								<select class="form-control input-md" name="id_type" id="id_typeID">	
+									<option value="0"></option>							
+									{% if App.types is iterable and App.types|length > 0 %}									
+										{% for key,value in App.types %}
+											<option value="{{ key }}"{% if App.item.id_type == key %} selected="selected"{% endif %}>{{ value.title|capitalize }}</option>
+										{% endfor %}
+									{% endif %}		
+								</select>									
+					    	</div>
+						</div>
+						<hr>					
 						<div class="form-group">
 							<label for="activeID" class="col-md-2 control-label">{{ Lang['attiva']|capitalize }}</label>
 							<div class="col-md-7">

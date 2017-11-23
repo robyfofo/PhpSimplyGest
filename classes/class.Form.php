@@ -102,6 +102,7 @@ class Form extends Core {
 			case 'datetimeiso':					
 				$str = $_POST[$namefield];	
 				if ($str == '') $str = $value['defValue'];
+				self::validateDatetimeIso($str,$labelField,$_lang);
 			break;									
 			
 			case 'minmax':
@@ -134,6 +135,9 @@ class Form extends Core {
 				if ($res == true) $date = DateFormat::convertDataFromDatepicker($_POST[$namefield],$_lang['datepicker data format'],'Y-m-d');
 				$str = $date;
 			break;
+			default:
+				$str = $_POST[$namefield];
+			break;
 			}	
 			
 		return $str;
@@ -154,6 +158,16 @@ class Form extends Core {
 	public static function validateTime($value,$labelField,$_lang) {
 		$time = date('Y-m-d').' '.$value;
 		$res = DateFormat::checkDataTimeIso($time);
+		if ($res == false) {
+			$s = $_lang['La data %FIELD% inserita non è valida!'];
+			$s = preg_replace('/%FIELD%/',$labelField,$s);	
+			self::$resultOp->messages[] = $s;				
+			}
+		
+		}
+		
+	public static function validateDatetimeIso($value,$labelField,$_lang) {
+		$res = DateFormat::checkDataTimeIso($value);
 		if ($res == false) {
 			$s = $_lang['La data %FIELD% inserita non è valida!'];
 			$s = preg_replace('/%FIELD%/',$labelField,$s);	

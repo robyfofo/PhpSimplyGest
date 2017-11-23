@@ -15,7 +15,7 @@
 $globalSettings['site name'] = "PhpSimplyGest";
 $globalSettings['code version'] = '1.0.0.';
 
-define('FOLDER_SITE', 'phpsimplygest/');
+define('FOLDER_SITE', 'PhpSimplyGest/');
 define('SITE_HOST', '192.168.1.10/');
 define('SERVER_SMTP','');
 define('TIMEZONE','');

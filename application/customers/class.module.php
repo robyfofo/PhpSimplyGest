@@ -26,11 +26,12 @@ class Module {
 		}
 		
 	public function listMainData($fields,$page,$itemsForPage,$languages,$opt=array()) {
-		$optDef = array('lang'=>'it','type'=>0,'multilanguage'=>0);	
+		$optDef = array('lang'=>'it','type'=>0,'multilanguage'=>0,'tableItems'=>'');	
 		$opt = array_merge($optDef,$opt);	
 		$qry = "SELECT c.id AS id,
-		c.parent AS parent,c.title,c.id_type AS id_type,c.active AS active,
-		(SELECT COUNT(id) FROM ".$this->table." AS s WHERE s.parent = c.id)  AS sons,";
+		c.parent AS parent,c.title,c.active AS active,
+		(SELECT COUNT(id) FROM ".$this->table." AS s WHERE s.parent = c.id)  AS sons,
+		(SELECT COUNT(id) FROM ".$opt['tableItems']." AS ite WHERE ite.id_cat = c.id)  AS items,";
 		$qry .= "(SELECT p.title FROM ".$this->table." AS p WHERE c.parent = p.id)  AS titleparent";
 		$qry .= " FROM ".$this->table." AS c
 		WHERE c.parent = :parent";			
