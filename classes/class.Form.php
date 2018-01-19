@@ -102,6 +102,7 @@ class Form extends Core {
 			case 'datetimeiso':					
 				$str = $_POST[$namefield];	
 				if ($str == '') $str = $value['defValue'];
+				$labelField = (isset($value['label']) ? $value['label'] : '');
 				self::validateDatetimeIso($str,$labelField,$_lang);
 			break;									
 			

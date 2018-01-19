@@ -8,18 +8,18 @@
  * Invoices language EN v.1.0.0. 09/11/2017
 */
 
-$_lang['lista delle voci'] = 'invoices list';
-$_lang['nuova voce'] = 'new invoice';
-$_lang['inserisci nuova voce'] = 'insert a new invoice';
-$_lang['inserisci voce'] = 'insert invoice';
-$_lang['voce inserita'] = 'invoice inserted';
-$_lang['modifica voce'] = 'modify invoice';
-$_lang['voce modificata'] = 'invoice modified';
-$_lang['cancella voce'] = 'delete invoice';
-$_lang['voce cancellata'] = 'invoice deleted';
-$_lang['voce attivata'] = "invoice activate";
-$_lang['voce disattivata'] = "invoice not activated";
-$_lang['la voce']  = "the invoice";
+$_lang['lista delle voci'] = 'invoices sale list';
+$_lang['nuova voce'] = 'new invoice sale';
+$_lang['inserisci nuova voce'] = 'insert a new invoice sale';
+$_lang['inserisci voce'] = 'insert invoice sale';
+$_lang['voce inserita'] = 'invoice sale inserted';
+$_lang['modifica voce'] = 'modify invoice sale';
+$_lang['voce modificata'] = 'invoice sale modified';
+$_lang['cancella voce'] = 'delete invoice sale';
+$_lang['voce cancellata'] = 'invoice sale deleted';
+$_lang['voce attivata'] = "invoice sale activate";
+$_lang['voce disattivata'] = "invoice sale not activated";
+$_lang['la voce']  = "the invoice sale";
 
 $_lang['lista delle voci-u'] = 'invoices purchases list';
 $_lang['nuova voce-p'] = 'new purchase invoice';
@@ -39,6 +39,9 @@ $_lang['cliente']  = "customer";
 $_lang['movimenti associati']  = "movimenti associati";
 $_lang['aggiungi movimento']  = "add movimento";
 $_lang['modifica movimento']  = "modify movimento";
+$_lang['inserisci testo movimento']  = "insert text movimento";
+
+$_lang['totale movimenti'] = "total movimenti";
 
 $_lang['movimento cancellato']  = "movimento deleted";
 $_lang['movimento inserito o modificato']  = "movimento inserted or modified";

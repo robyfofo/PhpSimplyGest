@@ -35,7 +35,7 @@ define('PATH_UPLOAD_DIR', PATH_SITE.'uploads/');
 /* DATABASE */
 define('DATABASE', 'locale');
 $globalSettings['database'] = array(
-	'locale'=>array('user'=>'root','password'=>'fofofofo','host'=>'localhost','name'=>'phpsimplygest','tableprefix'=>'tbl_'),
+	'locale'=>array('user'=>'root','password'=>'fofofofo','host'=>'localhost','name'=>'phpsimplygest','tableprefix'=>'psg_'),
 	'remoto'=>array('user'=>'','password'=>'','host'=>'','name'=>'','tableprefix'=>'')
 );
 
@@ -75,7 +75,7 @@ define('META_DESCRIPTION', 'PhpSimplyGest - semplice gestionale per lavoratori a
 
 
 /* variabili lingua di default */
-$globalSettings['defaul language'] = 'en';
+$globalSettings['defaul language'] = 'it';
 
 /* CONFIGURAZIONE ADMIN */
 

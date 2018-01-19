@@ -146,7 +146,7 @@ switch((string)$App->viewMethod) {
 		$App->item = new stdClass;
 		$App->subcategories = new stdClass();		
 		/* select per subcategories */
-		$opt = array('tableCat'=>$App->params->tables['scat'],'type'=>0,'multilanguage'=>0,'ordering'=>0,'hideId'=>1,'hideSons'=>1,'rifId'=>'id','rifIdValue'=>$App->id,'lang'=>$_lang['user']);
+		$opt = array('tableCat'=>$App->params->tables['scat'],'type'=>0,'multilanguage'=>0,'ordering'=>0,'hideId'=>0,'hideSons'=>0,'rifId'=>'id','rifIdValue'=>$App->id,'lang'=>$_lang['user']);
 		$App->subcategories = Categories::getObjFromSubCategories($opt);				
 		Sql::initQuery($App->params->tables['item'],array('*'),array($App->id),'id = ?');
 		$App->item = Sql::getRecord();

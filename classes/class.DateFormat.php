@@ -115,6 +115,16 @@ class DateFormat extends Core  {
 		}
 		return false;
 		}
+	
+	public static function convertDataIsoToDataformat($dataiso,$format) {
+		$d = date('Y-m-d');
+		try {
+	  		$data = DateTime::createFromFormat('Y-m-d',$dataiso);
+	  		$d = $data->format($format);				
+		} catch (Exception $e) {
+		}
+		return $d;
+		}
 		
 	public static function checkConvertDataIso($dataiso,$nowdataiso) {
 		if ($nowdataiso == '') $nowdataiso = $nowdataiso;

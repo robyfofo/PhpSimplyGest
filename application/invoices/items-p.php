@@ -69,9 +69,12 @@ switch(Core::$request->method) {
 	break;
 	
 	case 'updateItep':
+		Core::setDebugMode(1);
 		if ($_POST) {	
+			print_r($_POST);
 			/* parsa i post in base ai campi */ 	
 			Form::parsePostByFields($App->params->fields['itep'],$_lang,array());
+			print_r($_POST);
 			if (Core::$resultOp->error == 0) {
 				DateFormat::checkDataIsoIniEndInterval($_POST['dateins'],$_POST['datesca'],'>');
 				if (Core::$resultOp->error == 0) {						
@@ -178,7 +181,7 @@ switch((string)$App->viewMethod) {
 			}
 		$App->items = $arr;
 		$App->pagination = Utilities::getPagination($App->page,Sql::getTotalsItems(),$App->itemsForPage);
-		$App->pageSubTitle = $_lang['lista delle voci-u'];
+		$App->pageSubTitle = $_lang['lista delle voci-p'];
 		$App->templateApp = 'listItep.tpl.php';
 		$App->jscript[] = '<script src="'.URL_SITE.'application/'.Core::$request->action.'/templates/'.$App->templateUser.'/js/listItep.js"></script>';	
 	break;

@@ -1,4 +1,7 @@
+/* invoices/formItep.js v.1.0.0. 29/11/2017 */
+var requestSent = false;
 $(document).ready(function() {
+	
 	
 	$('#dateinsDPID').datetimepicker({
 		locale: cur_lang,
@@ -53,8 +56,11 @@ $(document).ready(function() {
 	 	
 		}); // end function
 	
-	$("#movimentoFormID").on('submit', function(event) {
+	$("#movimentoFormID").one('submit', function(event) {
 		event.preventDefault();
+		
+ if(!requestSent) {
+ 		requestSent = true;
 		var $form = $(this);
 		var $mov = $('#id_movID').val();
 		var $target = siteUrl+module+'/insertItem';
@@ -63,10 +69,12 @@ $(document).ready(function() {
 			type: "POST",
 			url: $target,
 	      data: $form.serialize(),
-	      dataType: 'html'
+	      dataType: 'html',
+	      timeout:3000 //3 second timeout
 		})
-		.done(function(html) {					
-			$('#myModal').modal('hide');
+		.done(function(html) {	
+			requestSent = false;				
+			/*
 			if (html > 0) {
 				var dialog = bootbox.alert({
 	 					message: messages['Errore! Movimento NON inserito o modificato!'],
@@ -78,30 +86,36 @@ $(document).ready(function() {
 	 						backdrop: true
 						});
 					}
+			*/
+			
+			$('#myModal').modal('hide');
 			getMovimenti();
+			
 		})
 		.fail(function() {
 			alert("Ajax failed to fetch item data")
 		})
-		
+}
 		}); // end function
 		
-	$('#deleteMovID').on('click',function(event) {
-		console.log('click on delete');
+	$('#deleteMovID').one('click',function(event) {
 		var $mov = $('#id_movID').val();
-		console.log('mov '+$mov);
 		bootbox.confirm(messages['Sei sicuro?'],function($confirmed) {
-			console.log('confirm '+$confirmed);
 			if ($confirmed) {
 				$.ajax({
 					url: siteUrl+module+'/deleteItem',
 					type: "POST",
 					data: {'id':$mov},
-					dataType: 'html'
+					dataType: 'html',
+					timeout:3000 //3 second timeout
 				})
 				.done(function(html) {
+					getMovimenti();
 					$('#myModal').modal('hide');
+					return false;
+					/*
 					if (html > 0) {
+						/*
 						var dialog = bootbox.alert({
 	    					message: messages['Errore! Movimento NON cancellato!'],
 	    					backdrop: true	
@@ -112,16 +126,15 @@ $(document).ready(function() {
 	    						backdrop: true
 								});
 							}
-					getMovimenti();
+						*/				
 				})
 	  			.fail(function() {
 					alert("Ajax failed to fetch delete data")
 					})	
 				} else {
-					$('#myModal').modal('hide');
+					
 					}
-		
-			});	
+			});
 		}); // end function
 		
 	$('#quantity_movID').on('change',function(event) {
@@ -138,7 +151,8 @@ $(document).ready(function() {
 	
 	}); // end document
 	
-function getMovimenti() {	
+function getMovimenti() {
+var requestSent = false;
 	var idinvoice = $('#idID').val();
 	$.ajax({
 		url: siteUrl+module+'/listAjaxItem',
@@ -164,12 +178,10 @@ function getTotalsMovimenti() {
 		data: {'id':idinvoice},
 		dataType: 'json'
 		})
-		.done(function($resdata) {
-		
+		.done(function($resdata) {		
 			$invoiceMovTotal = parseFloat($resdata.invoiceMovTotal);
 			$invoiceTaxTotal = parseFloat($resdata.invoiceTaxTotal);
-			$invoiceTotal = parseFloat($resdata.invoiceTotal);
-			
+			$invoiceTotal = parseFloat($resdata.invoiceTotal);			
 			$('#invoice_mov_totalID').val($invoiceMovTotal.toFixed(2));
 			$('#invoice_tax_totalID').val($invoiceTaxTotal.toFixed(2));
 			$('#invoice_totalID').val($invoiceTotal.toFixed(2));
@@ -181,35 +193,21 @@ function getTotalsMovimenti() {
 	
 function refreshValues() {	
 	$qty = parseInt($('#quantity_movID').val());
-	console.log('quantity '+$qty);
-	
-	$priceUnity = $('#price_unity_movID').val();
-	console.log('price_unity '+$priceUnity);
-	
-	$priceTotal = $priceUnity * $qty;
-	console.log('price_total '+$priceTotal);
-	
+	$priceUnity = parseFloat($('#price_unity_movID').val());
+	$priceTotal = $priceUnity * $qty;	
 	$tax = parseInt($('#tax_movID').val());
-	console.log('tax '+$tax);
-	
-	$priceTax = ($priceTotal * $tax) / 100;
-	console.log('price_tax '+$priceTax);
-	
+	$priceTax = ($priceTotal * $tax) / 100;	
+	$('#price_unity_movID').val($priceUnity.toFixed(2));
 	$('#price_total_movID').val($priceTotal.toFixed(2));
 	$('#price_tax_movID').val($priceTax.toFixed(2));
-	
 	} // end function
 	
 function refreshValuesTax() {	
 	$tax = parseInt($('#tax_movID').val());
-	console.log('tax '+$tax);
-	
 	$priceTax = ($priceTotal * $tax) / 100;
-	console.log('price_tax '+$priceTax);
-	
 	$('#price_tax_movID').val($priceTax.toFixed(2));
-	
 	}; // end function
+
 	
 $('#applicationForm')
 .bootstrapValidator({

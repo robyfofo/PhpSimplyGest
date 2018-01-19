@@ -33,7 +33,7 @@
 						<div class="form-group pull-right">
 							<label>
 								{{ Lang['cerca']|capitalize }}:
-								<input name="searchFromTable" value="{{ MySessionVars[App.sessionName]['srcTab'] }}" class="form-control input-md" type="search" onchange="this.form.submit();">
+								<input name="searchFromTable" value="{{ MySessionVars[App.sessionName]['srcTab'] }}" class="form-control input-sm" type="search" onchange="this.form.submit();">
 							</label>
 						</div>
 					</div>

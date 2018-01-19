@@ -10,18 +10,18 @@
 
 $_lang['lista delle voci'] = 'lista delle fatture vendite';
 $_lang['nuova voce'] = 'nuova fattura';
-$_lang['inserisci nuova voce'] = 'inserisci una nuova fattura';
-$_lang['inserisci voce'] = 'inserisci fattura';
-$_lang['voce inserita'] = 'fattura inserita';
-$_lang['modifica voce'] = 'modifica fattura';
-$_lang['voce modificata'] = 'fattura modificata';
-$_lang['cancella voce'] = 'cancella fattura';
-$_lang['voce cancellata'] = 'fattura modificata';
-$_lang['voce attivata'] = "fattura attivata";
-$_lang['voce disattivata'] = "fattura disattivata";
-$_lang['la voce']  = "la fattura";
+$_lang['inserisci nuova voce'] = 'inserisci una nuova fattura vendita';
+$_lang['inserisci voce'] = 'inserisci fattura vendita';
+$_lang['voce inserita'] = 'fattura vendita inserita';
+$_lang['modifica voce'] = 'modifica fattura vendita';
+$_lang['voce modificata'] = 'fattura vendita modificata';
+$_lang['cancella voce'] = 'cancella fattura vendita';
+$_lang['voce cancellata'] = 'fattura vendita modificata';
+$_lang['voce attivata'] = "fattura vendita attivata";
+$_lang['voce disattivata'] = "fattura vendita disattivata";
+$_lang['la voce']  = "la fattura vendita";
 
-$_lang['lista delle voci-u'] = 'lista delle fatture acquisti';
+$_lang['lista delle voci-p'] = 'lista delle fatture acquisti';
 $_lang['nuova voce-p'] = 'nuova fattura acquisto';
 $_lang['inserisci nuova voce-p'] = 'inserisci una nuova fattura acquisto';
 $_lang['inserisci voce-p'] = 'inserisci fattura acquisto';
@@ -39,6 +39,9 @@ $_lang['cliente']  = "customer";
 $_lang['movimenti associati']  = "movimenti associati";
 $_lang['aggiungi movimento']  = "aggiungi movimento";
 $_lang['modifica movimento']  = "modifica movimento";
+$_lang['inserisci testo movimento']  = "inserisci testo movimento";
+
+$_lang['totale movimenti'] = "totale movimenti";
 
 $_lang['movimento cancellato']  = "movimento cancellato";
 $_lang['movimento inserito o modificato']  = "movimento inserito o modificato";

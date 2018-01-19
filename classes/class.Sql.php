@@ -381,6 +381,7 @@ class Sql extends Core {
 	
 	/* MODIFICHE DA POST */	
 	public static function updateRawlyPost($fields,$table,$clauseRif,$valueRif) {
+		print_r($fields);
 		$fieldListArray = array();
 		$fieldValuesArray = array();
 		if (is_array($fields) && count($fields) > 0){
@@ -388,13 +389,13 @@ class Sql extends Core {
 				if ($value['type'] != 'autoinc' && $value['type'] != 'nodb') {
 					$fieldListArray[] = $key.' = ?';
 					$fieldValueArray[] = $_POST[$key];
-					}			
+					} 			
 				}	
 			}		
 		$fieldValueArray[] = $valueRif;			
 		$qry = "UPDATE ".$table." SET ".implode(',',$fieldListArray)." WHERE ".$clauseRif." = ?";			
 		if (self::$debugMode == 1) {
-			echo '<br>'.$qry;	
+			echo '<br>'.$qry;		
 			print_r($fieldValueArray);
 			}			
 				

@@ -1,7 +1,7 @@
 <!-- customers/listItep.tpl.php v.1.0.0. 02/11/2017 -->
 <div class="row">
 	<div class="col-md-3 new">
- 		<a href="{{ URLSITE }}{{ CoreRequest.action }}/newItep" title="{{ Lang['inserisci nuova voce']|capitalize }}" class="btn btn-primary">{{ Lang['nuova voce']|capitalize }}</a>
+ 		<a href="{{ URLSITE }}{{ CoreRequest.action }}/newItep" title="{{ Lang['inserisci nuova voce-p']|capitalize }}" class="btn btn-primary">{{ Lang['nuova voce-p']|capitalize }}</a>
 	</div>
 	<div class="col-md-7 help-small-list">
 		{% if App.params.help_small is defined %}{{ App.params.help_small }}{% endif %}
@@ -18,7 +18,7 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label>
-								<select class="form-control input-md" name="itemsforpage" onchange="this.form.submit();" >
+								<select class="form-control input-sm" name="itemsforpage" onchange="this.form.submit();" >
 									<option value="5"{% if App.itemsForPage == 5 %} selected="selected"{% endif %}>5</option>
 									<option value="10"{% if App.itemsForPage == 10 %} selected="selected"{% endif %}>10</option>
 									<option value="25"{% if App.itemsForPage == 25 %} selected="selected"{% endif %}>25</option>
@@ -33,7 +33,7 @@
 						<div class="form-group pull-right">
 							<label>
 								{{ Lang['cerca']|capitalize }}:
-								<input name="searchFromTable" value="{{ MySessionVars[App.sessionName]['srcTab'] }}" class="form-control input-md" type="search" onchange="this.form.submit();">
+								<input name="searchFromTable" value="{{ MySessionVars[App.sessionName]['srcTab'] }}" class="form-control input-sm" type="search" onchange="this.form.submit();">
 							</label>
 						</div>
 					</div>
@@ -47,8 +47,9 @@
 								{% endif %}
 								<th>{{ Lang['data']|capitalize }}</th>
 								<th>{{ Lang['data scadenza']|capitalize }}</th>
-								<th>{{ Lang['customer']|capitalize }}</th>
-								<th>{{ Lang['number']|capitalize }}</th>										
+								<th>{{ Lang['cliente']|capitalize }}</th>
+								<th>{{ Lang['numero']|capitalize }}</th>
+								<th></th>										
 								<th></th>
 							</tr>
 						</thead>
@@ -62,18 +63,21 @@
 										<td>{{ value.dateinslocal }}</td>
 										<td>{{ value.datescalocal }}</td>	
 										<td>{{ value.customer }}</td>							
-										<td>{{ value.number }}</td>															
+										<td>{{ value.number }}</td>
 										<td class="actions">
-											<a class="btn btn-default btn-circle" href="{{ URLSITE }}{{ CoreRequest.action }}/{{ value.active == 1 ? 'disactive' : 'active' }}Itep/{{ value.id  }}" title="{{ value.active == 1 ? Lang['disattiva %ITEM%']|replace({'%ITEM%': Lang['la voce']})|capitalize : Lang['attiva %ITEM%']|replace({'%ITEM%': Lang['la voce-u']})|capitalize }}"><i class="fa fa-{{ value.active == 1 ? 'unlock' : 'lock' }}"> </i></a>			 
-											<a class="btn btn-default btn-circle" href="{{ URLSITE }}{{ CoreRequest.action }}/modifyItep/{{ value.id }}" title="{{ Lang['modifica %ITEM%']|replace({'%ITEM%': Lang['la voce-u']})|capitalize }}"><i class="fa fa-edit"> </i></a>
-											<a class="btn btn-default btn-circle confirm" href="{{ URLSITE }}{{ CoreRequest.action }}/deleteItep/{{ value.id }}" title="{{ Lang['cancella %ITEM%']|replace({'%ITEM%': Lang['la voce-u']})|capitalize }}"><i class="fa fa-cut"> </i></a>
+											<a class="btn btn-default btn-circle" href="{{ URLSITE }}{{ CoreRequest.action }}/invoicePpdf/{{ value.id  }}" title="{{ Lang['stampa'] }} {{ Lang['la voce-p'] }}" target="_blank"><i class="fa fa-print"> </i></a>			 
+										</td>																	
+										<td class="actions">
+											<a class="btn btn-default btn-circle" href="{{ URLSITE }}{{ CoreRequest.action }}/{{ value.active == 1 ? 'disactive' : 'active' }}Itep/{{ value.id  }}" title="{{ value.active == 1 ? Lang['disattiva %ITEM%']|replace({'%ITEM%': Lang['la voce-p']})|capitalize : Lang['attiva %ITEM%']|replace({'%ITEM%': Lang['la voce-u']})|capitalize }}"><i class="fa fa-{{ value.active == 1 ? 'unlock' : 'lock' }}"> </i></a>			 
+											<a class="btn btn-default btn-circle" href="{{ URLSITE }}{{ CoreRequest.action }}/modifyItep/{{ value.id }}" title="{{ Lang['modifica %ITEM%']|replace({'%ITEM%': Lang['la voce-p']})|capitalize }}"><i class="fa fa-edit"> </i></a>
+											<a class="btn btn-default btn-circle confirm" href="{{ URLSITE }}{{ CoreRequest.action }}/deleteItep/{{ value.id }}" title="{{ Lang['cancella %ITEM%']|replace({'%ITEM%': Lang['la voce-p']})|capitalize }}"><i class="fa fa-cut"> </i></a>
 										</td>							
 									</tr>	
 								{% endfor %}
 							{% else %}
 								<tr>
 									{% if (App.userLoggedData.is_root is defined) and (App.userLoggedData.is_root is same as(1)) %}<td></td>{% endif %}
-									<td colspan="3">{{ Lang['nessuna voce trovata!']|capitalize }}</td>
+									<td colspan="6">{{ Lang['nessuna voce trovata!']|capitalize }}</td>
 								</tr>
 							{% endif %}
 						</tbody>

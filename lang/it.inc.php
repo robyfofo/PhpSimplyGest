@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * language IT v.1.0.0. 09/11/2017
+ * language IT v.1.0.0. 18/01/2018
 */
 
 $_lang['user'] = 'it';
@@ -42,6 +42,7 @@ $_lang['chiudi'] = "chiudi";
 $_lang['aiuto'] = "aiuto";
 $_lang['cerca'] = "cerca";
 $_lang['invia'] = "invia";
+$_lang['aggiungi'] = "aggiungi";
 $_lang['applica'] = "applica";
 $_lang['cancella'] = "cancella";
 $_lang['cancella %ITEM%'] = "cancella %ITEM%";
@@ -92,6 +93,7 @@ $_lang['visto'] = 'visto';
 $_lang['anagrafica'] = "anagrafica";
 $_lang['data'] = "data";
 $_lang['data scadenza'] = "data scadenza";
+$_lang['ragione sociale'] = "ragione sociale";
 $_lang['nome'] = "nome";
 $_lang['cognome'] = "cognome";
 $_lang['via'] = "via";
@@ -146,6 +148,7 @@ $_lang['profilo utente'] = "profilo utente";
 $_lang['titolo'] = "titolo";
 $_lang['genitore'] = "genitore";
 $_lang['tipo'] = "tipo";
+$_lang['descrizione'] = "descrizione";
 
 $_lang['voce'] = 'item';
 $_lang['voci'] = 'items';
@@ -221,6 +224,21 @@ $_lang['cancella prodotto'] = 'delete product';
 $_lang['prodotto cancellato'] = "product deleted";
 $_lang['modifica prodotto'] = "modify product";
 $_lang['prodotto modificato'] = "product changed";
+
+$_lang['articolo'] = 'articolo';
+$_lang['articoli'] = 'articoli';
+$_lang['lista articoli'] = "products list";
+$_lang['lista degli articoli'] = "list of products";
+$_lang['torna alla lista articoli'] = "back to products list";
+$_lang['dettagli articolo'] = "articolo detail";
+$_lang['nuovo articolo'] = 'new articolo';
+$_lang['inserisci articolo'] = 'add articolo';
+$_lang['inserisci un nuovo articolo'] = 'inserisci un nuovo articolo';
+$_lang['articolo inserito'] = 'articolo inserted';
+$_lang['cancella articolo'] = 'delete articolo';
+$_lang['articolo cancellato'] = "articolo deleted";
+$_lang['modifica articolo'] = "modify articolo";
+$_lang['articolo modificato'] = "articolo changed";
 
 $_lang['immagine'] = "immagine";
 $_lang['immagini'] = "immagini";
@@ -393,6 +411,7 @@ $_lang['inserisci un username'] = "inserisci un username";
 $_lang['inserisci un nome utente'] = "inserisci un nome utente";
 $_lang['inserisci una password'] = "inserisci una password";
 $_lang['inserisci una password di controllo'] = "inserisci una password di controllo";
+$_lang['inserisci una ragione sociale'] = "inserisci una ragione sociale";
 $_lang['inserisci un nome'] = "inserisci un nome";
 $_lang['inserisci un cognome'] = "inserisci un cognome";
 $_lang['inserisci un indirizzo'] = "inserisci un indirizzo";

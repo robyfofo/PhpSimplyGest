@@ -351,5 +351,75 @@
             "php",
             "text"
         ]
+    },
+    {
+        "name": "rospdf/pdf-php",
+        "version": "0.12.41",
+        "version_normalized": "0.12.41.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/rospdf/pdf-php.git",
+            "reference": "641e95ec005169b85d81d412a167465851f017fc"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/rospdf/pdf-php/zipball/641e95ec005169b85d81d412a167465851f017fc",
+            "reference": "641e95ec005169b85d81d412a167465851f017fc",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.2"
+        },
+        "require-dev": {
+            "squizlabs/php_codesniffer": "2.8.*"
+        },
+        "time": "2017-09-14T07:51:31+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-experimental": "0.13.x-dev",
+                "dev-master": "0.12.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "src/Cpdf.php",
+                "src/Cezpdf.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Lars Olesen",
+                "email": "lars@intraface.dk",
+                "role": "Developer"
+            },
+            {
+                "name": "Ole Koeckemann",
+                "email": "ole.k@web.de",
+                "role": "Project Head / Developer"
+            },
+            {
+                "name": "Sune Jensen",
+                "email": "sj@sunet.dk",
+                "role": "Developer"
+            },
+            {
+                "name": "Nicola Asuni",
+                "email": "info@tecnick.com",
+                "role": "Developer"
+            },
+            {
+                "name": "Wayne Munro",
+                "email": "pdf@ros.co.nz",
+                "role": "Founder / Inactive"
+            }
+        ],
+        "description": "The R&OS Pdf class supports the creation of PDF documents without any adiditional modules or extensions.",
+        "homepage": "https://github.com/rospdf/pdf-php"
     }
 ]

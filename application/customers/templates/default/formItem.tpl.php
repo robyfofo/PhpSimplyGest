@@ -113,7 +113,7 @@
 									<option value="0"></option>
 									{% if App.subcategories is iterable and App.subcategories|length > 0 %}
 										{% for key,value in App.subcategories %}
-											<option value="{{ value.id }}"{% if App.item.parent == value.id %} selected="selected"{% endif %}>{{ value.levelString }}{{ value.title }}</option>														
+											<option value="{{ value.id }}"{% if App.item.id_cat == value.id %} selected="selected"{% endif %}>{{ value.levelString }}{{ value.title }}</option>														
 										{% endfor %}
 									{% endif %}
 								</select>									

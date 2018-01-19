@@ -22,6 +22,7 @@ switch(Core::$request->method) {
 	break;
 	
 	case 'insertItem':
+	
 		if ($_POST) {
 			$new_post['id'] = $_POST['id_mov'];
 			$new_post['id_invoice'] = $_POST['id_invoice'];			
@@ -31,13 +32,15 @@ switch(Core::$request->method) {
 			$new_post['price_total'] = $_POST['price_total_mov'];
 			$new_post['quantity'] = $_POST['quantity_mov'];
 			$new_post['tax'] = $_POST['tax_mov'];
-			
+			$new_post = $Module->calculateMov($new_post);
 			$_POST = array();	
-			$_POST = $new_post;		
-			Form::parsePostByFields($App->params->fields['item'],$_lang,array());	
+			$_POST = $new_post;	
+			Form::parsePostByFields($App->params->fields['item'],$_lang,array());				
 			if (Core::$resultOp->error == 0) {
 				Sql::insertRawlyPost($App->params->fields['item'],$App->params->tables['item']);
-				}
+				} else {
+					Core::$resultOp->error = 1;
+					}	
 			} else {
 				Core::$resultOp->error = 1;
 				}			
@@ -47,20 +50,25 @@ switch(Core::$request->method) {
 	break;
 	
 	case 'updateItem':
-	Core::setDebugMode(1);
-		if (isset($_POST)) {
-			//$new_post['id'] = $_POST['id_mov'];
-			$new_post[] = $_POST['id_invoice'];			
-			$new_post[] = $_POST['content_mov'];
-			$new_post[] = Form::validateFloat($_POST['price_unity_mov']);
-			$new_post[] =  Form::validateFloat($_POST['price_tax_mov']);
-			$new_post[] =  Form::validateFloat($_POST['price_total_mov']);
-			$new_post[] = $_POST['quantity_mov'];
-			$new_post[] =  Form::validateFloat($_POST['tax_mov']);
-			$new_post[] = $_POST['id_mov'];
-			$fields = array('id_invoice','content','price_unity','price_tax','price_total','quantity','tax');
-			Sql::initQuery($App->params->tables['item'],$fields,$new_post,'id = ?');
-			Sql::updateRecord();			
+		if (isset($_POST)) {	
+			$new_post['id_invoice'] = $_POST['id_invoice'];			
+			$new_post['content'] = $_POST['content_mov'];
+			$new_post['price_unity'] = $_POST['price_unity_mov'];
+			$new_post['price_tax'] = $_POST['price_tax_mov'];
+			$new_post['price_total'] = $_POST['price_total_mov'];
+			$new_post['quantity'] = $_POST['quantity_mov'];
+			$new_post['tax'] = $_POST['tax_mov'];
+			$new_post['id'] = $_POST['id_mov'];
+			$new_post['active'] = 1;
+			$new_post = $Module->calculateMov($new_post);
+			$_POST = array();	
+			$_POST = $new_post;
+			Form::parsePostByFields($App->params->fields['item'],$_lang,array());	
+			if (Core::$resultOp->error == 0) {
+				Sql::updateRawlyPost($App->params->fields['item'],$App->params->tables['item'],'id',$new_post['id']);	
+				} else {
+					Core::$resultOp->error = 1;
+					}
 			} else {
 				Core::$resultOp->error = 1;
 				}
@@ -100,9 +108,10 @@ switch(Core::$request->method) {
 				}
 			}
 			$values->invoiceTotal = (float)$values->invoiceMovTotal + $values->invoiceTaxTotal;
-			$json = json_encode($values);
-			echo $json;
+			
 			}	
+		$json = json_encode($values);
+		echo $json;
 		die();	
 	break;
 	

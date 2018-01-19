@@ -101,7 +101,7 @@
 						<div class="form-group">
 							<label for="invoive_mov_totalID" class="col-md-9 control-label">{{ Lang['totale movimenti']|capitalize }}</label>
 							<div class="col-md-2">
-								<input type="text" name="invoice_mov_total" class="form-control text-right" id="invoice_mov_totalID" value="aa">
+								<input type="text" name="invoice_mov_total" class="form-control text-right" id="invoice_mov_totalID" value="">
 					    	</div>
 						</div>
 					</div>
@@ -109,7 +109,7 @@
 						<div class="form-group">
 							<label for="invoive_total_taxID" class="col-md-9 control-label">{{ Lang['imponibile']|capitalize }}</label>
 							<div class="col-md-2">
-								<input type="text" name="invoice_tax_total" class="form-control text-right" id="invoice_tax_totalID" value="bb">
+								<input type="text" name="invoice_tax_total" class="form-control text-right" id="invoice_tax_totalID" value="">
 					    	</div>
 						</div>
 					</div>
@@ -117,7 +117,7 @@
 						<div class="form-group">
 							<label for="invoive_totalID" class="col-md-9 control-label">{{ Lang['totale']|capitalize }}</label>
 							<div class="col-md-2">
-								<input type="text" name="invoice_total" class="form-control text-right" id="invoice_totalID" value="cc">
+								<input type="text" name="invoice_total" class="form-control text-right" id="invoice_totalID" value="">
 					    	</div>
 						</div>
 					</div>
@@ -164,69 +164,58 @@
 
 <!-- Default bootstrap modal example -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel"></h4>
-      </div>
-      <div class="modal-body">
-
-			<div class="row">
-				<div class="col-md-12"> 
-		      	<form id="movimentoFormID" class="form-horizontal" role="form" action="#" enctype="multipart/form-data" method="post">
-						<div class="row">
-							<fieldset class="form-group">
-								<div class="form-group">
-									<label for="content_movID" class="col-md-2 control-label">{{ Lang['contenuto']|capitalize }} INLINE</label>
-									<div class="col-md-8">
-										<textarea required name="content_mov" class="form-control" id="content_movID" rows="5"></textarea>
-									</div>
-								</div>
-								<hr>
-								<div class="form-group">
-									<label for="quantity_movID" class="col-md-2 control-label">{{ Lang['quantità']|capitalize }}</label>
-									<div class="col-md-8">
-										<input required  type="text" name="quantity_mov" id="quantity_movID" value="">
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="price_unity_movID" class="col-md-2 control-label">{{ Lang['prezzo unitario']|capitalize }}</label>
-									<div class="col-md-8">
-										<input required  type="text" name="price_unity_mov" id="price_unity_movID" value="">
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="tax_movID" class="col-md-2 control-label">{{ Lang['tassa']|capitalize }}</label>
-									<div class="col-md-8">
-										<input required  type="text" name="tax_mov" id="tax_movID" value="">
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="price_total_movID" class="col-md-2 control-label">{{ Lang['prezzo totale']|capitalize }}</label>
-									<div class="col-md-8">
-										<input required  type="text" name="price_total_mov" id="price_total_movID" value="">
-									</div>
-								</div>
-								<input type="text" name="price_tax_mov" id="price_tax_movID" value="">											
-							</fieldset>	
-							<hr>
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title" id="myModalLabel"></h4>
+			</div>
+			<div class="modal-body">
+				<div class="container-fluid">
+					<form id="movimentoFormID" class="form-horizontal" role="form" action="#" enctype="multipart/form-data">
+						<fieldset class="form-group">
 							<div class="form-group">
-								<div class="col-md-offset-2 col-md-7">
-									id mod: <input type="text" name="id_mov" id="id_movID" value="">
-									id invoice<input type="text" name="id_invoice" id="id_invoiceID" value="{{ App.item.id }}">
-									<button type="submit" name="submitForm" value="submit" class="btn btn-primary">{{ Lang['invia']|capitalize }}</button>
-								</div>
-								<div class="col-md-2">
-									<button type="button" id="deleteMovID" href="#" title="{{ Lang['cancella']|capitalize }}" class="btn btn-danger">{{ Lang['cancella']|capitalize }}</button>
+								<div class="col-md-12">
+									<textarea required name="content_mov" class="form-control" id="content_movID" rows="9">{{ Lang['inserisci testo movimento']|capitalize }}</textarea>
 								</div>
 							</div>
-						</div>	
-		       	</form>
-		      </div>
-		    </div>
-          	
-      </div>
-    </div>
-  </div>
+							<hr>
+							<div class="form-group">
+								<label for="quantity_movID" class="col-md-3 control-label">{{ Lang['quantità']|capitalize }}</label>
+								<div class="col-md-3">
+									<input required  type="text" name="quantity_mov" id="quantity_movID" value="1">
+								</div>
+								<label for="price_unity_movID" class="col-md-3 control-label">{{ Lang['prezzo unitario']|capitalize }}</label>
+								<div class="col-md-3">
+									<input required  type="text" name="price_unity_mov" id="price_unity_movID" value="0.00">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="tax_movID" class="col-md-3 control-label">{{ Lang['tassa']|capitalize }}</label>
+								<div class="col-md-3">
+									<input required  type="text" name="tax_mov" id="tax_movID" value="{{ App.params.defaultTax }}">
+								</div>
+								<label for="price_total_movID" class="col-md-3 control-label">{{ Lang['prezzo totale']|capitalize }}</label>
+								<div class="col-md-3">
+									<input required  type="text" name="price_total_mov" id="price_total_movID" value="0.00">
+								</div>
+							</div>
+							<input type="hidden" name="price_tax_mov" id="price_tax_movID" value="0.00">											
+					</fieldset>	
+					<hr>
+					<div class="form-group">
+						<div class="col-md-offset-2 col-md-7">
+							<input type="hidden" name="id_mov" id="id_movID" value="">
+							<input type="hidden" name="id_invoice" id="id_invoiceID" value="{{ App.item.id }}">
+							<button type="submit" name="submitForm" value="submit" class="btn btn-primary">{{ Lang['invia']|capitalize }}</button>
+						</div>
+						<div class="col-md-2">
+							<button type="button" id="deleteMovID" href="#" title="{{ Lang['cancella']|capitalize }}" class="btn btn-danger">{{ Lang['cancella']|capitalize }}</button>
+						</div>
+					</div>					
+					</form>
+				</div>	
+			</div>
+		</div>
+	</div>
 </div>
