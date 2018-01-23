@@ -34,6 +34,9 @@ $_lang['voce-p attivata'] = "fattura acquisto attivata";
 $_lang['voce-p disattivata'] = "fattura acquisto disattivata";
 $_lang['la voce-p']  = "la fattura acquisto";
 
+$_lang['Note (visibili in fattura)'] = "Note (visibili in fattura)";
+$_lang['note'] = "note";
+
 $_lang['cliente']  = "customer";
 
 $_lang['movimenti associati']  = "movimenti associati";

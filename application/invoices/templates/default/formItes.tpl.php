@@ -46,7 +46,7 @@
 								<select name="id_customer" id="id_customerID" class="form-control">
 									{% if App.customers is iterable and App.customers|length > 0 %}
 										{% for key,value in App.customers %}
-											<option value="{{ value.id }}"{% if App.item.id_customer == value.id %} selected="selected"{% endif %}>{{ value.name }}, {{ value.surname }}</option>														
+											<option value="{{ value.id }}"{% if App.item.id_customer == value.id %} selected="selected"{% endif %}>{{ value.name }}, {{ value.surname|e('html') }}</option>														
 										{% endfor %}
 									{% endif %}
 								</select>								    	
@@ -56,10 +56,15 @@
 						<div class="form-group">
 							<label for="numberID" class="col-md-2 control-label">{{ Lang['numero']|capitalize }}</label>
 							<div class="col-md-7">
-								<input required type="text" name="number" class="form-control" id="numberID" placeholder="{{ Lang['inserisci un numero']|capitalize }}" value="{{ App.item.number }}">
+								<input required type="text" name="number" class="form-control" id="numberID" placeholder="{{ Lang['inserisci un numero']|capitalize }}" value="{{ App.item.number|e('html') }}">
 					    	</div>
-						</div>
-	
+						</div>						
+						<div class="form-group">
+							<label for="noteID" class="col-md-2 control-label">{{ Lang['Note (visibili in fattura)']|capitalize }}</label>
+							<div class="col-md-7">
+								<textarea name="note" class="form-control" id="noteID" rows="3">{{ App.item.note|e('html') }}</textarea>
+					    	</div>
+						</div>	
 					</fieldset>					
 				</div>
 
@@ -99,24 +104,32 @@
 					<div class="row">
 						<div class="form-group">
 							<label for="invoive_mov_totalID" class="col-md-9 control-label">{{ Lang['imponibile']|capitalize }}</label>
-							<div class="col-md-2">
-								<input type="text" name="invoice_mov_total" class="form-control text-right" id="invoice_mov_totalID" value="">
+							<div class="col-md-2 text-right">
+								<span id="invoice_mov_totalID">€ 0,00</span>
 					    	</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="form-group">
-							<label for="invoive_total_taxID" class="col-md-9 control-label">{{ Lang['imponibile']|capitalize }}</label>
-							<div class="col-md-2">
-								<input type="text" name="invoice_tax_total" class="form-control text-right" id="invoice_tax_totalID" value="">
+							<label for="invoive_total_taxID" class="col-md-9 control-label">{{ Lang['imposte']|capitalize }}</label>
+							<div class="col-md-2 text-right">
+								<span id="invoice_tax_totalID">€ 0,00</span>
+					    	</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group">
+							<label for="invoive_rivalsaID" class="col-md-9 control-label">{{ Lang['rivalsa']|capitalize }} INPS 4%</label>
+							<div class="col-md-2 text-right">
+								<span id="invoice_rivalsaID">€ 0,00</span>
 					    	</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="form-group">
 							<label for="invoive_totalID" class="col-md-9 control-label">{{ Lang['totale']|capitalize }}</label>
-							<div class="col-md-2">
-								<input type="text" name="invoice_total" class="form-control text-right" id="invoice_totalID" value="">
+							<div class="col-md-2 text-right">
+								<span id="invoice_totalID">0,00</span>
 					    	</div>
 						</div>
 					</div>

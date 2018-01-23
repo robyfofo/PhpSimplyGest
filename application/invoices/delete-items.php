@@ -96,7 +96,9 @@ switch(Core::$request->method) {
 		$values = new stdClass;
 		$values->invoiceMovTotal = '0.00';
 		$values->invoiceTaxTotal = '0.00';
+		$values->invoiceRivalsa = '0.00';
 		$values->invoiceTotal = '0.00';
+		$rivalsaInps = 4;
 		
 		if ($id > 0) {
 			Sql::initQuery($App->params->tables['item'],array('*'),array($id),'id_invoice = ?');
@@ -107,8 +109,9 @@ switch(Core::$request->method) {
 					$values->invoiceTaxTotal = $values->invoiceTaxTotal + $value->price_tax;
 				}
 			}
+			$values->invoiceRivalsa = ($values->invoiceMovTotal * $rivalsaInps) / 100;
 			$values->invoiceTotal = (float)$values->invoiceMovTotal + $values->invoiceTaxTotal;
-			
+			$values->invoiceTotal = (float)$values->invoiceMovTotal + $values->invoiceRivalsa;
 			}	
 		$json = json_encode($values);
 		echo $json;

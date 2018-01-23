@@ -49,6 +49,7 @@
 								<th>{{ Lang['data scadenza']|capitalize }}</th>
 								<th>{{ Lang['cliente']|capitalize }}</th>
 								<th>{{ Lang['numero']|capitalize }}</th>	
+								<th>{{ Lang['note']|capitalize }}</th>
 								<th></th>									
 								<th></th>
 							</tr>
@@ -64,6 +65,7 @@
 										<td>{{ value.datescalocal }}</td>	
 										<td>{{ value.customer }}</td>							
 										<td>{{ value.number }}</td>
+										<td>{{ value.note }}</td>
 										<td class="actions">
 											<a class="btn btn-default btn-circle" href="{{ URLSITE }}{{ CoreRequest.action }}/invoicespdf/{{ value.id  }}" title="{{ Lang['stampa'] }} {{ Lang['la voce-p'] }}" target="_blank"><i class="fa fa-print"> </i></a>			 
 										</td>																																
@@ -77,7 +79,7 @@
 							{% else %}
 								<tr>
 									{% if (App.userLoggedData.is_root is defined) and (App.userLoggedData.is_root is same as(1)) %}<td></td>{% endif %}
-									<td colspan="5">{{ Lang['nessuna voce trovata!']|capitalize }}</td>
+									<td colspan="6">{{ Lang['nessuna voce trovata!']|capitalize }}</td>
 								</tr>
 							{% endif %}
 						</tbody>

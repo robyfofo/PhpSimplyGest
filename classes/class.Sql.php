@@ -381,7 +381,6 @@ class Sql extends Core {
 	
 	/* MODIFICHE DA POST */	
 	public static function updateRawlyPost($fields,$table,$clauseRif,$valueRif) {
-		print_r($fields);
 		$fieldListArray = array();
 		$fieldValuesArray = array();
 		if (is_array($fields) && count($fields) > 0){

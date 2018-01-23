@@ -51,7 +51,7 @@ $App->params->fields['ites']  = array(
 	'dateins'=>array('label'=>$_lang['data'],'searchTable'=>false,'required'=>true,'type'=>'date','defValue'=>$App->nowDate,'validate'=>'datepicker'),
 	'datesca'=>array('label'=>$_lang['data scadenza'],'searchTable'=>false,'required'=>true,'type'=>'date','defValue'=>$App->nowDate,'validate'=>'datepicker'),
 	'number'=>array('label'=>$_lang['numero'],'searchTable'=>true,'required'=>true,'type'=>'varchar','defValue'=>''),
-	'description'=>array('label'=>$_lang['descrizione'],'searchTable'=>true,'required'=>false,'type'=>'varchar','defValue'=>''),
+	'note'=>array('label'=>$_lang['Note (visibili in fattura)'],'searchTable'=>true,'required'=>false,'type'=>'varchar','defValue'=>''),
 	'type'=>array('label'=>$_lang['tipo'],'searchTable'=>true,'required'=>true,'type'=>'varchar','defValue'=>'0','validate'=>'int'),
 	'created'=>array('label'=>$_lang['creazione'],'searchTable'=>false,'required'=>false,'type'=>'datatime','defValue'=>$App->nowDateTime,'validate'=>'datetimeiso'),
 	'active'=>array('label'=>ucfirst($_lang['attiva']),'required'=>false,'type'=>'int','defValue'=>'0','validate'=>'int')

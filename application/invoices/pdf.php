@@ -29,7 +29,7 @@ switch(Core::$request->method) {
 			if (Core::$resultOp->error == 0) {
 
 				/* preleva invoice */
-				Sql::initQuery($App->params->tables['itep'],array('*'),array($id_invoice),'id = ?');
+				Sql::initQuery($App->params->tables['ites'],array('*'),array($id_invoice),'id = ?');
 				$App->invoice = Sql::getRecord();
 				if (Core::$resultOp->error == 0) {
 					
@@ -110,9 +110,9 @@ switch(Core::$request->method) {
 								$colsheadpdf = array('titolo'=>''); 
 								$headpdf[0]['titolo'] = $App->company->ragione_sociale;
 								$headpdf[1]['titolo'] = $App->company->street.' - '.$App->company->zip_code.' - '.$App->company->city.' ('.$App->company->province.')';
-								$headpdf[2]['titolo'] = 'P.Iva '.$App->company->partita_iva.' - C.Fiscale '.$App->company->codice_fiscale;
-								$headpdf[3]['titolo'] = '<strong>FATTURA</strong> nr. <b>'.$App->invoice->number.'</b> del <b>'.DateFormat::convertDataIsoToDataformat($App->invoice->dateins,$_lang['data format']).'</b>';								
-								$headpdf[4]['titolo'] = 'Collaborazione';
+								$headpdf[2]['titolo'] = $_lang['P. IVA'].' '.$App->company->partita_iva.' - '.$_lang['C. Fiscale'].' '.$App->company->codice_fiscale;
+								$headpdf[3]['titolo'] = '<strong>'.strtoupper($_lang['fattura']).'</strong> '.$_lang['nr.'].' <b>'.$App->invoice->number.'</b> '.$_lang['del'].' <b>'.DateFormat::convertDataIsoToDataformat($App->invoice->dateins,$_lang['data format']).'</b>';								
+								$headpdf[4]['titolo'] = $App->invoice->note;
 								$col = $pdf->ezTable($headpdf, $colsheadpdf,'',array(
 									'showHeadings' => 0,
 									'gridlines'=> EZ_GRIDLINE,
@@ -140,14 +140,14 @@ switch(Core::$request->method) {
 								$pdf->ezSetDy(-20);
 								$tablecols = array('titolo'=>'','testo'=>'Cliente'); 
 								$tabledata = array();
-								$tabledata[0]['titolo'] = '<strong>P.IVA</strong> 03218790230';
-								$tabledata[0]['testo'] = 'Destinatario';
-								$tabledata[1]['titolo'] = '<strong>CF</strong> 03218790230';
-								$tabledata[1]['testo'] = '<strong>WebSync sas</strong>';
-								$tabledata[2]['titolo'] = '<strong>EMAIL</strong> info@websync.it';
-								$tabledata[2]['testo'] = 'Via Maiella, 8';
+								$tabledata[0]['titolo'] = '<strong>'.$_lang['P.IVA'].'</strong> '.$App->invoice_customer->partita_iva;
+								$tabledata[0]['testo'] = ucfirst($_lang['destinatario']);
+								$tabledata[1]['titolo'] = '<strong>'.$_lang['C.F.'].'</strong> '.$App->invoice_customer->codice_fiscale;
+								$tabledata[1]['testo'] = '<strong>'.$App->invoice_customer->ragione_sociale.'</strong>';
+								$tabledata[2]['titolo'] = '<strong>'.strtoupper($_lang['email']).'</strong> '.$App->invoice_customer->email;
+								$tabledata[2]['testo'] = $App->invoice_customer->street;
 								$tabledata[3]['titolo'] = '';
-								$tabledata[3]['testo'] = '37132 Verona (Verona)';
+								$tabledata[3]['testo'] = $App->invoice_customer->zip_code.' '.$App->invoice_customer->city.' ('.$App->invoice_customer->province.')';
 								
 								
 								$col = $pdf->ezTable($tabledata,$tablecols,'',array(
@@ -179,10 +179,10 @@ switch(Core::$request->method) {
 								$pdf->ezSetDy(-30);
 								$colsArticolipdf = array
 								(
-									'descrizione'=>'<b>Descrizione</b>',
-									'quantità'=>'<b>Quantità</b>',
-									'prezzounitario'=>'<b>Prezzo Unità</b>',
-									'importo'=>'<b>Importo</b>',
+									'descrizione'=>'<b>'.ucfirst($_lang['descrizione']).'</b>',
+									'quantità'=>'<b>'.ucfirst($_lang['quantità']).'</b>',
+									'prezzounitario'=>'<b>'.ucwords($_lang['prezzo unità']).'</b>',
+									'importo'=>'<b>'.ucwords($_lang['importo']).'</b>',
 								); 
 								$col = $pdf->ezTable($articolipdf, $colsArticolipdf,'',array(
 									'showHeadings' => 1,
@@ -219,12 +219,12 @@ switch(Core::$request->method) {
 								$pdf->setLineStyle(1);
 								$pdf->line(30,310,560,310);
 								$pdf->ezSetDy(-10);
-								$colspdf = array('titolo'=>'MODALITÀ PAGAMENTO','testo'=>'SCADENZE'); 
+								$colspdf = array('titolo'=>strtoupper($_lang['modalità pagamento']),'testo'=>strtoupper($_lang['scadenze'])); 
 								$datapdf[1]['titolo'] = '<b>Bonifico Bancario</b>';
 								$datapdf[1]['testo'] = '<b>'.DateFormat::convertDataIsoToDataformat($App->invoice->datesca,$_lang['data format']).'</b>';
-								$datapdf[2]['titolo'] = 'IBAN: <b>IT45D0760111700001036922787</b>';
+								$datapdf[2]['titolo'] = 'IBAN: <b>'.$App->company->iban.'</b>';
 								$datapdf[2]['testo'] = '';
-								$datapdf[3]['titolo'] = $App->company->name.' '.$App->company->surname;
+								$datapdf[3]['titolo'] = $App->company->intestatario;
 								$datapdf[3]['testo'] = '';
 								
 								$pdf->ezTable($datapdf, $colspdf,'',array(
@@ -257,7 +257,7 @@ switch(Core::$request->method) {
 								
 								/* NOTE */
 								$pdf->ezSetDy(-10);
-								$cols = array('riepilogo'=>'RIEPILOGO IVA','importo'=>'IMPORTO LORDO','imposte'=>'IMPOSTE'); 
+								$cols = array('riepilogo'=>strtoupper($_lang['riepilogo iva']),'importo'=>strtoupper($_lang['importo lordo']),'imposte'=>strtoupper($_lang['imposte'])); 
 								$data[0]['riepilogo'] = 'Operazione effettuata ai sensi dell’art. 1, commi da 54 a 89 della Legge n. 190/2014 – Regime forfettario';
 								$data[0]['importo'] = '€ '.number_format($invoiceImponibile,2,',','.');
 								$data[0]['imposte'] = '€ 0,00';
@@ -287,7 +287,7 @@ switch(Core::$request->method) {
 								/* TOTALI */
 								$pdf->ezSetDy(-10);
 								$colsTotalipdf = array('titolo'=>'titolo','testo'=>'testo'); 
-								$totalipdf[0]['titolo'] = 'TOTALE ONORARIO';
+								$totalipdf[0]['titolo'] = strtoupper($_lang['totale onorario']);
 								$totalipdf[0]['testo'] = '€ '.number_format($invoiceImponibile,2,',','.');
 								$totalipdf[1]['titolo'] = 'RIVALSA INPS 4%';
 								$totalipdf[1]['testo'] = '€ '.number_format($invoiceRivalsa,2,',','.');
@@ -317,7 +317,7 @@ switch(Core::$request->method) {
 								/* TOTALI */
 								$pdf->ezSetDy(-5);
 								$cols = array('titolo'=>'titolo','testo'=>'testo'); 
-								$data[0]['titolo'] = '<strong>TOTALE</strong>';
+								$data[0]['titolo'] = '<strong>'.strtoupper($_lang['totale']).'</strong>';
 								$data[0]['testo'] = '€ <strong>'.number_format($invoiceTotal,2,',','.').'</strong>';
 								$pdf->ezTable($data, $cols,'',array(
 									'showHeadings' => 0,

@@ -12,6 +12,8 @@
 
 		<!-- Bootstrap Core CSS -->
 		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		
+		
 
 		<!-- MetisMenu CSS -->
 		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/assets/plugins/metisMenu/metisMenu.min.css" rel="stylesheet">
@@ -165,6 +167,9 @@
 
 		<!-- Bootstrap Core JavaScript -->
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+		
+		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/assets/plugins/numeral/numeral.js"></script>
+		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/assets/plugins/numeral/locales/it.js"></script>
 
 		<!-- Metis Menu Plugin JavaScript -->
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/assets/plugins/metisMenu/metisMenu.min.js"></script>

@@ -71,7 +71,7 @@ switch(Core::$request->method) {
 	case 'updateItes':
 		Core::setDebugMode(1);
 		if ($_POST) {	
-			print_r($_POST);
+			//print_r($_POST);
 			/* parsa i post in base ai campi */ 	
 			Form::parsePostByFields($App->params->fields['ites'],$_lang,array());
 			print_r($_POST);

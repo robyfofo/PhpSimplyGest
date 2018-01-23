@@ -122,7 +122,8 @@ switch((string)$App->viewMethod) {
 		$App->item->active = 1;
 		if (Core::$resultOp->error == 1) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['itep']);
 		$App->templateApp = 'formItep.tpl.php';
-		$App->methodForm = 'insertItep';	
+		$App->methodForm = 'insertItep';
+		$App->css[] = '<link href="'.URL_SITE.'application/'.Core::$request->action.'/templates/'.$App->templateUser.'/css/formItep.css" rel="stylesheet">';
 		$App->jscript[] = '<script src="'.URL_SITE.'application/'.Core::$request->action.'/templates/'.$App->templateUser.'/js/formItep.js"></script>';
 	break;
 	
@@ -134,6 +135,7 @@ switch((string)$App->viewMethod) {
 		if (Core::$resultOp->error == 1) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['itep']);
 		$App->templateApp = 'formItep.tpl.php';
 		$App->methodForm = 'updateItep';	
+		$App->css[] = '<link href="'.URL_SITE.'application/'.Core::$request->action.'/templates/'.$App->templateUser.'/css/formItep.css" rel="stylesheet">';
 		$App->jscript[] = '<script src="'.URL_SITE.'application/'.Core::$request->action.'/templates/'.$App->templateUser.'/js/formItep.js"></script>';
 	break;
 

@@ -47,8 +47,7 @@
 								{% endif %}	
 								<th>{{ Lang['categoria']|capitalize }}</th>
 								<th>{{ Lang['tipo']|capitalize }}</th>	
-								<th>{{ Lang['nome']|capitalize }}</th>
-								<th>{{ Lang['cognome']|capitalize }}</th>
+								<th>{{ Lang['ragione_sociale']|capitalize }}</th>
 								<th>{{ Lang['email']|capitalize }}</th>												
 								<th></th>
 							</tr>
@@ -62,8 +61,7 @@
 										{% endif %}	
 										<td>{{ value.category }}</td>
 										<td>{{ App.types[value.id_type].title|capitalize }}</td>									
-										<td>{{ value.name }}</td>
-										<td>{{ value.surname }}</td>
+										<td>{{ value.ragione_sociale }}</td>
 										<td>{{ value.email }}</td>																	
 										<td class="actions">
 											<a class="btn btn-default btn-circle" href="{{ URLSITE }}{{ CoreRequest.action }}/{{ value.active == 1 ? 'disactive' : 'active' }}Item/{{ value.id  }}" title="{{ value.active == 1 ? Lang['disattiva %ITEM%']|replace({'%ITEM%': Lang['la voce']})|capitalize : Lang['attiva %ITEM%']|replace({'%ITEM%': Lang['la voce']})|capitalize }}"><i class="fa fa-{{ value.active == 1 ? 'unlock' : 'lock' }}"> </i></a>			 

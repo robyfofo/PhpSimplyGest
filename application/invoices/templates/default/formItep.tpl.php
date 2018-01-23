@@ -164,7 +164,7 @@
 
 <!-- Default bootstrap modal example -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
+	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -172,47 +172,51 @@
 			</div>
 			<div class="modal-body">
 				<div class="container-fluid">
-					<form id="movimentoFormID" class="form-horizontal" role="form" action="#" enctype="multipart/form-data">
-						<fieldset class="form-group">
-							<div class="form-group">
-								<div class="col-md-12">
-									<textarea required name="content_mov" class="form-control" id="content_movID" rows="9">{{ Lang['inserisci testo movimento']|capitalize }}</textarea>
+					<form id="articoloFormID" class="form-horizontal" role="form" action="#" enctype="multipart/form-data">
+						<div class="row">
+							
+							<div class="form-group form-group-sm">
+								<div class="col-md-8">
+									<textarea required name="content_mov" class="form-control" id="content_movID" rows="3">{{ Lang['inserisci testo articolo']|capitalize }}</textarea>
 								</div>
-							</div>
-							<hr>
-							<div class="form-group">
-								<label for="quantity_movID" class="col-md-3 control-label">{{ Lang['quantità']|capitalize }}</label>
-								<div class="col-md-3">
-									<input required  type="text" name="quantity_mov" id="quantity_movID" value="1">
+								
+								<div class="col-md-4">
 								</div>
-								<label for="price_unity_movID" class="col-md-3 control-label">{{ Lang['prezzo unitario']|capitalize }}</label>
-								<div class="col-md-3">
-									<input required  type="text" name="price_unity_mov" id="price_unity_movID" value="0.00">
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="tax_movID" class="col-md-3 control-label">{{ Lang['tassa']|capitalize }}</label>
-								<div class="col-md-3">
-									<input required  type="text" name="tax_mov" id="tax_movID" value="{{ App.params.defaultTax }}">
-								</div>
-								<label for="price_total_movID" class="col-md-3 control-label">{{ Lang['prezzo totale']|capitalize }}</label>
-								<div class="col-md-3">
-									<input required  type="text" name="price_total_mov" id="price_total_movID" value="0.00">
-								</div>
-							</div>
-							<input type="hidden" name="price_tax_mov" id="price_tax_movID" value="0.00">											
-					</fieldset>	
-					<hr>
-					<div class="form-group">
-						<div class="col-md-offset-2 col-md-7">
-							<input type="hidden" name="id_mov" id="id_movID" value="">
-							<input type="hidden" name="id_invoice" id="id_invoiceID" value="{{ App.item.id }}">
-							<button type="submit" name="submitForm" value="submit" class="btn btn-primary">{{ Lang['invia']|capitalize }}</button>
+							</div>	
+						
 						</div>
-						<div class="col-md-2">
-							<button type="button" id="deleteMovID" href="#" title="{{ Lang['cancella']|capitalize }}" class="btn btn-danger">{{ Lang['cancella']|capitalize }}</button>
+						<div class="row">
+							<div class="form-group form-group-sm">
+								<label for="price_unity_movID" class="col-xs-2 control-label">{{ Lang['prezzo']|capitalize }}</label>
+								<div class="col-xs-2">
+									<input type="text" class="form-control" name="price_unity_mov" id="price_unity_movID" value="0.00">
+						  		</div>
+						  		
+						  		<label for="quantity_movID" class="col-xs-2 control-label">{{ Lang['q.tà']|capitalize }}</label>
+								<div class="col-xs-2">
+									<input type="text" class="form-control" name="quantity_mov" id="quantity_movID" value="1">
+								</div>
+								
+								<label for="tax_movID" class="col-xs-2 control-label">{{ Lang['tassa']|capitalize }}</label>
+								<div class="col-xs-2">
+									<input type="text" class="form-control" name="tax_mov" id="tax_movID" value="{{ App.params.defaultTax }}">
+								</div>
+								
+								<label for="price_total_movID" class="col-xs-2 control-label">{{ Lang['totale']|capitalize }}</label>
+								<div class="col-xs-2">
+									<input type="text" class="form-control" name="price_total_mov" id="price_total_movID" value="0.00">
+								</div>
+							</div>
 						</div>
-					</div>					
+						<div class="row">
+							<div class="form-group form-group-sm">	
+								<div class="col-md-8">							
+									<input type="hidden" name="id_mov" id="id_movID" value="">
+									<input type="hidden" name="id_invoice" id="id_invoiceID" value="{{ App.item.id }}">
+									<button type="submit" name="submitForm" value="submit" class="btn btn-primary btn-sm ">{{ Lang['aggiungi']|capitalize }}</button>
+								</div>					
+							</div>	
+						</div>
 					</form>
 				</div>	
 			</div>

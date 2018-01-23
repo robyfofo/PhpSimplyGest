@@ -15,7 +15,7 @@ $(document).ready(function() {
 		format: 'L'
 		});
 	
-	getMovimenti();	
+	getMovimenti();
 	
 	$('#myModal').on('show.bs.modal', function (event) {  
 	  	var button = $(event.relatedTarget) // Button that triggered the modal
@@ -181,10 +181,12 @@ function getTotalsMovimenti() {
 		.done(function($resdata) {		
 			$invoiceMovTotal = parseFloat($resdata.invoiceMovTotal);
 			$invoiceTaxTotal = parseFloat($resdata.invoiceTaxTotal);
-			$invoiceTotal = parseFloat($resdata.invoiceTotal);			
-			$('#invoice_mov_totalID').val($invoiceMovTotal.toFixed(2));
-			$('#invoice_tax_totalID').val($invoiceTaxTotal.toFixed(2));
-			$('#invoice_totalID').val($invoiceTotal.toFixed(2));
+			$invoiceRivalsa = parseFloat($resdata.invoiceRivalsa);
+			$invoiceTotal = parseFloat($resdata.invoiceTotal);	
+			$('#invoice_mov_totalID').html('€ '+$invoiceMovTotal.toFixed(2).replace('.',','));
+			$('#invoice_tax_totalID').html('€ '+$invoiceTaxTotal.toFixed(2).replace('.',','));
+			$('#invoice_rivalsaID').html('€ '+$invoiceRivalsa.toFixed(2).replace('.',','));
+			$('#invoice_totalID').html('€ '+$invoiceTotal.toFixed(2).replace('.',','));
   			})
   		.fail(function() {
  			 alert("Ajax failed to fetch total data")

@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * language IT v.1.0.0. 18/01/2018
+ * language IT v.1.0.0. 19/01/2018
 */
 
 $_lang['user'] = 'it';
@@ -91,8 +91,11 @@ $_lang['finito'] = "finito";
 $_lang['visto'] = 'visto';
 
 $_lang['anagrafica'] = "anagrafica";
+$_lang['destinatario'] = "destinatario";
 $_lang['data'] = "data";
 $_lang['data scadenza'] = "data scadenza";
+$_lang['scadenza'] = "scadenza";
+$_lang['scadenze'] = "scadenze";
 $_lang['ragione sociale'] = "ragione sociale";
 $_lang['nome'] = "nome";
 $_lang['cognome'] = "cognome";
@@ -109,21 +112,49 @@ $_lang['cellulare'] = "cellulare";
 $_lang['email'] = "email";
 $_lang['indirizzo email'] = "indirizzo email";
 $_lang['codice fiscale'] = "codice fiscale";
+$_lang['C. Fiscale'] = "C. Fiscale";
+$_lang['C.F.'] = "C.F.";
 $_lang['partita IVA'] = "partita IVA";
+$_lang['P. IVA'] = "P. IVA";
+$_lang['P.IVA'] = "P.IVA";
 $_lang['avatar'] = "avatar";
 $_lang['template'] = "template";
 $_lang['skype'] = "skype";
 
+$_lang['banca'] = "banca";
+$_lang['intestatario'] = "intestatario";
+$_lang['iban'] = "IBAN";
+$_lang['bic_swift'] = "BIC/SWIFT";
+
+$_lang['fattura'] = "fattura";
+$_lang['fatture'] = "fatture";
+$_lang['fatturazione'] = "fatturazione";
 $_lang['quantità'] = "quantità";
 $_lang['q.tà'] = "q.tà";
 $_lang['valore'] = "valore";
 $_lang['prezzo'] = "prezzo";
 $_lang['prezzo unitario'] = "prezzo unitario";
+$_lang['prezzo unità'] = "prezzo unità";
 $_lang['prezzo totale'] = "prezzo totale";
 $_lang['imponibile'] = "imponibile";
 $_lang['tassa'] = "tassa";
+
+$_lang['gestione iva'] = "gestione IVA";
 $_lang['iva'] = "iva";
+$_lang['testo no iva'] = "testo no IVA";
+
 $_lang['totale'] = "totale";
+$_lang['totale onorario'] = "totale onorario";
+$_lang['importo'] = "importo";
+$_lang['importo lordo'] = "importo lordo";
+$_lang['imposte'] = "imposte";
+$_lang['riepilogo iva'] = "riepilogo IVA";
+
+$_lang['gestione rivalsa'] = "gestione rivalsa";
+$_lang['rivalsa'] = "rivalsa";
+$_lang['testo rivalsa'] = "testo rivalsa";
+
+$_lang['modalità pagamento'] = "modalità pagamento";
 
 $_lang['accesso'] = "accesso";
 $_lang['username'] = "username";
@@ -194,6 +225,10 @@ $_lang['cancella ordine'] = 'delete order';
 $_lang['ordine cancellato'] = "order deleted";
 $_lang['modifica ordine'] = "modify order";
 $_lang['ordine modificato'] = "order changed";
+
+$_lang['numero'] = 'numero';
+$_lang['nr.'] = 'nr.';
+$_lang['del'] = 'del';
 
 $_lang['categoria'] = 'category';
 $_lang['categorie'] = 'categories';
@@ -426,6 +461,11 @@ $_lang['inserisci un indirizzo email'] = "inserisci un indirizzo email";
 $_lang['inserisci un codice fiscale'] = "inserisci un codice fiscale";
 $_lang['inserisci una partita IVA'] = "inserisci una partita IVA";
 $_lang['inserisci un username skype'] = "inserisci un username skype";
+
+$_lang['inserisci una banca'] = "inserisci un indirizzo email";
+$_lang['inserisci un intestatario'] = "inserisci un intestatario";
+$_lang['inserisci un iban'] = "inserisci un IBAN";
+$_lang['inserisci un bic swift'] = "inserisci un BIC/SWIFT";
 
 $_lang['La ora inizio deve essere prima della ora fine!'] = "La ora inizio deve essere prima della ora fine!";
 

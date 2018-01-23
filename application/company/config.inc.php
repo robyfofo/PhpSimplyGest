@@ -43,6 +43,17 @@ $App->params->fields['item']  = array(
 	'fax'=>array('label'=>'Fax','searchTable'=>true,'required'=>false,'type'=>'varchar'),
 	
 	'partita_iva'=>array('label'=>'Partita IVA','searchTable'=>true,'required'=>true,'type'=>'varchar'),
-	'codice_fiscale'=>array('label'=>'Codice Fiscale','searchTable'=>true,'required'=>true,'type'=>'varchar')
+	'codice_fiscale'=>array('label'=>'Codice Fiscale','searchTable'=>true,'required'=>true,'type'=>'varchar'),
+	
+	'gestione_iva'=>array('label'=>'Gestione IVA','searchTable'=>false,'required'=>false,'type'=>'int'),
+	'text_noiva'=>array('label'=>'Testo per no iva','searchTable'=>true,'required'=>false,'type'=>'varchar'),
+	'gestione_rivalsa'=>array('label'=>'Rivalsa','searchTable'=>false,'required'=>false,'type'=>'int'),
+	'rivalsa'=>array('label'=>'Rivalsa','searchTable'=>true,'required'=>false,'type'=>'int'),
+	'text_rivalsa'=>array('label'=>'Testo per rivalsa','searchTable'=>true,'required'=>false,'type'=>'varchar'),
+	
+	'banca'=>array('label'=>'Banca','searchTable'=>true,'required'=>true,'type'=>'varchar'),
+	'intestatario'=>array('label'=>'Intestatario','searchTable'=>true,'required'=>true,'type'=>'varchar'),
+	'iban'=>array('label'=>'IBAN','searchTable'=>true,'required'=>true,'type'=>'varchar'),
+	'bic_swift'=>array('label'=>'BIC/SWIFT','searchTable'=>false,'required'=>true,'type'=>'varchar')
 	);
 ?>

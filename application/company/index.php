@@ -5,10 +5,10 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * customers/index.php v.1.0.0. 22/11/2017
+ * company/index.php v.1.0.0. 19/01/2018
 */
 
-Core::setDebugMode(1);
+//Core::setDebugMode(1);
 
 include_once(PATH.'application/'.Core::$request->action."/lang/".$_lang['user'].".inc.php");
 include_once(PATH.'application/'.Core::$request->action."/config.inc.php");

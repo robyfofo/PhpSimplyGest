@@ -14,6 +14,7 @@
 		<ul class="nav nav-tabs">
 			<li class="active"><a href="#anagrafica-tab" data-toggle="tab">{{ Lang['anagrafica']|capitalize }} <i class="fa"></i></a></li>
 			<li class=""><a href="#contacts-tab" data-toggle="tab">{{ Lang['contatti']|capitalize }} <i class="fa"></i></a></li>
+			<li class=""><a href="#fiscale-tab" data-toggle="tab">{{ Lang['fiscale']|capitalize }} <i class="fa"></i></a></li>
 			<li class=""><a href="#options-tab" data-toggle="tab">{{ Lang['opzioni']|capitalize }} <i class="fa"></i></a></li>
 		</ul>
 		<form id="applicationForm" class="form-horizontal" role="form" action="{{ URLSITE }}{{ CoreRequest.action }}/{{ App.methodForm }}"  enctype="multipart/form-data" method="post">
@@ -21,6 +22,13 @@
 			<div class="tab-content">		
 				<div class="tab-pane active" id="anagrafica-tab">			
 					<fieldset class="form-group">
+						<div class="form-group">
+							<label for="ragione_socialeID" class="col-md-2 control-label">{{ Lang['ragione sociale']|capitalize }}</label>
+							<div class="col-md-7">
+								<input required type="text" name="ragione_sociale" class="form-control" id="ragione_socialeID" placeholder="{{ Lang['inserisci una ragione sociale']|capitalize }}" value="{{ App.item.ragione_sociale }}">
+					    	</div>
+						</div>
+						<hr>
 						<div class="form-group">
 							<label for="nameID" class="col-md-2 control-label">{{ Lang['nome']|capitalize }}</label>
 							<div class="col-md-7">
@@ -103,6 +111,25 @@
 					</fieldset>				
 				</div>
 	<!-- sezione contacts -->
+	<!-- sezione fiscale --> 
+				<div class="tab-pane" id="fiscale-tab">			
+					<fieldset class="form-group">
+						<div class="form-group">
+							<label for="partita_ivaID" class="col-md-2 control-label">{{ Lang['partita IVA']|capitalize }}</label>
+							<div class="col-md-3">
+								<input type="partita_iva" name="partita_iva" class="form-control" id="partita_ivaID" placeholder="{{ Lang['inserisci una partita IVA']|capitalize }}"  value="{{ App.item.partita_iva }}">
+					    	</div>
+					    	<div class="col-md-6" id="emailMessageID"></div>
+						</div>
+						<div class="form-group">
+							<label for="codice_fiscaleID" class="col-md-2 control-label">{{ Lang['codice fiscale']|capitalize }}</label>
+							<div class="col-md-3">
+								<input type="text" name="codice_fiscale" class="form-control" id="codice_fiscaleID" placeholder="{{ Lang['inserisci un codice fiscale']|capitalize }}"  value="{{ App.item.codice_fiscale }}">
+					    	</div>
+						</div>
+					</fieldset>				
+				</div>
+	<!-- sezione fiscale -->
 	<!-- sezione opzioni --> 
 				<div class="tab-pane" id="options-tab">
 					<fieldset class="form-group">
