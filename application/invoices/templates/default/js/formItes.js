@@ -1,4 +1,4 @@
-/* invoices/formItes.js v.1.0.0. 29/11/2017 */
+/* invoices/formItes.js v.1.0.0. 24/01/2018 */
 var requestSent = false;
 $(document).ready(function() {
 	
@@ -32,12 +32,12 @@ $(document).ready(function() {
 		$('#id_movID').val('0');
 	 	if (mov > 0) {
 			$.ajax({
-				url: siteUrl+module+'/getAjaxItem',
+				url: siteUrl+module+'/getAjaxItas',
 				type: "POST",
 				data: {'id':mov},
 				dataType: 'json'
 				})
-				.done(function(data) {		
+			.done(function(data) {	
 				$('#content_movID').val(data.content);
 				$('#quantity_movID').val(data.quantity);
 				$('#price_unity_movID').val(data.price_unity);
@@ -46,56 +46,57 @@ $(document).ready(function() {
 				$('#price_tax_movID').val(data.price_tax);										
 				$('#id_movID').val(data.id);
 				modal.find('.modal-title').text(messages['modifica movimento']+' '+mov);
-	  			})
-	  			.fail(function() {
-	 			alert("Ajax failed to fetch data mov")
+				modal.find('#submitFormID').text(messages['modifica']);
+				$('#deleteMovID').show();
+  				})
+  			.fail(function() {
+ 				alert("Ajax failed to fetch data mov")
 				}) 		
 	 		} else {
-	 			$('#deleteMovID').hide();
+				$('#deleteMovID').hide();
 	 			}	 
 	 	
 		}); // end function
 	
 	$("#articoloFormID").one('submit', function(event) {
-		event.preventDefault();
-		
- if(!requestSent) {
- 		requestSent = true;
-		var $form = $(this);
-		var $mov = $('#id_movID').val();
-		var $target = siteUrl+module+'/insertItem';
-	 	if ($mov > 0) $target = siteUrl+module+'/updateItem';
-		$.ajax({
-			type: "POST",
-			url: $target,
-	      data: $form.serialize(),
-	      dataType: 'html',
-	      timeout:3000 //3 second timeout
-		})
-		.done(function(html) {	
-			requestSent = false;				
-			/*
-			if (html > 0) {
-				var dialog = bootbox.alert({
-	 					message: messages['Errore! Movimento NON inserito o modificato!'],
-	 					backdrop: true	
-					});
-				} else {
+		event.preventDefault();		
+		if (!requestSent) {
+			requestSent = true;
+			var $form = $(this);
+			var $mov = $('#id_movID').val();
+			var $target = siteUrl+module+'/insertItas';
+		 	if ($mov > 0) $target = siteUrl+module+'/updateItas';
+			$.ajax({
+				type: "POST",
+				url: $target,
+		      data: $form.serialize(),
+		      dataType: 'html',
+		      timeout:3000 //3 second timeout
+				})
+			.done(function(html) {	
+				requestSent = false;				
+				/*
+				if (html > 0) {
 					var dialog = bootbox.alert({
-	 						message: messages['movimento inserito o modificato'],	
-	 						backdrop: true
+		 					message: messages['Errore! Movimento NON inserito o modificato!'],
+		 					backdrop: true	
 						});
-					}
-			*/
-			
-			$('#myModal').modal('hide');
-			getMovimenti();
-			
-		})
-		.fail(function() {
-			alert("Ajax failed to fetch item data")
-		})
-}
+					} else {
+						var dialog = bootbox.alert({
+		 						message: messages['movimento inserito o modificato'],	
+		 						backdrop: true
+							});
+						}
+				*/
+				
+				$('#myModal').modal('hide');
+				getMovimenti();
+				
+				})
+			.fail(function() {
+				alert("Ajax failed to fetch item data")
+				})
+			}
 		}); // end function
 		
 	$('#deleteMovID').one('click',function(event) {
@@ -103,7 +104,7 @@ $(document).ready(function() {
 		bootbox.confirm(messages['Sei sicuro?'],function($confirmed) {
 			if ($confirmed) {
 				$.ajax({
-					url: siteUrl+module+'/deleteItem',
+					url: siteUrl+module+'/deleteItas',
 					type: "POST",
 					data: {'id':$mov},
 					dataType: 'html',
@@ -155,7 +156,7 @@ function getMovimenti() {
 	var requestSent = false;
 	var idinvoice = $('#idID').val();
 	$.ajax({
-		url: siteUrl+module+'/listAjaxItem',
+		url: siteUrl+module+'/listAjaxItas',
 		type: "POST",
 		data: {'id':idinvoice},
 		dataType: 'html'
@@ -173,7 +174,7 @@ function getTotalsMovimenti() {
 	var idinvoice = $('#idID').val();
 	console.log('id_invoice '+idinvoice);
 	$.ajax({
-		url: siteUrl+module+'/getAjaxTotalItem',
+		url: siteUrl+module+'/getAjaxTotalItas',
 		type: "POST",
 		data: {'id':idinvoice},
 		dataType: 'json'

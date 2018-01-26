@@ -41,56 +41,47 @@ switch(Core::$request->method) {
 						/* preleva customer */
 						Sql::initQuery($App->params->tables['cust'],array('*'),array($App->invoice->id_customer),'id = ?');
 						$App->invoice_customer = Sql::getRecord();
-						if (Core::$resultOp->error == 0) {
-					
-							/*
-							print_r($App->invoice);
-							print_r($App->invoice_articoli);
-							print_r($App->invoice_customer);
-							*/
+						if (Core::$resultOp->error == 0) {							
+							/* settings */	
+							$App->company->gestione_iva = 0;
+							$App->company->gestione_rivalsa = 1;
 							
+													
 							/* totali */
-							$invoiceImponibile = 0;
-							$rivalsaInps = 4;
-							$invoiceTotal = 0;
-							$invoiceMovTotal = 0;
-							$invoiceTaxTotal = 0;
-							
-							$z = 0;
-							
+							$invoiceArticlesTotal = 0;
+							$invoiceTaxTotal = 0;							
+							$invoiceOnorario = 0;							
+							$invoiceTotal = 0;	
+							$invoiceRivalsa = 0;						
+							$z = 0;							
 							/* calcola inponibile */
 							if (is_array($App->invoice_articoli) && count($App->invoice_articoli) > 0) {
 								foreach ($App->invoice_articoli AS $key=>$value) {
-									$invoiceMovTotal = (float)$invoiceMovTotal + $value->price_total;
+									$invoiceArticlesTotal = (float)$invoiceArticlesTotal + $value->price_total;
 									$invoiceTaxTotal = (float)$invoiceTaxTotal + $value->price_tax;
-									
+																		
 									/* dati pdf */
+									/* se iva */
+									if ($App->company->gestione_iva == 1) {
+										$articolipdf[$z]['tax'] = $value->tax.'% ';
+										$articolipdf[$z]['importotax'] = '€ '.number_format($value->price_tax,2,',','.').' ';
+										}
 									$articolipdf[$z]['descrizione'] = $value->content;
 									$articolipdf[$z]['quantità'] = $value->quantity;
 									$articolipdf[$z]['prezzounitario'] = '€ '.number_format($value->price_unity,2,',','.').' ';
-									$articolipdf[$z]['importo'] = '€ '.number_format($value->price_unity * $value->quantity,2,',','.').' ';
-									
-									 
+									$articolipdf[$z]['importo'] = '€ '.number_format($value->price_unity * $value->quantity,2,',','.').' ';									 
 									}
 								}
-								$invoiceImponibile = (float)$invoiceMovTotal + $invoiceTaxTotal;
-								$invoiceRivalsa = (float)($invoiceImponibile * $rivalsaInps) / 100;
-								$invoiceTotal = (float)$invoiceImponibile + $invoiceRivalsa;
 								
-								/*							
-								echo '<br>Imponibile: '.$invoiceImponibile;
-								echo '<br>rivalsa: '.$invoiceRivalsa;
-								echo '<br>totale: '.$invoiceTotal;
-								*/
-							
+								$invoiceOnorario = (float)$invoiceArticlesTotal;
+								$invoiceRivalsa = (float)($invoiceOnorario * $App->company->rivalsa) / 100;
+								$invoiceTotal = (float)$invoiceOnorario +$invoiceTaxTotal+$invoiceRivalsa;
 							
 								/* STAMPA */
-								
-	
 								$nomefile = "Stampa_fatture_entrate.pdf";
 								$tipo_applicazione = "application/pdf";   
-								header("Content-type: $tipo_applicazione");
-								header("Content-Disposition: attachment; filename=".basename($nomefile).";");
+								//header("Content-type: $tipo_applicazione");
+								//header("Content-Disposition: attachment; filename=".basename($nomefile).";");
 								
 								// Initialize a ROS PDF class object using DIN-A4, with background color gray
 								$pdf = new Cezpdf('a4','portrait','color',array(255,255,255));
@@ -113,25 +104,7 @@ switch(Core::$request->method) {
 								$headpdf[2]['titolo'] = $_lang['P. IVA'].' '.$App->company->partita_iva.' - '.$_lang['C. Fiscale'].' '.$App->company->codice_fiscale;
 								$headpdf[3]['titolo'] = '<strong>'.strtoupper($_lang['fattura']).'</strong> '.$_lang['nr.'].' <b>'.$App->invoice->number.'</b> '.$_lang['del'].' <b>'.DateFormat::convertDataIsoToDataformat($App->invoice->dateins,$_lang['data format']).'</b>';								
 								$headpdf[4]['titolo'] = $App->invoice->note;
-								$col = $pdf->ezTable($headpdf, $colsheadpdf,'',array(
-									'showHeadings' => 0,
-									'gridlines'=> EZ_GRIDLINE,
-									'showLines' => 0,
-									'fontSize' => 10,
-								 	'shaded'=> 0,
-								 	'rowGap' => 2,
-									'colGap' => 20,
-									'xPos'=>'570',
-									'xOrientation'=>-'right',
-								 	'cols'=> array(
-								 		'titolo'=>array(
-											),
-								 		'testo'=>array(
-											'showLines' => 0
-											),
-								 		)
-									)
-								);
+								$col = $pdf->ezTable($headpdf,$colsheadpdf,'',array('showHeadings'=> 0,'gridlines'=>EZ_GRIDLINE_DEFAULT,'showLines'=>0,'fontSize'=>10,'shaded'=>0,'rowGap'=>2,'colGap'=>20,'xPos'=>'570','xOrientation'=>-'right','cols'=>array('titolo'=>array(),'testo'=>array('showLines'=>0))));
 								$pdf->setColor('0.8','0.8','0.8');
 								$pdf->setStrokeColor('0.8','0.8','0.8');
 								$pdf->setLineStyle(1);
@@ -148,27 +121,7 @@ switch(Core::$request->method) {
 								$tabledata[2]['testo'] = $App->invoice_customer->street;
 								$tabledata[3]['titolo'] = '';
 								$tabledata[3]['testo'] = $App->invoice_customer->zip_code.' '.$App->invoice_customer->city.' ('.$App->invoice_customer->province.')';
-								
-								
-								$col = $pdf->ezTable($tabledata,$tablecols,'',array(
-									'showHeadings' => 0,
-									'gridlines'=> EZ_GRIDLINE_DEFAULT,
-									'showLines' => 0,
-									'fontSize' => 11,
-								 	'width'=>500,
-								 	'shaded'=> 0,
-								 	'rowGap' => 2,
-									'colGap' => 2,
-									'lineCol'=>array(0.7,0.7,0.7),
-								 	'cols'=> array(
-								 		'titolo'=>array(
-											),
-								 		'testo'=>array(
-											'showLines' => 0
-											),
-								 		)
-									)
-								);
+								$col = $pdf->ezTable($tabledata,$tablecols,'',array('showHeadings'=>0,'gridlines'=>EZ_GRIDLINE_DEFAULT,'showLines'=>0,'fontSize'=>11,'width'=>500,'shaded'=>0,'rowGap' => 2, 'colGap' => 2, 'lineCol'=>array(0.7,0.7,0.7), 'cols'=> array( 'titolo'=>array( ), 'testo'=>array( 'showLines' => 0 ), ) ) );
 								/* FINE HEADER */
 								
 								/* ARTICOLI */
@@ -177,39 +130,26 @@ switch(Core::$request->method) {
 								$pdf->setLineStyle(1);
 								$pdf->line(30,$col-10,560,$col-10);
 								$pdf->ezSetDy(-30);
-								$colsArticolipdf = array
-								(
-									'descrizione'=>'<b>'.ucfirst($_lang['descrizione']).'</b>',
-									'quantità'=>'<b>'.ucfirst($_lang['quantità']).'</b>',
-									'prezzounitario'=>'<b>'.ucwords($_lang['prezzo unità']).'</b>',
-									'importo'=>'<b>'.ucwords($_lang['importo']).'</b>',
-								); 
-								$col = $pdf->ezTable($articolipdf, $colsArticolipdf,'',array(
-									'showHeadings' => 1,
-									'gridlines'=> EZ_GRIDLINE_DEFAULT,
-									'fontSize' => 10,
-								 	'width'=>500,
-								 	'shaded'=> 0,
-								 	'rowGap' => 5,
-									'colGap' => 7,
-									'showLines' => 1,
-									'lineCol'=>array(0.7,0.7,0.7),
-									'cols'=> array(
-								 		'quantità'=>array(
-								 			'width'=>90,
-								 			'justification' => 'center'
-											),
-										'prezzounitario'=>array(
-								 			'width'=>90,
-											'justification' => 'right'
-											),
-								 		'importo'=>array(
-								 			'width'=>80,
-											'justification' => 'right'
-											)
-										)
-									)
-								);
+				
+								$colsArticolipdf['descrizione'] = '<b>'.ucfirst($_lang['descrizione']).'</b>';
+								$colsArticolipdf['quantità'] = '<b>'.ucfirst($_lang['quantità']).'</b>';
+								$colsArticolipdf['prezzounitario'] = '<b>'.ucwords($_lang['prezzo unità']).'</b>';
+								$colsArticolipdf['importo'] = '<b>'.ucwords($_lang['importo']).'</b>';
+								/* se iva */
+								if ($App->company->gestione_iva == 1) {
+									$colsArticolipdf['tax'] = '<b>'.ucwords($_lang['iva']).'</b>';
+									}
+								$opt = array( 'showHeadings' => 1, 'gridlines'=> EZ_GRIDLINE_DEFAULT,'fontSize'=>10,'width'=>500,'shaded'=>0,'rowGap' =>5,'colGap'=>7,'showLines'=>1,'lineCol'=>array(0.7,0.7,0.7),'cols'=> array('quantità'=>array('width'=>90,'justification'=>'center'),'prezzounitario'=>array('width'=>90,'justification' =>'right'),'importo'=>array('width'=>80,'justification' =>'right' )));							
+								if ($App->company->gestione_iva = 1) {
+									$opt['cols']['tax'] = array('width'=>30);
+									}
+/*							
+print_r($colsArticolipdf);
+print_r($articolipdf);
+die();
+*/
+
+								$col = $pdf->ezTable($articolipdf, $colsArticolipdf,'',$opt);
 								/* FINE ARTICOLI */							
 								
 								/* NOTE */
@@ -220,98 +160,42 @@ switch(Core::$request->method) {
 								$pdf->line(30,310,560,310);
 								$pdf->ezSetDy(-10);
 								$colspdf = array('titolo'=>strtoupper($_lang['modalità pagamento']),'testo'=>strtoupper($_lang['scadenze'])); 
-								$datapdf[1]['titolo'] = '<b>Bonifico Bancario</b>';
+								$datapdf = array();
+								$datapdf[1]['titolo'] = '<b>'.ucwords($_lang['bonifico bancario']).'</b>';
 								$datapdf[1]['testo'] = '<b>'.DateFormat::convertDataIsoToDataformat($App->invoice->datesca,$_lang['data format']).'</b>';
 								$datapdf[2]['titolo'] = 'IBAN: <b>'.$App->company->iban.'</b>';
 								$datapdf[2]['testo'] = '';
 								$datapdf[3]['titolo'] = $App->company->intestatario;
-								$datapdf[3]['testo'] = '';
-								
-								$pdf->ezTable($datapdf, $colspdf,'',array(
-									'showHeadings' => 1,
-									'gridlines'=> EZ_GRIDLINE_DEFAULT,
-									'fontSize' => 9,
-								 	'width'=>500,
-								 	'shaded'=> 0,
-								 	'rowGap' => 3,
-									'colGap' => 10,
-									'showLines' => 1,
-									'lineCol'=>array(0.7,0.7,0.7),
-									'cols'=> array(
-								 		'quantità'=>array(
-								 			'width'=>60,
-								 			'justification' => 'center'
-											),
-										'prezzounitario'=>array(
-								 			'width'=>80,
-											'justification' => 'right'
-											),
-								 		'importo'=>array(
-								 			'width'=>130,
-											'justification' => 'right'
-											)
-										)
-									)
-								);
+								$datapdf[3]['testo'] = '';								
+								$pdf->ezTable($datapdf, $colspdf,'',array('showHeadings' => 1,'gridlines'=>EZ_GRIDLINE_DEFAULT,'fontSize'=>9,'width'=>500,'shaded'=> 0,'rowGap'=>3,'colGap'=>10,'showLines'=>1,'lineCol'=>array(0.7,0.7,0.7),'cols'=>array('quantità'=>array('width'=>60,'justification' =>'center'),'prezzounitario'=>array('width'=>80,'justification'=>'right'),'importo'=>array('width'=>130,'justification'=>'right'))));
 								/* FINE NOTE */	
 								
 								/* NOTE */
 								$pdf->ezSetDy(-10);
-								$cols = array('riepilogo'=>strtoupper($_lang['riepilogo iva']),'importo'=>strtoupper($_lang['importo lordo']),'imposte'=>strtoupper($_lang['imposte'])); 
-								$data[0]['riepilogo'] = 'Operazione effettuata ai sensi dell’art. 1, commi da 54 a 89 della Legge n. 190/2014 – Regime forfettario';
-								$data[0]['importo'] = '€ '.number_format($invoiceImponibile,2,',','.');
-								$data[0]['imposte'] = '€ 0,00';
-								
-								$pdf->ezTable($data, $cols,'',array(
-									'showHeadings' => 1,
-									'gridlines'=> EZ_GRIDLINE_DEFAULT,
-									'fontSize' => 9,
-								 	'width'=>500,
-								 	'shaded'=> 0,
-								 	'rowGap' => 3,
-									'colGap' => 10,
-									'showLines' => 1,
-									'lineCol'=>array(0.7,0.7,0.7),
-									'cols'=> array(
-										'imposte'=>array(
-								 			'justification' => 'right'
-											),
-										'importo'=>array(
-								 			'justification' => 'right'
-											),
-										)
-									)
-								);
+								$colspdf = array('riepilogo'=>strtoupper($_lang['riepilogo iva']),'importo'=>strtoupper($_lang['importo lordo']),'imposte'=>strtoupper($_lang['imposte'])); 
+								$datapdf = array();								
+								$datapdf[0]['riepilogo'] = $App->company->text_noiva;
+								$datapdf[0]['importo'] = '€ '.number_format($invoiceOnorario,2,',','.');
+								$datapdf[0]['imposte'] = '€ '.number_format($invoiceTaxTotal,2,',','.');
+								$opt = array('showHeadings' =>1,'gridlines'=>EZ_GRIDLINE_DEFAULT,'fontSize'=>9,'width'=>500,'shaded'=>0,'rowGap'=>3,'colGap'=>10,'showLines'=>1,'lineCol'=>array(0.7,0.7,0.7),'cols'=>array('imposte'=>array('justification'=>'right'),'importo'=>array('justification'=>'right')));
+								$pdf->ezTable($datapdf, $colspdf,'',$opt);
 								/* FINE NOTE */			
 								
 								/* TOTALI */
 								$pdf->ezSetDy(-10);
-								$colsTotalipdf = array('titolo'=>'titolo','testo'=>'testo'); 
-								$totalipdf[0]['titolo'] = strtoupper($_lang['totale onorario']);
-								$totalipdf[0]['testo'] = '€ '.number_format($invoiceImponibile,2,',','.');
-								$totalipdf[1]['titolo'] = 'RIVALSA INPS 4%';
-								$totalipdf[1]['testo'] = '€ '.number_format($invoiceRivalsa,2,',','.');
-								$pdf->ezTable($totalipdf, $colsTotalipdf,'',array(
-									'showHeadings' => 0,
-									'gridlines'=> EZ_GRIDLINE_DEFAULT,
-									'fontSize' => 10,
-								 	'width'=>500,
-								 	'shaded'=> 0,
-								 	'rowGap' => 2,
-									'colGap' => 10,
-									'showLines' => 0,
-									'lineCol'=>array(0.7,0.7,0.7),
-									'cols'=> array(
-								 		'titolo'=>array(
-								 			'justification' => 'right'
-											),
-								 		'testo'=>array(
-								 			'width'=>110,
-											'justification' => 'right'
-											)
-										)
-									)
-								);
+								$colspdf = array('titolo'=>'titolo','testo'=>'testo'); 
+								$datapdf = array();
+								$z = 0;
+								$datapdf[$z]['titolo'] = strtoupper($_lang['totale onorario']);
+								$datapdf[$z]['testo'] = '€ '.number_format($invoiceOnorario,2,',','.');
+								$z++;
+								if ($App->company->gestione_rivalsa == 1) {
+									$datapdf[$z]['titolo'] = $App->company->text_rivalsa;
+									$datapdf[$z]['testo'] = '€ '.number_format($invoiceRivalsa,2,',','.');
+									$z++;
+									}
+								$opt = array('showHeadings'=>0,'gridlines'=>EZ_GRIDLINE_DEFAULT,'fontSize'=>10,'width'=>500,'shaded'=>0,'rowGap'=>2,'colGap' =>10,'showLines' =>0,'lineCol'=>array(0.7,0.7,0.7),'cols'=>array('titolo'=>array('justification' =>'right'),'testo'=>array('width'=>110,'justification'=>'right')));
+								$pdf->ezTable($datapdf, $colspdf,'',$opt);
 								/* FINE TOTALI */
 								
 								/* TOTALI */
@@ -319,36 +203,11 @@ switch(Core::$request->method) {
 								$cols = array('titolo'=>'titolo','testo'=>'testo'); 
 								$data[0]['titolo'] = '<strong>'.strtoupper($_lang['totale']).'</strong>';
 								$data[0]['testo'] = '€ <strong>'.number_format($invoiceTotal,2,',','.').'</strong>';
-								$pdf->ezTable($data, $cols,'',array(
-									'showHeadings' => 0,
-									'gridlines'=> EZ_GRIDLINE_DEFAULT,
-									'fontSize' => 12,
-								 	'width'=>500,
-								 	'shaded'=> 0,
-								 	'rowGap' => 5,
-									'colGap' => 10,
-									'showLines' => 0,
-									'lineCol'=>array(0.7,0.7,0.7),
-									'cols'=> array(
-								 		'titolo'=>array(
-								 			'justification' => 'right'
-											),
-								 		'testo'=>array(
-								 			'width'=>110,
-											'justification' => 'right'
-											)
-										)
-									)
-								);
+								$pdf->ezTable($data, $cols,'',array('showHeadings'=>0,'gridlines'=>EZ_GRIDLINE_DEFAULT,'fontSize' =>12,'width'=>500,'shaded'=>0,'rowGap'=>5,'colGap'=>10,'showLines'=>0,'lineCol'=>array(0.7,0.7,0.7),'cols'=>array('titolo'=>array('justification'=>'right'),'testo'=>array('width'=>110,'justification'=>'right'))));
 								/* FINE TOTALI */
 								
 								// Output the pdf as stream, but uncompress
 								$pdf->ezStream(array('compress'=>0));						
-								
-								
-								
-							
-							
 							}
 						}			
 					}

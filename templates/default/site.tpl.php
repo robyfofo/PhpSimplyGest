@@ -10,27 +10,22 @@
 		<meta name="keyword" content="{{ App.metaKeywordsPage|e('html_attr') }}">
 		<meta name="author" content="Roberto Mantovani">
 
-		<!-- Bootstrap Core CSS -->
-		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-		
-		
-
+		<!-- Core CSS - Include with every page -->
+		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 		<!-- MetisMenu CSS -->
-		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/assets/plugins/metisMenu/metisMenu.min.css" rel="stylesheet">
-
-		<!-- Timeline CSS -->
-		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/assets/css/timeline.css" rel="stylesheet">
-
+    	<link href="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
 		<!-- Custom CSS -->
-		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/assets/css/sb-admin-2.css" rel="stylesheet">
-
+		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/css/sb-admin-2.css" rel="stylesheet">
+		<!-- Morris Charts CSS -->
+		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/morrisjs/morris.css" rel="stylesheet">
 		<!-- Custom Fonts -->
-		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-		
-		<!-- Other Plugin CSS - Dashboard -->
-		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/assets/plugins/prettyPhoto/css/prettyPhoto.css" rel="stylesheet">
-		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/assets/plugins/bootstrapValidator/bootstrapValidator.min.css" rel="stylesheet">
+		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
+		<!-- OTHER Plugin CSS - Dashboard -->
+		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/lightbox/css/lightbox.min.css" rel="stylesheet">
+		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/bootstrapValidator/css/bootstrapValidator.min.css" rel="stylesheet">
+		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/jquery.formvalidation/css/formValidation.min.css" rel="stylesheet">
+		
 		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 		<!--[if lt IE 9]>
@@ -39,7 +34,7 @@
 		<![endif]-->
 		
 		<!-- Custom CSS - Dashboard -->
-		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/assets/css/default.css" rel="stylesheet">
+		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/css/default.css" rel="stylesheet">
 
     
 		<!-- CSS for Page -->
@@ -162,25 +157,30 @@
 		</div>
 		{% endif %}
 
+		<!-- Core Scripts - Include with every page -->
 		<!-- jQuery -->
-		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/assets/plugins/jquery/jquery.min.js"></script>
+		{% if App.patchdatapicker is defined and App.patchdatapicker > 0 %}
+		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/jquery/jquery-1.10.2.js"></script>
+		{% else %}
+ 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/jquery/jquery.min.js"></script>
+ 		{% endif %}
 
-		<!-- Bootstrap Core JavaScript -->
-		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-		
-		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/assets/plugins/numeral/numeral.js"></script>
-		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/assets/plugins/numeral/locales/it.js"></script>
+ 		<!-- Bootstrap Core JavaScript -->
+ 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}//vendor/bootstrap/js/bootstrap.min.js"></script>
+ 		<!-- Metis Menu Plugin JavaScript -->
+ 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/metisMenu/metisMenu.min.js"></script>
 
-		<!-- Metis Menu Plugin JavaScript -->
-		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/assets/plugins/metisMenu/metisMenu.min.js"></script>
-
-
-		<!-- Other JavaScript -->	
-		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/assets/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>	
-		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/assets/plugins/prettyPhoto/js/jquery.prettyPhoto.js" type="text/javascript"></script>
-		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/assets/plugins/bootstrapValidator/bootstrapValidator.min.js" type="text/javascript"></script>
-		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/assets/plugins/bootstrapValidator/language/it_IT.js"></script>
-		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/assets/plugins/tinymce/tinymce.min.js" type="text/javascript"></script>
+		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/bootbox/js/bootbox.min.js" type="text/javascript"></script>
+		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/lightbox/js/lightbox.min.js" type="text/javascript"></script>
+		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/bootstrapValidator/js/bootstrapValidator.min.js" type="text/javascript"></script>
+		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/jquery.formvalidation/js/formValidation.min.js" type="text/javascript"></script>	
+		{% if App.lang['user'] == 'it' %}
+			<script src="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/bootstrapValidator/language/it_IT.js"></script>
+			<script src="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/jquery.formvalidation/language/it_IT.js"></script>		
+		{% endif %}
+		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/tinymce/tinymce.min.js" type="text/javascript"></script>
+		<!-- SB Admin Scripts - Include with every page -->
+		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/js/sb-admin-2.js"></script>
 		
 		
 		{% if App.jscript is iterable %}							
@@ -196,7 +196,7 @@
 		{% endif %}
 
 
-		<!-- Custom Theme JavaScript -->
-		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/assets/js/sb-admin-2.js"></script>
+		<!-- Default Custom Theme JavaScript -->
+		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/js/default.js"></script>
 	</body>
 </html>

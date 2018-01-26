@@ -45,11 +45,12 @@ $App->params->fields['item']  = array(
 	'partita_iva'=>array('label'=>'Partita IVA','searchTable'=>true,'required'=>true,'type'=>'varchar'),
 	'codice_fiscale'=>array('label'=>'Codice Fiscale','searchTable'=>true,'required'=>true,'type'=>'varchar'),
 	
-	'gestione_iva'=>array('label'=>'Gestione IVA','searchTable'=>false,'required'=>false,'type'=>'int'),
-	'text_noiva'=>array('label'=>'Testo per no iva','searchTable'=>true,'required'=>false,'type'=>'varchar'),
-	'gestione_rivalsa'=>array('label'=>'Rivalsa','searchTable'=>false,'required'=>false,'type'=>'int'),
-	'rivalsa'=>array('label'=>'Rivalsa','searchTable'=>true,'required'=>false,'type'=>'int'),
-	'text_rivalsa'=>array('label'=>'Testo per rivalsa','searchTable'=>true,'required'=>false,'type'=>'varchar'),
+	'gestione_iva'=>array('label'=>'Gestione IVA','searchTable'=>false,'required'=>false,'type'=>'int','defValue'=>'0','validate'=>'int'),
+	'iva'=>array('label'=>'IVA','searchTable'=>false,'required'=>false,'type'=>'int','defValue'=>'0','validate'=>'int'),
+	'text_noiva'=>array('label'=>'Testo per no iva','searchTable'=>true,'required'=>false,'type'=>'varchar','defValue'=>''),
+	'gestione_rivalsa'=>array('label'=>'Rivalsa','searchTable'=>false,'required'=>false,'type'=>'int','defValue'=>'1','validate'=>'int'),
+	'rivalsa'=>array('label'=>'Rivalsa','searchTable'=>true,'required'=>false,'type'=>'int','defValue'=>'0','validate'=>'int'),
+	'text_rivalsa'=>array('label'=>'Testo per rivalsa','searchTable'=>true,'required'=>false,'type'=>'varchar','defValue'=>''),
 	
 	'banca'=>array('label'=>'Banca','searchTable'=>true,'required'=>true,'type'=>'varchar'),
 	'intestatario'=>array('label'=>'Intestatario','searchTable'=>true,'required'=>true,'type'=>'varchar'),

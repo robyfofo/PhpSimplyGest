@@ -125,6 +125,8 @@ $_lang['banca'] = "banca";
 $_lang['intestatario'] = "intestatario";
 $_lang['iban'] = "IBAN";
 $_lang['bic_swift'] = "BIC/SWIFT";
+$_lang['bonifico'] = "bonifico";
+$_lang['bonifico bancario'] = "bonifico bancario";
 
 $_lang['fattura'] = "fattura";
 $_lang['fatture'] = "fatture";
@@ -466,6 +468,9 @@ $_lang['inserisci una banca'] = "inserisci un indirizzo email";
 $_lang['inserisci un intestatario'] = "inserisci un intestatario";
 $_lang['inserisci un iban'] = "inserisci un IBAN";
 $_lang['inserisci un bic swift'] = "inserisci un BIC/SWIFT";
+
+$_lang['inserisci una iva'] = "inserisci una IVA";
+$_lang['inserisci una rivalsa'] = "inserisci una rivalsa";
 
 $_lang['La ora inizio deve essere prima della ora fine!'] = "La ora inizio deve essere prima della ora fine!";
 

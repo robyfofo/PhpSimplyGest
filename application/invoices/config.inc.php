@@ -58,8 +58,8 @@ $App->params->fields['ites']  = array(
 	);
 	
 /* INVOICES PURCHASE ARTICLES */
-$App->params->tables['item']  = DB_TABLE_PREFIX.'invoices_articles';
-$App->params->fields['item']  = array(
+$App->params->tables['itap']  = DB_TABLE_PREFIX.'invoices_purchase_articles';
+$App->params->fields['itap']  = array(
 	'id'=>array('label'=>'ID','required'=>false,'type'=>'autoinc','primary'=>true),
 	'id_owner'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>true,'type'=>'int','defValue'=>$App->userLoggedData->id),
 	'id_invoice'=>array('label'=>$_lang['voce'],'searchTable'=>false,'required'=>true,'type'=>'int','defValue'=>'0','validate'=>'int'),
@@ -74,8 +74,8 @@ $App->params->fields['item']  = array(
 	);
 	
 /* INVOICES SALES ARTICLES */
-$App->params->tables['item']  = DB_TABLE_PREFIX.'invoices_sales_articles';
-$App->params->fields['item']  = array(
+$App->params->tables['itas']  = DB_TABLE_PREFIX.'invoices_sales_articles';
+$App->params->fields['itas']  = array(
 	'id'=>array('label'=>'ID','required'=>false,'type'=>'autoinc','primary'=>true),
 	'id_owner'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>true,'type'=>'int','defValue'=>$App->userLoggedData->id),
 	'id_invoice'=>array('label'=>$_lang['voce'],'searchTable'=>false,'required'=>true,'type'=>'int','defValue'=>'0','validate'=>'int'),

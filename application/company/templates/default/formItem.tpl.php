@@ -139,6 +139,12 @@
       					</div>
 				  		</div>
 				  		<div class="form-group">
+							<label for="ivaID" class="col-md-2 control-label">{{ Lang['iva']|capitalize }} %</label>
+							<div class="col-md-3">
+								<input type="text" name="iva" class="form-control" id="ivaID" placeholder="{{ Lang['inserisci una iva']|capitalize }}"  value="{{ App.item.iva|e('html') }}">
+					    	</div>
+						</div>
+				  		<div class="form-group">
 							<label for="text_noivaID" class="col-md-2 control-label">{{ Lang['testo no iva']|capitalize }}</label>
 							<div class="col-md-7">
 								<textarea name="text_noiva" class="form-control" id="text_noivaID" rows="3">{{ App.item.text_noiva|e('html') }}</textarea>
@@ -164,7 +170,7 @@
 						<div class="form-group">
 							<label for="rivalsaID" class="col-md-2 control-label">{{ Lang['rivalsa']|capitalize }} %</label>
 							<div class="col-md-3">
-								<input type="text" name="rivalsa" class="form-control" id="rivalsaID" placeholder="{{ Lang['inserisci una rivalsa']|capitalize }}"  value="{{ App.item.rivalsa }}">
+								<input type="text" name="rivalsa" class="form-control" id="rivalsaID" placeholder="{{ Lang['inserisci una rivalsa']|capitalize }}"  value="{{ App.item.rivalsa|e('html') }}">
 					    	</div>
 						</div>
 					</fieldset>				

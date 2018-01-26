@@ -224,11 +224,14 @@
 						</div>
 						<div class="row">
 							<div class="form-group form-group-sm">	
-								<div class="col-md-8">							
+								<div class="col-md-6">							
 									<input type="hidden" name="id_mov" id="id_movID" value="">
 									<input type="hidden" name="id_invoice" id="id_invoiceID" value="{{ App.item.id }}">
-									<button type="submit" name="submitForm" value="submit" class="btn btn-primary btn-sm ">{{ Lang['aggiungi']|capitalize }}</button>
-								</div>					
+									<button type="submit" name="submitForm" id="submitFormID" value="submit" class="btn btn-primary btn-sm ">{{ Lang['aggiungi']|capitalize }}</button>
+								</div>
+								<div class="col-md-6 text-right">							
+									<button type="button" class="btn btn-warning btn-sm" id="deleteMovID" title="{{ Lang['inserisci nuovo articolo']|capitalize }}">{{ Lang['cancella']|capitalize }}</button>
+								</div>									
 							</div>	
 						</div>
 					</form>

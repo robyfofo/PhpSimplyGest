@@ -30,7 +30,7 @@ switch(Core::$request->method) {
 	case 'deleteItes':
 		if ($App->id > 0) {
 			Sql::initQuery($App->params->tables['ites'],array('id'),array($App->id),'id = ?');
-			Sql::deleteRecord();
+			//Sql::deleteRecord();
 			if(Core::$resultOp->error == 0) {
 				Core::$resultOp->message = ucfirst($_lang['voce cancellata']).'!';
 				}
