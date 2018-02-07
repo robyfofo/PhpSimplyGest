@@ -1,4 +1,4 @@
-<!-- invoices/formItemu.tpl.php v.1.0.0. 02/11/2017 -->
+<!-- invoices/formItep.tpl.php v.1.0.0. 07/02/2018 -->
 <div class="row">
 	<div class="col-md-3 new">
  	</div>
@@ -13,7 +13,7 @@
 		<!-- Nav tabs -->
 		<ul class="nav nav-tabs">
 			<li class=""><a href="#datibase-tab" data-toggle="tab">{{ Lang['dati base']|capitalize }} <i class="fa"></i></a></li>
-			<li class="active"><a href="#items-tab" data-toggle="tab">{{ Lang['movimenti associati']|capitalize }} <i class="fa"></i></a></li>
+			<li class="active"><a href="#articles-tab" data-toggle="tab">{{ Lang['articoli associati']|capitalize }} <i class="fa"></i></a></li>
 			<li class=""><a href="#options-tab" data-toggle="tab">{{ Lang['opzioni']|capitalize }} <i class="fa"></i></a></li>
 		</ul>
 		<form id="applicationForm" class="form-horizontal" role="form" action="{{ URLSITE }}{{ CoreRequest.action }}/{{ App.methodForm }}"  enctype="multipart/form-data" method="post">
@@ -64,11 +64,11 @@
 				</div>
 
 <!-- sezione movimenti -->
-				<div class="tab-pane active" id="items-tab">
+				<div class="tab-pane active" id="articles-tab">
 				
 					<div class="row">
 						<div class="col-md-12">
-							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" data-whatever="@mdo" data-mov="0" title="{{ Lang['aggiungi movimento']|capitalize }}">{{ Lang['aggiungi movimento']|capitalize }}</button>
+							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" data-whatever="@mdo" data-art="0" title="{{ Lang['inserisci un nuovo articolo']|capitalize }}">{{ Lang['nuovo articolo']|capitalize }}</button>
 						</div>
 					</div>
 					<hr class="divider">
@@ -81,47 +81,44 @@
 											{% if (App.userLoggedData.is_root is defined) and (App.userLoggedData.is_root is same as(1)) %}	
 												<th class="id">ID</th>								
 											{% endif %}
-											<th>{{ Lang['contenuto']|capitalize }}</th>
-											<th>{{ Lang['quantità']|capitalize }}</th>
-											<th>{{ Lang['prezzo unitario']|capitalize }}</th>
-											<th>{{ Lang['iva']|capitalize }}</th>
-											<th>{{ Lang['imponibile']|capitalize }}</th>
-											<th>{{ Lang['prezzo totale']|capitalize }}</th>										
+											<th class="text-center">{{ Lang['contenuto']|capitalize }}</th>
+											<th class="text-center">{{ Lang['prezzo unitario']|capitalize }}</th>
+											<th class="text-center">{{ Lang['iva']|capitalize }}</th>
+											<th class="text-center">{{ Lang['imponibile']|capitalize }}</th>
+											<th class="text-center">{{ Lang['prezzo totale']|capitalize }}</th>										
 											<th></th>
 										</tr>
 									</thead>
-									<tbody id="listamovimentiID">				
+									<tbody id="listarticlesID">				
 									</tbody>
 								</table>
 							</div>
 						</div>
 					</div>
-					
 					<div class="row">
 						<div class="form-group">
-							<label for="invoive_mov_totalID" class="col-md-9 control-label">{{ Lang['totale movimenti']|capitalize }}</label>
-							<div class="col-md-2">
-								<input type="text" name="invoice_mov_total" class="form-control text-right" id="invoice_mov_totalID" value="">
+							<label for="invoiceArtTotalID" class="col-md-9 control-label">{{ Lang['totale articoli']|capitalize }}</label>
+							<div class="col-md-2 text-right">
+								<span id="invoiceArtTotalID">€ 0,00</span>
 					    	</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="form-group">
-							<label for="invoive_total_taxID" class="col-md-9 control-label">{{ Lang['imponibile']|capitalize }}</label>
-							<div class="col-md-2">
-								<input type="text" name="invoice_tax_total" class="form-control text-right" id="invoice_tax_totalID" value="">
+							<label for="invoiceTaxTotaID" class="col-md-9 control-label">{{ Lang['imposte']|capitalize }}</label>
+							<div class="col-md-2 text-right">
+								<span id="invoiceTaxTotalID">€ 0,00</span>
 					    	</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="form-group">
-							<label for="invoive_totalID" class="col-md-9 control-label">{{ Lang['totale']|capitalize }}</label>
-							<div class="col-md-2">
-								<input type="text" name="invoice_total" class="form-control text-right" id="invoice_totalID" value="">
+							<label for="invoiceTotalID" class="col-md-9 control-label">{{ Lang['totale']|capitalize }}</label>
+							<div class="col-md-2 text-right">
+								<span id="invoiceTotalID">0,00</span>
 					    	</div>
 						</div>
-					</div>
-						
+					</div>						
 				</div>
 <!-- /sezione movimenti -->
 
@@ -172,50 +169,39 @@
 			</div>
 			<div class="modal-body">
 				<div class="container-fluid">
-					<form id="articoloFormID" class="form-horizontal" role="form" action="#" enctype="multipart/form-data">
-						<div class="row">
-							
-							<div class="form-group form-group-sm">
-								<div class="col-md-8">
-									<textarea required name="content_mov" class="form-control" id="content_movID" rows="3">{{ Lang['inserisci testo articolo']|capitalize }}</textarea>
+					<form id="articleFormID" class="form-inline" role="form" action="#" enctype="multipart/form-data">
+						<div class="row">							
+							<!-- <div class="form-group"> -->
+								<div class="col-md-12" style="margin-bottom:20px;">
+									<textarea required name="contentArt" class="form-control form-content" id="contentArtID" rows="3">{{ Lang['inserisci testo articolo']|capitalize }}</textarea>
 								</div>
-								
-								<div class="col-md-4">
-								</div>
-							</div>	
-						
+							<!-- </div> -->						
 						</div>
-						<div class="row">
-							<div class="form-group form-group-sm">
-								<label for="price_unity_movID" class="col-xs-2 control-label">{{ Lang['prezzo']|capitalize }}</label>
-								<div class="col-xs-2">
-									<input type="text" class="form-control" name="price_unity_mov" id="price_unity_movID" value="0.00">
-						  		</div>
-						  		
-						  		<label for="quantity_movID" class="col-xs-2 control-label">{{ Lang['q.tà']|capitalize }}</label>
-								<div class="col-xs-2">
-									<input type="text" class="form-control" name="quantity_mov" id="quantity_movID" value="1">
-								</div>
-								
-								<label for="tax_movID" class="col-xs-2 control-label">{{ Lang['tassa']|capitalize }}</label>
-								<div class="col-xs-2">
-									<input type="text" class="form-control" name="tax_mov" id="tax_movID" value="{{ App.params.defaultTax }}">
-								</div>
-								
-								<label for="price_total_movID" class="col-xs-2 control-label">{{ Lang['totale']|capitalize }}</label>
-								<div class="col-xs-2">
-									<input type="text" class="form-control" name="price_total_mov" id="price_total_movID" value="0.00">
-								</div>
+						<div class="row text-center">
+							<div class="form-group">
+								<label for="priceArtID">{{ Lang['prezzo']|capitalize }}</label>
+								<input required type="text" class="form-control form-amount" name="priceArt" id="priceArtID" value="0.00">
+							<!-- </div>
+							<div class="form-group">	 -->
+								<label for="taxArtID">{{ Lang['tassa']|capitalize }}</label>
+								<input required type="text" class="form-control form-tax" name="taxArt" id="taxArtID" value="0">
+							<!-- </div>
+							<div class="form-group"> -->		
+								<label for="totalArtID">{{ Lang['totale']|capitalize }}</label>
+								<input required type="text" class="form-control form-amount" name="totalArt" id="totalArtID" value="0.00">
 							</div>
 						</div>
 						<div class="row">
-							<div class="form-group form-group-sm">	
-								<div class="col-md-8">							
-									<input type="hidden" name="id_mov" id="id_movID" value="">
+							<!-- <div class="form-group form-group-sm">	 -->						
+								<div class="col-md-6">							
+									<input type="hidden" name="idArt" id="idArtID" value="">
 									<input type="hidden" name="id_invoice" id="id_invoiceID" value="{{ App.item.id }}">
-									<button type="submit" name="submitForm" value="submit" class="btn btn-primary btn-sm ">{{ Lang['aggiungi']|capitalize }}</button>
-								</div>					
-							</div>	
+									<button type="submit" name="submitForm" id="submitFormID" value="submit" class="btn btn-primary btn-sm ">{{ Lang['aggiungi']|capitalize }}</button>
+								</div>
+								<div class="col-md-6 text-right">							
+									<button type="button" class="btn btn-warning btn-sm" id="deleteArtID" title="{{ Lang['inserisci nuovo articolo']|capitalize }}">{{ Lang['cancella']|capitalize }}</button>
+								</div>									
+							<!-- </div> -->	
 						</div>
 					</form>
 				</div>	

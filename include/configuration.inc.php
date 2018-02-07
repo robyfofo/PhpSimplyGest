@@ -15,7 +15,7 @@
 $globalSettings['site name'] = "PhpSimplyGest";
 $globalSettings['code version'] = '1.0.0.';
 
-define('FOLDER_SITE', 'PhpSimplyGest/');
+define('FOLDER_SITE', 'phpsimplygest/');
 define('SITE_HOST', '192.168.1.10/');
 define('SERVER_SMTP','');
 define('TIMEZONE','');
@@ -54,7 +54,7 @@ define('DATA_SESSIONS_COOKIE_NAME','data_loc_phpsimplygest_id');
 define('SITE_EMAIL', 'robymant66@vodafone.it');
 define('SITE_EMAIL_LABEL', 'PhpSimplyGest');
 /* configurazioni server */
-$globalSettings['use php mail class'] = 0;
+$globalSettings['use php mail class'] = 2; /* Use class for email managemant: 0 = no class; 1 = PHP7 Swiftmailer class; 2 = php5.x PHPMAILER class */
 /* if use php class */
 $globalSettings['mail server'] = 'SMTP'; /* values = 'SMTP' or 'SENDMAIL' */
 $globalSettings['sendmail path'] = '/usr/sbin/sendmail -t -i';

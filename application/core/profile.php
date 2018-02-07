@@ -1,11 +1,11 @@
 <?php
 /**
- * Framework siti html-PHP-Mysql
+ * Framework App PHP-Mysql
  * PHP Version 7
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * admin/site-core/profile.php v.3.0.0. 04/11/2016
+ * core/profile.php v.1.0.0. 29/01/2018
 */
 
 //Core::setDebugMode(1);
@@ -48,7 +48,7 @@ switch(Core::$request->method) {
 		$id = intval(Core::$request->param);
 		$App->item = new stdClass;
 	   if ($id > 0) {	
-			Sql::initQuery(DB_TABLE_PREFIX.'site_users',array('*'),array($id),"id = ?");
+			Sql::initQuery(DB_TABLE_PREFIX.'users',array('*'),array($id),"id = ?");
 			$App->item = Sql::getRecord();	
 			if (Core::$resultOp->error == 0) {	
 				if (isset($App->item->avatar)) {
@@ -74,7 +74,7 @@ switch(Core::$request->method) {
 					Sql::checkRequireFields($fields);
 					if(Core::$resultOp->error == 0) {	
 						Sql::stripMagicFields($_POST);
-						Sql::updateRawlyPost($fields,DB_TABLE_PREFIX."site_users",'id',$App->id);
+						Sql::updateRawlyPost($fields,DB_TABLE_PREFIX."users",'id',$App->id);
 						if(Core::$resultOp->error == 0) {
 							Core::$resultOp->message = $_lang['profilo core - profilo modificato'];
 							}
@@ -86,7 +86,7 @@ switch(Core::$request->method) {
 								
 		/* recupera i dati memorizzati */
 		/* (tabella,campi(array),valori campi(array),where clause, limit, order, option , pagination(default false)) */
-		Sql::initQuery(DB_TABLE_PREFIX.'site_users',array('*'),array($App->id),"id = ?");
+		Sql::initQuery(DB_TABLE_PREFIX.'users',array('*'),array($App->id),"id = ?");
 		$App->item = Sql::getRecord();			
 		$App->templatesAvaiable = $Module->getUserTemplatesArray();
 		if($Module->error == 1) {	

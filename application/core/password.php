@@ -1,11 +1,11 @@
 <?php
 /**
- * Framework siti html-PHP-Mysql
+ * Framework App PHP-Mysql
  * PHP Version 7
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * admin/site-core/password.php v.1.0.0. 14/02/2017
+ * core/password.php v.1.0.0. 29/01/2018
 */
 
 /* variabili ambiente */
@@ -38,7 +38,7 @@ switch(Core::$request->method) {
 					
 				if (Core::$resultOp->error == 0) {	
 					/* (tabella,campi(array),valori campi(array),where clause, limit, order, option , pagination(default false)) */
-					Sql::initQuery(DB_TABLE_PREFIX.'site_users',array('password'),array($password,$App->id),"id = ?");	
+					Sql::initQuery(DB_TABLE_PREFIX.'users',array('password'),array($password,$App->id),"id = ?");	
 					Sql::updateRecord();
 					if(Core::$resultOp->error == 0) {
 						Core::$resultOp->message = $_lang['Password modificata correttamente! Sarà effettiva al prossimo login.'];
@@ -49,7 +49,7 @@ switch(Core::$request->method) {
 			/* recupera i dati memorizzati */
 			$App->item = new stdClass;	
 			/* (tabella,campi(array),valori campi(array),where clause, limit, order, option , pagination(default false)) */
-			Sql::initQuery(Sql::getTablePrefix().'site_users',array('username','password'),array($App->id),"id = ?");	
+			Sql::initQuery(Sql::getTablePrefix().'users',array('username','password'),array($App->id),"id = ?");	
 			$App->item = Sql::getRecord();
 			} else {
 				ToolsStrings::redirect(URL_SITE."home");

@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * invoices/items.php v.1.0.0. 09/11/2017
+ * invoices/items.php v.1.0.0. 06/02/2018
 */
 
 if (isset($_POST['itemsforpage']) && isset($_MY_SESSION_VARS[$App->sessionName]['ifp']) && $_MY_SESSION_VARS[$App->sessionName]['ifp'] != $_POST['itemsforpage']) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'ifp',$_POST['itemsforpage']);
@@ -15,7 +15,7 @@ $App->type = 1;
 
 /* GESTIONE CUSTOMERS */
 $App->icustomers = new stdClass;	
-Sql::initQuery($App->params->tables['cust'],array('*'),array(),'active = 1');
+Sql::initQuery($App->params->tables['cust'],array('*'),array(),'active = 1 AND (id_type = 1 OR id_type = 2)');
 Sql::setOptions(array('fieldTokeyObj'=>'id'));
 Sql::setOrder('surname ASC, name ASC');
 $App->customers = Sql::getRecords();		
@@ -69,12 +69,9 @@ switch(Core::$request->method) {
 	break;
 	
 	case 'updateItep':
-		Core::setDebugMode(1);
 		if ($_POST) {	
-			print_r($_POST);
 			/* parsa i post in base ai campi */ 	
 			Form::parsePostByFields($App->params->fields['itep'],$_lang,array());
-			print_r($_POST);
 			if (Core::$resultOp->error == 0) {
 				DateFormat::checkDataIsoIniEndInterval($_POST['dateins'],$_POST['datesca'],'>');
 				if (Core::$resultOp->error == 0) {						
@@ -177,6 +174,15 @@ switch((string)$App->viewMethod) {
 				$value->dateinslocal = $data->format($_lang['data format']);
 				$data = DateTime::createFromFormat('Y-m-d',$value->datesca);
 				$value->datescalocal = $data->format($_lang['data format']);
+				
+				/* calcola totali */
+				Sql::initQuery($App->params->tables['itap'],array('SUM(price_total) AS total'),array($value->id),' id_invoice = ? ');
+				$obj1 = Sql::getRecord();
+				$value->total = (float)0.00;
+				if (isset($obj1->total)) {
+					$value->total = (float)$obj1->total;
+					}
+				$value->totalLabel = number_format($value->total,2,',','.');
 				
 				$arr[] = $value;
 				}

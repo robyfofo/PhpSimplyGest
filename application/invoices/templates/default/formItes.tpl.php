@@ -1,4 +1,4 @@
-<!-- invoices/formItes.tpl.php v.1.0.0. 29/11/2017 -->
+<!-- invoices/formItes.tpl.php v.1.0.0. 07/02/2018 -->
 <div class="row">
 	<div class="col-md-3 new">
  	</div>
@@ -13,7 +13,7 @@
 		<!-- Nav tabs -->
 		<ul class="nav nav-tabs">
 			<li class=""><a href="#datibase-tab" data-toggle="tab">{{ Lang['dati base']|capitalize }} <i class="fa"></i></a></li>
-			<li class="active"><a href="#articles-tab" data-toggle="tab">{{ Lang['articoli']|capitalize }} <i class="fa"></i></a></li>
+			<li class="active"><a href="#articles-tab" data-toggle="tab">{{ Lang['articoli associati']|capitalize }} <i class="fa"></i></a></li>
 			<li class=""><a href="#options-tab" data-toggle="tab">{{ Lang['opzioni']|capitalize }} <i class="fa"></i></a></li>
 		</ul>
 		<form id="applicationForm" class="form-horizontal" role="form" action="{{ URLSITE }}{{ CoreRequest.action }}/{{ App.methodForm }}"  enctype="multipart/form-data" method="post">
@@ -72,7 +72,7 @@
 				<div class="tab-pane active" id="articles-tab">
 					<div class="row">
 						<div class="col-md-12">
-							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" data-whatever="@mdo" data-mov="0" title="{{ Lang['inserisci nuovo articolo']|capitalize }}">{{ Lang['nuovo articolo']|capitalize }}</button>
+							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" data-whatever="@mdo" data-mov="0" title="{{ Lang['inserisci un nuovo articolo']|capitalize }}">{{ Lang['nuovo articolo']|capitalize }}</button>
 						</div>
 					</div>
 					<hr class="divider">
@@ -94,7 +94,7 @@
 											<th></th>
 										</tr>
 									</thead>
-									<tbody id="listamovimentiID">				
+									<tbody id="listarticlesID">			
 									</tbody>
 								</table>
 							</div>
@@ -105,7 +105,7 @@
 						<div class="form-group">
 							<label for="invoive_mov_totalID" class="col-md-9 control-label">{{ Lang['imponibile']|capitalize }}</label>
 							<div class="col-md-2 text-right">
-								<span id="invoice_mov_totalID">€ 0,00</span>
+								<span id="invoiceArtTotalID">€ 0,00</span>
 					    	</div>
 						</div>
 					</div>
@@ -113,7 +113,7 @@
 						<div class="form-group">
 							<label for="invoive_total_taxID" class="col-md-9 control-label">{{ Lang['imposte']|capitalize }}</label>
 							<div class="col-md-2 text-right">
-								<span id="invoice_tax_totalID">€ 0,00</span>
+								<span id="invoiceTaxTotalID">€ 0,00</span>
 					    	</div>
 						</div>
 					</div>
@@ -121,7 +121,7 @@
 						<div class="form-group">
 							<label for="invoive_rivalsaID" class="col-md-9 control-label">{{ Lang['rivalsa']|capitalize }} INPS 4%</label>
 							<div class="col-md-2 text-right">
-								<span id="invoice_rivalsaID">€ 0,00</span>
+								<span id="invoiceRivalsaID">€ 0,00</span>
 					    	</div>
 						</div>
 					</div>
@@ -129,7 +129,7 @@
 						<div class="form-group">
 							<label for="invoive_totalID" class="col-md-9 control-label">{{ Lang['totale']|capitalize }}</label>
 							<div class="col-md-2 text-right">
-								<span id="invoice_totalID">0,00</span>
+								<span id="invoiceTotalID">0,00</span>
 					    	</div>
 						</div>
 					</div>
@@ -223,16 +223,16 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="form-group form-group-sm">	
+							<!-- <div class="form-group form-group-sm">	 -->						
 								<div class="col-md-6">							
-									<input type="hidden" name="id_mov" id="id_movID" value="">
+									<input type="hidden" name="idArt" id="idArtID" value="">
 									<input type="hidden" name="id_invoice" id="id_invoiceID" value="{{ App.item.id }}">
 									<button type="submit" name="submitForm" id="submitFormID" value="submit" class="btn btn-primary btn-sm ">{{ Lang['aggiungi']|capitalize }}</button>
 								</div>
 								<div class="col-md-6 text-right">							
-									<button type="button" class="btn btn-warning btn-sm" id="deleteMovID" title="{{ Lang['inserisci nuovo articolo']|capitalize }}">{{ Lang['cancella']|capitalize }}</button>
+									<button type="button" class="btn btn-warning btn-sm" id="deleteArtID" title="{{ Lang['inserisci nuovo articolo']|capitalize }}">{{ Lang['cancella']|capitalize }}</button>
 								</div>									
-							</div>	
+							<!-- </div> -->	
 						</div>
 					</form>
 				</div>	

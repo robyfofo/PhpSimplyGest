@@ -47,4 +47,7 @@ $_lang['totale articolì'] = "total articles";
 $_lang['articolo inserito o modificato']  = "article inserted or modified";
 $_lang['Errore! Articolo NON cancellato!'] = "Error! Article NOT deleted!";
 $_lang['Errore! Articolo NON inserito o modificato!'] = "Errore! Article NOT inserted or modified!";
+
+//$_lang['importo']  = "amount";
+//$_lang['iva']  = "tax";
 ?>

@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * language EN v.1.0.0. 07/02/2018
+ * language EN v.1.0.0. 26/01/2018
 */
 
 $_lang['user'] = 'en';
@@ -38,7 +38,6 @@ $_lang['profilo'] = "profile";
 $_lang['password'] = "password";
 $_lang['logout'] = "logout";
 
-$_lang['stampa'] = "stampa";
 $_lang['chiudi'] = "close";
 $_lang['aiuto'] = "help";
 $_lang['cerca'] = "search";

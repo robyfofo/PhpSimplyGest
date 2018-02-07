@@ -1,4 +1,4 @@
-<!-- customers/listItep.tpl.php v.1.0.0. 02/11/2017 -->
+<!-- invoices/listItep.tpl.php v.1.0.0. 07/02/2018 -->
 <div class="row">
 	<div class="col-md-3 new">
  		<a href="{{ URLSITE }}{{ CoreRequest.action }}/newItep" title="{{ Lang['inserisci nuova voce-p']|capitalize }}" class="btn btn-primary">{{ Lang['nuova voce-p']|capitalize }}</a>
@@ -49,7 +49,8 @@
 								<th>{{ Lang['data scadenza']|capitalize }}</th>
 								<th>{{ Lang['cliente']|capitalize }}</th>
 								<th>{{ Lang['numero']|capitalize }}</th>
-								<th></th>										
+								<th>{{ Lang['totale']|capitalize }}</th>
+																	
 								<th></th>
 							</tr>
 						</thead>
@@ -64,9 +65,7 @@
 										<td>{{ value.datescalocal }}</td>	
 										<td>{{ value.customer }}</td>							
 										<td>{{ value.number }}</td>
-										<td class="actions">
-											<a class="btn btn-default btn-circle" href="{{ URLSITE }}{{ CoreRequest.action }}/invoicePpdf/{{ value.id  }}" title="{{ Lang['stampa'] }} {{ Lang['la voce-p'] }}" target="_blank"><i class="fa fa-print"> </i></a>			 
-										</td>																	
+										<td>{{ value.totalLabel }}</td>
 										<td class="actions">
 											<a class="btn btn-default btn-circle" href="{{ URLSITE }}{{ CoreRequest.action }}/{{ value.active == 1 ? 'disactive' : 'active' }}Itep/{{ value.id  }}" title="{{ value.active == 1 ? Lang['disattiva %ITEM%']|replace({'%ITEM%': Lang['la voce-p']})|capitalize : Lang['attiva %ITEM%']|replace({'%ITEM%': Lang['la voce-u']})|capitalize }}"><i class="fa fa-{{ value.active == 1 ? 'unlock' : 'lock' }}"> </i></a>			 
 											<a class="btn btn-default btn-circle" href="{{ URLSITE }}{{ CoreRequest.action }}/modifyItep/{{ value.id }}" title="{{ Lang['modifica %ITEM%']|replace({'%ITEM%': Lang['la voce-p']})|capitalize }}"><i class="fa fa-edit"> </i></a>

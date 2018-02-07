@@ -1,4 +1,4 @@
-<!-- customers/listItes.tpl.php v.1.0.0. 02/11/2017 -->
+<!-- invoices/listItes.tpl.php v.1.0.0. 07/02/2018 -->
 <div class="row">
 	<div class="col-md-3 new">
  		<a href="{{ URLSITE }}{{ CoreRequest.action }}/newItes" title="{{ Lang['inserisci nuova voce']|capitalize }}" class="btn btn-primary">{{ Lang['nuova voce']|capitalize }}</a>
@@ -50,6 +50,7 @@
 								<th>{{ Lang['cliente']|capitalize }}</th>
 								<th>{{ Lang['numero']|capitalize }}</th>	
 								<th>{{ Lang['note']|capitalize }}</th>
+								<th>{{ Lang['totale']|capitalize }}</th>
 								<th></th>									
 								<th></th>
 							</tr>
@@ -66,8 +67,9 @@
 										<td>{{ value.customer }}</td>							
 										<td>{{ value.number }}</td>
 										<td>{{ value.note }}</td>
+										<td>{{ value.totalLabel }}</td>
 										<td class="actions">
-											<a class="btn btn-default btn-circle" href="{{ URLSITE }}{{ CoreRequest.action }}/invoicespdf/{{ value.id  }}" title="{{ Lang['stampa'] }} {{ Lang['la voce-p'] }}" target="_blank"><i class="fa fa-print"> </i></a>			 
+											<a class="btn btn-default btn-circle" href="{{ URLSITE }}{{ CoreRequest.action }}/invoicespdf/{{ value.id  }}" title="{{ Lang['stampa']|capitalize }} {{ Lang['la voce-p'] }}" target="_blank"><i class="fa fa-print"> </i></a>			 
 										</td>																																
 										<td class="actions">
 											<a class="btn btn-default btn-circle" href="{{ URLSITE }}{{ CoreRequest.action }}/{{ value.active == 1 ? 'disactive' : 'active' }}Ites/{{ value.id  }}" title="{{ value.active == 1 ? Lang['disattiva %ITEM%']|replace({'%ITEM%': Lang['la voce']})|capitalize : Lang['attiva %ITEM%']|replace({'%ITEM%': Lang['la voce']})|capitalize }}"><i class="fa fa-{{ value.active == 1 ? 'unlock' : 'lock' }}"> </i></a>			 
@@ -79,7 +81,7 @@
 							{% else %}
 								<tr>
 									{% if (App.userLoggedData.is_root is defined) and (App.userLoggedData.is_root is same as(1)) %}<td></td>{% endif %}
-									<td colspan="6">{{ Lang['nessuna voce trovata!']|capitalize }}</td>
+									<td colspan="7">{{ Lang['nessuna voce trovata!']|capitalize }}</td>
 								</tr>
 							{% endif %}
 						</tbody>

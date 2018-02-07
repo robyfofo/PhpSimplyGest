@@ -1,6 +1,8 @@
-form#articoloFormID div.col-xs-1 {}
-form#articoloFormID div.col-xs-2 {}
-form#articoloFormID label.col-xs-1 {width:50px;padding-right:2px;}
-form#articoloFormID label.col-xs-2 {width:auto;padding-left:5px;padding-right:0px;margin-left:5px;margin-right:0px;}
-
-form#articoloFormID .form-group-sm .form-control {padding-left:4px;padding-right:4px;}
+form#articleFormID .row {margin-top:10px;margin-bottom:10px;}
+form#articleFormID .form-group {font-size:12px;}
+form#articleFormID .form-group label {padding-left:10px;}
+form#articleFormID .form-control {padding:5px 2px;font-size:12px;}
+form#articleFormID .form-content {width:100%;}
+form#articleFormID .form-amount {width:70px;}
+form#articleFormID .form-tax {width:40px;}
+form#articleFormID .form-quantity {width:25px;}

@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * classes/class.Mails.php v.1.0.0. 28/09/2017
+ * classes/class.Mails.php v.1.0.0. 01/02/2018
 */
 
 class Mails extends Core {
@@ -14,20 +14,22 @@ class Mails extends Core {
 		parent::__construct();					
 		}
 		
-	public static function sendMail($address,$subject,$content,$text_content,$opz) {
-		$opzDef = array('sendDebug'=>0,'sendDebugEmail'=>'','fromEmail'=>'n.d','fromLabel'=>'n.d');	
-		$opz = array_merge($opzDef,$opz);
+	public static function sendMail($address,$subject,$content,$text_content,$opt) {
+		$optDef = array('sendDebug'=>0,'sendDebugEmail'=>'','fromEmail'=>'n.d','fromLabel'=>'n.d','attachments'=>'');	
+		$opt = array_merge($optDef,$opt);
 		if (self::$globalSettings['use php mail class'] == 1) {
-			self::sendMailClass($address,$subject,$content,$text_content,$opz);
-			} else {
-				self::sendMailPHP($address,$subject,$content,$text_content,$opz);
+			self::sendMailClass($address,$subject,$content,$text_content,$opt);
+			} else if (self::$globalSettings['use php mail class'] == 2) {
+				self::sendMailPHPMAILER($address,$subject,$content,$text_content,$opt);
+				} else {
+					self::sendMailPHP($address,$subject,$content,$text_content,$opt);
 				}
 		
 		}		
 	
-	public static function sendMailClass($address,$subject,$content,$text_content,$opz) {
-		$opzDef = array('sendDebug'=>0,'sendDebugEmail'=>'','fromEmail'=>'n.d','fromLabel'=>'n.d');
-		$opz = array_merge($opzDef,$opz);	
+	public static function sendMailClass($address,$subject,$content,$text_content,$opt) {
+		$optDef = array('sendDebug'=>0,'sendDebugEmail'=>'','fromEmail'=>'n.d','fromLabel'=>'n.d','attachments'=>'');
+		$opt = array_merge($optDef,$opt);	
 		$transport = '';
 		switch (self::$globalSettings['mail server']) {
 			case 'SMTP':
@@ -45,7 +47,7 @@ class Mails extends Core {
 			$mailer = new Swift_Mailer($transport);
 			// Create a message
 			$message = (new Swift_Message($subject))
-	  			->setFrom([$opz['fromEmail']=>$opz['fromLabel']])
+	  			->setFrom([$opt['fromEmail']=>$opt['fromLabel']])
 	  			->setTo([$address])
 	  			->setBody($content, 'text/html')
 				->addPart($text_content, 'text/plain');
@@ -66,11 +68,45 @@ class Mails extends Core {
 	    		}
 		}
 		
-	public static function sendMailPHP($address,$subject,$content,$text_content,$opz) {
-		$opzDef = array('sendDebug'=>0,'sendDebugEmail'=>'','fromEmail'=>'n.d','fromLabel'=>'n.d');	
-		$opz = array_merge($opzDef,$opz);	
+	/* versione PHP MAILER */
+	public static function sendMailPHPMAILER($address,$subject,$content,$text_content,$opt) {
+		include_once("class.phpmailer.php");
+		include_once("class.pop3.php");
+		include_once("class.smtp.php");
+		$optDef = array('sendDebug'=>0,'sendDebugEmail'=>'','fromEmail'=>'n.d','fromLabel'=>'n.d','attachments'=>'','classMailer'=>'');	
+		$opt = array_merge($optDef,$opt);	
+	
+		$mail = new PHPMailer();
+		$mail->SetFrom($opt['fromEmail'],$opt['fromLabel']);
+		$mail->IsHTML(true);
+		$mail->CharSet = 'UTF-8';
+		$mail->Subject = $subject;
+		$mail->AltBody = $text_content;
+		$mail->MsgHTML($content);	
+		$mail->AddAddress($address);				
+		if ($opt['sendDebug'] == 1) {
+			if ($opt['sendDebugEmail'] != '') $mail->AddBCC($opt['sendDebugEmail']);
+			}
+			
+		/* allegati */
+		if (is_array($opt['attachments']) && count($opt['attachments'])) {			
+			foreach ($opt['attachments'] AS $key=>$value) {
+				$mail->addAttachment($value['filename'],$value['title']);    // Optional name
+				}
+			}
+			
+		if (!$mail->Send()) {
+			Core::$resultOp->error = 1;
+			} else {
+				Core::$resultOp->error = 0;
+				}
+		}	
+		
+	public static function sendMailPHP($address,$subject,$content,$text_content,$opt) {
+		$optDef = array('sendDebug'=>0,'sendDebugEmail'=>'','fromEmail'=>'n.d','fromLabel'=>'n.d','attachments'=>'');	
+		$opt = array_merge($optDef,$opt);	
 		$mail_boundary = "=_NextPart_" . md5(uniqid(time()));	
-		$headers = "From: ".$opz['fromLabel']." <".$opz['fromEmail'].">\n";
+		$headers = "From: ".$opt['fromLabel']." <".$opt['fromEmail'].">\n";
 		$headers .= "MIME-Version: 1.0\n";
 		$headers .= "Content-Type: multipart/alternative;\n\tboundary=\"$mail_boundary\"\n";
 		$headers .= "X-Mailer: PHP " . phpversion();
@@ -88,7 +124,7 @@ class Mails extends Core {
  
 		// Boundary di terminazione multipart/alternative
 		$msg .= "\n--$mail_boundary--\n";
- 		$sender = $opz['fromEmail'];
+ 		$sender = $opt['fromEmail'];
 		// Imposta il Return-Path (funziona solo su hosting Windows)
 		ini_set("sendmail_from", $sender); 
 		// Invia il messaggio, il quinto parametro "-f$sender" imposta il Return-Path su hosting Linux
@@ -100,11 +136,12 @@ class Mails extends Core {
     			//echo "Success";
     			Core::$resultOp->error = 0;
 				}
-	}
+		}
+
 				
-	public static function parseMailContent($post,$content,$opz=array()) {
-		$opzDef = array('customFields'=>array(),'customFieldsValue'=>array());	
-		$opz = array_merge($opzDef,$opz);
+	public static function parseMailContent($post,$content,$opt=array()) {
+		$optDef = array('customFields'=>array(),'customFieldsValue'=>array());	
+		$opt = array_merge($optDef,$opt);
 		$content = preg_replace('/{{SITENAME}}/',SITE_NAME,$content);
 		if (isset($post['urlconfirm'])) $content = preg_replace('/{{URLCONFIRM}}/',$post['urlconfirm'],$content);
 		if (isset($post['hash'])) $content = preg_replace('/{{HASH}}/',$post['hash'],$content);
@@ -114,13 +151,12 @@ class Mails extends Core {
 		if (isset($post['email'])) $content = preg_replace('/{{EMAIL}}/',$post['email'],$content);
 		if (isset($post['subject'])) $content = preg_replace('/{{SUBJECT}}/',$post['subject'],$content);	
 		if (isset($post['message'])) $content = preg_replace('/{{MESSAGE}}/',$post['message'],$content);	
-		if (
-			(is_array($opz['customFields']) && count($opz['customFields'])) 
-			&& (is_array($opz['customFieldsValue']) && count($opz['customFieldsValue'])) 
-			&& (count($opz['customFields']) == count($opz['customFieldsValue']))
+		if ((is_array($opt['customFields']) && count($opt['customFields'])) 
+			&& (is_array($opt['customFieldsValue']) && count($opt['customFieldsValue'])) 
+			&& (count($opt['customFields']) == count($opt['customFieldsValue']))
 			) {			
-			foreach ($opz['customFields'] AS $key=>$value) {
-				$content = preg_replace('/'.$opz['customFields'][$key].'/',$opz['customFieldsValue'][$key],$content);
+			foreach ($opt['customFields'] AS $key=>$value) {
+				$content = preg_replace('/'.$opt['customFields'][$key].'/',$opt['customFieldsValue'][$key],$content);
 				}
 			}
 		return $content;

@@ -25,7 +25,7 @@ class Module {
 		$info = '';
 		if (intval($id) > 0) {
 			$this->itemData = new stdClass;		
-			Sql::initQuery(Sql::getTablePrefix().'site_users',array('avatar','avatar_info'),array($id),"id = ?");
+			Sql::initQuery(Sql::getTablePrefix().'users',array('avatar','avatar_info'),array($id),"id = ?");
 			$this->itemData = Sql::getRecord();
 			if(Core::$resultOp->error == 0) {
 				$avatar = $this->itemData->avatar;

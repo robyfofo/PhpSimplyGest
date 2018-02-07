@@ -58,7 +58,7 @@ $App->params->fields['ites']  = array(
 	);
 	
 /* INVOICES PURCHASE ARTICLES */
-$App->params->tables['itap']  = DB_TABLE_PREFIX.'invoices_purchase_articles';
+$App->params->tables['itap']  = DB_TABLE_PREFIX.'invoices_purchases_articles';
 $App->params->fields['itap']  = array(
 	'id'=>array('label'=>'ID','required'=>false,'type'=>'autoinc','primary'=>true),
 	'id_owner'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>true,'type'=>'int','defValue'=>$App->userLoggedData->id),
@@ -90,23 +90,6 @@ $App->params->fields['itas']  = array(
 	);
 /* THIRDPARTY */
 $App->params->tables['cust']  = DB_TABLE_PREFIX.'thirdparty';
-$App->params->fields['cust']  = array(
-	'id'=>array('label'=>'ID','required'=>false,'type'=>'autoinc','primary'=>true),
-	'id_cat'=>array('label'=>'ID Categoria','required'=>true,'type'=>'int'),
-	'name'=>array('label'=>'Nome','searchTable'=>true,'required'=>true,'type'=>'varchar'),
-	'surname'=>array('label'=>'Cognome','searchTable'=>true,'required'=>false,'type'=>'varchar'),
-	'street'=>array('label'=>'Via','searchTable'=>false,'required'=>false,'type'=>'varchar'),
-	'city'=>array('label'=>'Città','searchTable'=>false,'required'=>false,'type'=>'varchar'),
-	'zip_code'=>array('label'=>'C.A.P.','searchTable'=>false,'required'=>false,'type'=>'varchar'),
-	'province'=>array('label'=>'Provincia','searchTable'=>false,'required'=>false,'type'=>'varchar'),
-	'state'=>array('label'=>'Stato','searchTable'=>false,'required'=>false,'type'=>'varchar'),
-	'telephone'=>array('label'=>'Telefono','searchTable'=>false,'required'=>false,'type'=>'varchar'),
-	'email'=>array('label'=>'Email','searchTable'=>true,'required'=>false,'type'=>'varchar'),
-	'mobile'=>array('label'=>'Cellulare','searchTable'=>true,'required'=>false,'type'=>'varchar'),
-	'fax'=>array('label'=>'Fax','searchTable'=>true,'required'=>false,'type'=>'varchar'),
-	'created'=>array('label'=>$_lang['creazione'],'searchTable'=>false,'required'=>false,'type'=>'datatime','defValue'=>$App->nowDateTime,'validate'=>'datatimeiso'),
-	'active'=>array('label'=>ucfirst($_lang['attiva']),'required'=>false,'type'=>'int','defValue'=>1,'validate'=>'int')
-	);
 
 /* COMPANY */
 $App->params->tables['comp']  = DB_TABLE_PREFIX.'company';

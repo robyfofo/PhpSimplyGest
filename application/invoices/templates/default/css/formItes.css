@@ -1,6 +1,6 @@
-form#articoloFormID div.col-xs-1 {}
-form#articoloFormID div.col-xs-2 {}
-form#articoloFormID label.col-xs-1 {width:50px;padding-right:2px;}
-form#articoloFormID label.col-xs-2 {width:auto;padding-left:5px;padding-right:0px;margin-left:5px;margin-right:0px;}
+form#articleFormID div.col-xs-1 {}
+form#articleFormID div.col-xs-2 {}
+form#articleFormID label.col-xs-1 {width:50px;padding-right:2px;}
+form#articleFormID label.col-xs-2 {width:auto;padding-left:5px;padding-right:0px;margin-left:5px;margin-right:0px;}
 
-form#articoloFormID .form-group-sm .form-control {padding-left:4px;padding-right:4px;}
+form#articleFormID .form-group-sm .form-control {padding-left:4px;padding-right:4px;}

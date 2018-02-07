@@ -5,8 +5,9 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * invoices/pdf.php v.1.0.0. 30/11/2017
+ * invoices/pdf.php v.1.0.0. 07/02/2018
 */
+
 //print_r(Core::$request);
 
 switch(Core::$request->method) {
@@ -23,10 +24,7 @@ switch(Core::$request->method) {
 		
 		if ($id_invoice > 0) {
 			
-			/* preleva company */
-			Sql::initQuery($App->params->tables['comp'],array('*'),array(),'id = 1');
-			$App->company = Sql::getRecord();
-			if (Core::$resultOp->error == 0) {
+			
 
 				/* preleva invoice */
 				Sql::initQuery($App->params->tables['ites'],array('*'),array($id_invoice),'id = ?');
@@ -34,7 +32,7 @@ switch(Core::$request->method) {
 				if (Core::$resultOp->error == 0) {
 					
 					/* preleva articoli */
-					Sql::initQuery($App->params->tables['item'],array('*'),array($id_invoice),'id_invoice = ?');
+					Sql::initQuery($App->params->tables['itas'],array('*'),array($id_invoice),'id_invoice = ?');
 					$App->invoice_articoli = Sql::getRecords();
 					if (Core::$resultOp->error == 0) {
 						
@@ -211,7 +209,7 @@ die();
 							}
 						}			
 					}
-				}	
+					
 			}	
 	break;
 	}
