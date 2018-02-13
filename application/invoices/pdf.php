@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * invoices/pdf.php v.1.0.0. 07/02/2018
+ * invoices/pdf.php v.1.0.0. 12/02/2018
 */
 
 //print_r(Core::$request);
@@ -46,18 +46,14 @@ switch(Core::$request->method) {
 							
 													
 							/* totali */
-							$invoiceArticlesTotal = 0;
-							$invoiceTaxTotal = 0;							
-							$invoiceOnorario = 0;							
-							$invoiceTotal = 0;	
-							$invoiceRivalsa = 0;						
+							$articlesTotal = 0;
+							$articlesTaxTotal = 0;																			
 							$z = 0;							
 							/* calcola inponibile */
 							if (is_array($App->invoice_articoli) && count($App->invoice_articoli) > 0) {
 								foreach ($App->invoice_articoli AS $key=>$value) {
-									$invoiceArticlesTotal = (float)$invoiceArticlesTotal + $value->price_total;
-									$invoiceTaxTotal = (float)$invoiceTaxTotal + $value->price_tax;
-																		
+									$articlesTotal = (float)$articlesTotal + $value->price_total;
+									$articlesTaxTotal = (float)$articlesTaxTotal + $value->price_tax;									
 									/* dati pdf */
 									/* se iva */
 									if ($App->company->gestione_iva == 1) {
@@ -71,9 +67,15 @@ switch(Core::$request->method) {
 									}
 								}
 								
-								$invoiceOnorario = (float)$invoiceArticlesTotal;
-								$invoiceRivalsa = (float)($invoiceOnorario * $App->company->rivalsa) / 100;
-								$invoiceTotal = (float)$invoiceOnorario +$invoiceTaxTotal+$invoiceRivalsa;
+								/* calcola tassa aggiuntiva */
+								$invoiceTotalTax = '0.00';
+								if ($App->invoice->tax > 0) $invoiceTotalTax = ($articlesTotal * $App->invoice->tax) / 100;
+								
+								/* calcola rivalsa */
+								$invoiceTotalRivalsa = '0.00';
+								if ($App->invoice->rivalsa > 0) $invoiceTotalRivalsa = ($articlesTotal * $App->invoice->rivalsa) / 100;
+								
+								$invoiceTotal = (float)$articlesTotal + $articlesTaxTotal + $invoiceTotalTax + $invoiceTotalRivalsa;
 							
 								/* STAMPA */
 								$nomefile = "Stampa_fatture_entrate.pdf";
@@ -173,8 +175,8 @@ die();
 								$colspdf = array('riepilogo'=>strtoupper($_lang['riepilogo iva']),'importo'=>strtoupper($_lang['importo lordo']),'imposte'=>strtoupper($_lang['imposte'])); 
 								$datapdf = array();								
 								$datapdf[0]['riepilogo'] = $App->company->text_noiva;
-								$datapdf[0]['importo'] = '€ '.number_format($invoiceOnorario,2,',','.');
-								$datapdf[0]['imposte'] = '€ '.number_format($invoiceTaxTotal,2,',','.');
+								$datapdf[0]['importo'] = '€ '.number_format($articlesTotal,2,',','.');
+								$datapdf[0]['imposte'] = '€ '.number_format($articlesTaxTotal + $invoiceTotalTax,2,',','.');
 								$opt = array('showHeadings' =>1,'gridlines'=>EZ_GRIDLINE_DEFAULT,'fontSize'=>9,'width'=>500,'shaded'=>0,'rowGap'=>3,'colGap'=>10,'showLines'=>1,'lineCol'=>array(0.7,0.7,0.7),'cols'=>array('imposte'=>array('justification'=>'right'),'importo'=>array('justification'=>'right')));
 								$pdf->ezTable($datapdf, $colspdf,'',$opt);
 								/* FINE NOTE */			
@@ -185,11 +187,20 @@ die();
 								$datapdf = array();
 								$z = 0;
 								$datapdf[$z]['titolo'] = strtoupper($_lang['totale onorario']);
-								$datapdf[$z]['testo'] = '€ '.number_format($invoiceOnorario,2,',','.');
-								$z++;
-								if ($App->company->gestione_rivalsa == 1) {
+								$datapdf[$z]['testo'] = '€ '.number_format($articlesTotal,2,',','.');
+				
+								
+								if ($App->invoice->tax > 0) {
+									$z++;
+									$datapdf[$z]['titolo'] = strtoupper($_lang['tassa aggiuntiva']);
+									$datapdf[$z]['testo'] = '€ '.number_format($invoiceTotalTax,2,',','.');
+									$z++;
+									}
+								
+								if ($App->invoice->rivalsa > 0) {
+									$z++;
 									$datapdf[$z]['titolo'] = $App->company->text_rivalsa;
-									$datapdf[$z]['testo'] = '€ '.number_format($invoiceRivalsa,2,',','.');
+									$datapdf[$z]['testo'] = '€ '.number_format($invoiceTotalRivalsa,2,',','.');
 									$z++;
 									}
 								$opt = array('showHeadings'=>0,'gridlines'=>EZ_GRIDLINE_DEFAULT,'fontSize'=>10,'width'=>500,'shaded'=>0,'rowGap'=>2,'colGap' =>10,'showLines' =>0,'lineCol'=>array(0.7,0.7,0.7),'cols'=>array('titolo'=>array('justification' =>'right'),'testo'=>array('width'=>110,'justification'=>'right')));

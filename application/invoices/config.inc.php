@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * invoices/config.inc.php v.1.0.0. 16/01/2017
+ * invoices/config.inc.php v.1.0.0. 13/02/2017
 */
 
 $App->params = new stdClass();
@@ -53,6 +53,10 @@ $App->params->fields['ites']  = array(
 	'number'=>array('label'=>$_lang['numero'],'searchTable'=>true,'required'=>true,'type'=>'varchar','defValue'=>''),
 	'note'=>array('label'=>$_lang['Note (visibili in fattura)'],'searchTable'=>true,'required'=>false,'type'=>'varchar','defValue'=>''),
 	'type'=>array('label'=>$_lang['tipo'],'searchTable'=>true,'required'=>true,'type'=>'varchar','defValue'=>'0','validate'=>'int'),
+	
+	'tax'=>array('label'=>'IVA','searchTable'=>false,'required'=>false,'type'=>'int','defValue'=>'0','validate'=>'int'),
+	'rivalsa'=>array('label'=>'Rivalsa','searchTable'=>true,'required'=>false,'type'=>'int','defValue'=>'0','validate'=>'int'),
+
 	'created'=>array('label'=>$_lang['creazione'],'searchTable'=>false,'required'=>false,'type'=>'datatime','defValue'=>$App->nowDateTime,'validate'=>'datetimeiso'),
 	'active'=>array('label'=>ucfirst($_lang['attiva']),'required'=>false,'type'=>'int','defValue'=>'0','validate'=>'int')
 	);

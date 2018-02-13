@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * invoices/index.php v.1.0.0. 07/02/2018
+ * invoices/index.php v.1.0.0. 09/02/2018
 */
 
 //Core::setDebugMode(1);
@@ -93,6 +93,11 @@ switch(substr(Core::$request->method,-4,4)) {
 		$App->defaultJavascript .= "var defDatesca = '".$App->item->datesca."';";
 		$App->defaultJavascript .= "var module = '".Core::$request->action."';";
 		$App->defaultJavascript .= "var defTax = '".$App->company->iva."';";
+		
+		/* aggiorna config con dati company */
+		$App->params->fields['itep']['rivalsa']['defValue'] = $App->company->rivalsa;
+		
+		
 	break;
 	}
 ?>

@@ -1,4 +1,4 @@
-<!-- customers/formItem.tpl.php v.1.0.0. 22/11/2017 -->
+<!-- third-party/formItem.tpl.php v.1.0.0. 08/02/2018 -->
 <div class="row">
 	<div class="col-md-3 new">
  	</div>
@@ -32,7 +32,7 @@
 						<div class="form-group">
 							<label for="nameID" class="col-md-2 control-label">{{ Lang['nome']|capitalize }}</label>
 							<div class="col-md-7">
-								<input required type="text" name="name" class="form-control" id="nameID" placeholder="{{ Lang['inserisci un nome']|capitalize }}" value="{{ App.item.name }}">
+								<input type="text" name="name" class="form-control" id="nameID" placeholder="{{ Lang['inserisci un nome']|capitalize }}" value="{{ App.item.name }}">
 					    	</div>
 						</div>
 						<div class="form-group">

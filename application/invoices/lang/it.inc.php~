@@ -40,7 +40,7 @@ $_lang['note'] = "note";
 $_lang['cliente']  = "customer";
 
 $_lang['articoli associati']  = "articoli associati";
-$_lang['inserisci testo articolo']  = "inserisci testo articoloe";
+$_lang['inserisci testo articolo']  = "inserisci testo articolo";
 
 $_lang['totale movimenti'] = "total movimenti";
 

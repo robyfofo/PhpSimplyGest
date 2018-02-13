@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * invoices/items-as.php v.1.0.0. 24/01/2018
+ * invoices/items-as.php v.1.0.0. 08/02/2018
 */
 
 switch(Core::$request->method) {
@@ -21,18 +21,17 @@ switch(Core::$request->method) {
 		die();
 	break;
 	
-	case 'insertItas':
-	
+	case 'insertItas':	
 		if ($_POST) {
-			$new_post['id'] = $_POST['id_mov'];
+			$new_post['id'] = $_POST['idArt'];
 			$new_post['id_invoice'] = $_POST['id_invoice'];			
-			$new_post['content'] = $_POST['content_mov'];
-			$new_post['price_unity'] = $_POST['price_unity_mov'];
-			$new_post['price_tax'] = $_POST['price_tax_mov'];
-			$new_post['price_total'] = $_POST['price_total_mov'];
-			$new_post['quantity'] = $_POST['quantity_mov'];
-			$new_post['tax'] = $_POST['tax_mov'];
-			$new_post = $Module->calculateMov($new_post);
+			$new_post['content'] = $_POST['contentArt'];
+			$new_post['price_unity'] = $_POST['priceUnityArt'];
+			$new_post['price_tax'] = $_POST['priceTaxArt'];
+			$new_post['price_total'] = $_POST['priceTotalArt'];
+			$new_post['quantity'] = $_POST['quantityArt'];
+			$new_post['tax'] = $_POST['taxArt'];
+			$new_post = $Module->calculateArt($new_post);
 			$_POST = array();	
 			$_POST = $new_post;	
 			Form::parsePostByFields($App->params->fields['itas'],$_lang,array());				
@@ -52,15 +51,15 @@ switch(Core::$request->method) {
 	case 'updateItas':
 		if (isset($_POST)) {	
 			$new_post['id_invoice'] = $_POST['id_invoice'];			
-			$new_post['content'] = $_POST['content_mov'];
-			$new_post['price_unity'] = $_POST['price_unity_mov'];
-			$new_post['price_tax'] = $_POST['price_tax_mov'];
-			$new_post['price_total'] = $_POST['price_total_mov'];
-			$new_post['quantity'] = $_POST['quantity_mov'];
-			$new_post['tax'] = $_POST['tax_mov'];
-			$new_post['id'] = $_POST['id_mov'];
+			$new_post['content'] = $_POST['contentArt'];
+			$new_post['price_unity'] = $_POST['priceUnityArt'];
+			$new_post['price_tax'] = $_POST['priceTaxArt'];
+			$new_post['price_total'] = $_POST['priceTotalArt'];
+			$new_post['quantity'] = $_POST['quantityArt'];
+			$new_post['tax'] = $_POST['taxArt'];
+			$new_post['id'] = $_POST['idArt'];
 			$new_post['active'] = 1;
-			$new_post = $Module->calculateMov($new_post);
+			$new_post = $Module->calculateArt($new_post);
 			$_POST = array();	
 			$_POST = $new_post;
 			Form::parsePostByFields($App->params->fields['itas'],$_lang,array());	
@@ -91,30 +90,44 @@ switch(Core::$request->method) {
 	
 	case 'getAjaxTotalItas':
 		$obj = new stdClass;
-		$id = (isset($_POST['id']) ? intval($_POST['id']) : 0);
-		//echo 'id: '.$id;
+		$invoice = new stdClass;
 		$values = new stdClass;
-		$values->invoiceMovTotal = '0.00';
-		$values->invoiceTaxTotal = '0.00';
-		$values->invoiceRivalsa = '0.00';
-		$values->invoiceTotal = '0.00';
-		$rivalsaInps = 4;
-		
+		$id = (isset($_POST['id']) ? intval($_POST['id']) : 0);
 		if ($id > 0) {
-			Sql::initQuery($App->params->tables['itas'],array('*'),array($id),'id_invoice = ?');
-			$obj = Sql::getRecords();
-			if (is_array($obj) && count($obj) > 0) {
-				foreach ($obj AS $key=>$value) {
-					$values->invoiceMovTotal = $values->invoiceMovTotal + $value->price_total;
-					$values->invoiceTaxTotal = $values->invoiceTaxTotal + $value->price_tax;
+			/* preleva dati fattura */
+			Sql::initQuery($App->params->tables['ites'],array('*'),array($App->id),'id = ?');
+			$invoice = Sql::getRecord();
+			if (Core::$resultOp->error == 1) break;
+			/* calcola totali */
+			Sql::initQuery($App->params->tables['itas'],array('SUM(price_total) AS total','SUM(price_tax) AS total_tax'),array($id),' id_invoice = ? ');
+			$obj = Sql::getRecord();
+			if (Core::$resultOp->error == 1) break;
+			$totalArticles = 0;
+			if (isset($obj->total)) {
+				$totalArticles = (float)$obj->total;
 				}
+			$totalTaxArticles = 0;
+			if (isset($obj->total_tax)) {
+				$totalTaxArticles  = (float)$obj->total_tax;
+				}
+			/* calcola tassa aggiuntiva */
+			$invoiceTotalTax = 0;
+			if ($invoice->tax > 0) $invoiceTotalTax = ($totalArticles * $invoice->tax) / 100;						
+			/* calcola rivalsa */
+			$invoiceTotalRivalsa = 0;
+			if ($invoice->rivalsa > 0) $invoiceTotalRivalsa = ($totalArticles * $invoice->rivalsa) / 100;	
+			
+			
+			$values->invoiceArtTotal = (float)$totalArticles;
+			$values->invoiceTaxTotal = (float)$totalTaxArticles + $invoiceTotalTax;
+			$values->invoiceRivalsa = (float)$invoiceTotalRivalsa;
+			$values->invoiceTotal = (float)$totalArticles + $totalTaxArticles + $invoiceTotalTax + $invoiceTotalRivalsa;
+			
+			$json = json_encode($values);
+			echo $json;
+		
 			}
-			$values->invoiceRivalsa = ($values->invoiceMovTotal * $rivalsaInps) / 100;
-			$values->invoiceTotal = (float)$values->invoiceMovTotal + $values->invoiceTaxTotal;
-			$values->invoiceTotal = (float)$values->invoiceMovTotal + $values->invoiceRivalsa;
-			}	
-		$json = json_encode($values);
-		echo $json;
+		
 		die();	
 	break;
 	

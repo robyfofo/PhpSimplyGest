@@ -1,4 +1,4 @@
-<!-- invoices/formItes.tpl.php v.1.0.0. 07/02/2018 -->
+<!-- invoices/formItes.tpl.php v.1.0.0. 12/02/2018 -->
 <div class="row">
 	<div class="col-md-3 new">
  	</div>
@@ -85,12 +85,12 @@
 											{% if (App.userLoggedData.is_root is defined) and (App.userLoggedData.is_root is same as(1)) %}	
 												<th class="id">ID</th>								
 											{% endif %}
-											<th>{{ Lang['contenuto']|capitalize }}</th>
-											<th>{{ Lang['quantità']|capitalize }}</th>
-											<th>{{ Lang['prezzo unitario']|capitalize }}</th>
-											<th>{{ Lang['iva']|capitalize }}</th>
-											<th>{{ Lang['imponibile']|capitalize }}</th>
-											<th>{{ Lang['prezzo totale']|capitalize }}</th>										
+											<th class="text-center">{{ Lang['contenuto']|capitalize }}</th>
+											<th class="text-center">{{ Lang['quantità']|capitalize }}</th>
+											<th class="text-center">{{ Lang['prezzo unitario']|capitalize }}</th>
+											<th class="text-center">{{ Lang['iva']|capitalize }}</th>
+											<th class="text-center">{{ Lang['imponibile']|capitalize }}</th>
+											<th class="text-center">{{ Lang['prezzo totale']|capitalize }}</th>										
 											<th></th>
 										</tr>
 									</thead>
@@ -103,7 +103,7 @@
 					
 					<div class="row">
 						<div class="form-group">
-							<label for="invoive_mov_totalID" class="col-md-9 control-label">{{ Lang['imponibile']|capitalize }}</label>
+							<label for="invoiceArtTotalID" class="col-md-9 control-label">{{ Lang['imponibile']|capitalize }}</label>
 							<div class="col-md-2 text-right">
 								<span id="invoiceArtTotalID">€ 0,00</span>
 					    	</div>
@@ -111,7 +111,7 @@
 					</div>
 					<div class="row">
 						<div class="form-group">
-							<label for="invoive_total_taxID" class="col-md-9 control-label">{{ Lang['imposte']|capitalize }}</label>
+							<label for="invoiceTaxTotalID" class="col-md-9 control-label">{{ Lang['imposte']|capitalize }}</label>
 							<div class="col-md-2 text-right">
 								<span id="invoiceTaxTotalID">€ 0,00</span>
 					    	</div>
@@ -119,7 +119,7 @@
 					</div>
 					<div class="row">
 						<div class="form-group">
-							<label for="invoive_rivalsaID" class="col-md-9 control-label">{{ Lang['rivalsa']|capitalize }} INPS 4%</label>
+							<label for="invoiceRivalsaID" class="col-md-9 control-label">{{ Lang['rivalsa']|capitalize }} INPS 4%</label>
 							<div class="col-md-2 text-right">
 								<span id="invoiceRivalsaID">€ 0,00</span>
 					    	</div>
@@ -127,7 +127,7 @@
 					</div>
 					<div class="row">
 						<div class="form-group">
-							<label for="invoive_totalID" class="col-md-9 control-label">{{ Lang['totale']|capitalize }}</label>
+							<label for="invoiceTotalID" class="col-md-9 control-label">{{ Lang['totale']|capitalize }}</label>
 							<div class="col-md-2 text-right">
 								<span id="invoiceTotalID">0,00</span>
 					    	</div>
@@ -140,6 +140,19 @@
 <!-- sezione opzioni --> 
 				<div class="tab-pane" id="options-tab">
 					<fieldset class="form-group">
+						<div class="form-group">
+							<label for="rivalsaID" class="col-md-2 control-label">{{ Lang['rivalsa']|capitalize }} %</label>
+							<div class="col-md-3">
+								<input type="text" name="rivalsa" class="form-control" id="rivalsaID" value="{{ App.item.rivalsa|e('html') }}">
+					    	</div>
+						</div>	
+						<div class="form-group">
+							<label for="ivaID" class="col-md-2 control-label">{{ Lang['tassa aggiuntiva']|capitalize }} %</label>
+							<div class="col-md-3">
+								<input type="text" name="iva" class="form-control" id="ivaID" placeholder="{{ Lang['inserisci una tassa aggiuntiva']|capitalize }}"  value="{{ App.item.tax|e('html') }}">
+					    	</div>
+						</div>				
+						<hr>
 						<div class="form-group">
 							<label for="activeID" class="col-md-2 control-label">{{ Lang['attiva']|capitalize }}</label>
 							<div class="col-md-7">
@@ -186,53 +199,32 @@
 			</div>
 			<div class="modal-body">
 				<div class="container-fluid">
-					<form id="articoloFormID" class="form-horizontal" role="form" action="#" enctype="multipart/form-data">
-						<div class="row">
-							
-							<div class="form-group form-group-sm">
-								<div class="col-md-8">
-									<textarea required name="content_mov" class="form-control" id="content_movID" rows="3">{{ Lang['inserisci testo articolo']|capitalize }}</textarea>
-								</div>
-								
-								<div class="col-md-4">
-								</div>
-							</div>	
-						
+					<form id="articleFormID" class="form-inline" role="form" action="#" enctype="multipart/form-data">
+						<div class="row">							
+							<div class="col-md-12" style="margin-bottom:20px;">
+								<textarea required name="contentArt" class="form-control form-content" id="contentArtID" rows="3">{{ Lang['inserisci testo articolo']|capitalize }}</textarea>
+							</div>					
 						</div>
-						<div class="row">
-							<div class="form-group form-group-sm">
-								<label for="price_unity_movID" class="col-xs-2 control-label">{{ Lang['prezzo']|capitalize }}</label>
-								<div class="col-xs-2">
-									<input type="text" class="form-control" name="price_unity_mov" id="price_unity_movID" value="0.00">
-						  		</div>
-						  		
-						  		<label for="quantity_movID" class="col-xs-2 control-label">{{ Lang['q.tà']|capitalize }}</label>
-								<div class="col-xs-2">
-									<input type="text" class="form-control" name="quantity_mov" id="quantity_movID" value="1">
-								</div>
-								
-								<label for="tax_movID" class="col-xs-2 control-label">{{ Lang['tassa']|capitalize }}</label>
-								<div class="col-xs-2">
-									<input type="text" class="form-control" name="tax_mov" id="tax_movID" value="{{ App.params.defaultTax }}">
-								</div>
-								
-								<label for="price_total_movID" class="col-xs-2 control-label">{{ Lang['totale']|capitalize }}</label>
-								<div class="col-xs-2">
-									<input type="text" class="form-control" name="price_total_mov" id="price_total_movID" value="0.00">
-								</div>
+						<div class="row text-center">
+							<div class="form-group">
+								<label for="priceUnityArtID">{{ Lang['prezzo']|capitalize }}</label>
+								<input required type="text" class="form-control form-amount" name="priceUnityArt" id="priceUnityArtID" value="0.00">
+						  		<label for="quantityArtID">{{ Lang['q.tà']|capitalize }}</label>
+								<input required type="text" class="form-control form-tax" name="quantityArt" id="quantityArtID" value="1">	
+								<label for="priceTotalArtID">{{ Lang['totale']|capitalize }}</label>
+								<input readonly="readonly" type="text" class="form-control form-amount" name="priceTotalArt" id="priceTotalArtID" value="0.00">														
+								<label for="taxArtID">{{ Lang['tassa']|capitalize }}</label>
+								<input required type="text" class="form-control form-tax" name="taxArt" id="taxArtID" value="{{ App.params.defaultTax }}">
+								<label for="totalArtID">{{ Lang['totale']|capitalize }}</label>
+								<input readonly="readonly" type="text" class="form-control form-amount" name="totalArt" id="totalArtID" value="0.00">
 							</div>
 						</div>
-						<div class="row">
-							<!-- <div class="form-group form-group-sm">	 -->						
-								<div class="col-md-6">							
-									<input type="hidden" name="idArt" id="idArtID" value="">
-									<input type="hidden" name="id_invoice" id="id_invoiceID" value="{{ App.item.id }}">
-									<button type="submit" name="submitForm" id="submitFormID" value="submit" class="btn btn-primary btn-sm ">{{ Lang['aggiungi']|capitalize }}</button>
-								</div>
-								<div class="col-md-6 text-right">							
-									<button type="button" class="btn btn-warning btn-sm" id="deleteArtID" title="{{ Lang['inserisci nuovo articolo']|capitalize }}">{{ Lang['cancella']|capitalize }}</button>
-								</div>									
-							<!-- </div> -->	
+						<div class="row">				
+							<div class="col-md-12 text-center">							
+								<input type="hidden" name="idArt" id="idArtID" value="">
+								<input type="hidden" name="id_invoice" id="id_invoiceID" value="{{ App.item.id }}">
+								<button type="submit" name="submitForm" id="submitFormID" value="submit" class="btn btn-primary btn-sm ">{{ Lang['aggiungi']|capitalize }}</button>
+							</div>							
 						</div>
 					</form>
 				</div>	

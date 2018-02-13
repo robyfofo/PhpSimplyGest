@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * invoices/items-ap.php v.1.0.0. 06/02/2018
+ * invoices/items-ap.php v.1.0.0. 08/02/2018
 */
 
 switch(Core::$request->method) {

@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * invoices/items.php v.1.0.0. 06/02/2018
+ * invoices/items.php v.1.0.0. 09/02/2018
 */
 
 if (isset($_POST['itemsforpage']) && isset($_MY_SESSION_VARS[$App->sessionName]['ifp']) && $_MY_SESSION_VARS[$App->sessionName]['ifp'] != $_POST['itemsforpage']) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'ifp',$_POST['itemsforpage']);
@@ -159,7 +159,7 @@ switch((string)$App->viewMethod) {
 		Sql::initQuery($App->params->tables['itep'],$qryFields,$qryFieldsValues,$clause);
 		Sql::setItemsForPage($App->itemsForPage);	
 		Sql::setPage($App->page);	
-		Sql::setOrder('dateins DESC');	
+		Sql::setOrder('dateins DESC,datesca DESC');
 		Sql::setResultPaged(true);
 		if (Core::$resultOp->error <> 1) $obj = Sql::getRecords();	
 		/* sistemo dati */	
@@ -167,7 +167,7 @@ switch((string)$App->viewMethod) {
 		if (is_array($obj) && count($obj) > 0) {
 			foreach ($obj AS $key=>$value) {
 				$value->customer = '';
-				if ($value->id_customer > 0 && isset($App->customers[$value->id_customer]->name)) $value->customer = $App->customers[$value->id_customer]->name.', '.$App->customers[$value->id_customer]->surname;
+				if ($value->id_customer > 0 && isset($App->customers[$value->id_customer]->name)) $value->customer = $App->customers[$value->id_customer]->ragione_sociale;
 				//$field = 'title_'.$_lang['user'];
 				//if (isset($value->$field)) $value->title = $value->$field;
 				$data = DateTime::createFromFormat('Y-m-d',$value->dateins);

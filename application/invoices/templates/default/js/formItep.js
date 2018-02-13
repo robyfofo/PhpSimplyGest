@@ -1,4 +1,4 @@
-/* invoices/formItep.js v.1.0.0. 31/01/2018 */
+/* invoices/formItep.js v.1.0.0. 09/02/2018 */
 var requestSent = false;
 $(document).ready(function() {
 	
@@ -17,7 +17,7 @@ $(document).ready(function() {
 	
 	getArticles();	
 	
-	$('#myModal').on('show.bs.modal', function (event) {  
+	$('#myModal').on('show.bs.modal', function (event) {
 	  	var button = $(event.relatedTarget) // Button that triggered the modal
 	  	var recipient = button.data('whatever') // Extract info from data-* attributes
 	  	var $art = button.data('art');	  	
@@ -35,7 +35,7 @@ $(document).ready(function() {
 				data: {'id':$art},
 				dataType: 'json'
 				})
-				.done(function(data) {		
+			.done(function(data) {		
 				$('#contentArtID').val(data.content);
 				$('#priceArtID').val(data.price_unity);
 				$('#taxArtID').val(data.tax);
@@ -43,19 +43,16 @@ $(document).ready(function() {
 				$('#idArtID').val(data.id);
 				modal.find('.modal-title').text(messages['modifica articolo']+' '+$art);
 				modal.find('#submitFormID').text(messages['modifica']);
+				requestSent = false;
 	  			})
-	  			.fail(function() {
-	 			alert("Ajax failed to fetch data mov")
+	  		.fail(function() {
+	 			alert("Ajax failed to fetch data article for module");
 				}) 		
-	 		} else {
-	 			$('#deleteArtID').hide();
-	 			}	 
-	 	
+	 		}
 		}); // end function
 	
-	$("#articleFormID").one('submit', function(event) {
-		//event.preventDefault();
-		if(!requestSent) {
+	$("#articleFormID").one('submit', function(event) {	
+		if (requestSent == false) {
 			requestSent = true;
 			var $form = $(this);
 			var $art = $('#idArtID').val();
@@ -65,69 +62,17 @@ $(document).ready(function() {
 				type: "POST",
 				url: $target,
 				data: $form.serialize(),
-				dataType: 'html',
-				timeout:3000 //3 second timeout
+				dataType: 'html'
 				})
-			.done(function(html) {	
-				requestSent = false;				
-				if (html > 0) {
-					var dialog = bootbox.alert({
-						message: messages['Errore! Articolo NON inserito o modificato!'],
-						backdrop: true	
-						});
-					} else {
-						var dialog = bootbox.alert({
-							message: messages['articolo inserito o modificato'],	
-							backdrop: true
-							});
-						}
+			.done(function(html) {
 				$('#myModal').modal('hide');
-				getMovimenti();
-					
+				getArticles();
+				requestSent = false;		
 				})
 			.fail(function() {
-				alert("Ajax failed to fetch item data")
+				alert("Ajax failed to insert/update article data");
 				})
 			}
-		}); // end function
-		
-	$('#deleteMovID').one('click',function(event) {
-		var $mov = $('#id_movID').val();
-		bootbox.confirm(messages['Sei sicuro?'],function($confirmed) {
-			if ($confirmed) {
-				$.ajax({
-					url: siteUrl+module+'/deleteItem',
-					type: "POST",
-					data: {'id':$mov},
-					dataType: 'html',
-					timeout:3000 //3 second timeout
-				})
-				.done(function(html) {
-					getMovimenti();
-					$('#myModal').modal('hide');
-					return false;
-					/*
-					if (html > 0) {
-						/*
-						var dialog = bootbox.alert({
-	    					message: messages['Errore! Articolo NON cancellato!'],
-	    					backdrop: true	
-							});
-						} else {
-							var dialog = bootbox.alert({
-	    						message: messages['articolo cancellato'],	    						
-	    						backdrop: true
-								});
-							}
-						*/				
-				})
-	  			.fail(function() {
-					alert("Ajax failed to fetch delete data")
-					})	
-				} else {
-					
-					}
-			});
 		}); // end function
 		
 	$('#totalArtID').on('change',function(event) {
@@ -156,8 +101,32 @@ $(document).ready(function() {
 	
 	}); // end document
 	
+function deleteArticle() {
+	$('.deleteart').on('click',function() {
+		var $art = $(this).data("art");
+		bootbox.confirm(messages['Sei sicuro?'],function($confirmed) {
+			if ($confirmed) {
+				$.ajax({
+						url: siteUrl+module+'/deleteItap',
+						type: "POST",
+						data: {'id':$art},
+						dataType: 'html'
+						})
+					.done(function(html) {
+						getArticles();
+						$('#myModal').modal('hide');
+						return false;
+						})
+	  				.fail(function() {
+						alert("Ajax failed to delete article data");
+						})	
+				}
+			});
+			
+		}); // end function
+	} // end function
+	
 function getArticles() {
-var requestSent = false;
 	var idinvoice = $('#idID').val();
 	$.ajax({
 		url: siteUrl+module+'/listAjaxItap',
@@ -168,15 +137,16 @@ var requestSent = false;
 		.done(function(html) {
 			$('#listarticlesID').html(html);
 			getTotalsArticles();
+			deleteArticle();
   			})
   		.fail(function() {
- 			 alert("Ajax failed to fetch data")
+ 			 alert("Ajax failed to fetch list of articles data");
 			})
 	} // end function
+setTimeout(getArticles, 2000);
 	
 function getTotalsArticles() {	
 	var idinvoice = $('#idID').val();
-	//console.log('id_invoice '+idinvoice);
 	$.ajax({
 		url: siteUrl+module+'/getAjaxTotalItap',
 		type: "POST",
@@ -192,7 +162,7 @@ function getTotalsArticles() {
 			$('#invoiceTotalID').html($invoiceTotal.toFixed(2));
   			})
   		.fail(function() {
- 			 alert("Ajax failed to fetch total data")
+ 			 alert("Ajax failed to fetch total articles data");
 			})
 	} // end function
 	

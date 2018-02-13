@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * invoices/items-s.php v.1.0.0. 26/01/2018
+ * invoices/items-s.php v.1.0.0. 12/02/2018
 */
 
 if (isset($_POST['itemsforpage']) && isset($_MY_SESSION_VARS[$App->sessionName]['ifp']) && $_MY_SESSION_VARS[$App->sessionName]['ifp'] != $_POST['itemsforpage']) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'ifp',$_POST['itemsforpage']);
@@ -15,10 +15,10 @@ $App->type = 0;
 
 /* GESTIONE CUSTOMERS */
 $App->icustomers = new stdClass;	
-Sql::initQuery($App->params->tables['cust'],array('*'),array(),'active = 1');
+Sql::initQuery($App->params->tables['cust'],array('*'),array(),'active = 1 AND (id_type = 2 OR id_type = 3)');
 Sql::setOptions(array('fieldTokeyObj'=>'id'));
 Sql::setOrder('surname ASC, name ASC');
-$App->customers = Sql::getRecords();		
+$App->customers = Sql::getRecords();
 
 switch(Core::$request->method) {
 	case 'activeItes':
@@ -69,12 +69,9 @@ switch(Core::$request->method) {
 	break;
 	
 	case 'updateItes':
-		Core::setDebugMode(1);
 		if ($_POST) {	
-			//print_r($_POST);
 			/* parsa i post in base ai campi */ 	
 			Form::parsePostByFields($App->params->fields['ites'],$_lang,array());
-			print_r($_POST);
 			if (Core::$resultOp->error == 0) {
 				DateFormat::checkDataIsoIniEndInterval($_POST['dateins'],$_POST['datesca'],'>');
 				if (Core::$resultOp->error == 0) {						
@@ -118,7 +115,9 @@ switch((string)$App->viewMethod) {
 	case 'formNew':
 		$App->item = new stdClass;	
 		$App->item->dateins = $App->nowDate;
-		$App->item->datesca = $App->nowDate;		
+		$App->item->datesca = $App->nowDate;
+		$App->item->rivalsa = $App->company->rivalsa;
+		$App->item->tax = 0;			
 		$App->item->active = 1;
 		if (Core::$resultOp->error == 1) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['ites']);
 		$App->templateApp = 'formItes.tpl.php';
@@ -162,7 +161,7 @@ switch((string)$App->viewMethod) {
 		Sql::initQuery($App->params->tables['ites'],$qryFields,$qryFieldsValues,$clause);
 		Sql::setItemsForPage($App->itemsForPage);	
 		Sql::setPage($App->page);	
-		Sql::setOrder('dateins DESC');	
+		Sql::setOrder('dateins DESC,datesca DESC');	
 		Sql::setResultPaged(true);
 		if (Core::$resultOp->error <> 1) $obj = Sql::getRecords();	
 		/* sistemo dati */	
@@ -170,7 +169,7 @@ switch((string)$App->viewMethod) {
 		if (is_array($obj) && count($obj) > 0) {
 			foreach ($obj AS $key=>$value) {
 				$value->customer = '';
-				if ($value->id_customer > 0 && isset($App->customers[$value->id_customer]->name)) $value->customer = $App->customers[$value->id_customer]->name.', '.$App->customers[$value->id_customer]->surname;
+				if ($value->id_customer > 0 && isset($App->customers[$value->id_customer]->name)) $value->customer = $App->customers[$value->id_customer]->ragione_sociale;
 				//$field = 'title_'.$_lang['user'];
 				//if (isset($value->$field)) $value->title = $value->$field;
 				$data = DateTime::createFromFormat('Y-m-d',$value->dateins);
@@ -178,7 +177,35 @@ switch((string)$App->viewMethod) {
 				$data = DateTime::createFromFormat('Y-m-d',$value->datesca);
 				$value->datescalocal = $data->format($_lang['data format']);
 				
+				/* calcola totali */
+				Sql::initQuery($App->params->tables['itas'],array('SUM(price_total) AS total','SUM(price_tax) AS total_tax'),array($value->id),' id_invoice = ? ');
+				$obj1 = Sql::getRecord();
+				$value->total = (float)0.00;
+				if (isset($obj1->total)) {
+					$value->total = (float)$obj1->total;
+					}
+				$value->total_tax_articles = (float)0.00;
+				if (isset($obj1->total_tax)) {
+					$value->total_tax_articles = (float)$obj1->total_tax;
+					}
+					
+				
+				/* calcola tassa aggiuntiva */
+				$invoiceTotalTax = 0;
+				if ($value->tax > 0) $invoiceTotalTax = ($value->total * $value->tax) / 100;
+								
+				/* calcola rivalsa */
+				$invoiceTotalRivalsa = 0;
+				if ($value->rivalsa > 0) $invoiceTotalRivalsa = ($value->total * $value->rivalsa) / 100;	
+					
+				
+				$value->totalLabel = '€ '.number_format($value->total,2,',','.');
+				$value->totalTaxesLabel = '€ '.number_format($value->total_tax_articles + $invoiceTotalTax + $invoiceTotalRivalsa,2,',','.');
+				$value->totalInvoiceLabel = '€ '.number_format($value->total + $invoiceTotalTax + $invoiceTotalRivalsa,2,',','.');
 				$arr[] = $value;
+				
+				
+				
 				}
 			}
 		$App->items = $arr;

@@ -23,10 +23,11 @@ class Module {
 		$this->messages = array();
 		}
 		
-	public function calculateMov($post) {	
+	public function calculateArt($post) {	
 		$post['price_total'] = $post['price_unity'] * $post['quantity'];
-		$post['price_tax'] = ($post['price_total'] * $post['tax']) / 10;
+		$post['price_tax'] = ($post['price_total'] * $post['tax']) / 100;
 		return $post;
 		}
+
 	}
 ?>

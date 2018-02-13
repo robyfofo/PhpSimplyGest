@@ -1,7 +1,6 @@
-/* invoices/formItes.js v.1.0.0. 24/01/2018 */
+/* invoices/formItes.js v.1.0.0. 09/02/2018 */
 var requestSent = false;
-$(document).ready(function() {
-	
+$(document).ready(function() {	
 	
 	$('#dateinsDPID').datetimepicker({
 		locale: cur_lang,
@@ -15,144 +14,122 @@ $(document).ready(function() {
 		format: 'L'
 		});
 	
-	getMovimenti();
+	getArticles();	
 	
 	$('#myModal').on('show.bs.modal', function (event) {  
 	  	var button = $(event.relatedTarget) // Button that triggered the modal
 	  	var recipient = button.data('whatever') // Extract info from data-* attributes
-	  	var mov = button.data('mov');	  	
+	  	var $art = button.data('art');
 	  	var modal = $(this)
-	 	modal.find('.modal-title').text(messages['aggiungi movimento']);
-	 	$('#content_movID').val('');
-		$('#quantity_movID').val('');
-		$('#price_unity_movID').val('');
-		$('#tax_movID').val('');
-		$('#price_total_movID').val('');
-		$('#price_tax_movID').val('');										
-		$('#id_movID').val('0');
-	 	if (mov > 0) {
+	 	modal.find('.modal-title').text(messages['inserisci articolo']);
+	 	$('#contentArtID').val(messages['inserisci testo articolo']);
+		$('#quantityArtID').val('');
+		$('#priceUnityArtID').val('');
+		$('#taxArtID').val('');
+		$('#priceTotalArtID').val('');
+		$('#priceTaxArtID').val('');										
+		$('#idArtID').val('0');
+		$('#totalArtID').val('');		
+	 	if ($art > 0) {
 			$.ajax({
 				url: siteUrl+module+'/getAjaxItas',
 				type: "POST",
-				data: {'id':mov},
+				data: {'id':$art},
 				dataType: 'json'
 				})
 			.done(function(data) {	
-				$('#content_movID').val(data.content);
-				$('#quantity_movID').val(data.quantity);
-				$('#price_unity_movID').val(data.price_unity);
-				$('#tax_movID').val(data.tax);
-				$('#price_total_movID').val(data.price_total);
-				$('#price_tax_movID').val(data.price_tax);										
-				$('#id_movID').val(data.id);
-				modal.find('.modal-title').text(messages['modifica movimento']+' '+mov);
+				$('#contentArtID').val(data.content);
+				$('#quantityArtID').val(data.quantity);
+				$('#priceUnityArtID').val(data.price_unity);
+				$('#taxArtID').val(data.tax);
+				$('#priceTotalArtID').val(data.price_total);
+				$('#priceTaxArtID').val(data.price_tax);	
+				var $totalArt = parseFloat(data.price_total) + parseFloat(data.price_tax);	
+				$('#totalArtID').val($totalArt.toFixed(2).replace('.',','));										
+				$('#idArtID').val(data.id);
+				modal.find('.modal-title').text(messages['modifica articolo']+' '+$art);
 				modal.find('#submitFormID').text(messages['modifica']);
-				$('#deleteMovID').show();
   				})
   			.fail(function() {
- 				alert("Ajax failed to fetch data mov")
+ 				alert("Ajax failed to fetch data article for module");
 				}) 		
-	 		} else {
-				$('#deleteMovID').hide();
-	 			}	 
-	 	
+	 		}
 		}); // end function
 	
-	$("#articoloFormID").one('submit', function(event) {
-		event.preventDefault();		
+	$("#articleFormID").one('submit', function(event) {
 		if (!requestSent) {
 			requestSent = true;
 			var $form = $(this);
-			var $mov = $('#id_movID').val();
+			var $art = $('#idArtID').val();
 			var $target = siteUrl+module+'/insertItas';
-		 	if ($mov > 0) $target = siteUrl+module+'/updateItas';
+		 	if ($art > 0) $target = siteUrl+module+'/updateItas';
 			$.ajax({
 				type: "POST",
 				url: $target,
 		      data: $form.serialize(),
-		      dataType: 'html',
-		      timeout:3000 //3 second timeout
+		      dataType: 'html'
 				})
-			.done(function(html) {	
-				requestSent = false;				
-				/*
-				if (html > 0) {
-					var dialog = bootbox.alert({
-		 					message: messages['Errore! Movimento NON inserito o modificato!'],
-		 					backdrop: true	
-						});
-					} else {
-						var dialog = bootbox.alert({
-		 						message: messages['movimento inserito o modificato'],	
-		 						backdrop: true
-							});
-						}
-				*/
-				
+			.done(function(html) {			
 				$('#myModal').modal('hide');
-				getMovimenti();
-				
+				getArticles();	
+				requestSent = true;			
 				})
 			.fail(function() {
-				alert("Ajax failed to fetch item data")
+				alert("Ajax failed to insert/update article data");
 				})
 			}
 		}); // end function
-		
-	$('#deleteMovID').one('click',function(event) {
-		var $mov = $('#id_movID').val();
-		bootbox.confirm(messages['Sei sicuro?'],function($confirmed) {
-			if ($confirmed) {
-				$.ajax({
-					url: siteUrl+module+'/deleteItas',
-					type: "POST",
-					data: {'id':$mov},
-					dataType: 'html',
-					timeout:3000 //3 second timeout
-				})
-				.done(function(html) {
-					getMovimenti();
-					$('#myModal').modal('hide');
-					return false;
-					/*
-					if (html > 0) {
-						/*
-						var dialog = bootbox.alert({
-	    					message: messages['Errore! Movimento NON cancellato!'],
-	    					backdrop: true	
-							});
-						} else {
-							var dialog = bootbox.alert({
-	    						message: messages['movimento cancellato'],	    						
-	    						backdrop: true
-								});
-							}
-						*/				
-				})
-	  			.fail(function() {
-					alert("Ajax failed to fetch delete data")
-					})	
-				} else {
-					
-					}
-			});
-		}); // end function
-		
-	$('#quantity_movID').on('change',function(event) {
+
+
+	$('#priceUnityArtID').on('change',function(event) {
 		 refreshValues();
 		}); // end function
-		
-	$('#price_unity_movID').on('change',function(event) {
+	$('#quantityArtID').on('change',function(event) {
 		 refreshValues();
-		}); // end function
-		
-	$('#tax_movID').on('change',function(event) {
+		}); // end function		
+	$('#taxArtID').on('change',function(event) {
 		 refreshValuesTax();
 		}); // end function
+		
+		
+	$('#priceUnityArtID').on('click focusin', function() {
+		this.value = '';
+		});			
+	$('#quantityArtID').on('click focusin', function() {
+		this.value = '';
+		});		
+	$('#taxArtID').on('click focusin', function() {
+		this.value = '';
+		});
 	
 	}); // end document
 	
-function getMovimenti() {	
+function deleteArticle() {
+	$('.deleteart').on('click',function() {
+		var $art = $(this).data("art");
+		bootbox.confirm(messages['Sei sicuro?'],function($confirmed) {
+			if ($confirmed) {
+				$.ajax({
+						url: siteUrl+module+'/deleteItas',
+						type: "POST",
+						data: {'id':$art},
+						dataType: 'html'
+						})
+					.done(function(html) {
+						getArticles();
+						$('#myModal').modal('hide');
+						return false;
+						})
+	  				.fail(function() {
+						alert("Ajax failed to delete article data");
+						})	
+				}
+			});
+			
+		}); // end function
+	} // end function
+	
+function getArticles() {
 	var requestSent = false;
 	var idinvoice = $('#idID').val();
 	$.ajax({
@@ -162,17 +139,17 @@ function getMovimenti() {
 		dataType: 'html'
 		})
 		.done(function(html) {
-			$('#listamovimentiID').html(html);
-			getTotalsMovimenti();
+			$('#listarticlesID').html(html);
+			getTotalsArticles();
   			})
   		.fail(function() {
- 			 alert("Ajax failed to fetch data")
+ 			 alert("Ajax failed to fetch list of articles data");
 			})
 	} // end function
+setTimeout(getArticles, 2000);
 	
-function getTotalsMovimenti() {	
+function getTotalsArticles() {	
 	var idinvoice = $('#idID').val();
-	console.log('id_invoice '+idinvoice);
 	$.ajax({
 		url: siteUrl+module+'/getAjaxTotalItas',
 		type: "POST",
@@ -180,35 +157,40 @@ function getTotalsMovimenti() {
 		dataType: 'json'
 		})
 		.done(function($resdata) {		
-			$invoiceMovTotal = parseFloat($resdata.invoiceMovTotal);
+			$invoiceArtTotal = parseFloat($resdata.invoiceArtTotal);
 			$invoiceTaxTotal = parseFloat($resdata.invoiceTaxTotal);
 			$invoiceRivalsa = parseFloat($resdata.invoiceRivalsa);
 			$invoiceTotal = parseFloat($resdata.invoiceTotal);	
-			$('#invoice_mov_totalID').html('€ '+$invoiceMovTotal.toFixed(2).replace('.',','));
-			$('#invoice_tax_totalID').html('€ '+$invoiceTaxTotal.toFixed(2).replace('.',','));
-			$('#invoice_rivalsaID').html('€ '+$invoiceRivalsa.toFixed(2).replace('.',','));
-			$('#invoice_totalID').html('€ '+$invoiceTotal.toFixed(2).replace('.',','));
+			$('#invoiceArtTotalID').html('€ '+$invoiceArtTotal.toFixed(2).replace('.',','));
+			$('#invoiceTaxTotalID').html('€ '+$invoiceTaxTotal.toFixed(2).replace('.',','));
+			$('#invoiceRivalsaID').html('€ '+$invoiceRivalsa.toFixed(2).replace('.',','));
+			$('#invoiceTotalID').html('€ '+$invoiceTotal.toFixed(2).replace('.',','));
   			})
   		.fail(function() {
- 			 alert("Ajax failed to fetch total data")
+ 			 alert("Ajax failed to fetch total articles data");
 			})
 	} // end function
 	
 function refreshValues() {	
-	$qty = parseInt($('#quantity_movID').val());
-	$priceUnity = parseFloat($('#price_unity_movID').val());
-	$priceTotal = $priceUnity * $qty;	
-	$tax = parseInt($('#tax_movID').val());
-	$priceTax = ($priceTotal * $tax) / 100;	
-	$('#price_unity_movID').val($priceUnity.toFixed(2));
-	$('#price_total_movID').val($priceTotal.toFixed(2));
-	$('#price_tax_movID').val($priceTax.toFixed(2));
+	$priceUnityArt = parseFloat($('#priceUnityArtID').val());
+	$qtyArt = parseInt($('#quantityArtID').val());
+	$priceTotalArt = $priceUnityArt * $qtyArt;	
+	$taxArt = parseInt($('#taxArtID').val());
+	$priceTaxArt = ($priceTotalArt * $taxArt) / 100;
+	$totalArt = $priceTotalArt + $priceTaxArt;	
+	$('#priceUnityArtID').val($priceUnityArt.toFixed(2));
+	$('#priceTotalArtID').val($priceTotalArt.toFixed(2));
+	$('#priceTaxArtID').val($priceTaxArt.toFixed(2));
+	$('#totalArtID').val($totalArt.toFixed(2));
 	} // end function
 	
 function refreshValuesTax() {	
-	$tax = parseInt($('#tax_movID').val());
-	$priceTax = ($priceTotal * $tax) / 100;
-	$('#price_tax_movID').val($priceTax.toFixed(2));
+	$priceTotalArt = parseInt($('#priceTotalArtID').val());
+	$taxArt = parseInt($('#taxArtID').val());
+	$priceTaxArt = ($priceTotalArt * $taxArt) / 100;
+	$totalArt = $priceTotalArt + $priceTaxArt;
+	$('#priceTaxArtID').val($priceTaxArt.toFixed(2));
+	$('#totalArtID').val($totalArt.toFixed(2));
 	}; // end function
 
 	
@@ -240,7 +222,7 @@ $('#applicationForm')
 		}
 	}); // end function
 	
-$('#articoliFormID')
+$('#articleFormID')
 .bootstrapValidator({
 	excluded: [':disabled'],
 	feedbackIcons: {

@@ -50,6 +50,8 @@
 								<th>{{ Lang['cliente']|capitalize }}</th>
 								<th>{{ Lang['numero']|capitalize }}</th>	
 								<th>{{ Lang['note']|capitalize }}</th>
+								<th>{{ Lang['imponibile']|capitalize }}</th>
+								<th>{{ Lang['imposte']|capitalize }}</th>
 								<th>{{ Lang['totale']|capitalize }}</th>
 								<th></th>									
 								<th></th>
@@ -67,7 +69,9 @@
 										<td>{{ value.customer }}</td>							
 										<td>{{ value.number }}</td>
 										<td>{{ value.note }}</td>
-										<td>{{ value.totalLabel }}</td>
+										<td class="text-right">{{ value.totalLabel }}</td>
+										<td class="text-right">{{ value.totalTaxesLabel }}</td>
+										<td class="text-right">{{ value.totalInvoiceLabel }}</td>
 										<td class="actions">
 											<a class="btn btn-default btn-circle" href="{{ URLSITE }}{{ CoreRequest.action }}/invoicespdf/{{ value.id  }}" title="{{ Lang['stampa']|capitalize }} {{ Lang['la voce-p'] }}" target="_blank"><i class="fa fa-print"> </i></a>			 
 										</td>																																

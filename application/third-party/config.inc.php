@@ -5,13 +5,13 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * customers/config.inc.php v.1.0.0. 19/01/2018
+ * third-party/config.inc.php v.1.0.0. 08/02/2018
 */
 
 $App->params = new stdClass();
-
+$App->params->label = "Soggetti Terzi"; 
 /* prende i dati del modulo */
-Sql::initQuery(DB_TABLE_PREFIX.'modules',array('label','help_small','help'),array('customers'),'name = ?');
+Sql::initQuery(DB_TABLE_PREFIX.'modules',array('label','help_small','help'),array('third-party'),'name = ?');
 $obj = Sql::getRecord();
 if (Core::$resultOp->error == 0 && isset($obj)) $App->params = $obj;
 
@@ -32,7 +32,7 @@ $App->params->fields['item']  = array(
 	'id_cat'=>array('label'=>'ID Categoria','required'=>true,'type'=>'int'),
 	'id_type'=>array('label'=>'Tipo','required'=>false,'type'=>'int','defValue'=>0,'validate'=>'int'),
 	'ragione_sociale'=>array('label'=>'Ragione Sociale','searchTable'=>true,'required'=>true,'type'=>'varchar'),
-	'name'=>array('label'=>'Nome','searchTable'=>true,'required'=>true,'type'=>'varchar'),
+	'name'=>array('label'=>'Nome','searchTable'=>true,'required'=>false,'type'=>'varchar'),
 	'surname'=>array('label'=>'Cognome','searchTable'=>true,'required'=>false,'type'=>'varchar'),
 	'street'=>array('label'=>'Via','searchTable'=>false,'required'=>false,'type'=>'varchar'),
 	'city'=>array('label'=>'Città','searchTable'=>false,'required'=>false,'type'=>'varchar'),

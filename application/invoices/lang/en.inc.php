@@ -38,6 +38,8 @@ $_lang['Note (visibili in fattura)'] = "Note (visibili in fattura)";
 $_lang['note'] = "note";
 
 $_lang['cliente']  = "customer";
+$_lang['tassa aggiuntiva'] = "tassa aggiuntiva";
+$_lang['inserisci una tassa aggiuntiva'] = "inserisci una tassa aggiuntiva";
 
 $_lang['articolì associati']  = "articles associated";
 $_lang['inserisci testo articolo']  = "insert article text";

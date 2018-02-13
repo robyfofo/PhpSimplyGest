@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * language IT v.1.0.0. 07/02/2018
+ * language IT v.1.0.0. 09/02/2018
 */
 
 $_lang['user'] = 'it';
@@ -147,8 +147,8 @@ $_lang['iva'] = "iva";
 $_lang['testo no iva'] = "testo no IVA";
 
 $_lang['totale'] = "totale";
-$_lang['totale onorario'] = "totale onorario";
 $_lang['totale articoli'] = "totale articoli";
+$_lang['totale onorario'] = "totale onorario";
 $_lang['importo'] = "importo";
 $_lang['importo lordo'] = "importo lordo";
 $_lang['imposte'] = "imposte";

@@ -1,4 +1,4 @@
-<!-- invoices/formItep.tpl.php v.1.0.0. 07/02/2018 -->
+<!-- invoices/formItep.tpl.php 09/02/2018 -->
 <div class="row">
 	<div class="col-md-3 new">
  	</div>
@@ -46,7 +46,7 @@
 								<select name="id_customer" id="id_customerID" class="form-control">
 									{% if App.customers is iterable and App.customers|length > 0 %}
 										{% for key,value in App.customers %}
-											<option value="{{ value.id }}"{% if App.item.id_customer == value.id %} selected="selected"{% endif %}>{{ value.name }}, {{ value.surname }}</option>														
+											<option value="{{ value.id }}"{% if App.item.id_customer == value.id %} selected="selected"{% endif %}>{{ value.ragione_sociale }}</option>														
 										{% endfor %}
 									{% endif %}
 								</select>								    	
@@ -171,37 +171,26 @@
 				<div class="container-fluid">
 					<form id="articleFormID" class="form-inline" role="form" action="#" enctype="multipart/form-data">
 						<div class="row">							
-							<!-- <div class="form-group"> -->
-								<div class="col-md-12" style="margin-bottom:20px;">
-									<textarea required name="contentArt" class="form-control form-content" id="contentArtID" rows="3">{{ Lang['inserisci testo articolo']|capitalize }}</textarea>
-								</div>
-							<!-- </div> -->						
+							<div class="col-md-12" style="margin-bottom:20px;">
+								<textarea required name="contentArt" class="form-control form-content" id="contentArtID" rows="3">{{ Lang['inserisci testo articolo']|capitalize }}</textarea>
+							</div>					
 						</div>
 						<div class="row text-center">
 							<div class="form-group">
 								<label for="priceArtID">{{ Lang['prezzo']|capitalize }}</label>
 								<input required type="text" class="form-control form-amount" name="priceArt" id="priceArtID" value="0.00">
-							<!-- </div>
-							<div class="form-group">	 -->
 								<label for="taxArtID">{{ Lang['tassa']|capitalize }}</label>
 								<input required type="text" class="form-control form-tax" name="taxArt" id="taxArtID" value="0">
-							<!-- </div>
-							<div class="form-group"> -->		
 								<label for="totalArtID">{{ Lang['totale']|capitalize }}</label>
 								<input required type="text" class="form-control form-amount" name="totalArt" id="totalArtID" value="0.00">
 							</div>
 						</div>
-						<div class="row">
-							<!-- <div class="form-group form-group-sm">	 -->						
-								<div class="col-md-6">							
-									<input type="hidden" name="idArt" id="idArtID" value="">
-									<input type="hidden" name="id_invoice" id="id_invoiceID" value="{{ App.item.id }}">
-									<button type="submit" name="submitForm" id="submitFormID" value="submit" class="btn btn-primary btn-sm ">{{ Lang['aggiungi']|capitalize }}</button>
-								</div>
-								<div class="col-md-6 text-right">							
-									<button type="button" class="btn btn-warning btn-sm" id="deleteArtID" title="{{ Lang['inserisci nuovo articolo']|capitalize }}">{{ Lang['cancella']|capitalize }}</button>
-								</div>									
-							<!-- </div> -->	
+						<div class="row modalaction">					
+							<div class="col-md-12 text-center">							
+								<input type="hidden" name="idArt" id="idArtID" value="">
+								<input type="hidden" name="id_invoice" id="id_invoiceID" value="{{ App.item.id }}">
+								<button type="submit" name="submitForm" id="submitFormID" value="submit" class="btn btn-primary btn-sm ">{{ Lang['aggiungi']|capitalize }}</button>
+							</div>
 						</div>
 					</form>
 				</div>	
