@@ -19,7 +19,7 @@
 		<!-- Morris Charts CSS -->
 		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/morrisjs/morris.css" rel="stylesheet">
 		<!-- Custom Fonts -->
-		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
 		<!-- OTHER Plugin CSS - Dashboard -->
 		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/lightbox/css/lightbox.min.css" rel="stylesheet">
@@ -58,6 +58,10 @@
 				{{ App.defaultJavascript|raw }}  	
 			{% endif %}
 		</script>
+
+		{% if App.includeJscriptPHPTop is defined and App.includeJscriptPHPTop != '' %}			
+			{{ include(App.includeJscriptPHPTop|raw) }}
+		{% endif %}
 
 	</head>
 
@@ -180,8 +184,7 @@
 		{% endif %}
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/tinymce/tinymce.min.js" type="text/javascript"></script>
 		<!-- SB Admin Scripts - Include with every page -->
-		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/js/sb-admin-2.js"></script>
-		
+		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/js/sb-admin-2.js"></script>	
 		
 		{% if App.jscript is iterable %}							
 			{% for key,value in App.jscript %}
@@ -194,9 +197,13 @@
 				{{ value|raw }}
 			{% endfor %}
 		{% endif %}
-
-
+		
 		<!-- Default Custom Theme JavaScript -->
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/js/default.js"></script>
+		
+		{% if App.includeJscriptPHPBottom is defined and App.includeJscriptPHPBottom != '' %}			
+			{{ include(App.includeJscriptPHPBottom|raw) }}
+		{% endif %}
+
 	</body>
 </html>

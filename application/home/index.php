@@ -1,40 +1,43 @@
 <?php
 /**
-* Framework siti html-PHP-Mysql
+* Framework App PHP-Mysql
 * PHP Version 7
 * @author Roberto Mantovani (<me@robertomantovani.vr.it>
 * @copyright 2009 Roberto Mantovani
 * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
-* app/site-home/index.php v.1.0.0. 22/02/2017
+* app/home/index.php v.1.0.0. 14/02/2018
 */
 
 //Core::setDebugMode(1);
 
-include_once(PATH.'application/'.Core::$request->action."/lang/".$_lang['user'].".inc.php");
-include_once(PATH.'application/'.Core::$request->action."/class.module.php");
+include_once(PATH.$App->pathApplication.Core::$request->action."/lang/".$_lang['user'].".inc.php");
+include_once(PATH.$App->pathApplication.Core::$request->action."/class.module.php");
+
 
 $App->params = new stdClass();
-
+$App->params->label = 'Home';
 /* prende i dati del modulo */
-Sql::initQuery(DB_TABLE_PREFIX.'modules',array('help_small','help'),array('site-home'),'name = ?');
+Sql::initQuery(DB_TABLE_PREFIX.'modules',array('label','help_small','help'),array('home'),'name = ?');
 $obj = Sql::getRecord();
-if (Core::$resultOp->error == 0 && isset($obj)) $App->params = $obj;
+if (Core::$resultOp->error == 0 && isset($obj) && count((array)$obj) > 1) $App->params = $obj;
+if (!isset($App->params->label) || (isset($App->params->label) && $App->params->label == '')) die('Error reading module settings!');
 
 $tablesDb = Sql::getTablesDatabase($globalSettings['database'][DATABASE]['name']);
 
 /* variabili ambiente */
 $App->codeVersion = ' 1.0.0.';
-$App->pageTitle = $_lang['pagetitle'];
+$App->pageTitle = $App->params->label;
 $App->pageSubTitle = $_lang['pagesubtitle'];
 $Module = new Module('','home');
 $App->Module = $Module;
 
-$App->breadcrumb .= '<li class="active"><i class="icon-home"></i> Home</li>';
+$App->params->breadcrumb = '<li class="active"><i class="icon-user"></i> '.$App->params->label.'</li>';
+
 //Core::setDebugMode(1);
 $App->countPanel = array();
 $today = $App->nowDateTime;
 $App->lastLogin = (isset($_MY_SESSION_VARS['lastLogin']) ? $_MY_SESSION_VARS['lastLogin'] : $today);
-//$App->lastLogin = '2015-01-01 00:00:00';
+$App->lastLogin = '2015-01-01 00:00:00';
 $App->lastLoginLang = DateFormat::getDataTimeIsoFormatString($App->lastLogin,$_lang['data time format string'],$_lang['months'],$_lang['months'],array());
 
 $App->templateApp = 'list.tpl.php';
@@ -68,10 +71,10 @@ switch(Core::$request->method) {
 		$App->panelsSuccess = count($App->panels['success']);
 		
 		/* prendo i dati per moduli base */
-		if (file_exists(PATH."application/site-home/custom.php")) include_once(PATH."application/site-home/base.php");
+		if (file_exists(PATH.$App->pathApplication."home/base.php")) include_once(PATH.$App->pathApplication."home/base.php");
 	
 		/* prendo i dati per moduli custom */
-		if (file_exists(PATH."application/site-home/custom.php")) include_once(PATH."application/site-home/custom.php");
+		if (file_exists(PATH.$App->pathApplication."home/custom.php")) include_once(PATH.$App->pathApplication."home/custom.php");
 			
 	break;	
 }
@@ -142,7 +145,14 @@ $arr = array();
 if (is_array($App->homeTables) && count($App->homeTables) > 0) {
 	foreach ($App->homeTables AS $key => $value) {	
 		/* aggiunge i campi */
-		Sql::initQuery($value['table'],array('*'),array(),'','created DESC',' LIMIT 5 OFFSET 0','',false);
+		
+		$table = $value['table'];
+		$fields = (isset($value['sqloption']['fields']) ? $value['sqloption']['fields'] : '*');
+		$order = (isset($value['sqloption']['order']) ? $value['sqloption']['order'] : 'created DESC');
+		$fieldcreated = (isset($value['sqloption']['fieldcreated']) ? $value['sqloption']['fieldcreated'] : 'created');
+		
+		
+		Sql::initQuery($table,array($fields),array(),'',$order,' LIMIT 5 OFFSET 0','',false);
 		$value['itemdata'] = Sql::getRecords();
 
 		/* sistemo i dati */
@@ -150,8 +160,14 @@ if (is_array($App->homeTables) && count($App->homeTables) > 0) {
 		if (is_array($value['itemdata']) && count($value['itemdata']) > 0) {
 			foreach ($value['itemdata'] AS $key1 => $value1) {
 				/* data */
-				$data = DateTime::createFromFormat('Y-m-d H:i:s',$value1->created);				
-				$value1->datacreated = '<a href="'.URL_SITE.$key.'" title="'.ucfirst($_lang['creata il']).' '.$data->format('d/m/Y').' '.$data->format('H:i:s').'"><i class="fa fa-clock-o" aria-hidden="true"> </i></a>';
+				$datecreateformat = (isset($value['sqloption']['datecreateformat']) ? $value['sqloption']['datecreateformat'] : 'datetime');
+				if ($datecreateformat == 'date') {
+					$data = DateTime::createFromFormat('Y-m-d',$value1->$fieldcreated);				
+					$value1->datacreated = '<a href="'.URL_SITE.$key.'" title="'.ucfirst($_lang['creata il']).' '.$data->format('d/m/Y').'"><i class="fa fa-clock-o" aria-hidden="true"> </i></a>';
+					} else {
+						$data = DateTime::createFromFormat('Y-m-d H:i:s',$value1->$fieldcreated);				
+						$value1->datacreated = '<a href="'.URL_SITE.$key.'" title="'.ucfirst($_lang['creata il']).' '.$data->format('d/m/Y').' '.$data->format('H:i:s').'"><i class="fa fa-clock-o" aria-hidden="true"> </i></a>';
+						}
 				/* genera url */
 				$value1->url = URL_SITE.$key;				
 				if (is_array($value['fields']) && count($value['fields']) > 0) {
@@ -189,6 +205,10 @@ if (is_array($App->homeTables) && count($App->homeTables) > 0) {
 										$output = '<a class="" href="'.$u.'" title="'.ucfirst($_lang['scarica il file']).'">'.$value1->$keyF.'</a>';
 										}
 								break;
+								
+								case 'amount':															
+									if (isset($value1->$keyF)) $output = '€ '.number_format($value1->$keyF,2,',','.');
+								break;
 
 								
 								default:
@@ -218,8 +238,60 @@ if (is_array($App->homeTables) && count($App->homeTables) > 0) {
 		$arr[] = $value;
 		}
 	}
-$App->homeTables = $arr;					
+$App->homeTables = $arr;
+
+/* get data for charts */
+$chartsdata = array();
+$date = DateTime::createFromFormat('Y-m-d',$App->nowDate);
+$date->modify('-12 month');
+for ($x=1;$x<=12;$x++) {
+	$date->modify('+1 month');
+	$d = $date->format('Y-m');
+	
+	$dini = $d . '-01';
+	$dend = $d . '-31';
+	
+	$vendite = 0;
+	$acquisti = 0;
+
+	/* trova le fatture aquisti del mese */
+	$table = DB_TABLE_PREFIX."invoices_purchases AS i";
+	$fields = array("i.id,i.dateins,(SELECT SUM(price_total) FROM ".DB_TABLE_PREFIX."invoices_purchases_articles AS a WHERE i.id = a.id_invoice) AS total");
+	$fieldsVals = array($dini,$dend);
+	$where = "i.dateins >= ? AND i.dateins <= ?";	
+	$obj = Sql::initQuery($table,$fields,$fieldsVals,$where,'','','',false);
+	$obj = Sql::getRecords();
+	if (is_array($obj) && count($obj) > 0) {
+		foreach ($obj AS $value) {
+			if (isset($value->total) && $value->total > 0)  $acquisti += $value->total;			
+			}
+		}
+
+	/* trova le fatture vendite del mese */
+	$table = DB_TABLE_PREFIX."invoices_sales AS i";
+	$fields = array("i.id,i.dateins,(SELECT SUM(a.price_total) + ((SUM(a.price_total) * i.tax) / 100) + ((SUM(a.price_total) * i.rivalsa) / 100) FROM ".DB_TABLE_PREFIX."invoices_sales_articles AS a WHERE i.id = a.id_invoice) AS total");
+	$fieldsVals = array($dini,$dend);
+	$where = "i.dateins > ? AND i.dateins < ?";	
+	$obj = Sql::initQuery($table,$fields,$fieldsVals,$where,'','','',false);
+	$obj = Sql::getRecords();
+	if (is_array($obj) && count($obj) > 0) {
+		foreach ($obj AS $value) {
+			if (isset($value->total) && $value->total > 0)  $vendite += $value->total;			
+			}
+		}
 
 
-$App->jscript[] = '<script src="'.URL_SITE.'application/'.Core::$request->action.'/templates/'.$App->templateUser.'/js//module.js"></script>';
+	
+	$chartsdata[$d] = "{ y: '".$d."', v: ".$vendite.", a: ".$acquisti." }";
+	
+	}		
+$App->chartsdata = implode(',',$chartsdata);	
+
+/* include jscript for charts */
+$App->css[] = '<link href="'.URL_SITE.'templates/'.$App->templateUser.'/bower_components/morrisjs/morris.css" rel="stylesheet">';
+$App->jscript[] = '<script src="'.URL_SITE.'templates/'.$App->templateUser.'/bower_components/raphael/raphael.min.js" type="text/javascript"></script>';
+$App->jscript[] = '<script src="'.URL_SITE.'templates/'.$App->templateUser.'/bower_components/morrisjs/morris.min.js" type="text/javascript"></script>';			
+$App->includeJscriptPHPBottom = Core::$request->action."/templates/".$App->templateUser."/js/chartsdata.js.php";
+
+$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplication.Core::$request->action.'/templates/'.$App->templateUser.'/js/module.js"></script>';
 ?>

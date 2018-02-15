@@ -33,6 +33,8 @@ $(document).ready(function() {
 	 	if ($art > 0) {
 			$.ajax({
 				url: siteUrl+module+'/getAjaxItas',
+				async: "true",
+				cache: "false",
 				type: "POST",
 				data: {'id':$art},
 				dataType: 'json'
@@ -66,6 +68,8 @@ $(document).ready(function() {
 			$.ajax({
 				type: "POST",
 				url: $target,
+				async: "true",
+				cache: "false",
 		      data: $form.serialize(),
 		      dataType: 'html'
 				})
@@ -111,6 +115,8 @@ function deleteArticle() {
 			if ($confirmed) {
 				$.ajax({
 						url: siteUrl+module+'/deleteItas',
+						async: "true",
+						cache: "false",
 						type: "POST",
 						data: {'id':$art},
 						dataType: 'html'
@@ -134,6 +140,8 @@ function getArticles() {
 	var idinvoice = $('#idID').val();
 	$.ajax({
 		url: siteUrl+module+'/listAjaxItas',
+		async: "true",
+		cache: "false",
 		type: "POST",
 		data: {'id':idinvoice},
 		dataType: 'html'
@@ -146,12 +154,13 @@ function getArticles() {
  			 alert("Ajax failed to fetch list of articles data");
 			})
 	} // end function
-setTimeout(getArticles, 2000);
 	
 function getTotalsArticles() {	
 	var idinvoice = $('#idID').val();
 	$.ajax({
 		url: siteUrl+module+'/getAjaxTotalItas',
+		async: "true",
+		cache: "false",
 		type: "POST",
 		data: {'id':idinvoice},
 		dataType: 'json'

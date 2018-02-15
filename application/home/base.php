@@ -1,149 +1,138 @@
 <?php
-/* Projects */
-if (in_array(DB_TABLE_PREFIX.'site_blocks',$tablesDb) && file_exists(PATH."application/site-blocks/index.php") && Permissions::checkAccessUserModule('site-blocks',$App->userLoggedData,$App->user_modules_active,$App->modulesCore) == true) {
-	$App->homeBlocks['site-blocks'] = array(
-		'table'=>DB_TABLE_PREFIX.'site_blocks',
-		'icon panel'=>'fa-cog',
-		'label'=>ucfirst($_lang['blocchi contenuto']),
-		'sex suffix'=>ucfirst($_lang['nuovi']),
-		'type'=>'info',
-		'url'=>true,
-		'url item'=>array (
-			'string'=>URL_SITE.'site-blocks',
-			'opz'=>array()
-			)
-		);	
-		
-	$App->homeTables['site-blocks'] = array(
-		'table'=>DB_TABLE_PREFIX.'site_blocks',
-		'icon panel'=>'fa-cog',
-		'label'=>ucfirst($_lang['ultimi']).' '.$_lang['blocchi contenuto'],
-		'fields'=>array(
-			'title_it'=>array(
-				'type'=>'varchar',
-				'label'=>ucfirst($_lang['titolo']),
-				'url'=>true,
-				'url item'=>array(
-					'string'=>URL_SITE.'site-blocks',
-					'opz'=>array(
-						)
-					)
-				)
-			)
-		);
-	}
-	
-/* Todo */
-if (in_array(DB_TABLE_PREFIX.'todo',$tablesDb) && file_exists(PATH."application/todo/index.php") && Permissions::checkAccessUserModule('todo',$App->userLoggedData,$App->user_modules_active,$App->modulesCore) == true) {
-	$App->homeBlocks['projects'] = array(
-		'table'=>DB_TABLE_PREFIX.'todo',
-		'icon panel'=>'fa-cog',
-		'label'=>'Da fare',
-		'sex suffix'=>ucfirst($_lang['nuovi']),
-		'type'=>'info',
-		'url'=>true,
-		'url item'=>array (
-			'string'=>URL_SITE.'Todo',
-			'opz'=>array()
-			)
-		);	
-		
-	$App->homeTables['todo'] = array(
-		'table'=>DB_TABLE_PREFIX.'todo',
-		'icon panel'=>'fa-cog',
-		'label'=>'Ultimi da fare',
-		'fields'=>array(
-			'title'=>array(
-				'type'=>'varchar',
-				'label'=>'Titolo',
-				'url'=>true,
-				'url item'=>array(
-					'string'=>URL_SITE.'Todo',
-					'opz'=>array(
-						)
-					)
-				)
-			)
-		);	
-	}
-	
-/* Timecard */
-/*
-if (in_array(DB_TABLE_PREFIX.'timecard',$tablesDb) && file_exists(PATH."application/timecard/index.php") && Permissions::checkAccessUserModule('timecard',$App->userLoggedData,$App->user_modules_active,$App->modulesCore) == true) {
-	$App->homeBlocks['timecard'] = array(
-		'table'=>DB_TABLE_PREFIX.'timecard',
-		'icon panel'=>'fa-clock-o',
-		'label'=>'Timecard',
-		'sex suffix'=>'e',
-		'type'=>'info',
-		'url'=>true,
-		'url item'=>array (
-			'string'=>'{{URL_SITE}}timecard',
-			'opz'=>array()
-			)
-		);	
-		
-	$App->homeTables['timecard'] = array(
-		'table'=>DB_TABLE_PREFIX.'timecard',
-		'icon panel'=>'fa-clock-o',
-		'label'=>'Ultime timecard',
-		'fields'=>array(
-			'content'=>array(
-				'type'=>'varchar',
-				'label'=>'Contenuto',
-				'url'=>true,
-				'url item'=>array(
-					'string'=>'{{URL_SITE}}timecard',
-					'opz'=>array(
-						)
-					)
-				),
-			'worktime'=>array(
-				'type'=>'varchar',
-				'label'=>'Tempo',
-				'url'=>false
-				)
-			)
-		);	
-	}
-*/	
-/* Contacts */
-if (in_array(DB_TABLE_PREFIX.'contacts',$tablesDb) && file_exists(PATH."application/contacts/index.php") && Permissions::checkAccessUserModule('contacts',$App->userLoggedData,$App->user_modules_active,$App->modulesCore) == true) {
-	$App->homeBlocks['contacts'] = array(
-		'table'=>DB_TABLE_PREFIX.'contacts',
+/* Thirdparty */
+if (in_array(DB_TABLE_PREFIX.'thirdparty',$tablesDb) && file_exists(PATH.$App->pathApplication."third-party/index.php") == true) {
+	$App->homeBlocks['thirdparty'] = array(
+		'table'=>DB_TABLE_PREFIX.'thirdparty',
 		'icon panel'=>'fa-users',
-		'label'=>ucfirst($_lang['contatti']),
-		'sex suffix'=>ucfirst($_lang['nuovi']),
+		'label'=>ucfirst($_lang['terze parti']),
+		'sex suffix'=>ucfirst($_lang['nuove']),
 		'type'=>'info',
 		'url'=>true,
 		'url item'=>array (
-			'string'=>URL_SITE.'contacts',
+			'string'=>URL_SITE.'third-party/listItem',
 			'opz'=>array()
 			)
 		);	
 		
 	$App->homeTables['contacts'] = array(
-		'table'=>DB_TABLE_PREFIX.'contacts',
+		'table'=>DB_TABLE_PREFIX.'thirdparty',
 		'icon panel'=>'fa-users',
-		'label'=>ucfirst($_lang['ultimi contatti']),
+		'label'=>ucfirst($_lang['ultime']).' '.$_lang['terze parti'],
 		'fields'=>array(
-			'name'=>array(
+			'ragione_sociale'=>array(
 				'type'=>'varchar',
-				'label'=>ucfirst($_lang['nome']),
+				'label'=>ucfirst($_lang['ragione sociale']),
 				'url'=>true,
 				'url item'=>array(
-					'string'=>URL_SITE.'contacts',
+					'string'=>URL_SITE.'third-party/listItem',
+					'opz'=>array(
+						)
+					)
+				)
+			)
+		);	
+	}
+	
+/* Invoices sales */
+if (in_array(DB_TABLE_PREFIX.'invoices_sales',$tablesDb) && file_exists(PATH.$App->pathApplication."invoices/index.php") == true) {
+	$App->homeBlocks['invoices_sales'] = array(
+		'table'=>DB_TABLE_PREFIX.'invoices_sales',
+		'icon panel'=>'fa-wpforms',
+		'label'=>ucfirst($_lang['fatture vendite']),
+		'sex suffix'=>ucfirst($_lang['nuove']),
+		'type'=>'info',
+		'url'=>true,
+		'url item'=>array (
+			'string'=>URL_SITE.'invoices/listItes',
+			'opz'=>array()
+			)
+		);	
+		
+	$fields[] = "i.id,i.number,i.tax,i.rivalsa,i.created AS created";
+	$fields[] = "(SELECT SUM(a.price_total) FROM ".DB_TABLE_PREFIX."invoices_sales_articles AS a WHERE i.id = a.id_invoice) AS total";
+	$formula = 'SUM(a.price_total)';
+	$formula = 'SUM(a.price_total) + ((SUM(a.price_total) * i.tax) / 100) + ((SUM(a.price_total) * i.rivalsa) / 100)';
+	$fields[] = "(SELECT ".$formula." FROM ".DB_TABLE_PREFIX."invoices_sales_articles AS a WHERE i.id = a.id_invoice) AS onorario";	
+	$App->homeTables['invoices_sales'] = array(
+		'table'=>DB_TABLE_PREFIX.'invoices_sales AS i',
+		'sqloption'=> array(
+			'fields'=>implode(',',$fields),
+			'order'=>"created DESC"
+			),
+		'icon panel'=>'fa-wpforms',
+		'label'=>ucfirst($_lang['ultime']).' '.$_lang['fatture vendite'],
+		'fields'=>array(
+			'number'=>array(
+				'type'=>'varchar',
+				'label'=>ucfirst($_lang['numero']),
+				'url'=>true,
+				'url item'=>array(
+					'string'=>URL_SITE.'invoices/listItes',
 					'opz'=>array(
 						)
 					)
 				),
-			'surname'=>array(
-				'type'=>'varchar',
-				'label'=>ucfirst($_lang['cognome']),
-				'url'=>false
+			'total'=>array(
+				'type'=>'amount',
+				'label'=>ucfirst($_lang['importo']),
+				'class'=>'text-right',
+				'url'=>false,
+				'url item'=>array()
+				),
+			'onorario'=>array(
+				'type'=>'amount',
+				'label'=>ucfirst($_lang['totale']),
+				'class'=>'text-right',
+				'url'=>false,
+				'url item'=>array()
 				)
 			)
-		);
+		);	
+	}
+	
+/* Invoices purchases */
+if (in_array(DB_TABLE_PREFIX.'invoices_purchases',$tablesDb) && file_exists(PATH.$App->pathApplication."invoices/index.php") == true) {
+	$App->homeBlocks['invoices_purchases'] = array(
+		'table'=>DB_TABLE_PREFIX.'invoices_purchases',
+		'icon panel'=>'fa-wpforms',
+		'label'=>ucfirst($_lang['fatture acquisti']),
+		'sex suffix'=>ucfirst($_lang['nuove']),
+		'type'=>'info',
+		'url'=>true,
+		'url item'=>array (
+			'string'=>URL_SITE.'invoices/listItep',
+			'opz'=>array()
+			)
+		);	
 		
+	$App->homeTables['invoices_purchases'] = array(
+		'table'=>DB_TABLE_PREFIX.'invoices_purchases AS i',
+		'sqloption'=> array(
+			'fields'=>"i.id,i.number,i.created AS created,(SELECT SUM(a.price_total) FROM ".DB_TABLE_PREFIX."invoices_purchases_articles AS a WHERE i.id = a.id_invoice) AS total",
+			'order'=>"created DESC"
+
+			),
+		'icon panel'=>'fa-wpforms',
+		'label'=>ucfirst($_lang['ultime']).' '.$_lang['fatture acquisti'],
+		'fields'=>array(
+			'number'=>array(
+				'type'=>'varchar',
+				'label'=>ucfirst($_lang['numero']),
+				'url'=>true,
+				'url item'=>array(
+					'string'=>URL_SITE.'invoices/listItep',
+					'opz'=>array(
+						)
+					)
+				),
+			'total'=>array(
+				'type'=>'amount',
+				'label'=>ucfirst($_lang['totale']),
+				'class'=>'text-right',
+				'url'=>false,
+				'url item'=>array()
+				)
+			)
+		);	
 	}
 ?>

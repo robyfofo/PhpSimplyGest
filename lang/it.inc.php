@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * language IT v.1.0.0. 09/02/2018
+ * language IT v.1.0.0. 13/02/2018
 */
 
 $_lang['user'] = 'it';
@@ -67,6 +67,7 @@ $_lang['nuovi'] = "nuovi";
 
 $_lang['ultimi'] = "ultimi";
 $_lang['ultimo'] = "ultimo";
+$_lang['ultime'] = "ultime";
 
 $_lang['selezionato'] = "selezionato";
 $_lang['complatato'] = "complatato";

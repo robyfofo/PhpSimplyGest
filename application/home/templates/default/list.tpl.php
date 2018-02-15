@@ -44,6 +44,27 @@
 </div>
 
 <div class="row">
+	<div class="col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+ 				<i class="fa fa-bar-chart-o fa-fw"></i> {{ Lang['bilancio ultimi 12 mesi']|title }}
+			</div>
+			<!-- /.panel-heading -->
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-lg-12">
+						<div id="sales-chart"></div>
+					</div>
+				</div>
+				<!-- /.row -->
+			</div>
+			<!-- /.panel-body -->
+		</div>
+		<!-- /.panel -->
+	</div>
+</div>
+
+<div class="row">
 	{% if App.homeTables is iterable %}
 		{% for key,value in App.homeTables %}
 			{% if value['itemdata'] is iterable %}
@@ -83,7 +104,7 @@
 															</td>
 															{% if value['fields'] is iterable %}
 																{% for keyF,valueF in value['fields'] %}
-																	<td>
+																	<td class="{{ valueF['class'] }}">
 																		{% set method %}{{ keyF }}{% endset %}
 																		{{ attribute(valueItemData, method)|raw }}
 																	</td>
