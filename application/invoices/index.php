@@ -52,9 +52,9 @@ switch(substr(Core::$request->method,-4,4)) {
 		if (file_exists(PATH.'application/'.Core::$request->action."/items-as.php")) include_once(PATH.'application/'.Core::$request->action."/items-as.php");		
 	break;	
 	case 'Ites':
-		$App->css[] = '<link href="'.URL_SITE.'templates/'.$App->templateUser.'/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">';
-		$App->jscript[] = '<script src="'.URL_SITE.'templates/'.$App->templateUser.'/vendor/moment/moment-with-locales.min.js" type="text/javascript"></script>';
-		$App->jscript[] = '<script src="'.URL_SITE.'templates/'.$App->templateUser.'/vendor/datetimepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>';			
+		$App->css[] = '<link href="'.URL_SITE.'templates/'.$App->templateUser.'/plugins/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">';
+		$App->jscript[] = '<script src="'.URL_SITE.'templates/'.$App->templateUser.'/plugins/moment/moment-with-locales.min.js" type="text/javascript"></script>';
+		$App->jscript[] = '<script src="'.URL_SITE.'templates/'.$App->templateUser.'/plugins/datetimepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>';			
 		$App->sessionName .= '-vendite';
 		if (!isset($_MY_SESSION_VARS[$App->sessionName]['page'])) $_MY_SESSION_VARS = $my_session->addSessionsModuleVars($_MY_SESSION_VARS,$App->sessionName,array('page'=>1,'ifp'=>'10','srcTab'=>''));
 		if (isset($App->params->tables['ites'])) $Module = new Module(Core::$request->action,$App->params->tables['ites']);
@@ -74,9 +74,9 @@ switch(substr(Core::$request->method,-4,4)) {
 
 	case 'Itep':
 	default:
-		$App->css[] = '<link href="'.URL_SITE.'templates/'.$App->templateUser.'/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">';
-		$App->jscript[] = '<script src="'.URL_SITE.'templates/'.$App->templateUser.'/vendor/moment/moment-with-locales.min.js" type="text/javascript"></script>';
-		$App->jscript[] = '<script src="'.URL_SITE.'templates/'.$App->templateUser.'/vendor/datetimepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>';			
+		$App->css[] = '<link href="'.URL_SITE.'templates/'.$App->templateUser.'/plugins/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">';
+		$App->jscript[] = '<script src="'.URL_SITE.'templates/'.$App->templateUser.'/plugins/moment/moment-with-locales.min.js" type="text/javascript"></script>';
+		$App->jscript[] = '<script src="'.URL_SITE.'templates/'.$App->templateUser.'/plugins/datetimepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>';			
 		$App->sessionName .= '-acquisti';
 		if (!isset($_MY_SESSION_VARS[$App->sessionName]['page'])) $_MY_SESSION_VARS = $my_session->addSessionsModuleVars($_MY_SESSION_VARS,$App->sessionName,array('page'=>1,'ifp'=>'10','srcTab'=>''));
 		if (isset($App->params->tables['itep'])) $Module = new Module(Core::$request->action,$App->params->tables['itep']);

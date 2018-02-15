@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * invoices/items-as.php v.1.0.0. 08/02/2018
+ * invoices/items-as.php v.1.0.0. 15/02/2018
 */
 
 switch(Core::$request->method) {
@@ -93,6 +93,14 @@ switch(Core::$request->method) {
 		$invoice = new stdClass;
 		$values = new stdClass;
 		$id = (isset($_POST['id']) ? intval($_POST['id']) : 0);
+		
+		$totalArticles = 0;
+		$totalTaxArticles = 0;
+		$invoiceTotalTax = 0;
+		$invoiceTotalRivalsa = 0;
+		$invoiceTotal = 0;
+
+		
 		if ($id > 0) {
 			/* preleva dati fattura */
 			Sql::initQuery($App->params->tables['ites'],array('*'),array($App->id),'id = ?');
@@ -102,31 +110,29 @@ switch(Core::$request->method) {
 			Sql::initQuery($App->params->tables['itas'],array('SUM(price_total) AS total','SUM(price_tax) AS total_tax'),array($id),' id_invoice = ? ');
 			$obj = Sql::getRecord();
 			if (Core::$resultOp->error == 1) break;
-			$totalArticles = 0;
 			if (isset($obj->total)) {
 				$totalArticles = (float)$obj->total;
-				}
-			$totalTaxArticles = 0;
+				}		
 			if (isset($obj->total_tax)) {
 				$totalTaxArticles  = (float)$obj->total_tax;
 				}
 			/* calcola tassa aggiuntiva */
-			$invoiceTotalTax = 0;
 			if ($invoice->tax > 0) $invoiceTotalTax = ($totalArticles * $invoice->tax) / 100;						
 			/* calcola rivalsa */
-			$invoiceTotalRivalsa = 0;
-			if ($invoice->rivalsa > 0) $invoiceTotalRivalsa = ($totalArticles * $invoice->rivalsa) / 100;	
+			if ($invoice->rivalsa > 0) $invoiceTotalRivalsa = ($totalArticles * $invoice->rivalsa) / 100;
 			
+			$invoiceTotal = $totalArticles + $totalTaxArticles + $invoiceTotalTax + $invoiceTotalRivalsa;	
+			}
 			
 			$values->invoiceArtTotal = (float)$totalArticles;
 			$values->invoiceTaxTotal = (float)$totalTaxArticles + $invoiceTotalTax;
 			$values->invoiceRivalsa = (float)$invoiceTotalRivalsa;
-			$values->invoiceTotal = (float)$totalArticles + $totalTaxArticles + $invoiceTotalTax + $invoiceTotalRivalsa;
+			$values->invoiceTotal = (float)$invoiceTotal;
 			
 			$json = json_encode($values);
 			echo $json;
 		
-			}
+			
 		
 		die();	
 	break;

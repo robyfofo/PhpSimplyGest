@@ -29,6 +29,7 @@ $App->params->ordersType = array();
 $App->params->tables['item']  = DB_TABLE_PREFIX.'thirdparty';
 $App->params->fields['item']  = array(
 	'id'=>array('label'=>'ID','required'=>false,'type'=>'autoinc','primary'=>true),
+	'id_owner'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>true,'type'=>'int','defValue'=>$App->userLoggedData->id),
 	'id_cat'=>array('label'=>'ID Categoria','required'=>true,'type'=>'int'),
 	'id_type'=>array('label'=>'Tipo','required'=>false,'type'=>'int','defValue'=>0,'validate'=>'int'),
 	'ragione_sociale'=>array('label'=>'Ragione Sociale','searchTable'=>true,'required'=>true,'type'=>'varchar'),
@@ -54,6 +55,7 @@ $App->params->tables['scat']  = DB_TABLE_PREFIX.'thirdparty_subcategories';
 $App->params->fields['scat']  = array(
 	'id'=>array('label'=>'ID','required'=>false,'type'=>'autoinc','primary'=>true),
 	'parent'=>array('label'=>'Parent','required'=>false,'type'=>'int','defValue'=>0,'validate'=>'int'),
+	'id_owner'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>true,'type'=>'int','defValue'=>$App->userLoggedData->id),
 	'title'=>array('label'=>'Titolo','searchTable'=>true,'required'=>true,'type'=>'varchar'),
 	'created'=>array('label'=>$_lang['creazione'],'searchTable'=>false,'required'=>false,'type'=>'datatime','defValue'=>$App->nowDateTime,'validate'=>'datatimeiso'),
 	'active'=>array('label'=>ucfirst($_lang['attiva']),'required'=>false,'type'=>'int','defValue'=>1,'validate'=>'int')

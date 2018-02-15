@@ -91,13 +91,15 @@ if (is_array($App->homeBlocks) && count($App->homeBlocks) > 0) {
 	
 	foreach ($App->homeBlocks AS $key => $value) {
 		$module = (isset($value['module']) && $value['module'] != '' ? $value['module'] : $key);
-		$whereclause = (isset($value['whereclause']) && $value['whereclause'] != '' ? $value['whereclause'] : '');
+		$where = (isset($value['whereclause']) && $value['where'] != '' ? $value['where'] : 'created > ?');
 		$value['class'] = (isset($value['class']) ? $value['class'] :'');
 		$value['type'] = (isset($value['type']) ? $value['type'] :'');
 		
-		$where = 'created > ?';
-		if ($whereclause != '') $where .= ' AND '.$whereclause;	
-		Sql::initQuery($value['table'],array('id'),array($App->lastLogin),$where,'','',false);		
+		$fieldsVals = array($App->userLoggedData->id,$App->lastLogin);
+		
+		$where = "id_owner = ? AND " .$where;
+
+		Sql::initQuery($value['table'],array('id'),$fieldsVals,$where,'','',false);		
 		$items = Sql::countRecord();
 		$value['items'] =  $items;
 	
@@ -148,11 +150,11 @@ if (is_array($App->homeTables) && count($App->homeTables) > 0) {
 		
 		$table = $value['table'];
 		$fields = (isset($value['sqloption']['fields']) ? $value['sqloption']['fields'] : '*');
+		$fieldsVals = array($App->userLoggedData->id);
 		$order = (isset($value['sqloption']['order']) ? $value['sqloption']['order'] : 'created DESC');
 		$fieldcreated = (isset($value['sqloption']['fieldcreated']) ? $value['sqloption']['fieldcreated'] : 'created');
-		
-		
-		Sql::initQuery($table,array($fields),array(),'',$order,' LIMIT 5 OFFSET 0','',false);
+		$where = "id_owner = ?";		
+		Sql::initQuery($table,array($fields),$fieldsVals,$where,$order,' LIMIT 5 OFFSET 0','',false);
 		$value['itemdata'] = Sql::getRecords();
 
 		/* sistemo i dati */

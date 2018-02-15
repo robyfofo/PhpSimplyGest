@@ -22,9 +22,9 @@
 		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
 		<!-- OTHER Plugin CSS - Dashboard -->
-		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/lightbox/css/lightbox.min.css" rel="stylesheet">
-		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/bootstrapValidator/css/bootstrapValidator.min.css" rel="stylesheet">
-		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/jquery.formvalidation/css/formValidation.min.css" rel="stylesheet">
+		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/lightbox/css/lightbox.min.css" rel="stylesheet">
+		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/bootstrapValidator/css/bootstrapValidator.min.css" rel="stylesheet">
+		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/jquery.formvalidation/css/formValidation.min.css" rel="stylesheet">
 		
 		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -174,15 +174,15 @@
  		<!-- Metis Menu Plugin JavaScript -->
  		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/metisMenu/metisMenu.min.js"></script>
 
-		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/bootbox/js/bootbox.min.js" type="text/javascript"></script>
-		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/lightbox/js/lightbox.min.js" type="text/javascript"></script>
-		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/bootstrapValidator/js/bootstrapValidator.min.js" type="text/javascript"></script>
-		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/jquery.formvalidation/js/formValidation.min.js" type="text/javascript"></script>	
+		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/bootbox/js/bootbox.min.js" type="text/javascript"></script>
+		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/lightbox/js/lightbox.min.js" type="text/javascript"></script>
+		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/bootstrapValidator/js/bootstrapValidator.min.js" type="text/javascript"></script>
+		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/jquery.formvalidation/js/formValidation.min.js" type="text/javascript"></script>	
 		{% if App.lang['user'] == 'it' %}
-			<script src="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/bootstrapValidator/language/it_IT.js"></script>
-			<script src="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/jquery.formvalidation/language/it_IT.js"></script>		
+			<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/bootstrapValidator/language/it_IT.js"></script>
+			<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/jquery.formvalidation/language/it_IT.js"></script>		
 		{% endif %}
-		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/tinymce/tinymce.min.js" type="text/javascript"></script>
+		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/tinymce/tinymce.min.js" type="text/javascript"></script>
 		<!-- SB Admin Scripts - Include with every page -->
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/js/sb-admin-2.js"></script>	
 		
