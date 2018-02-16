@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * admin/classes/class.Sql.php v.1.0.0. 22/11/2017
+ * classes/class.Sql.php v.1.0.0. 16/02/2018
 */
 
 class Sql extends Core {

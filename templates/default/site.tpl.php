@@ -11,13 +11,11 @@
 		<meta name="author" content="Roberto Mantovani">
 
 		<!-- Core CSS - Include with every page -->
-		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 		<!-- MetisMenu CSS -->
-    	<link href="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+    	<link href="{{ URLSITE }}templates/{{ App.templateUser }}/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
 		<!-- Custom CSS -->
 		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/css/sb-admin-2.css" rel="stylesheet">
-		<!-- Morris Charts CSS -->
-		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/morrisjs/morris.css" rel="stylesheet">
 		<!-- Custom Fonts -->
 		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
@@ -164,25 +162,22 @@
 		<!-- Core Scripts - Include with every page -->
 		<!-- jQuery -->
 		{% if App.patchdatapicker is defined and App.patchdatapicker > 0 %}
-		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/jquery/jquery-1.10.2.js"></script>
+			<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/jquery/jquery-1.10.2.js"></script>
 		{% else %}
- 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/jquery/jquery.min.js"></script>
+ 			<script src="{{ URLSITE }}templates/{{ App.templateUser }}/bower_components/jquery/dist/jquery.min.js"></script>
  		{% endif %}
 
  		<!-- Bootstrap Core JavaScript -->
- 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}//vendor/bootstrap/js/bootstrap.min.js"></script>
+ 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
  		<!-- Metis Menu Plugin JavaScript -->
- 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/metisMenu/metisMenu.min.js"></script>
+ 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/bower_components/metisMenu/dist/metisMenu.min.js"></script>
 
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/bootbox/js/bootbox.min.js" type="text/javascript"></script>
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/lightbox/js/lightbox.min.js" type="text/javascript"></script>
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/bootstrapValidator/js/bootstrapValidator.min.js" type="text/javascript"></script>
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/jquery.formvalidation/js/formValidation.min.js" type="text/javascript"></script>	
-		{% if App.lang['user'] == 'it' %}
-			<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/bootstrapValidator/language/it_IT.js"></script>
-			<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/jquery.formvalidation/language/it_IT.js"></script>		
-		{% endif %}
-		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/tinymce/tinymce.min.js" type="text/javascript"></script>
+
+		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/bower_components/tinymce/tinymce.min.js" type="text/javascript"></script>
 		<!-- SB Admin Scripts - Include with every page -->
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/js/sb-admin-2.js"></script>	
 		

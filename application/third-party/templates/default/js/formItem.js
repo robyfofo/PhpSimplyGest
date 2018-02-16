@@ -1,4 +1,4 @@
-/* customers/formScat.js v.1.0.0. 02/11/2017 */
+/* third-party/formItem.js v.1.0.0. 16/02/2018 */
 $(document).ready(function() {		
 	$('#applicationForm')
 		.bootstrapValidator({

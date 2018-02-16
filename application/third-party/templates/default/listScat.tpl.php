@@ -1,4 +1,4 @@
-<!-- customers/listScat.tpl.php v.1.0.0. 22/11/2017 -->
+<!-- third-party/listScat.tpl.php v.1.0.0. 16/02/2018 -->
 <div class="row">
 	<div class="col-md-3 new">
 		<a href="{{ URLSITE }}{{ CoreRequest.action }}/newScat" title="{{ Lang['inserisci nuova categoria']|capitalize }}" class="btn btn-primary">{{ Lang['nuova categoria']|capitalize }}</a>
@@ -35,12 +35,12 @@
 								{% endif %}								
 								<td class="page-title" style="white-space: nowrap;">{{ value.levelString }}{{ value.title }}</td>
 								<td>
-									<a class="btn btn-default btn-circle" href="{{ URLSITE }}{{ CoreRequest.action }}/listItem/{{ value.id }}" title="{{ Lang['clienti associati']|capitalize }}"><i class="fa fa-users"> </i></a>({{ value.items }})			 
+									<a class="btn btn-default btn-circle" href="{{ URLSITE }}{{ CoreRequest.action }}/listItem/{{ value.id }}" title="{{ Lang['soggetti terzi associati']|capitalize }}"><i class="fa fa-users"> </i></a>({{ value.items }})			 
 								</td>																							
 								<td class="actions">
-									<a class="btn btn-default btn-circle" href="{{ URLSITE }}{{ CoreRequest.action }}/{{ value.active == 1 ? 'disactive' : 'active' }}Scat/{{ value.id  }}" title="{{ value.active == 1 ? Lang['disattiva %ITEM%']|replace({'%ITEM%': Lang['la categoria']})|capitalize : Lang['attiva %ITEM%']|replace({'%ITEM%': Lang['la categoria']})|capitalize }}"><i class="fa fa-{{ value.active == 1 ? 'unlock' : 'lock' }}"> </i></a>			 
-									<a class="btn btn-default btn-circle" href="{{ URLSITE }}{{ CoreRequest.action }}/modifyScat/{{ value.id }}" title="{{ Lang['modifica %ITEM%']|replace({'%ITEM%': Lang['la categoria']})|capitalize }}"><i class="fa fa-edit"> </i></a>
-									<a class="btn btn-default btn-circle confirm" href="{{ URLSITE }}{{ CoreRequest.action }}/deleteScat/{{ value.id }}" title="{{ Lang['cancella %ITEM%']|replace({'%ITEM%': Lang['la categoria']})|capitalize }}"><i class="fa fa-cut"> </i></a>
+									<a class="btn btn-default btn-circle" href="{{ URLSITE }}{{ CoreRequest.action }}/{{ value.active == 1 ? 'disactive' : 'active' }}Scat/{{ value.id  }}" title="{{ value.active == 1 ? Lang['disattiva']|capitalize : Lang['attiva']|capitalize }} {{ Lang['categoria'] }}"><i class="fa fa-{{ value.active == 1 ? 'unlock' : 'lock' }}"> </i></a>			 
+									<a class="btn btn-default btn-circle" href="{{ URLSITE }}{{ CoreRequest.action }}/modifyScat/{{ value.id }}" title="{{ Lang['modifica']|capitalize }}  {{ Lang['categoria'] }}"><i class="fa fa-edit"> </i></a>
+									<a class="btn btn-default btn-circle confirm" href="{{ URLSITE }}{{ CoreRequest.action }}/deleteScat/{{ value.id }}" title="{{ Lang['cancella']|capitalize }}  {{ Lang['categoria'] }}"><i class="fa fa-cut"> </i></a>
 								</td>
      						</tr> 
 						{% endfor %}

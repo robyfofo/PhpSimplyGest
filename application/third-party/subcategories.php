@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * customers/subcategories.php v.1.0.0. 22/11/2017
+ * third-party/subcategories.php v.1.0.0. 16/02/2018
 */
 
 if (isset($_POST['itemsforpage']) && isset($_MY_SESSION_VARS[$App->sessionName]['ifp']) && $_MY_SESSION_VARS[$App->sessionName]['ifp'] != $_POST['itemsforpage']) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'ifp',$_POST['itemsforpage']);
@@ -15,7 +15,7 @@ switch(Core::$request->method) {
 	
 	case 'activeScat':
 	case 'disactiveScat':
-		Sql::manageFieldActive(substr(Core::$request->method,0,-4),$App->params->tables['scat'],$App->id,array('label'=>$_lang['categoria']));
+		Sql::manageFieldActive(substr(Core::$request->method,0,-4),$App->params->tables['scat'],$App->id,array('labelA'=>$_lang['categoria attivata'],'labelD'=>$_lang['categoria disattivata']));
 		$App->viewMethod = 'list';
 	break;
 
@@ -68,7 +68,7 @@ switch(Core::$request->method) {
 			} else {					
 				Core::$resultOp->error = 1;
 				}				
-		list($id,$App->viewMethod,$App->pageSubTitle,Core::$resultOp->message) = Form::getInsertRecordFromPostResults(0,Core::$resultOp,$_lang,array('inserita'=>$_lang['categoria inserita'],'inserisci'=>$_lang['inserisci categoria']));
+		list($id,$App->viewMethod,$App->pageSubTitle,Core::$resultOp->message) = Form::getInsertRecordFromPostResults(0,Core::$resultOp,$_lang,array('label inserted'=>$_lang['categoria inserita'],'label insert'=>$_lang['inserisci categoria']));
 	break;
 	
 	case 'modifyScat':	
@@ -82,13 +82,9 @@ switch(Core::$request->method) {
 			/* preleva dati vecchio */
 			Sql::initQuery($App->params->tables['scat'],array('*'),array($App->id),'id = ?');
 			$App->itemOld = Sql::getRecord();
-echo 'aaa';
-print_r($_POST);
 			if (Core::$resultOp->error == 0) {	
 				/* parsa i post in base ai campi */ 	
 				Form::parsePostByFields($App->params->fields['scat'],$_lang,array());
-echo 'bbb';
-print_r($_POST);
 				if (Core::$resultOp->error == 0) {	
 					Sql::updateRawlyPost($App->params->fields['scat'],$App->params->tables['scat'],'id',$App->id);
 					if (Core::$resultOp->error == 0) {				
@@ -100,7 +96,7 @@ print_r($_POST);
 			} else {					
 				Core::$resultOp->error = 1;
 				}			
-		list($id,$App->viewMethod,$App->pageSubTitle,Core::$resultOp->message) = Form::getUpdateRecordFromPostResults($App->id,Core::$resultOp,$_lang,array('modificata'=>$_lang['categoria modificata'],'modifica'=>$_lang['modifica categoria'],'inserisci'=>$_lang['inserisci categoria']));	   		
+		list($id,$App->viewMethod,$App->pageSubTitle,Core::$resultOp->message) = Form::getUpdateRecordFromPostResults($App->id,Core::$resultOp,$_lang,array('label modified'=>$_lang['categoria modificata'],'label modify'=>$_lang['modifica categoria'],'label insert'=>$_lang['inserisci categoria']));	   		
 	break;
 	
 	case 'pageScat':
@@ -167,11 +163,11 @@ switch((string)$App->viewMethod) {
 		$App->pagination = $Module->getPagination();	
 		$App->pageSubTitle = $_lang['lista delle categorie'];
 		$App->templateApp = 'listScat.tpl.php';
-		$App->css[] = '<link href="'.URL_SITE.'templates/'.$App->templateUser.'/assets/plugins/jquery.treegrid/jquery.treegrid.css" rel="stylesheet">';
+		$App->css[] = '<link href="'.URL_SITE.'templates/'.$App->templateUser.'/plugins/jquery.treegrid/jquery.treegrid.css" rel="stylesheet">';
 		$App->css[] = '<link href="'.URL_SITE.'application/'.Core::$request->action.'/templates/'.$App->templateUser.'/css/listScat.css" rel="stylesheet">';
-		$App->jscript[] = '<script src="'.URL_SITE.'templates/'.$App->templateUser.'/assets/plugins/jquery.cookie/jquery.cookie.js" type="text/javascript"></script>';
-		$App->jscript[] = '<script src="'.URL_SITE.'templates/'.$App->templateUser.'/assets/plugins/jquery.treegrid/jquery.treegrid.min.js" type="text/javascript"></script>';
-		$App->jscript[] = '<script src="'.URL_SITE.'templates/'.$App->templateUser.'/assets/plugins/jquery.treegrid/jquery.treegrid.bootstrap3.js" type="text/javascript"></script>';		
+		$App->jscript[] = '<script src="'.URL_SITE.'templates/'.$App->templateUser.'/plugins/jquery.cookie/jquery.cookie.js" type="text/javascript"></script>';
+		$App->jscript[] = '<script src="'.URL_SITE.'templates/'.$App->templateUser.'/plugins/jquery.treegrid/jquery.treegrid.min.js" type="text/javascript"></script>';
+		$App->jscript[] = '<script src="'.URL_SITE.'templates/'.$App->templateUser.'/plugins/jquery.treegrid/jquery.treegrid.bootstrap3.js" type="text/javascript"></script>';		
 		$App->jscript[] = '<script src="'.URL_SITE.'application/'.Core::$request->action.'/templates/'.$App->templateUser.'/js/listScat.js" type="text/javascript"></script>';		
 	default:
 	break;

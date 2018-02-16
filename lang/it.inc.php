@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * language IT v.1.0.0. 13/02/2018
+ * language IT v.1.0.0. 16/02/2018
 */
 
 $_lang['user'] = 'it';
@@ -235,20 +235,22 @@ $_lang['numero'] = 'numero';
 $_lang['nr.'] = 'nr.';
 $_lang['del'] = 'del';
 
-$_lang['categoria'] = 'category';
-$_lang['categorie'] = 'categories';
-$_lang['lista categorie'] = "categories list";
-$_lang['lista delle categorie'] = "list of categories";
-$_lang['torna alla lista categorie'] = "torna alla categories list";
-$_lang['dettagli categoria'] = "category dettaglio";
-$_lang['nuova categoria'] = 'nuovocategory';
-$_lang['inserisci categoria'] = 'insert category';
-$_lang['inserisci una nuova categoria'] = 'insert un nuovo category';
-$_lang['categoria inserita'] = 'category inserted';
-$_lang['cancella categoria'] = 'cancella category';
-$_lang['categoria cancellata'] = "category cancellato";
-$_lang['modifica categoria'] = "modifica category";
-$_lang['categoria modificata'] = "category modificato";
+$_lang['categoria'] = 'categoria';
+$_lang['categorie'] = 'categorie';
+$_lang['lista categorie'] = "lista categorie";
+$_lang['lista delle categorie'] = "lista delle categorie";
+$_lang['torna alla lista categorie'] = "torna alla lista categorie";
+$_lang['dettagli categoria'] = "dettagli categoria";
+$_lang['nuova categoria'] = 'nuova categoria';
+$_lang['inserisci categoria'] = 'inserisci categoria';
+$_lang['inserisci una nuova categoria'] = 'inserisci una nuova categoria';
+$_lang['categoria inserita'] = 'categoria inserita';
+$_lang['cancella categoria'] = 'cancella categoria';
+$_lang['categoria cancellata'] = "categoria cancellata";
+$_lang['modifica categoria'] = "modifica categoria";
+$_lang['categoria modificata'] = "categoria modificata";
+$_lang['categoria attivata'] = "categoria attivata";
+$_lang['categoria disattivata'] = "categoria disattivata";
 
 $_lang['prodotto'] = 'product';
 $_lang['prodotti'] = 'products';

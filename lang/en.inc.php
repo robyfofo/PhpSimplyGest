@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * language EN v.1.0.0. 13/02/2018
+ * language EN v.1.0.0. 16/02/2018
 */
 
 $_lang['user'] = 'en';
@@ -249,6 +249,8 @@ $_lang['cancella categoria'] = 'delete category';
 $_lang['categoria cancellata'] = "category deleted";
 $_lang['modifica categoria'] = "modify category";
 $_lang['categoria modificata'] = "category changed";
+$_lang['categoria attivata'] = "categoria attivata";
+$_lang['categoria disattivata'] = "categoria disattivata";
 
 $_lang['prodotto'] = 'product';
 $_lang['prodotti'] = 'products';
