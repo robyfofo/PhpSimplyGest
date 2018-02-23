@@ -1,11 +1,11 @@
 <?php
 /**
- * Framework siti html-PHP-Mysql
+ * Framework App PHP-Mysql
  * PHP Version 7
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * admin/classes/class.Sessions.php v.2.6.3. 02/08/2016
+ * classes/class.Sessions.php v.1.0.0. 20/02/2018
 */
 
 class my_session {
@@ -143,7 +143,14 @@ class my_session {
 		$sessionsVars = array();
 		$sessionsVars = $this->my_session_read();
   		return $sessionsVars;  			
-  		}	  
+  		}	
+  		
+  	public function addSessionsSingleVar($sessionsVars,$value) {	
+		$this->my_session_register($sessionsVars,$value);	
+		$sessionsVars = array();
+		$sessionsVars = $this->my_session_read();
+  		return $sessionsVars;  			
+  		}	    
   	}	
   // end class
 ?>

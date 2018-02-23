@@ -1,4 +1,4 @@
-<!-- site-core/password.tpl.php v.1.0.0. 17/10/2017 -->
+<!-- core/password.tpl.php v.1.0.0. 17/02/2018 -->
 
 <div class="row">
 	<div class="col-md-12">
@@ -13,7 +13,7 @@
 						<div class="form-group">
 							<label for="nameID" class="col-md-3 control-label">{{ Lang['username']|capitalize }}</label>
 							<div class="col-md-3">
-								<input type="text" name="username" class="form-control" id="usernameID" placeholder="{{ Lang['inserisci un username']|capitalize }}" value="{{ App.item.username }}" readonly>
+								<input type="text" name="username" class="form-control" id="usernameID" placeholder="{{ Lang['inserisci un username']|capitalize }}" value="{{ App.item.username|e('html') }}" readonly>
 					    	</div>
 						</div>
 						<hr>		

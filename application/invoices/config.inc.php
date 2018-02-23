@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * invoices/config.inc.php v.1.0.0. 13/02/2017
+ * invoices/config.inc.php v.1.0.0. 20/02/2017
 */
 
 $App->params = new stdClass();
@@ -28,16 +28,16 @@ $App->params->uploadDirs = array();
 $App->params->uploadPaths = array();
 $App->params->ordersType = array();
 
-/* INVOICES PURCHASE type = 1 */
+/* INVOICES PURCHASE type = 0 */
 $App->params->tables['itep']  = DB_TABLE_PREFIX.'invoices_purchases';
 $App->params->fields['itep']  = array(
 	'id'=>array('label'=>'ID','required'=>false,'type'=>'autoinc','primary'=>true),
 	'id_owner'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>true,'type'=>'int','defValue'=>$App->userLoggedData->id),
 	'id_customer'=>array('label'=>$_lang['cliente'],'searchTable'=>false,'required'=>true,'type'=>'int','defValue'=>'0','validate'=>'int'),
-	'dateins'=>array('label'=>$_lang['data'],'searchTable'=>false,'required'=>true,'type'=>'date','defValue'=>$App->nowDate,'validate'=>'datepicker'),
-	'datesca'=>array('label'=>$_lang['data scadenza'],'searchTable'=>false,'required'=>true,'type'=>'date','defValue'=>$App->nowDate,'validate'=>'datepicker'),
+	'dateins'=>array('label'=>$_lang['data'],'searchTable'=>true,'required'=>true,'type'=>'date','defValue'=>$App->nowDate,'validate'=>'datepicker'),
+	'datesca'=>array('label'=>$_lang['data scadenza'],'searchTable'=>true,'required'=>true,'type'=>'date','defValue'=>$App->nowDate,'validate'=>'datepicker'),
 	'number'=>array('label'=>$_lang['numero'],'searchTable'=>true,'required'=>true,'type'=>'varchar','defValue'=>''),
-	'type'=>array('label'=>$_lang['tipo'],'searchTable'=>true,'required'=>true,'type'=>'varchar','defValue'=>'0','validate'=>'int'),
+	'type'=>array('label'=>$_lang['tipo'],'searchTable'=>false,'required'=>true,'type'=>'varchar','defValue'=>'0','validate'=>'int'),
 	'created'=>array('label'=>$_lang['creazione'],'searchTable'=>false,'required'=>false,'type'=>'datatime','defValue'=>$App->nowDateTime,'validate'=>'datetimeiso'),
 	'active'=>array('label'=>ucfirst($_lang['attiva']),'required'=>false,'type'=>'int','defValue'=>'0','validate'=>'int')
 	);
@@ -48,14 +48,14 @@ $App->params->fields['ites']  = array(
 	'id'=>array('label'=>'ID','required'=>false,'type'=>'autoinc','primary'=>true),
 	'id_owner'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>true,'type'=>'int','defValue'=>$App->userLoggedData->id),
 	'id_customer'=>array('label'=>$_lang['cliente'],'searchTable'=>false,'required'=>true,'type'=>'int','defValue'=>'0','validate'=>'int'),
-	'dateins'=>array('label'=>$_lang['data'],'searchTable'=>false,'required'=>true,'type'=>'date','defValue'=>$App->nowDate,'validate'=>'datepicker'),
-	'datesca'=>array('label'=>$_lang['data scadenza'],'searchTable'=>false,'required'=>true,'type'=>'date','defValue'=>$App->nowDate,'validate'=>'datepicker'),
+	'dateins'=>array('label'=>$_lang['data'],'searchTable'=>true,'required'=>true,'type'=>'date','defValue'=>$App->nowDate,'validate'=>'datepicker'),
+	'datesca'=>array('label'=>$_lang['data scadenza'],'searchTable'=>true,'required'=>true,'type'=>'date','defValue'=>$App->nowDate,'validate'=>'datepicker'),
 	'number'=>array('label'=>$_lang['numero'],'searchTable'=>true,'required'=>true,'type'=>'varchar','defValue'=>''),
 	'note'=>array('label'=>$_lang['Note (visibili in fattura)'],'searchTable'=>true,'required'=>false,'type'=>'varchar','defValue'=>''),
-	'type'=>array('label'=>$_lang['tipo'],'searchTable'=>true,'required'=>true,'type'=>'varchar','defValue'=>'0','validate'=>'int'),
+	'type'=>array('label'=>$_lang['tipo'],'searchTable'=>false,'required'=>true,'type'=>'varchar','defValue'=>'0','validate'=>'int'),
 	
 	'tax'=>array('label'=>'IVA','searchTable'=>false,'required'=>false,'type'=>'int','defValue'=>'0','validate'=>'int'),
-	'rivalsa'=>array('label'=>'Rivalsa','searchTable'=>true,'required'=>false,'type'=>'int','defValue'=>'0','validate'=>'int'),
+	'rivalsa'=>array('label'=>'Rivalsa','searchTable'=>false,'required'=>false,'type'=>'int','defValue'=>'0','validate'=>'int'),
 
 	'created'=>array('label'=>$_lang['creazione'],'searchTable'=>false,'required'=>false,'type'=>'datatime','defValue'=>$App->nowDateTime,'validate'=>'datetimeiso'),
 	'active'=>array('label'=>ucfirst($_lang['attiva']),'required'=>false,'type'=>'int','defValue'=>'0','validate'=>'int')

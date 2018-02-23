@@ -88,11 +88,11 @@ Core::getRequest($globalSettings['requestoption']);
 /* UTENTE */
 $App->userLoggedData = new stdClass();
 
-if (!isset($_MY_SESSION_VARS['ad-user']['id'])){
+if (!isset($_MY_SESSION_VARS['idUser'])){
 	if (Core::$request->action != "nopassword" && Core::$request->action != "nousername") Core::$request->action = 'login';
 	} else {
 		/* carica dati utente loggato */		
-		Sql::initQuery(DB_TABLE_PREFIX.'users',array('*'),array($_MY_SESSION_VARS['ad-user']['id']),'active = 1 AND id = ?','');
+		Sql::initQuery(DB_TABLE_PREFIX.'users',array('*'),array($_MY_SESSION_VARS['idUser']),'active = 1 AND id = ?','');
 		$App->userLoggedData = Sql::getRecord();
 		$App->userLoggedData->is_root = intval($App->userLoggedData->is_root);
 		}	
@@ -155,7 +155,6 @@ if (in_array(Core::$request->action,$App->modulesCore) == true) {
 	}
 
 if (file_exists(PATH.$pathApplication.$action.$index)) {
-	$_MY_SESSION_VARS = $my_session->addSessionsModuleVars($_MY_SESSION_VARS,Core::$request->action,array('page'=>1,'ifp'=>'10'));
 	include_once(PATH.$pathApplication.$action.$index);
 	} else {
 		Core::$request->action = $App->first_module_active;

@@ -14,6 +14,11 @@
 		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 		<!-- MetisMenu CSS -->
     	<link href="{{ URLSITE }}templates/{{ App.templateUser }}/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+		<!-- DataTables CSS -->
+		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
+		<!-- DataTables Responsive CSS -->
+		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/bower_components/datatables-responsive/css/dataTables.responsive.css" rel="stylesheet">
+    	
 		<!-- Custom CSS -->
 		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/css/sb-admin-2.css" rel="stylesheet">
 		<!-- Custom Fonts -->
@@ -48,7 +53,8 @@
 			sitePath = '{{ PATHSITE }}';			
 			siteTemplateUrl = '{{ URLSITE }}templates/{{ App.templateUser }}/';
 			siteTemplatePath = '{{ PATHSITE }}templates/{{ App.templateUser }}/';			
-			siteDocumentPath = '{{ PATHDOCUMENT }}';		
+			siteDocumentPath = '{{ PATHDOCUMENT }}';	
+			CoreRequestAction = '{{ CoreRequest.action }}';			
 			var cur_lang = "{{ Lang['user'] }}";
 			var messages = new Array();
 			messages['Sei sicuro?'] = '{{ Lang['Sei sicuro?']|e('js') }}';	
@@ -171,6 +177,10 @@
  		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
  		<!-- Metis Menu Plugin JavaScript -->
  		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/bower_components/metisMenu/dist/metisMenu.min.js"></script>
+ 		<!-- DataTables JavaScript -->
+		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/bower_components/datatables-responsive/js/dataTables.responsive.js"></script>
 
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/bootbox/js/bootbox.min.js" type="text/javascript"></script>
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/lightbox/js/lightbox.min.js" type="text/javascript"></script>

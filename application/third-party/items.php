@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * third-party/items.php v.1.0.0. 08/02/2018
+ * third-party/items.php v.1.0.0. 19/02/2018
 */
 
 if (isset($_POST['itemsforpage']) && isset($_MY_SESSION_VARS[$App->sessionName]['ifp']) && $_MY_SESSION_VARS[$App->sessionName]['ifp'] != $_POST['itemsforpage']) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'ifp',$_POST['itemsforpage']);
@@ -27,8 +27,8 @@ switch(Core::$request->method) {
 	case 'deleteItem':
 		if ($App->id > 0) {
 			Sql::initQuery($App->params->tables['item'],array('id'),array($App->id),'id = ?');
-			Sql::deleteRecord();
-			if(Core::$resultOp->error == 0) {
+			//Sql::deleteRecord();
+			if (Core::$resultOp->error == 0) {
 				Core::$resultOp->message = ucfirst($_lang['voce cancellata']).'!';
 				}
 			}		
@@ -116,6 +116,83 @@ switch(Core::$request->method) {
 		$App->viewMethod = 'list';		
 	break;
 
+	case 'listAjaxItem':
+		//Core::setDebugMode(1);
+		//print_r($_REQUEST);
+		
+		/* limit */		
+		if (isset($_REQUEST['start']) && $_REQUEST['length'] != '-1') {
+			$limit = " LIMIT ".$_REQUEST['length']." OFFSET ".$_REQUEST['start'];
+			}				
+		/* end limit */	
+			
+		/* orders */
+		$orderFields = array('id','type','ragione_sociale','email');
+		$order = array();	
+		if (isset($_REQUEST['order']) && is_array($_REQUEST['order']) && count($_REQUEST['order']) > 0) {		
+			foreach ($_REQUEST['order'] AS $key=>$value)	{				
+				$order[] = $orderFields[$value['column']].' '.$value['dir'];
+				}
+			}
+		/* end orders */		
+			
+		/* search */
+		/* aggiunge campi join */
+		$App->params->fields['item']['t.title'] = array('searchTable'=>true,'type'=>'int');
+		$App->params->fields['item']['sca.title'] = array('searchTable'=>true,'type'=>'varchar');
+		$where = '';
+		$and = '';
+		$fieldsValue = array();
+		if (isset($_REQUEST['search']) && is_array($_REQUEST['search']) && count($_REQUEST['search']) > 0) {		
+			if (isset($_REQUEST['search']['value']) && $_REQUEST['search']['value'] != '') {
+				list($w,$fv) = Sql::getClauseVarsFromAppSession($_REQUEST['search']['value'],$App->params->fields['item'],'');
+				if ($w != '') {
+					$where .= $and."(".$w.")";
+					$and = ' AND ';
+					}
+				if (is_array($fv) && count($fv) > 0) $fieldsValue = array_merge($fieldsValue,$fv);
+				
+				}
+			}
+		/* end search */
+		
+		$table = $App->params->tables['item']." AS ite";
+		$table .= " LEFT JOIN ".$App->params->tables['type']." AS t ON (ite.id_type = t.id)";
+		$table .= " LEFT JOIN ".$App->params->tables['scat']." AS sca ON (ite.id_cat = sca.id)";
+		$fields[] = "ite.*";
+		$fields[] = "t.title AS type";
+		$fields[] = "sca.title AS category";
+		Sql::initQuery($table,$fields,$fieldsValue,$where,implode(', ', $order),$limit);
+		if (Core::$resultOp->error <> 1) $obj = Sql::getRecords();
+
+		/* sistemo dati */	
+		$arr = array();
+		if (is_array($obj) && count($obj) > 0) {
+			foreach ($obj AS $key=>$value) {
+				$value->active = 1;
+				$actions = '<a class="btn btn-default btn-circle" href="'.URL_SITE.Core::$request->action.'/'.($value->active == 1 ? 'disactive' : 'active').'Item/'.$value->id.'" title="'.($value->active == 1 ? ucfirst($_lang['disattiva']).' '.$_lang['la voce'] : ucfirst($_lang['attiva']).' '.$_lang['la voce']).'"><i class="fa fa-'.($value->active == 1 ? 'unlock' : 'lock').'"> </i></a><a class="btn btn-default btn-circle" href="'.URL_SITE.Core::$request->action.'/modifyItem/'.$value->id.'" title="'.ucfirst($_lang['modifica']).' '.$_lang['la voce'].'"><i class="fa fa-edit"> </i></a><a class="btn btn-default btn-circle confirmdelete" href="'.URL_SITE.Core::$request->action.'/deleteItem/'.$value->id.'" title="'.ucfirst($_lang['cancella']).' '.$_lang['la voce'].'"><i class="fa fa-cut"> </i></a>';
+				$tablefields = array(
+					'id'=>$value->id,
+					'category'=>$value->category,
+					'type'=>$value->type,
+					'ragione_sociale'=>$value->ragione_sociale,
+					'email'=>$value->email,
+					'actions'=>$actions
+					);
+				$arr[] = $tablefields;
+				}
+			}
+		$totalRows = Sql::getTotalsItems();
+		$App->items = $arr;
+		$json = array();
+		$json['draw'] = intval($_REQUEST['draw']);
+		$json['recordsTotal'] = $totalRows;
+		$json['recordsFiltered'] = $totalRows;
+		$json['data'] = $App->items;	
+		echo json_encode($json);
+		die();
+	break;
+
 	case 'listItem':
 		$App->viewMethod = 'list';		
 	break;
@@ -157,32 +234,6 @@ switch((string)$App->viewMethod) {
 	break;
 
 	case 'list':
-		$App->item = new stdClass;	
-		$App->subcategories = new stdClass();
-		/* select per subcategories */
-		$opt = array('tableCat'=>$App->params->tables['scat'],'type'=>0,'multilanguage'=>0,'ordering'=>0,'languages'=>$globalSettings['languages'],'lang'=>$_lang['user']);
-		$App->subcategories = Categories::getObjFromSubCategories($opt);									
-		$App->itemsForPage = (isset($_MY_SESSION_VARS[$App->sessionName]['ifp']) ? $_MY_SESSION_VARS[$App->sessionName]['ifp'] : 5);
-		$App->page = (isset($_MY_SESSION_VARS[$App->sessionName]['page']) ? $_MY_SESSION_VARS[$App->sessionName]['page'] : 1);
-		$qryFields = array('ite.*','sca.title AS category');
-		
-		$qryFieldsValues = array();
-		$qryFieldsValuesClause = array();
-		$clause = '';
-		$and = "";
-		if (isset($_MY_SESSION_VARS[$App->sessionName]['srcTab']) && $_MY_SESSION_VARS[$App->sessionName]['srcTab'] != '') {
-			list($sessClause,$qryFieldsValuesClause) = Sql::getClauseVarsFromAppSession($_MY_SESSION_VARS[$App->sessionName]['srcTab'],$App->params->fields['item'],'');
-			}		
-		if (isset($sessClause) && $sessClause != '') $clause .=  $and.'('.$sessClause.')';
-		if (is_array($qryFieldsValuesClause) && count($qryFieldsValuesClause) > 0) {
-			$qryFieldsValues = array_merge($qryFieldsValues,$qryFieldsValuesClause);	
-			}
-		Sql::initQuery($App->params->tables['item']." AS ite LEFT JOIN ".$App->params->tables['scat']." AS sca ON (ite.id_cat = sca.id)",$qryFields,$qryFieldsValues,$clause);
-		Sql::setItemsForPage($App->itemsForPage);	
-		Sql::setPage($App->page);		
-		Sql::setResultPaged(true);
-		if (Core::$resultOp->error <> 1) $App->items = Sql::getRecords();
-		$App->pagination = Utilities::getPagination($App->page,Sql::getTotalsItems(),$App->itemsForPage);
 		$App->pageSubTitle = $_lang['lista delle voci'];
 		$App->templateApp = 'listItem.tpl.php';
 		$App->jscript[] = '<script src="'.URL_SITE.'application/'.Core::$request->action.'/templates/'.$App->templateUser.'/js/listItem.js"></script>';	

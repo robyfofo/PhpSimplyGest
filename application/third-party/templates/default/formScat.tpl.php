@@ -1,4 +1,4 @@
-<!-- customers/formScat.tpl.php v.1.0.0. 22/11/2017 -->
+<!-- customers/formScat.tpl.php v.1.0.0. 17/02/2018 -->
 <div class="row">
 	<div class="col-md-3 new">
  	</div>
@@ -23,7 +23,7 @@
 						<div class="form-group">
 							<label for="title_{{ lang }}ID" class="col-md-2 control-label">{{ Lang['titolo']|capitalize }} {{ lang }}</label>
 							<div class="col-md-7">
-								<input required type="text" class="form-control" name="title" placeholder="{{ Lang['inserisci un titolo']|capitalize }}" id="titleID" value="{{ App.item.title }}">
+								<input required type="text" class="form-control" name="title" placeholder="{{ Lang['inserisci un titolo']|capitalize }}" id="titleID" value="{{ App.item.title|e('html') }}">
 							</div>
 						</div>
 						<hr>
@@ -34,7 +34,7 @@
 									<option value="0"></option>
 									{% if App.parents is iterable %}
 										{% for key,value in App.parents %}
-											<option value="{{ value.id }}"{% if App.item.parent == value.id %} selected="selected"{% endif %}>{{ value.levelString }}{{ value.title }}</option>														
+											<option value="{{ value.id }}"{% if App.item.parent == value.id %} selected="selected"{% endif %}>{{ value.levelString }}{{ value.title|e('html') }}</option>														
 										{% endfor %}
 									{% endif %}
 								</select>									

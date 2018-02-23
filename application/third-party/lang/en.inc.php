@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * Third-party language EN v.1.0.0. 08/02/2018
+ * Third-party language EN v.1.0.0. 19/02/2018
 */
 
 $_lang['lista delle voci'] = 'customers list';

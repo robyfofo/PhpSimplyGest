@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * classes/class.Sql.php v.1.0.0. 16/02/2018
+ * classes/class.Sql.php v.1.0.0. 22/02/2018
 */
 
 class Sql extends Core {
@@ -90,7 +90,10 @@ class Sql extends Core {
 			self::$qry = "SELECT ".implode(',',self::$fields)." FROM ".self::$table.$clause;		
 			} else {
 				self::$qry = self::$customQry.$clause;
-				}			
+				}
+		/* aggiunge opt groupby */
+		if (isset(self::$opts['groupby']) && self::$opts['groupby'] != '') self::$qry .= ' GROUP BY '.self::$opts['groupby'];
+					
 		/* sezione order */
 		if (self::$order != '') self::$qry .= ' ORDER BY '.self::$order;		
 				
@@ -511,7 +514,6 @@ class Sql extends Core {
 			return $firstId;	
 		}
 		
-		
 	 public static function getClauseVarsFromAppSession($sessionApp,$fields,$clauseWhere='',$opz=array()) { 
 	 	$tableAlias = (isset($opz['tableAlias']) ? $opz['tableAlias'] : '');
 		$fieldsSearch = Toolsstrings::multiSearch($fields, array('searchTable' => true));
@@ -835,7 +837,7 @@ class Sql extends Core {
 		self::$clause = $clause;
 		self::$limit = $limit;
 		self::$order = $order;
-		self::$opts = '';
+		self::$opts = $opts;
 		self::$qry = '';
 		self::$customQry = '';
 		self::$resultRecords = 0;

@@ -103,6 +103,108 @@ switch(Core::$request->method) {
 		$App->viewMethod = 'list';		
 	break;
 
+	case 'listAjaxItes':
+		//Core::setDebugMode(1);
+		//print_r($_REQUEST);
+
+		/* limit */		
+		if (isset($_REQUEST['start']) && $_REQUEST['length'] != '-1') {
+			$limit = " LIMIT ".$_REQUEST['length']." OFFSET ".$_REQUEST['start'];
+			}				
+		/* end limit */	
+
+		/* orders */
+		$orderFields = array('id','dateins','datesca','customer','number','note','total','total_tax','total_invoice');
+		$order = array();	
+		if (isset($_REQUEST['order']) && is_array($_REQUEST['order']) && count($_REQUEST['order']) > 0) {		
+			foreach ($_REQUEST['order'] AS $key=>$value)	{				
+				$order[] = $orderFields[$value['column']].' '.$value['dir'];
+				}
+			}
+		/* end orders */		
+
+		/* search */
+		/* aggiunge campi join */
+		
+		$App->params->fields['itas']['cus.ragione_sociale'] = array('searchTable'=>true,'type'=>'varchar');
+		//$App->params->fields['itap']['ite.total'] = array('searchTable'=>true,'type'=>'float');
+		$where = 'ite.id_owner';
+		$and = ' AND ';
+		$fieldsValue = array($App->userLoggedData->id);
+		if (isset($_REQUEST['search']) && is_array($_REQUEST['search']) && count($_REQUEST['search']) > 0) {		
+			if (isset($_REQUEST['search']['value']) && $_REQUEST['search']['value'] != '') {
+				list($w,$fv) = Sql::getClauseVarsFromAppSession($_REQUEST['search']['value'],$App->params->fields['itas'],'');
+				if ($w != '') {
+					$where .= $and."(".$w.")";
+					$and = ' AND ';
+					}
+				if (is_array($fv) && count($fv) > 0) $fieldsValue = array_merge($fieldsValue,$fv);
+				
+				}
+			}
+		/* end search */
+
+		$table = $App->params->tables['ites']." AS ite";
+		$table .= " LEFT JOIN ".$App->params->tables['cust']." AS cus  ON (ite.id_customer = cus.id)";
+		$table .= " LEFT JOIN ".$App->params->tables['itas']." AS art  ON (ite.id = art.id_invoice)";		
+		$fields[] = 'ite.*';
+		$fields[] = "cus.ragione_sociale AS customer";
+		$fields[] = "SUM(art.price_total) AS total,SUM(art.price_tax) AS total_tax";
+		$fields[] = "SUM(art.price_total) + ((SUM(art.price_total) * ite.tax) / 100) + ((SUM(art.price_total) * ite.rivalsa) / 100) AS total_invoice";
+		Sql::initQuery($table,$fields,$fieldsValue,$where,implode(', ', $order),$limit,array('groupby'=>'ite.id'));
+		if (Core::$resultOp->error <> 1) $obj = Sql::getRecords();
+		//print_r($obj);
+		/* sistemo dati */	
+		$arr = array();
+		if (is_array($obj) && count($obj) > 0) {
+			foreach ($obj AS $key=>$value) {
+				/* crea la colonna actions */
+				$value->active = 1;
+				$actions = '<a class="btn btn-default btn-circle" href="'.URL_SITE.Core::$request->action.'/'.($value->active == 1 ? 'disactive' : 'active').'Item/'.$value->id.'" title="'.($value->active == 1 ? ucfirst($_lang['disattiva']).' '.$_lang['la voce'] : ucfirst($_lang['attiva']).' '.$_lang['la voce']).'"><i class="fa fa-'.($value->active == 1 ? 'unlock' : 'lock').'"> </i></a><a class="btn btn-default btn-circle" href="'.URL_SITE.Core::$request->action.'/modifyItem/'.$value->id.'" title="'.ucfirst($_lang['modifica']).' '.$_lang['la voce'].'"><i class="fa fa-edit"> </i></a><a class="btn btn-default btn-circle confirmdelete" href="'.URL_SITE.Core::$request->action.'/deleteItem/'.$value->id.'" title="'.ucfirst($_lang['cancella']).' '.$_lang['la voce'].'"><i class="fa fa-cut"> </i></a>';
+				$data = DateTime::createFromFormat('Y-m-d',$value->dateins);
+				$data1 = DateTime::createFromFormat('Y-m-d',$value->datesca);
+
+					
+				
+				/* calcola tassa aggiuntiva */
+				$invoiceTotalTax = 0;
+				if ($value->tax > 0) $invoiceTotalTax = ($value->total * $value->tax) / 100;
+								
+				/* calcola rivalsa */
+				$invoiceTotalRivalsa = 0;
+				if ($value->rivalsa > 0) $invoiceTotalRivalsa = ($value->total * $value->rivalsa) / 100;	
+					
+				
+				$value->totalLabel = '€ '.number_format($value->total,2,',','.');
+				$value->totalTaxesLabel = '€ '.number_format($value->total_tax + $invoiceTotalTax + $invoiceTotalRivalsa,2,',','.');
+				$value->totalInvoiceLabel = '€ '.number_format($value->total + $invoiceTotalTax + $invoiceTotalRivalsa,2,',','.');
+				$value->totalInvoiceLabel = '€ '.number_format($value->total_invoice,2,',','.');
+								
+				$tablefields = array(
+					'id'=>$value->id,
+					'number'=>$value->number,
+					'dateinslocal'=>$data->format($_lang['data format']),
+					'datescalocal'=>$data1->format($_lang['data format']),
+					'customer'=>$value->customer,
+					'note'=>$value->note,
+					'total'=>$value->totalLabel,
+					'totaltaxes'=>$value->totalTaxesLabel,
+					'totalinvoice'=>$value->totalInvoiceLabel,
+					'actions'=>$actions
+					);
+				$arr[] = $tablefields;
+				}
+			}
+		$totalRows = Sql::getTotalsItems();
+		$App->items = $arr;
+		$json = array();
+		$json['draw'] = intval($_REQUEST['draw']);
+		$json['recordsTotal'] = $totalRows;
+		$json['recordsFiltered'] = $totalRows;
+		$json['data'] = $App->items;	
+		echo json_encode($json);
+		die();
+	break;
 	default;	
 		$App->viewMethod = 'list';	
 	break;	
@@ -139,81 +241,12 @@ switch((string)$App->viewMethod) {
 	break;
 
 	case 'list':
-		$App->items = new stdClass;	
 		$App->item = new stdClass;		
 		$App->item->dateins = $App->nowDate;
 		$App->item->datesca = $App->nowDate;
-		$App->subcategories = new stdClass();
-		$App->itemsForPage = (isset($_MY_SESSION_VARS[$App->sessionName]['ifp']) ? $_MY_SESSION_VARS[$App->sessionName]['ifp'] : 5);
-		$App->page = (isset($_MY_SESSION_VARS[$App->sessionName]['page']) ? $_MY_SESSION_VARS[$App->sessionName]['page'] : 1);
-		$qryFields[] = '*';
-		$qryFieldsValues = array($App->type,$App->userLoggedData->id);
-		$qryFieldsValuesClause = array();
-		$clause = 'type = ? AND id_owner = ?';
-		$and = " AND ";
-		if (isset($_MY_SESSION_VARS[$App->sessionName]['srcTab']) && $_MY_SESSION_VARS[$App->sessionName]['srcTab'] != '') {
-			list($sessClause,$qryFieldsValuesClause) = Sql::getClauseVarsFromAppSession($_MY_SESSION_VARS[$App->sessionName]['srcTab'],$App->params->fields['ites'],'');
-			}		
-		if (isset($sessClause) && $sessClause != '') $clause .=  $and.'('.$sessClause.')';
-		if (is_array($qryFieldsValuesClause) && count($qryFieldsValuesClause) > 0) {
-			$qryFieldsValues = array_merge($qryFieldsValues,$qryFieldsValuesClause);	
-			}
-		Sql::initQuery($App->params->tables['ites'],$qryFields,$qryFieldsValues,$clause);
-		Sql::setItemsForPage($App->itemsForPage);	
-		Sql::setPage($App->page);	
-		Sql::setOrder('dateins DESC,datesca DESC');	
-		Sql::setResultPaged(true);
-		if (Core::$resultOp->error <> 1) $obj = Sql::getRecords();	
-		/* sistemo dati */	
-		$arr = array();
-		if (is_array($obj) && count($obj) > 0) {
-			foreach ($obj AS $key=>$value) {
-				$value->customer = '';
-				if ($value->id_customer > 0 && isset($App->customers[$value->id_customer]->name)) $value->customer = $App->customers[$value->id_customer]->ragione_sociale;
-				//$field = 'title_'.$_lang['user'];
-				//if (isset($value->$field)) $value->title = $value->$field;
-				$data = DateTime::createFromFormat('Y-m-d',$value->dateins);
-				$value->dateinslocal = $data->format($_lang['data format']);
-				$data = DateTime::createFromFormat('Y-m-d',$value->datesca);
-				$value->datescalocal = $data->format($_lang['data format']);
-				
-				/* calcola totali */
-				Sql::initQuery($App->params->tables['itas'],array('SUM(price_total) AS total','SUM(price_tax) AS total_tax'),array($value->id),' id_invoice = ? ');
-				$obj1 = Sql::getRecord();
-				$value->total = (float)0.00;
-				if (isset($obj1->total)) {
-					$value->total = (float)$obj1->total;
-					}
-				$value->total_tax_articles = (float)0.00;
-				if (isset($obj1->total_tax)) {
-					$value->total_tax_articles = (float)$obj1->total_tax;
-					}
-					
-				
-				/* calcola tassa aggiuntiva */
-				$invoiceTotalTax = 0;
-				if ($value->tax > 0) $invoiceTotalTax = ($value->total * $value->tax) / 100;
-								
-				/* calcola rivalsa */
-				$invoiceTotalRivalsa = 0;
-				if ($value->rivalsa > 0) $invoiceTotalRivalsa = ($value->total * $value->rivalsa) / 100;	
-					
-				
-				$value->totalLabel = '€ '.number_format($value->total,2,',','.');
-				$value->totalTaxesLabel = '€ '.number_format($value->total_tax_articles + $invoiceTotalTax + $invoiceTotalRivalsa,2,',','.');
-				$value->totalInvoiceLabel = '€ '.number_format($value->total + $invoiceTotalTax + $invoiceTotalRivalsa,2,',','.');
-				$arr[] = $value;
-				
-				
-				
-				}
-			}
-		$App->items = $arr;
-		$App->pagination = Utilities::getPagination($App->page,Sql::getTotalsItems(),$App->itemsForPage);
 		$App->pageSubTitle = $_lang['lista delle voci'];
 		$App->templateApp = 'listItes.tpl.php';
 		$App->jscript[] = '<script src="'.URL_SITE.'application/'.Core::$request->action.'/templates/'.$App->templateUser.'/js/listItes.js"></script>';	
-		
 	break;
 	
 	default:

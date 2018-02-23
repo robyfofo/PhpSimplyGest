@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * language EN v.1.0.0. 16/02/2018
+ * language EN v.1.0.0. 19/02/2018
 */
 
 $_lang['user'] = 'en';
@@ -82,6 +82,8 @@ $_lang['voci per pagina'] = "item for page";
 
 $_lang['creazione'] = "created";
 $_lang['Sei sicuro?'] = "Are you sure?";
+$_lang['caricamento'] = "loading";
+$_lang['processo dati'] = "data processing";
 
 /* status */
 $_lang['preventivato'] = "budgeted";
@@ -374,8 +376,20 @@ $_lang['lista dei '] = "list ";
 $_lang['lista delle '] = "list ";
 
 $_lang['mostra da %START% a %END% di %ITEM% elementi'] = 'view from %START% to %END% of %ITEM% elements';
+$_lang['Mostra pagina _PAGE_ di _PAGES_'] = "View pages _PAGE_ of _PAGES_";
+$_lang['Mostra _MENU_ voci per pagina'] = "View _MENU_ items for page";
+$_lang['fitrati da _MAX_ voci totali'] = "filtered from _MAX_ total items";
 $_lang['precedente'] = "previous";
 $_lang['prossima'] = "next";
+$_lang['prossimo'] = "next";
+$_lang['primi'] = "first";
+$_lang['prime'] = "first";
+$_lang['primo'] = "first";
+$_lang['prima'] = "first";
+$_lang['ultimi'] = "last";
+$_lang['ultime'] = "last";
+$_lang['ultimo'] = "last";
+$_lang['ultima'] = "last";
 
 $_lang['inserisci un titolo'] = "enter a title";
 $_lang['inserisci un costo_orario'] = "enter a cost for hour";
