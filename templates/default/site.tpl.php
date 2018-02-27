@@ -49,12 +49,12 @@
 
 		<!-- default vars useful for javascript -->
 		<script language="javascript">
-			siteUrl = '{{ URLSITE }}';
-			sitePath = '{{ PATHSITE }}';			
-			siteTemplateUrl = '{{ URLSITE }}templates/{{ App.templateUser }}/';
-			siteTemplatePath = '{{ PATHSITE }}templates/{{ App.templateUser }}/';			
-			siteDocumentPath = '{{ PATHDOCUMENT }}';	
-			CoreRequestAction = '{{ CoreRequest.action }}';			
+			var siteUrl = '{{ URLSITE }}';
+			var sitePath = '{{ PATHSITE }}';			
+			var siteTemplateUrl = '{{ URLSITE }}templates/{{ App.templateUser }}/';
+			var siteTemplatePath = '{{ PATHSITE }}templates/{{ App.templateUser }}/';			
+			var siteDocumentPath = '{{ PATHDOCUMENT }}';	
+			var CoreRequestAction = '{{ CoreRequest.action }}';			
 			var cur_lang = "{{ Lang['user'] }}";
 			var messages = new Array();
 			messages['Sei sicuro?'] = '{{ Lang['Sei sicuro?']|e('js') }}';	

@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * Invoices language IT v.1.0.0. 26/01/2018
+ * Invoices language IT v.1.0.0. 26/02/2018
 */
 
 $_lang['lista delle voci'] = 'lista delle fatture vendite';
@@ -16,7 +16,7 @@ $_lang['voce inserita'] = 'fattura vendita inserita';
 $_lang['modifica voce'] = 'modifica fattura vendita';
 $_lang['voce modificata'] = 'fattura vendita modificata';
 $_lang['cancella voce'] = 'cancella fattura vendita';
-$_lang['voce cancellata'] = 'fattura vendita modificata';
+$_lang['voce cancellata'] = 'fattura vendita cancellata';
 $_lang['voce attivata'] = "fattura vendita attivata";
 $_lang['voce disattivata'] = "fattura vendita disattivata";
 $_lang['la voce']  = "la fattura vendita";
@@ -29,7 +29,7 @@ $_lang['voce-p inserita'] = 'fattura acquisto inserita';
 $_lang['modifica voce-p'] = 'modifica fattura acquisto';
 $_lang['voce-p modificata'] = 'fattura acquisto modificata';
 $_lang['cancella voce-p'] = 'cancella fattura acquisto';
-$_lang['voce-p cancellata'] = 'fattura acquisto modificata';
+$_lang['voce-p cancellata'] = 'fattura acquisto cancellata';
 $_lang['voce-p attivata'] = "fattura acquisto attivata";
 $_lang['voce-p disattivata'] = "fattura acquisto disattivata";
 $_lang['la voce-p']  = "la fattura acquisto";

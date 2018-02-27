@@ -1,4 +1,4 @@
-<!-- invoices/formItes.tpl.php v.1.0.0. 12/02/2018 -->
+<!-- invoices/formItes.tpl.php v.1.0.0. 26/02/2018 -->
 <div class="row">
 	<div class="col-md-3 new">
  	</div>
@@ -46,7 +46,7 @@
 								<select name="id_customer" id="id_customerID" class="form-control">
 									{% if App.customers is iterable and App.customers|length > 0 %}
 										{% for key,value in App.customers %}
-											<option value="{{ value.id }}"{% if App.item.id_customer == value.id %} selected="selected"{% endif %}>{{ value.name }}, {{ value.surname|e('html') }}</option>														
+											<option value="{{ value.id }}"{% if App.item.id_customer == value.id %} selected="selected"{% endif %}>{{ value.ragione_sociale|e('html') }}</option>														
 										{% endfor %}
 									{% endif %}
 								</select>								    	

@@ -2,9 +2,7 @@
 <?php if (is_array($App->items) && count($App->items) > 0): ?>
 	<?php foreach ($App->items AS $key=>$value): ?>	
 		<tr>
-			<?php if (isset($App->userLoggedData->is_root) && $App->userLoggedData->is_root === 1): ?>	
-				<td class="id"><?php echo $value->id; ?></td>
-			<?php endif; ?>
+			<td class="id"><?php echo $value->id; ?></td>
 			<td><?php echo $value->content; ?></td>
 			<td class="text-center"><?php echo $value->quantity; ?></td>	
 			<td class="text-right"><?php echo number_format($value->price_unity,2,',','.'); ?></td>	

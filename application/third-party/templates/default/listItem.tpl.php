@@ -15,9 +15,7 @@
 		<table id="listDataID" class="table table-striped table-bordered table-hover listData">
 			<thead>
 				<tr>
-					{% if (App.userLoggedData.is_root is defined) and (App.userLoggedData.is_root is same as(1)) %}	
-						<th>ID</th>
-					{% endif %}	
+					<th>ID</th>
 					<th>{{ Lang['categoria']|capitalize }}</th>
 					<th>{{ Lang['tipo']|capitalize }}</th>
 					<th>{{ Lang['ragione sociale']|capitalize }}</th>

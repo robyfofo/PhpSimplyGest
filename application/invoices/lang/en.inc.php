@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * Invoices language EN v.1.0.0. 26/01/2018
+ * Invoices language EN v.1.0.0. 26/02/2018
 */
 
 $_lang['lista delle voci'] = 'invoices sale list';

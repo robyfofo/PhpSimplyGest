@@ -1,4 +1,4 @@
-<!-- invoices/formItep.tpl.php 09/02/2018 -->
+<!-- invoices/formItep.tpl.php 26/02/2018 -->
 <div class="row">
 	<div class="col-md-3 new">
  	</div>
@@ -46,7 +46,7 @@
 								<select name="id_customer" id="id_customerID" class="form-control">
 									{% if App.customers is iterable and App.customers|length > 0 %}
 										{% for key,value in App.customers %}
-											<option value="{{ value.id }}"{% if App.item.id_customer == value.id %} selected="selected"{% endif %}>{{ value.ragione_sociale }}</option>														
+											<option value="{{ value.id }}"{% if App.item.id_customer == value.id %} selected="selected"{% endif %}>{{ value.ragione_sociale|e('html') }}</option>														
 										{% endfor %}
 									{% endif %}
 								</select>								    	
@@ -56,7 +56,7 @@
 						<div class="form-group">
 							<label for="numberID" class="col-md-2 control-label">{{ Lang['numero']|capitalize }}</label>
 							<div class="col-md-7">
-								<input required type="text" name="number" class="form-control" id="numberID" placeholder="{{ Lang['inserisci un numero']|capitalize }}" value="{{ App.item.number }}">
+								<input required type="text" name="number" class="form-control" id="numberID" placeholder="{{ Lang['inserisci un numero']|capitalize }}" value="{{ App.item.number|e('html') }}">
 					    	</div>
 						</div>
 	

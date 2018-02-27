@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * app/index.php v.1.0.0. 16/01/2018
+ * app/index.php v.1.0.0. 27/02/2018
 */
 
 ini_set('display_errors',1);
@@ -190,6 +190,7 @@ if ($renderTpl == true && $App->templateApp != '') {
 		'App'=>$App,
 		'Lang'=>$_lang,
 		'URLSITE'=>URL_SITE,
+		'PATHSITE'=>URL_SITE,
 		'UPLOADDIR'=>UPLOAD_DIR,
 		'CoreRequest'=>Core::$request,
 		'CoreResultOp'=>Core::$resultOp,
@@ -199,7 +200,6 @@ if ($renderTpl == true && $App->templateApp != '') {
 	$loader = new Twig_Loader_Filesystem($pathtemplateApp);	
 	$loader->addPath($pathtemplateBase,'base');
 	$twig = new Twig_Environment($loader, array(
-		'cache' => PATH_UPLOAD_DIR.'compilation_cache',
 		'autoescape'=>false,
 		'debug' => true
 		));

@@ -40,7 +40,7 @@ switch(Core::$request->method) {
 			
 			if ($delete == true && Core::$resultOp->error == 0) {	
 				Sql::initQuery($App->params->tables['scat'],array('id'),array($App->id),'id = ?');
-				//Sql::deleteRecord();
+				Sql::deleteRecord();
 				if (Core::$resultOp->error == 0) {
 					Core::$resultOp->message = ucfirst($_lang['categoria cancellata']).'!';		
 					}

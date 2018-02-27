@@ -43,14 +43,14 @@ switch(substr(Core::$request->method,-4,4)) {
 		$App->sessionName .= '-artacquisti';
 		if (!isset($_MY_SESSION_VARS[$App->sessionName]['page'])) $_MY_SESSION_VARS = $my_session->addSessionsModuleVars($_MY_SESSION_VARS,$App->sessionName,array('page'=>1,'ifp'=>'10','srcTab'=>'','id_owner'=>''));
 		if (isset($App->params->tables['itap'])) $Module = new Module(Core::$request->action,$App->params->tables['itap']);
-		if (file_exists(PATH.$App->pathApplication.Core::$request->action."/items-ap.php")) include_once(PATH.$App->pathApplication.Core::$request->action."/items-ap.php");		
+		if (file_exists(PATH.$App->pathApplication.Core::$request->action."/itap.php")) include_once(PATH.$App->pathApplication.Core::$request->action."/items-ap.php");		
 	break;
 	case 'Itas':
 		/* Item */
 		$App->sessionName .= '-artvendite';
 		if (!isset($_MY_SESSION_VARS[$App->sessionName]['page'])) $_MY_SESSION_VARS = $my_session->addSessionsModuleVars($_MY_SESSION_VARS,$App->sessionName,array('page'=>1,'ifp'=>'10','srcTab'=>'','id_owner'=>''));
 		if (isset($App->params->tables['itas'])) $Module = new Module(Core::$request->action,$App->params->tables['itas']);
-		if (file_exists(PATH.$App->pathApplication.Core::$request->action."/items-as.php")) include_once(PATH.'application/'.Core::$request->action."/items-as.php");		
+		if (file_exists(PATH.$App->pathApplication.Core::$request->action."/itas.php")) include_once(PATH.'application/'.Core::$request->action."/items-as.php");		
 	break;	
 	case 'Ites':
 		$App->css[] = '<link href="'.URL_SITE.'templates/'.$App->templateUser.'/plugins/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">';
@@ -59,7 +59,7 @@ switch(substr(Core::$request->method,-4,4)) {
 		$App->sessionName .= '-vendite';
 		if (!isset($_MY_SESSION_VARS[$App->sessionName]['page'])) $_MY_SESSION_VARS = $my_session->addSessionsModuleVars($_MY_SESSION_VARS,$App->sessionName,array('page'=>1,'ifp'=>'10','srcTab'=>''));
 		if (isset($App->params->tables['ites'])) $Module = new Module(Core::$request->action,$App->params->tables['ites']);
-		if (file_exists(PATH.$App->pathApplication.Core::$request->action."/items-s.php")) include_once(PATH.'application/'.Core::$request->action."/items-s.php");
+		if (file_exists(PATH.$App->pathApplication.Core::$request->action."/ites.php")) include_once(PATH.'application/'.Core::$request->action."/items-s.php");
 		$App->defaultJavascript = "messages['inserisci articolo'] = '".addslashes(ucfirst($_lang['inserisci articolo']))."';".PHP_EOL;
 		$App->defaultJavascript .= "messages['inserisci testo articolo'] = '".addslashes(ucfirst($_lang['inserisci testo articolo']))."';".PHP_EOL;
 		$App->defaultJavascript .= "messages['modifica articolo'] = '".addslashes(ucfirst($_lang['modifica articolo']))."';".PHP_EOL;
@@ -81,7 +81,7 @@ switch(substr(Core::$request->method,-4,4)) {
 		$App->sessionName .= '-acquisti';
 		if (!isset($_MY_SESSION_VARS[$App->sessionName]['page'])) $_MY_SESSION_VARS = $my_session->addSessionsModuleVars($_MY_SESSION_VARS,$App->sessionName,array('page'=>1,'ifp'=>'10','srcTab'=>''));
 		if (isset($App->params->tables['itep'])) $Module = new Module(Core::$request->action,$App->params->tables['itep']);
-		if (file_exists(PATH.$App->pathApplication.Core::$request->action."/items-p.php")) include_once(PATH.'application/'.Core::$request->action."/items-p.php");
+		if (file_exists(PATH.$App->pathApplication.Core::$request->action."/itep.php")) include_once(PATH.'application/'.Core::$request->action."/items-p.php");
 		$App->defaultJavascript = "messages['inserisci articolo'] = '".addslashes(ucfirst($_lang['inserisci articolo']))."';".PHP_EOL;
 		$App->defaultJavascript .= "messages['inserisci testo articolo'] = '".addslashes(ucfirst($_lang['inserisci testo articolo']))."';".PHP_EOL;
 		$App->defaultJavascript .= "messages['modifica articolo'] = '".addslashes(ucfirst($_lang['modifica articolo']))."';".PHP_EOL;

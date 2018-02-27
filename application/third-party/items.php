@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * third-party/items.php v.1.0.0. 19/02/2018
+ * third-party/items.php v.1.0.0. 24/02/2018
 */
 
 if (isset($_POST['itemsforpage']) && isset($_MY_SESSION_VARS[$App->sessionName]['ifp']) && $_MY_SESSION_VARS[$App->sessionName]['ifp'] != $_POST['itemsforpage']) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'ifp',$_POST['itemsforpage']);
@@ -27,7 +27,7 @@ switch(Core::$request->method) {
 	case 'deleteItem':
 		if ($App->id > 0) {
 			Sql::initQuery($App->params->tables['item'],array('id'),array($App->id),'id = ?');
-			//Sql::deleteRecord();
+			Sql::deleteRecord();
 			if (Core::$resultOp->error == 0) {
 				Core::$resultOp->message = ucfirst($_lang['voce cancellata']).'!';
 				}
