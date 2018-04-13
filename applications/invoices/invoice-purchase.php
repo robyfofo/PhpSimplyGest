@@ -124,15 +124,14 @@ switch(Core::$request->method) {
 
 		/* search */
 		/* aggiunge campi join */
-		
-		$App->params->fields['itap']['cus.ragione_sociale'] = array('searchTable'=>true,'type'=>'varchar');
+		$App->params->fields['InvPur']['cus.ragione_sociale'] = array('searchTable'=>true,'type'=>'varchar');
 		//$App->params->fields['itap']['ite.total'] = array('searchTable'=>true,'type'=>'float');
-		$where = 'ite.id_owner';
+		$where = 'ite.id_owner = ?';
 		$and = ' AND ';
 		$fieldsValue = array($App->userLoggedData->id);
 		if (isset($_REQUEST['search']) && is_array($_REQUEST['search']) && count($_REQUEST['search']) > 0) {		
 			if (isset($_REQUEST['search']['value']) && $_REQUEST['search']['value'] != '') {
-				list($w,$fv) = Sql::getClauseVarsFromAppSession($_REQUEST['search']['value'],$App->params->fields['itap'],'');
+				list($w,$fv) = Sql::getClauseVarsFromAppSession($_REQUEST['search']['value'],$App->params->fields['InvPur'],'');
 				if ($w != '') {
 					$where .= $and."(".$w.")";
 					$and = ' AND ';
@@ -141,6 +140,7 @@ switch(Core::$request->method) {
 				
 				}
 			}
+		//print_r($fieldsValue);
 		/* end search */
 
 		$table = $App->params->tables['InvPur']." AS ite";
@@ -178,7 +178,7 @@ switch(Core::$request->method) {
 				$arr[] = $tablefields;
 				}
 			}
-		$totalRows = Sql::getTotalsItems();
+		$totalRows = count($arr);
 		$App->items = $arr;
 		$json = array();
 		$json['draw'] = intval($_REQUEST['draw']);

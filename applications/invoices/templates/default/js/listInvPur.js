@@ -22,21 +22,18 @@ $(document).ready(function() {
 		order: [
 			[ 1, "desc" ]
 			],
+
 		columns: [
-			{data: "id"},
-			{data: "dateinslocal" },
-			{data: "datescalocal" },
-			{data: "customer" },
-			{data: "number" },
-			{data: "total" },
-			{data: "articles" },
-			{data: "actions" }
-			],
-		columnDefs: [
-			{orderable: false, "targets": 6},
-    		{orderable: false, "targets": 7},
-    		{className: "text-right", "targets": 5},
-    		{className: "text-right", "targets": 6},
+			
+{ "data":"id","targets":0},
+{ "data":"dateinslocal","targets":1},
+{ "data":"datescalocal","targets":2},
+{ "data":"customer","targets":3},
+{ "data":"number","targets":4},
+{ "data":"total","targets":5,"className":"text-right"},
+{ "data":"articles","targets":6,"orderable":false},
+{ "data":"actions","targets":7,"orderable":false,"className":"text-right"}
+
   			],
 		language: {
 			sSearch: lang['search'],

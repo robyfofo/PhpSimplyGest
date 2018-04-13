@@ -104,13 +104,15 @@ if (in_array(DB_TABLE_PREFIX.'invoices_purchases',$tablesDb) && file_exists(PATH
 			'opz'=>array()
 			)
 		);	
-		
+	
+	$fields = array();
+	$fields[] = "i.*";
+	$fields[] = "(SELECT SUM(a.price_total) + SUM(a.price_tax) FROM ".DB_TABLE_PREFIX."invoices_purchases_articles AS a WHERE i.id = a.id_invoice) AS total ";	
 	$App->homeTables['invoices_purchases'] = array(
 		'table'=>DB_TABLE_PREFIX.'invoices_purchases AS i',
 		'sqloption'=> array(
-			'fields'=>"i.id,i.number,i.created AS created,(SELECT SUM(a.price_total) FROM ".DB_TABLE_PREFIX."invoices_purchases_articles AS a WHERE i.id = a.id_invoice) AS total",
+			'fields'=>implode(',',$fields),
 			'order'=>"created DESC"
-
 			),
 		'icon panel'=>'fa-wpforms',
 		'label'=>ucfirst($_lang['ultime']).' '.$_lang['fatture acquisti'],

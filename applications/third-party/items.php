@@ -182,7 +182,7 @@ switch(Core::$request->method) {
 				$arr[] = $tablefields;
 				}
 			}
-		$totalRows = Sql::getTotalsItems();
+		$totalRows = count($arr);
 		$App->items = $arr;
 		$json = array();
 		$json['draw'] = intval($_REQUEST['draw']);
@@ -216,7 +216,7 @@ switch((string)$App->viewMethod) {
 		if (Core::$resultOp->error == 1) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['item']);
 		$App->templateApp = 'formItem.tpl.php';
 		$App->methodForm = 'insertItem';	
-		$App->jscript[] = '<script src="'.URL_SITE.'application/'.Core::$request->action.'/templates/'.$App->templateUser.'/js/formItem.js"></script>';
+		$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/formItem.js"></script>';
 	break;
 	
 	case 'formMod':
@@ -230,13 +230,13 @@ switch((string)$App->viewMethod) {
 		if (Core::$resultOp->error == 1) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['item']);
 		$App->templateApp = 'formItem.tpl.php';
 		$App->methodForm = 'updateItem';	
-		$App->jscript[] = '<script src="'.URL_SITE.'application/'.Core::$request->action.'/templates/'.$App->templateUser.'/js/formItem.js"></script>';
+		$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/formItem.js"></script>';
 	break;
 
 	case 'list':
 		$App->pageSubTitle = $_lang['lista delle voci'];
 		$App->templateApp = 'listItem.tpl.php';
-		$App->jscript[] = '<script src="'.URL_SITE.'application/'.Core::$request->action.'/templates/'.$App->templateUser.'/js/listItem.js"></script>';	
+		$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/listItem.js"></script>';	
 	break;
 	
 	default:
