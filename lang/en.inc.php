@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * language EN v.1.0.0. 19/02/2018
+ * language EN v.1.0.0. 11/04/2018
 */
 
 $_lang['user'] = 'en';
@@ -56,6 +56,7 @@ $_lang['attiva %ITEM%'] = "active %ITEM%";
 $_lang['disattiva'] = "disactive";
 $_lang['disattiva %ITEM%'] = "disactive %ITEM%";
 $_lang['indietro'] = "back";
+$_lang['resetta'] = "reset";
 
 $_lang['gestisci'] = "manage";
 $_lang['loggati'] = "login";
@@ -150,6 +151,7 @@ $_lang['iva'] = "iva";
 $_lang['testo no iva'] = "testo no IVA";
 
 $_lang['totale'] = "total";
+$_lang['totali'] = "totals";
 $_lang['totale articoli'] = "totale articoli";
 $_lang['totale onorario'] = "totale onorario";
 $_lang['importo'] = "importo";
@@ -391,6 +393,8 @@ $_lang['ultime'] = "last";
 $_lang['ultimo'] = "last";
 $_lang['ultima'] = "last";
 
+$_lang['esporta in pdf'] = "esporta in pdf";
+
 $_lang['inserisci un titolo'] = "enter a title";
 $_lang['inserisci un costo_orario'] = "enter a cost for hour";
 $_lang['inserisci una percentuale di completamento'] = "enter a percentage of completion";
@@ -488,6 +492,7 @@ $_lang['La ora inizio deve essere prima della ora fine!'] = "The start time must
 /* messaggi errore */
 $_lang['Progetto non trovato!'] = "Project not found!";
 $_lang['Timecard non trovata!'] = "Timecard not found!";
+$_lang['Categoria non trovata!'] = "Categoria non trovata!";
 
 $_lang['Devi selezionare un progetto!'] = "You must select one project!";
 $_lang['Devi selezionare una timecard!'] = "You must select one timecard!";
@@ -505,6 +510,8 @@ $_lang['Intervallo ti tempo si sovrappone ad un altro inserito nella stessa data
 $_lang['Errore! Ci sono ancora voci associate!'] = "Errore! Ci sono ancora voci associate!";
 $_lang['Errore! Ci sono ancora figli associati!'] = "Errore! Ci sono ancora figli associati!";
 $_lang['Errore! Ci sono ancora prodotti associati!'] = "Errore! Ci sono ancora prodotti associati!";
+
+$_lang['Errore lettura dati categoria!'] = "Errore lettura dati categoria!";
 
 /* sezione core nousername */
 $_lang['nousername core - title'] = "Request user name.";

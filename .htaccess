@@ -6,7 +6,7 @@ SetEnvIfNoCase Request_URI \
 \.(?:gif|jpe?g|png)$ no-gzip dont-vary
 
 #Split the friendly URL and compose the real URL
-RewriteRule ^(ajax|scripts|classes|css|images|include|js|templates|tmp|application) - [L]
+RewriteRule ^(ajax|scripts|classes|css|images|include|js|templates|tmp|applications) - [L]
 
 #engine
 RewriteCond %{REQUEST_FILENAME} !-f

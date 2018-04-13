@@ -1,10 +1,10 @@
 <?php
 /*
-	framework siti html-PHP-Mysql
+	Framework App PHP-Mysql
 	copyright 2011 Roberto Mantovani
 	http://www.robertomantovani.vr;it
 	email: me@robertomantovani.vr.it
-	wscms/classes/class.Categories.php v.2.6.2. 22/02/2016
+	classes/class.Categories.php v.1.0.0. 27/03/2018
 */
 class Categories extends Core {	
 	static $totalpage = 0;
@@ -192,10 +192,8 @@ class Categories extends Core {
 					
 		if (isset($opt['qry']) && $opt['qry'] != '' ) $qry = $opt['qry'];		
 		$obj = '';
-		Sql::resetListTreeData();
 		Sql::resetListDataVar();
-		Sql::setListTreeData($qry,$initParent,$opt);
-		$obj = Sql::getListTreeData();
+		$obj = Sql::getListParentData($qry,array(),$initParent,$opt);
 		return $obj;		
 		}
 				

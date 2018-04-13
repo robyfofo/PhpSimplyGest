@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * classes/class.Sql.php v.1.0.0. 22/02/2018
+ * classes/class.Sql.php v.1.0.0. 27/03/2018
 */
 
 class Sql extends Core {
@@ -31,7 +31,6 @@ class Sql extends Core {
 	static $foundRows = 0;
 		
 	static $breadcrumbs = array();
-	static $listTreeData = '';	
 	static $countA = 0;	
 	static $parentstring = '';
 	static $pretitleparent = '';	
@@ -636,21 +635,13 @@ class Sql extends Core {
   	
    	/* VOCI ALBERO */
 	
-	public static function setListTreeData($qry,$parent = 0,$opt=array()) {
-		$optDef = array('type'=>1,'multilanguage'=>1);	
+   public static function getListParentData($qry,$listdata = array(),$parent = 0,$opt=array()) {
+   	$optDef = array('getbreadcrumbs'=>1,'languages'=>array('it','en'),'lang'=>'it','levelString'=>'-->','noId'=>0,'fieldKey'=>'id','hideId'=>0,'hideSons'=>0,'hideLabel'=>0,'rifId'=>'id','rifIdValue'=>0);	
 		$opt = array_merge($optDef,$opt);
-		//print_r($opt);
-		$levelString = (isset($opt['levelString']) ? $opt['levelString'] : '-->');
-		$noId = (isset($opt['noId']) ? $opt['noId'] : 0);
-		$fieldKey = (isset($opt['fieldKey']) ? $opt['fieldKey'] : '');
-		$hideId = (isset($opt['hideId']) ? $opt['hideId'] : false);
-		$hideSons = (isset($opt['hideSoPDO::MYSQL_ATTR_USE_BUFFERED_QUERY => falsens']) ? $opt['hideSons'] : false);
-		$rifId = (isset($opt['rifId']) ? $opt['rifId'] : 'id');
-		$rifIdValue = (isset($opt['rifIdValue']) ? $opt['rifIdValue'] : '0');
-		$hideLabel = (isset($opt['hideLabel']) ? $opt['hideLabel'] : false);
-		
-		if (!isset($level)) $level = 0;
-		try {	
+		self::$languages = self::$globalSettings['languages'];
+		$fieldKey = $opt['fieldKey'];		
+		$rifId = $opt['rifId'];
+   	try {	
 			$dbName = self::$dbName;
 			$pdoCore = self::getInstanceDb();
 			$pdoObject = $pdoCore->prepare($qry);
@@ -658,72 +649,92 @@ class Sql extends Core {
 			$pdoObject->execute() or die('errore query');			
 			if ($pdoCore->query("SELECT FOUND_ROWS()")->fetchColumn() > 0) {
 				$pdoObject->setFetchMode(PDO::FETCH_OBJ);						
-				while ($row = $pdoObject->fetch()) {					
+				while ($row = $pdoObject->fetch()) {
+												
 					$varKey = self::$countA;
-					if (isset($fieldKey) && $fieldKey != '') $varKey = $row->$fieldKey;								
+					if ($fieldKey != '') $varKey = $row->$fieldKey;								
 					$showid = true;
 					$showsons = true;					
-					if($hideId == true && $row->$rifId == $rifIdValue) $showid = false;
-					if($hideSons == true && $row->parent == $rifIdValue) {
+					if ($opt['hideId'] == 1 && $row->$rifId == $opt['rifIdValue']) $showid = false;
+					if ($opt['hideSons'] == 1 && $row->parent == $opt['rifIdValue']) {
 						$showsons = false;
 						$showid = false;
 						}
-					if($hideLabel == true && $row->type == 'label') $showid = false;			
-					if($showid == true) {										
-						self::$listTreeData[$varKey] = $row;					
-						self::$listTreeData[$varKey]->level = self::$level;					
-						self::$listTreeData[$varKey]->levelString = '';
+					if ($opt['hideLabel'] == 1 && $row->type == 'label') $showid = false; 
+					
+					/* prende se abilitato */
+					if ($showid == true) {
+						$obj = new stdClass();
+   					$obj = $row;
+   					
+   					/* crea stringa livello */
+   					$obj->level = self::$level;					
+						$obj->levelString = '';
 						for($x1=1;$x1 <= self::$level; $x1++) {
-							self::$listTreeData[$varKey]->levelString .= $levelString;
+							$obj->levelString .= $opt['levelString'];
 							}	
-																	
+							
+						/* aggiunge campi title localizzati */
+						$field = 'title_'.$opt['lang'];
+						if (isset($obj->$field)) $obj->title = $obj->$field;
+						$field = 'titleparent_'.$opt['lang'];
+						if (isset($obj->$field)) $obj->titleparent = $obj->$field; 
+
 						/* breadcrumbs */			
 						$get = true;						
-						if ($get == true) {
-							self::$breadcrumbs[self::$level] = array();
-							if ($opt['type'] == 1) self::$breadcrumbs[self::$level]['type'] = $row->type;
-							self::$breadcrumbs[self::$level]['parent'] = $row->parent;
-							if (isset($row->alias)) self::$breadcrumbs[self::$level]['alias'] = $row->alias;
-							if ($opt['multilanguage'] == 1) {
-								foreach (self::$languages AS $langValue) {
-									$breadcrumbsTitleField = 'title_'.$langValue;
-									$breadcrumbsTitleparentField = 'titleparent_'.$langValue;
-									self::$breadcrumbs[self::$level][$breadcrumbsTitleField] = $row->$breadcrumbsTitleField;	
-									self::$breadcrumbs[self::$level][$breadcrumbsTitleparentField] = $row->$breadcrumbsTitleparentField;					
-									}						
-								} else {
-									$breadcrumbsTitleField = 'title';
-									$breadcrumbsTitleparentField = 'titleparent';
-									self::$breadcrumbs[self::$level]['title'] = $row->$breadcrumbsTitleField;	
-									self::$breadcrumbs[self::$level][$breadcrumbsTitleparentField] = $row->$breadcrumbsTitleparentField;	
-									}
-							}						
-						self::$listTreeData[$varKey]->breadcrumbs = self::$breadcrumbs;
-						if ($row->sons == 0) {
-							if (self::$level == 0) self::$breadcrumbs = array();							
+						if ($get == true && $opt['getbreadcrumbs'] == 1) {						
+							if (self::$level == 0) self::$breadcrumbs = array();					
+							
+							/* azzerra i superiori al livello se ce ne sono */
 							$cc = count(self::$breadcrumbs);
-							for($xx=self::$level;$xx <=$cc;$xx++) unset(self::$breadcrumbs[$xx]);
-							}
-						/* end breadcrumbs */						
-						}								
-					if($showsons == true) {							
+							$xx = self::$level;
+							for ($xx;$xx<=$cc;$xx++) unset(self::$breadcrumbs[$xx]);							
+							
+							self::$breadcrumbs[self::$level] = array();
+							if (isset($obj->type)) self::$breadcrumbs[self::$level]['type'] = $obj->type;
+							self::$breadcrumbs[self::$level]['parent'] = $obj->parent;
+							if (isset($obj->alias)) self::$breadcrumbs[self::$level]['alias'] = $obj->alias;
+							foreach (self::$languages AS $langValue) {
+								$breadcrumbsTitleField = 'title_'.$langValue;
+								$breadcrumbsTitleparentField = 'titleparent_'.$langValue;								
+								if (isset($row->$breadcrumbsTitleField)) self::$breadcrumbs[self::$level][$breadcrumbsTitleField] = $obj->$breadcrumbsTitleField;	
+								if (isset($row->$breadcrumbsTitleparentField)) self::$breadcrumbs[self::$level][$breadcrumbsTitleparentField] = $obj->$breadcrumbsTitleparentField;
+								
+								}								
+								
+							/* aggiunge campi localizzati */
+							$field = 'title_'.$opt['lang'];
+							if (isset($row->$field)) self::$breadcrumbs[self::$level]['title'] = $obj->$field;
+							$field = 'titleparent_'.$opt['lang'];
+							if (isset($row->$field)) self::$breadcrumbs[self::$level]['titleparent'] = $obj->$field;
+							
+							if (isset($row->aliasparent)) self::$breadcrumbs[self::$level]['aliasparent'] = $obj->aliasparent;
+							if (isset($row->typeparent)) self::$breadcrumbs[self::$level]['typeparent'] = $obj->typeparent;								
+			
+							}						
+						$obj->breadcrumbs = self::$breadcrumbs;
+						/* end breadcrumbs */
+						
+						$listdata[$varKey] = $obj;
+						}
+
+   				if ($showsons == true) {							
 						self::$level++;												
 						self::$countA++;											
-						self::setListTreeData($qry,$row->id,$opt);	
+						$listdata = self::getListParentData($qry,$listdata,$row->id,$opt);	
 						self::$level--;
 						}
-					}						
-				}				
-			}
-			catch(PDOException $pe) {
+  					}
+  							
+				}		
+			} catch(PDOException $pe) {
 				if (self::$debugMode == 1) echo $pe->getMessage();
 				self::$resultOp->message = "Errore lettura subrecords!";
 				self::$resultOp->error = 1;
-				}
+				} 
+		return $listdata;	
 		}
 		
-
-
 	/* GESTIONE VARIABILI */	
 	
 	/* set variabili */	
@@ -793,19 +804,10 @@ class Sql extends Core {
 		}
 
 	/* variabili albero */
-	public static function resetListTreeData(){
-		self::$listTreeData = '';
-		}
 		
 	public static function resetListDataVar(){
 		self::$countA = 0;
 		self::$level = 0;
-		self::$listTreeData = '';
-		/* self::$listData = '';*/
-		}
-
-	public static function getListTreeData(){	
-		return self::$listTreeData;
 		}
 	
 	/* get variabili */	

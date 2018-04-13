@@ -56,8 +56,8 @@ $renderTpl = true;
 $renderAjax = false;
 $App->templateApp = '';
 
-$App->pathApplication = 'application/';
-$App->pathApplicationCore = 'application/core/';
+$App->pathApplications = 'applications/';
+$App->pathApplicationsCore = 'applications/core/';
 
 $App->mySessionVars = $_MY_SESSION_VARS;
 $App->globalSettings = $globalSettings;
@@ -143,22 +143,22 @@ foreach($App->site_modules AS $module) {
 
 	
 /* INDIRIZZAMENTO */
-$pathApplication = $App->pathApplication;
+$pathApplications = $App->pathApplications;
 $action = Core::$request->action;
 $index = '/index.php';
 
 if (in_array(Core::$request->action,$App->modulesCore) == true) {
 	$App->coreModule = true;
-	$pathApplication = $App->pathApplicationCore;
+	$pathApplications = $App->pathApplicationsCore;
 	$action = '';
 	$index = Core::$request->action.'.php';
 	}
 
-if (file_exists(PATH.$pathApplication.$action.$index)) {
-	include_once(PATH.$pathApplication.$action.$index);
+if (file_exists(PATH.$pathApplications.$action.$index)) {
+	include_once(PATH.$pathApplications.$action.$index);
 	} else {
 		Core::$request->action = $App->first_module_active;
-		include_once(PATH.$pathApplication.$App->first_module_active."/index.php");
+		include_once(PATH.$pathApplications.$App->first_module_active."/index.php");
 		}
 /* INDIRIZZAMENTO */
 
@@ -176,12 +176,12 @@ if ($show == true) {
 /* DIV MESSAGGI SISTEMA */
 
 if ($App->coreModule == true) {
-	$pathtemplateApp = PATH.$pathApplication .= "templates/".$App->templateUser."/";
+	$pathtemplateApp = PATH.$pathApplications .= "templates/".$App->templateUser."/";
 	} else {
 		if ($App->templateApp != '') $App->templateApp = Core::$request->action."/templates/".$App->templateUser."/".$App->templateApp;
 		}
 $pathtemplateBase = PATH."templates/".$App->templateUser;
-$pathtemplateApp = PATH.$pathApplication;
+$pathtemplateApp = PATH.$pathApplications;
 
 /* genera il template */
 if ($renderTpl == true && $App->templateApp != '') {
@@ -209,8 +209,8 @@ if ($renderTpl == true && $App->templateApp != '') {
 	} else { if ($renderAjax != true) echo 'No templateApp found!';}
 	
 if ($renderAjax == true){
-	if (file_exists($pathApplication.$App->templateApp)) {
-		include_once($pathApplication.$App->templateApp);	
+	if (file_exists($pathApplications.$App->templateApp)) {
+		include_once($pathApplications.$App->templateApp);	
 		}
 	}
 //print_r($_MY_SESSION_VARS);
