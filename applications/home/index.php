@@ -37,7 +37,7 @@ $App->params->breadcrumb = '<li class="active"><i class="icon-user"></i> '.$App-
 $App->countPanel = array();
 $today = $App->nowDateTime;
 $App->lastLogin = (isset($_MY_SESSION_VARS['lastLogin']) ? $_MY_SESSION_VARS['lastLogin'] : $today);
-$App->lastLogin = '2015-01-01 00:00:00';
+//$App->lastLogin = '2015-01-01 00:00:00';
 $App->lastLoginLang = DateFormat::getDataTimeIsoFormatString($App->lastLogin,$_lang['data time format string'],$_lang['months'],$_lang['months'],array());
 
 $App->templateApp = 'list.tpl.php';
