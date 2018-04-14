@@ -130,6 +130,7 @@ switch(Core::$request->method) {
 		$where = 'ite.id_owner = ?';
 		$and = ' AND ';
 		$fieldsValue = array($App->userLoggedData->id);
+		$filtering = false;
 		if (isset($_REQUEST['search']) && is_array($_REQUEST['search']) && count($_REQUEST['search']) > 0) {		
 			if (isset($_REQUEST['search']['value']) && $_REQUEST['search']['value'] != '') {
 				list($w,$fv) = Sql::getClauseVarsFromAppSession($_REQUEST['search']['value'],$App->params->fields['InvSal'],'');
@@ -137,8 +138,10 @@ switch(Core::$request->method) {
 					$where .= $and."(".$w.")";
 					$and = ' AND ';
 					}
-				if (is_array($fv) && count($fv) > 0) $fieldsValue = array_merge($fieldsValue,$fv);
-				
+				if (is_array($fv) && count($fv) > 0) {
+					$fieldsValue = array_merge($fieldsValue,$fv);
+					$filtering = true;
+					}
 				}
 			}
 		/* end search */
@@ -150,6 +153,10 @@ switch(Core::$request->method) {
 		$fields[] = "cus.ragione_sociale AS customer";
 		$fields[] = "SUM(art.price_total) AS total,SUM(art.price_tax) AS total_tax";
 		$fields[] = "SUM(art.price_total) + ((SUM(art.price_total) * ite.tax) / 100) + ((SUM(art.price_total) * ite.rivalsa) / 100) AS total_invoice";
+		
+		/* conta tutti i records */
+		$recordsTotal = Sql::countRecordQry($App->params->tables['InvSal'],'id','',array());
+
 		Sql::initQuery($table,$fields,$fieldsValue,$where,implode(', ', $order),$limit,array('groupby'=>'ite.id'));
 		if (Core::$resultOp->error <> 1) $obj = Sql::getRecords();
 		//print_r($obj);
@@ -195,12 +202,13 @@ switch(Core::$request->method) {
 				$arr[] = $tablefields;
 				}
 			}
-		$totalRows = count($arr);
 		$App->items = $arr;
+		$recordsFiltered = $recordsTotal;
+		if ($filtering == true) $recordsFiltered = count($App->items);
 		$json = array();
 		$json['draw'] = intval($_REQUEST['draw']);
-		$json['recordsTotal'] = $totalRows;
-		$json['recordsFiltered'] = $totalRows;
+		$json['recordsTotal'] = $recordsTotal;
+		$json['recordsFiltered'] = $recordsFiltered;	
 		$json['data'] = $App->items;	
 		echo json_encode($json);
 		die();

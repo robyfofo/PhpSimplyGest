@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * classes/class.Sql.php v.1.0.0. 27/03/2018
+ * classes/class.Sql.php v.1.0.0. 14/04/2018
 */
 
 class Sql extends Core {
@@ -452,7 +452,8 @@ class Sql extends Core {
 		}	
 	
 	public static function countRecordQry($table,$keyRif,$clauseRif,$valueRif) {
-		$qry = "SELECT COUNT(".$keyRif.") FROM ".$table." WHERE ".$clauseRif;			
+		$qry = "SELECT COUNT(".$keyRif.") FROM ".$table;
+		if ($clauseRif != '') $qry .= " WHERE ".$clauseRif;			
 		if (self::$debugMode == 1) echo '<br>'.$qry;
 		try{
 			$dbName = self::$dbName;

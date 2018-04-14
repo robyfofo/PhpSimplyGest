@@ -8,6 +8,7 @@ $(document).ready(function() {
 		processing: true,
 		serverSide: true,
 		stateSave: true,
+		paging: true,
 		ajax: {
 		 	type : "GET",
 		 	url : siteUrl+CoreRequestAction+"/listAjaxInvPur",
