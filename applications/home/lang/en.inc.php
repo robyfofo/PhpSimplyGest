@@ -7,5 +7,6 @@ $_lang['fatture vendite'] = "fatture vendite";
 $_lang['fatture acquisti'] = "fatture acquisti";
 $_lang['vendite'] = "vendite";
 $_lang['acquisti'] = "acquisti";
+$_lang['preventivi'] = "estimates";
 $_lang['bilancio ultimi 12 mesi'] = "bilancio ultimi 12 mesi";
 ?>

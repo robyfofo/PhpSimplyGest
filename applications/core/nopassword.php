@@ -8,7 +8,7 @@
  * admin/site-core/nopassword.php v.1.0.0. 28/09/2017
 */
 
-//Core::setDebugMode(1);
+Core::setDebugMode(1);
 
 $App->pageTitle = $_lang['nopassword core - title'];
 $App->pageSubTitle = $_lang['nopassword core - subtitle'];
@@ -31,7 +31,7 @@ if (isset($_POST['submit'])) {
 	if (Core::$resultOp->error == 0) {	
 		/* legge username dalla email */
 		/* (tabella,campi(array),valori campi(array),where clause, limit, order, option , pagination(default false)) */
-		Sql::initQuery(DB_TABLE_PREFIX.'site_users',array('id','username','email'),array($username),"username = ? AND active = 1");
+		Sql::initQuery(DB_TABLE_PREFIX.'users',array('id','username','email'),array($username),"username = ? AND active = 1");
 		$App->item = Sql::getRecord();		
 		if(Core::$resultOp->error == 0) {
 			if (Sql::getFoundRows() > 0) {
@@ -40,7 +40,7 @@ if (isset($_POST['submit'])) {
 				$criptPassw = password_hash($passw, PASSWORD_DEFAULT);			
 				/* aggiorno la password nel db */						
 				/* (tabella,campi(array),valori campi(array),where clause, limit, order, option , pagination(default false)) */
-				Sql::initQuery(Sql::getTablePrefix().'site_users',array('password'),array($criptPassw,$App->item->id),"id = ?");
+				Sql::initQuery(Sql::getTablePrefix().'users',array('password'),array($criptPassw,$App->item->id),"id = ?");
 				Sql::updateRecord();
 				if (Core::$resultOp->error == 0) {	
 					$subject = $_lang['nopassword core - soggetto email'];

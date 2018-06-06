@@ -10,5 +10,5 @@ Installation:
 
 - donwload the archive
 - unpack it in your folder
-- see in Database folder. Install the table's database dumpsvwith your dadabase managemant tool.
-- the default username is "user" with password "user".
+- see in Database folder. Install the table's database dumps with your database managemant tool.
+- the default username is "root" with password "root".

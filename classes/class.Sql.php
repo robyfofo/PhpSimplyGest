@@ -413,6 +413,44 @@ class Sql extends Core {
 			}		
 		}
 
+	public static function updateRawlyFields($fieldslist,$table,$post,$opt) {
+		$optDef = array('clause'=>'','clauseVals '=>'');	
+		$opt = array_merge($optDef,$opt);
+		$fields = array();
+		$fieldsVal = array();
+		if (is_array($fieldslist) && count($fieldslist) > 0){
+			foreach($fieldslist AS $key=>$value){
+				if ($value['type'] != 'autoinc' && $value['type'] != 'nodb') {
+					if (isset($_POST[$key])) {
+						$fields[] = $key.' = ?';
+						$fieldsVal[] = $post[$key];
+						}
+					}			
+				}	
+			}		
+		/* add clause */
+		$clause = '';
+		if ($opt['clause'] != '') $clause = $opt['clause'];	
+		/* add clause value */
+		if (is_array($opt['clauseVals']) && count($opt['clauseVals']) > 0) $fieldsVal = array_merge($fieldsVal,$opt['clauseVals']);
+		
+		$qry = "UPDATE ".$table." SET ".implode(',',$fields).($clause != '' ? ' WHERE '.$clause : '');			
+		if (self::$debugMode == 1) {
+			echo '<br>'.$qry;	
+			print_r($fieldsVal);
+			}			
+		try {
+			$dbName = self::$dbName;
+			$pdoCore = self::getInstanceDb();
+			$pdoObject = $pdoCore->prepare($qry);		
+			$pdoObject->execute($fieldsVal);
+			}
+		catch(PDOException $pe) {
+			if (self::$debugMode == 1) echo $pe->getMessage();
+			self::$resultOp->message = "Errore inserimento voce!";
+			self::$resultOp->error = 1;
+			}			
+		}
 		
 	/* SQL AVANZATO */
 	

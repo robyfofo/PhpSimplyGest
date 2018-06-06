@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- *	classes/class.Form.php v.1.0.0. 16/02/2018
+ *	classes/class.Form.php v.1.0.0. 06/06/2018
 */
 
 class Form extends Core {	
@@ -15,14 +15,14 @@ class Form extends Core {
 		}
 		
 	public static function getUpdateRecordFromPostResults($id,$resultOp,$lang,$opt) {
-		$optDef = array('label modified'=>$lang['voce modificata'],'label modify'=>$lang['modifica voce'],'label insert'=>$lang['inserisci voce']);	
+		$optDef = array('modviewmethod'=>'formMod','label modified'=>$lang['voce modificata'],'label modify'=>$lang['modifica voce'],'label insert'=>$lang['inserisci voce']);	
 		$opt = array_merge($optDef,$opt);
 		$viewMethod = '';
 		$pageSubTitle = '';			
 		$message = $resultOp->message;
 		if ($resultOp->error == 1) {			
 			$pageSubTitle = ucfirst($opt['label modify']);
-			$viewMethod = 'formMod';				
+			$viewMethod = $opt['modviewmethod'];				
 			} else {
 				if (isset($_POST['submitForm'])) {	
 					$viewMethod = 'list';
@@ -31,7 +31,7 @@ class Form extends Core {
 						if (isset($_POST['id'])) {
 							$id = $_POST['id'];
 							$pageSubTitle = $opt['label modify'];
-							$viewMethod = 'formMod';	
+							$viewMethod = $opt['modviewmethod'];
 							$message = ucfirst($lang['modifiche effettuate']).'!';
 							} else {
 								$viewMethod = 'formNew';	
@@ -77,8 +77,8 @@ class Form extends Core {
 						}					
 					}
 					/* valida i campi se richiesto */
-					if (isset($value['validate'])) {
-						$_POST[$namefield] = self::validateField($namefield,$value,$_lang);					
+					if (isset($value['validate']) && $value['validate'] != false) {
+						$_POST[$namefield] = self::validateField($namefield,$labelField,$value,$_lang);					
 						}
 				/* aggiunge gli slashes */
 				if ($opz['stripmagicfields'] == true) $_POST[$namefield] = SanitizeStrings::stripMagic($_POST[$namefield]);
@@ -86,7 +86,7 @@ class Form extends Core {
 			}		
 		}
 		
-	public static function validateField($namefield,$value,$_lang) {
+	public static function validateField($namefield,$labelField,$value,$_lang) {
 		$str = '';
 		switch ($value['validate']) {
 			case 'int':						
@@ -108,32 +108,33 @@ class Form extends Core {
 			
 			case 'minmax':
 				$minvalue = (isset($value['valuesRif']['min']) && $value['valuesRif']['min'] != '' ? $value['valuesRif']['min'] : 0);
-				$maxvalue = (isset($value['valuesRif']['max']) && $value['valuesRif']['max'] != '' ? $value['valuesRif']['max'] : 0);
-				$str = self::validateMinMaxValues($_POST[$namefield],$labelField,$_lang,$minvalue,$maxvalue);		
+				$maxvalue = (isset($value['valuesRif']['max']) && $value['valuesRif']['max'] != '' ? $value['valuesRif']['max'] : 0);		
+				$str = self::validateMinMaxValues($_POST[$namefield],$labelField,$_lang,$minvalue,$maxvalue);
 			break;	
 			
 			case 'time':
 				$str = self::validateTime($_POST[$namefield],$labelField,$_lang);
 			break;	
 			
-			case 'timeofcal':
-				$str = self::validateTime($_POST[$namefield].':00',$labelField,$_lang);
-			break;					
-			
 			case 'explodearray':
 				$opz1 = (isset($value['opz']) ? $value['opz'] : array());
 				$str = self::validateExplodearray($_POST[$namefield],$opz1);
 			break;
 			
+			case 'timepicker':
+				if (!isset($value['defValue'])) $value['defValue'] = date('H:i:s');			
+				$time = DateFormat::convertTimeFromDatepickerToIso($_POST[$namefield],$_lang['datepicker time format'],$value['defValue']);
+ 				$str = $time;				
+			break;
+			
 			case 'datetimepicker':
-				$str = DateFormat::checkDataTimeFromDatepicker($_POST[$namefield],$value['defValue'],array('format'=>$_lang['datepicker data format']));
+				$datetime = DateFormat::convertDataTimeFromDatepickerToIso($_POST[$namefield],$_lang['datepicker data time format'],$value['defValue']);
+				$str = $datetime;
 			break;
 			
 			case 'datepicker':
-				if (!isset($value['defValue'])) $value['defValue'] = date('Y-m-d');
-				$date = $value['defValue'];
-				$res = DateFormat::checkDataFromDatepicker($_POST[$namefield],$_lang['datepicker data format']);
-				if ($res == true) $date = DateFormat::convertDataFromDatepicker($_POST[$namefield],$_lang['datepicker data format'],'Y-m-d');
+				if (!isset($value['defValue'])) $value['defValue'] = date('Y-m-d');;
+				$date = DateFormat::convertDataFromDatepickerToIso($_POST[$namefield],$_lang['datepicker data format'],$value['defValue']);
 				$str = $date;
 			break;
 			default:
@@ -193,9 +194,9 @@ class Form extends Core {
 			$s = preg_replace('/%MIN%/',$minvalue,$s);
 			$s = preg_replace('/%MAX%/',$maxvalue,$s);
 			$s = preg_replace('/%FIELD%/',$labelField,$s);	
-			self::$resultOp->messages[] = $s;									
+			self::$resultOp->messages[] = $s;										
 			}
-		
+		return $valuesrif;
 		}
 
 	}

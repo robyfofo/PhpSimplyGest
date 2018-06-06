@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.4.1deb2ubuntu2
--- http://www.phpmyadmin.net
+-- version 4.6.6deb5
+-- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Creato il: Apr 09, 2018 alle 10:37
--- Versione del server: 5.7.21-0ubuntu0.16.04.1
--- Versione PHP: 7.2.4-1+ubuntu16.04.1+deb.sury.org+1
+-- Host: localhost:3306
+-- Creato il: Giu 06, 2018 alle 09:18
+-- Versione del server: 5.7.22-0ubuntu18.04.1
+-- Versione PHP: 7.2.5-0ubuntu0.18.04.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -45,10 +45,14 @@ CREATE TABLE `psg_modules` (
 --
 
 INSERT INTO `psg_modules` (`id`, `name`, `label`, `alias`, `comment`, `code_menu`, `ordering`, `section`, `active`, `help_small`, `help`) VALUES
-(1, 'home', 'Home', 'home', 'La pagina home di ogni utente', '<li class="%LICLASS%"><a href="%URLSITE%%NAME%"><i class="fa fa-home fa-fw"></i> %LABEL%</a></li>', 1, 1, 1, '', ''),
-(2, 'third-party', 'Soggetti Terzi', 'third-party', '', '<li class="%LICLASS%">\r\n	<a href="#"><i class="fa fa-users fa-fw"></i> %LABEL%<span class="fa arrow"></span></a>\r\n	<ul class="nav nav-second-level">\r\n		<li><a href="%URLSITE%%NAME%/listScat"><i class="fa fa-folder-open fa-fw"></i> Categorie</a></li>\r\n		<li><a href="%URLSITE%%NAME%/listItem"><i class="fa fa-users fa-fw"></i> Soggetti Terzi</a></li>\r\n	</ul>\r\n</li>', 3, 1, 1, '', ''),
-(3, 'invoices', 'Fatture', 'invoices', 'Il modulo che gestisce le fatture', '<li class="%LICLASS%">\r\n	<a href="#"><i class="fa fa-wpforms fa-fw"></i> %LABEL%<span class="fa arrow"></span></a>\r\n	<ul class="nav nav-second-level">\r\n		<li><a href="%URLSITE%%NAME%/listInvSal"><i class="fa fa-wpforms fa-fw"></i> Fatture Vendite</a></li>\r\n		<li><a href="%URLSITE%%NAME%/listInvPur"><i class="fa fa-wpforms fa-fw"></i> Fatture Acquisti</a></li>\r\n	</ul>\r\n</li>', 4, 1, 1, '', ''),
-(4, 'company', 'Company', 'company', 'La configurazione aziendale', '<li class="%LICLASS%"><a href="%URLSITE%%NAME%"><i class="fa fa-industry fa-fw"></i> %LABEL%</a></li>', 2, 0, 1, '', '');
+(1, 'home', 'Home', 'home', 'La pagina home di ogni utente', '<li class=\"%LICLASS%\"><a href=\"%URLSITE%%NAME%\"><i class=\"fa fa-home fa-fw\"></i> %LABEL%</a></li>', 1, 1, 1, '', ''),
+(2, 'third-party', 'Soggetti Terzi', 'third-party', '', '<li class=\"%LICLASS%\">\r\n	<a href=\"#\"><i class=\"fa fa-users fa-fw\"></i> %LABEL%<span class=\"fa arrow\"></span></a>\r\n	<ul class=\"nav nav-second-level\">\r\n		<li><a href=\"%URLSITE%%NAME%/listScat\"><i class=\"fa fa-folder-open fa-fw\"></i> Categorie</a></li>\r\n		<li><a href=\"%URLSITE%%NAME%/listItem\"><i class=\"fa fa-users fa-fw\"></i> Soggetti Terzi</a></li>\r\n	</ul>\r\n</li>', 3, 1, 1, '', ''),
+(3, 'invoices', 'Fatture', 'invoices', 'Il modulo che gestisce le fatture', '<li class=\"%LICLASS%\">\r\n	<a href=\"#\"><i class=\"fa fa-wpforms fa-fw\"></i> %LABEL%<span class=\"fa arrow\"></span></a>\r\n	<ul class=\"nav nav-second-level\">\r\n		<li><a href=\"%URLSITE%%NAME%/listInvSal\"><i class=\"fa fa-wpforms fa-fw\"></i> Fatture Vendite</a></li>\r\n		<li><a href=\"%URLSITE%%NAME%/listInvPur\"><i class=\"fa fa-wpforms fa-fw\"></i> Fatture Acquisti</a></li>\r\n	</ul>\r\n</li>', 7, 1, 1, '', ''),
+(4, 'company', 'Company', 'company', 'La configurazione aziendale', '<li class=\"%LICLASS%\"><a href=\"%URLSITE%%NAME%\"><i class=\"fa fa-industry fa-fw\"></i> %LABEL%</a></li>', 2, 1, 1, '', ''),
+(5, 'estimates', 'Preventivi', 'estimates', 'Il modulo che gestisce i preventivi', '<li class=\"%LICLASS%\">\r\n	<a href=\"%URLSITE%%NAME%/listItem\"><i class=\"fa fa-bullseye fa-fw\"></i> %LABEL%</a>\r\n</li>', 8, 1, 1, '', ''),
+(6, 'projects', 'Progetti', 'projects', 'Il modulo per la gestione dei progetti', '<li class=\"%LICLASS%\"><a href=\"%URLSITE%%NAME%\"><i class=\"fa fa-cog fa-fw\"></i> %LABEL%</a></li>', 4, 1, 1, '', ''),
+(7, 'todo', 'Da fare', 'todo', 'Il modulo per la gestione dei da fare da associare ad un progetto', '<li class=\"%LICLASS%\"><a href=\"%URLSITE%%NAME%\"><i class=\"fa fa-bookmark-o fa-fw\"></i> %LABEL%</a></li>', 6, 1, 1, '', ''),
+(8, 'timecard', 'Timecard', 'timecard', 'Il modulo che gestisce il tempo lavorativo associato ad un progetto', '<li class=\"%LICLASS%\"><a href=\"%URLSITE%%NAME%\"><i class=\"fa fa-clock-o fa-fw\"></i> %LABEL%</a></li>', 5, 1, 1, '', '');
 
 --
 -- Indici per le tabelle scaricate
@@ -69,7 +73,7 @@ ALTER TABLE `psg_modules`
 -- AUTO_INCREMENT per la tabella `psg_modules`
 --
 ALTER TABLE `psg_modules`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -4,7 +4,7 @@
 	copyright 2011 Roberto Mantovani
 	http://www.robertomantovani.vr;it
 	email: me@robertomantovani.vr.it
-	admin/classes/class.Core.php v.3.0.2. 08/02/2016
+	classes/class.Core.php v.1.0.0. 05/06/2018
 */
 class Core extends Config {
 	public static $request;
@@ -75,6 +75,15 @@ class Core extends Config {
 		if (isset($_POST['page']) && $_POST['page'] != '') self::$request->page = $_POST['page'];
 		if (isset($_POST['lang']) && $_POST['lang'] != '') self::$request->lang = $_POST['lang'];
 		//print_r(self::$request);
+		/* pulisce le voci */
+		if (self::$request->action != '') self::$request->action = SanitizeStrings::urlslug(self::$request->action,array('delimiter'=>''));
+		if (self::$request->method != '') self::$request->method = SanitizeStrings::urlslug(self::$request->method,array('delimiter'=>'','lowercase'=>false));
+		if (self::$request->param != '') self::$request->param = SanitizeStrings::urlslug(self::$request->param,array('delimiter'=>''));
+		if (is_array(self::$request->params) && count(self::$request->params) > 0) {
+			foreach (self::$request->params AS $key=>$value) {
+				if (isset(self::$request->params[$key]) && self::$request->params[$key] != '') self::$request->params[$key] = SanitizeStrings::urlslug(self::$request->params[$key],array('delimiter'=>''));
+				}
+			}
 		}			
 
 	public static function parseInitReqs($parts,$opz) {	

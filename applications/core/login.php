@@ -51,7 +51,7 @@ switch(Core::$request->method) {
 							$now = date('Y-m-d H:i:s');
 							$lastLogin = $now;
 							/* controllo se esiste il cookie altrimenti lo creo */
-							if(!isset($_COOKIE[DATA_SESSIONS_COOKIE_NAME])) {
+							if (!isset($_COOKIE[DATA_SESSIONS_COOKIE_NAME])) {
 								setcookie(DATA_SESSIONS_COOKIE_NAME, $now, time() + (86400 * 30), "/"); // 86400 = 1 day
 								} else {
 									$lastLogin = $_COOKIE[DATA_SESSIONS_COOKIE_NAME];

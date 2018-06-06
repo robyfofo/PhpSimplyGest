@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * language IT v.1.0.0. 11/04/2018
+ * language IT v.1.0.0. 06/06/2018
 */
 
 $_lang['user'] = 'it';
@@ -19,6 +19,7 @@ $_lang['data time format string'] = "%DAY% %STRINGMONTH% %YEAR% %HH%:%II%";
 $_lang['data format string alt'] = "%STRINGDATADAY% %DAY% %STRINGMONTH% %YEAR%";
 $_lang['datepicker data time format'] = "d/m/Y H:i";
 $_lang['datepicker data format'] = "d/m/Y";
+$_lang['datepicker time format'] = "H:i";
 $_lang['charset'] = 'it-IT';
 $_lang['charset date'] = 'it_IT';
 
@@ -71,7 +72,7 @@ $_lang['ultimo'] = "ultimo";
 $_lang['ultime'] = "ultime";
 
 $_lang['selezionato'] = "selezionato";
-$_lang['complatato'] = "complatato";
+$_lang['completato'] = "completato";
 $_lang['predefinito'] = "predefinito";
 
 $_lang['dimenticati'] = "dimenticati";
@@ -356,6 +357,7 @@ $_lang['proprietario'] = "proprietario";
 
 $_lang['sezione'] = "sezione";
 $_lang['etichetta'] = "etichetta";
+$_lang['nota'] = "nota";
 
 $_lang['ordine'] = "ordering";
 $_lang['ordine-abb'] = "ord.";

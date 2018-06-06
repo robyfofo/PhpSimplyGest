@@ -188,6 +188,8 @@
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/jquery.formvalidation/js/formValidation.min.js" type="text/javascript"></script>	
 
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/bower_components/tinymce/tinymce.min.js" type="text/javascript"></script>
+		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/bower_components/tinymce/config/config.js" type="text/javascript"></script>
+				
 		<!-- SB Admin Scripts - Include with every page -->
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/js/sb-admin-2.js"></script>	
 		

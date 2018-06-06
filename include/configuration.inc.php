@@ -82,6 +82,9 @@ $globalSettings['defaul language'] = 'it';
 /* da non modificare */
 $globalSettings['type pages'] = array('default'=>'Default','label'=>'Etichetta','url'=>'URL','module'=>'Link a modulo');
 $globalSettings['link targets'] = array('_self','_blank','_parent','_top');
+$globalSettings['status to do'] = array('n.d.','visto','in lavorazione','sospeso','cancellato','rifiutato','finito');
+$globalSettings['status project'] = array('n.d.','preventivato','in lavorazione','sospeso','cancellato','rifiutato','finito');
+
 $globalSettings['languages'] = array('it','en');
 $globalSettings['module sections'] = array('Gestione Utenti','Moduli Generali Sito','Moduli Personalizzati Sito','Moduli E-Commerce','Impostazioni Sito','Root');
 
