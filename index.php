@@ -213,5 +213,5 @@ if ($renderAjax == true){
 		include_once($pathApplications.$App->templateApp);	
 		}
 	}
-//print_r($_MY_SESSION_VARS);
+print_r($_MY_SESSION_VARS);
 ?>

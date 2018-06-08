@@ -33,7 +33,7 @@ switch(Core::$request->method) {
 				if (Core::$resultOp->error == 0) {
 					
 					/* preleva articoli */
-					Sql::initQuery($App->params->tables['ArtSal'],array('*'),array($id_invoice),'id_invoice = ?');
+					Sql::initQuery($App->params->tables['ArtSal'],array('*'),array($id_invoice),'id_invoice = ? AND active = 1');
 					$App->invoice_articoli = Sql::getRecords();
 					if (Core::$resultOp->error == 0) {
 						
@@ -64,7 +64,8 @@ switch(Core::$request->method) {
 									$articolipdf[$z]['descrizione'] = $value->content;
 									$articolipdf[$z]['quantità'] = $value->quantity;
 									$articolipdf[$z]['prezzounitario'] = '€ '.number_format($value->price_unity,2,',','.').' ';
-									$articolipdf[$z]['importo'] = '€ '.number_format($value->price_unity * $value->quantity,2,',','.').' ';									 
+									$articolipdf[$z]['importo'] = '€ '.number_format($value->price_unity * $value->quantity,2,',','.').' ';
+									$z++;									 
 									}
 								}
 								
@@ -108,7 +109,7 @@ switch(Core::$request->method) {
 								$headpdf[2]['titolo'] = $_lang['P. IVA'].' '.$App->company->partita_iva.' - '.$_lang['C. Fiscale'].' '.$App->company->codice_fiscale;
 								$headpdf[3]['titolo'] = '<strong>'.strtoupper($_lang['fattura']).'</strong> '.$_lang['nr.'].' <b>'.$App->invoice->number.'</b> '.$_lang['del'].' <b>'.DateFormat::convertDataIsoToDataformat($App->invoice->dateins,$_lang['data format']).'</b>';								
 								$headpdf[4]['titolo'] = $App->invoice->note;
-								$col = $pdf->ezTable($headpdf,$colsheadpdf,'',array('showHeadings'=> 0,'gridlines'=>EZ_GRIDLINE_DEFAULT,'showLines'=>0,'fontSize'=>10,'shaded'=>0,'rowGap'=>2,'colGap'=>20,'xPos'=>'570','xOrientation'=>-'right','cols'=>array('titolo'=>array('showLines'=>1),'testo'=>array('showLines'=>0))));
+								$col = $pdf->ezTable($headpdf,$colsheadpdf,'',array('showHeadings'=> 0,'gridlines'=>EZ_GRIDLINE_DEFAULT,'showLines'=>0,'fontSize'=>10,'shaded'=>0,'rowGap'=>2,'colGap'=>20,'xPos'=>270,'xOrientation'=>'right','cols'=>array('titolo'=>array('showLines'=>1),'testo'=>array('showLines'=>0))));
 								$pdf->setColor('0.8','0.8','0.8');
 								$pdf->setStrokeColor('0.8','0.8','0.8');
 								$pdf->setLineStyle(1);
@@ -147,22 +148,21 @@ switch(Core::$request->method) {
 								if ($App->company->gestione_iva = 1) {
 									$opt['cols']['tax'] = array('width'=>30);
 									}
-/*							
-print_r($colsArticolipdf);
-print_r($articolipdf);
-die();
-*/
-
-								$col = $pdf->ezTable($articolipdf, $colsArticolipdf,'',$opt);
+								$y = $pdf->ezTable($articolipdf, $colsArticolipdf,'',$opt);
 								/* FINE ARTICOLI */							
 								
-								/* NOTE */
-								$pdf->ezSetY(310);
+								/* LINEA */
+								$pdf->ezSetDy(-30);
 								$pdf->setColor('0.8','0.8','0.8');
 								$pdf->setStrokeColor('0.8','0.8','0.8');
 								$pdf->setLineStyle(1);
-								$pdf->line(30,310,560,310);
-								$pdf->ezSetDy(-10);
+								$pdf->line(30,$y-20,560,$y-20);
+						
+								
+								/* NOTE */
+								if ($y > 270) $y = 270;
+								
+								$pdf->ezSetY($y-30);
 								$colspdf = array('titolo'=>strtoupper($_lang['modalità pagamento']),'testo'=>strtoupper($_lang['scadenze'])); 
 								$datapdf = array();
 								$datapdf[1]['titolo'] = '<b>'.ucwords($_lang['bonifico bancario']).'</b>';
@@ -219,14 +219,11 @@ die();
 								$pdf->ezTable($data, $cols,'',array('showHeadings'=>0,'gridlines'=>EZ_GRIDLINE_DEFAULT,'fontSize' =>12,'width'=>500,'shaded'=>0,'rowGap'=>5,'colGap'=>10,'showLines'=>0,'lineCol'=>array(0.7,0.7,0.7),'cols'=>array('titolo'=>array('justification'=>'right'),'testo'=>array('width'=>110,'justification'=>'right'))));
 								/* FINE TOTALI */
 								
-								// Output the pdf as stream, but uncompress
-								//$namefile = ucfirst($_lang['fattura']).' '.$App->invoice->number.".pdf";
-								//$applicationtype = "application/pdf";   
-								//header("Content-type: $applicationtype");
-								//header("Content-Disposition: attachment; filename=".basename($namefile).";");
-								//$pdf->output(array('compress'=>0));		
-								
-								$pdf->ezStream(array('compress'=>0));				
+								//Output the pdf as stream, but uncompress
+								$applicationtype = "application/pdf";   
+								header("Content-type: $applicationtype");
+								header("Content-Disposition: attachment; filename=".basename($namefile).";");
+								$pdf->ezStream(array('compress'=>0,'download'=>1,'Content-Disposition'=>$namefile));	
 							}
 						}			
 					}

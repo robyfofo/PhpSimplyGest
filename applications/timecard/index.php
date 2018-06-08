@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * timecard/index.php v.1.0.0. 02/03/2018
+ * timecard/index.php v.1.0.0. 06/06/2018
 */
 
 //Core::setDebugMode(1);
@@ -38,7 +38,7 @@ $App->currentProject = Sql::getRecord();
 if (isset($App->currentProject->id)) $App->currentProjectId = $App->currentProject->id;
 
 /* imposta il progetto della sessione */
-if (!isset($_MY_SESSION_VARS[$App->sessionName]['id_project']) && $App->currentProject->id > 0) $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'id_project',$App->currentProject->id);
+if (!isset($_MY_SESSION_VARS[$App->sessionName]['id_project'])) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'id_project',$App->currentProjectId);
 
 
 switch(substr(Core::$request->method,-4,4)) {

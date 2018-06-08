@@ -111,9 +111,9 @@
 						<select name="progetto" class="selectpicker form-control" data-live-search="true" title="{{ Lang['seleziona un progetto']|capitalize }}">
 							{% if App.progetti is iterable %}
 								{% for value in App.progetti %}
-									<option value="{{ value.id }}"{% if (App.item.id_project is defined) and (App.item.id_project == value.id)  %} selected="selected" {% endif %}>{{ value.title }}</option>														
+									<option value="{{ value.id }}"{% if App.item.id_project == value.id %} selected="selected" {% endif %}>{{ value.title }}</option>														
 								{% endfor %}
-							{% endif %}		form-horizontal form-daydata bg-info
+							{% endif %}
 						</select>										
 			    	</div>
 				</div>				

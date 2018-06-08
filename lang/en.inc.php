@@ -165,6 +165,8 @@ $_lang['rivalsa'] = "rivalsa";
 $_lang['testo rivalsa'] = "testo rivalsa";
 
 $_lang['modalità pagamento'] = "modalità pagamento";
+$_lang['MODALITÀ PAGAMENTO'] = "MODALITÀ PAGAMENTO";
+$_lang['pagamento'] = "pagamento";
 
 $_lang['accesso'] = "login";
 $_lang['username'] = "username";

@@ -124,6 +124,17 @@ class DateFormat extends Core  {
 		return $timeIso;
 		}
 		
+	public static function convertDataIsoToDataformat($data,$format) {
+		$defaultdata = date('Y-m-d');
+		if (self::checkDataIso($data) == false) $data = $defaultdata;
+		if ($format == '') $format = 'd/m/Y';
+		/* converto in format */
+		$d = DateTime::createFromFormat($format,$data);
+		$errors = DateTime::getLastErrors();
+		if ($errors['warning_count'] == 0 && $errors['error_count'] == 0)  $data = $d->format($format);		
+		return $data;
+		}
+		
 	public static function checkDataFromDatepicker($data,$format) {
 		if ($format == '') $format = 'd/m/Y';
     	$date = DateTime::createFromFormat($format,$data);

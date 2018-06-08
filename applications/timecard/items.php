@@ -245,8 +245,7 @@ switch((string)$App->viewMethod) {
 		$App->item = new stdClass;
 		Sql::initQuery($App->params->tables['item'],array('*'),array($App->id),'id = ?');
 		$App->item = Sql::getRecord();		
-		if (Core::$resultOp->error == 1) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['item']);
-		
+		if (Core::$resultOp->error == 1) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['item']);	
 		$App->defaultFormData = $App->item->datains;
 		$App->timeIniTimecard = $App->item->starttime;
 		$App->timeEndTimecard = $App->item->endtime;
@@ -257,7 +256,7 @@ switch((string)$App->viewMethod) {
 	
 	case 'list':
 		$App->item = new stdClass;
-		$App->item->id_project = $_MY_SESSION_VARS[$App->sessionName]['id_project'];
+		$App->item->id_project = $App->currentProjectId;
 		/* sistemo ora inizio e fine */
 		$time = DateTime::createFromFormat('H:i:s',$App->nowTime);
 		$App->timeIniTimecard =  $time->format($_lang['datepicker time format']);
