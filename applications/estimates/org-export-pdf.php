@@ -108,6 +108,7 @@ switch(Core::$request->method) {
 								$headpdf[0]['titolo'] = $App->company->ragione_sociale;
 								$headpdf[1]['titolo'] = $App->company->street.' - '.$App->company->zip_code.' - '.$App->company->city.' ('.$App->company->province.')';
 								$headpdf[2]['titolo'] = $_lang['P. IVA'].' '.$App->company->partita_iva.' - '.$_lang['C. Fiscale'].' '.$App->company->codice_fiscale;
+								$headpdf[3]['titolo'] = '<strong>'.strtoupper($_lang['voce']).'</strong> '.$_lang['del'].' <b>'.DateFormat::convertDataIsoToDataformat($App->item->dateins,$_lang['data format']).'</b>';								
 								$headpdf[4]['titolo'] = $App->item->note;
 								$y = $pdf->ezTable($headpdf,$colsheadpdf,'',array('showHeadings'=> 0,'gridlines'=>EZ_GRIDLINE_DEFAULT,'showLines'=>0,'fontSize'=>10,'shaded'=>0,'rowGap'=>2,'colGap'=>20,'xPos'=>270,'xOrientation'=>'right','cols'=>array('titolo'=>array('showLines'=>1),'testo'=>array('showLines'=>0))));
 								
@@ -139,30 +140,12 @@ switch(Core::$request->method) {
 								$col = $pdf->ezTable($tabledata,$tablecols,'',array('showHeadings'=>0,'gridlines'=>EZ_GRIDLINE_DEFAULT,'showLines'=>0,'fontSize'=>11,'width'=>500,'shaded'=>0,'rowGap' => 2, 'colGap' => 2, 'lineCol'=>array(0.7,0.7,0.7), 'cols'=> array( 'titolo'=>array( ), 'testo'=>array( 'showLines' => 0 ), ) ) );
 								/* FINE CUSTOMER */
 								
-								/* DATA */
-								$pdf->ezSetDy(-10);
-								$colspdf = array('col1'=>'Colonna 1','col2'=>'Colonna 2'); 
-								
-								$datapdf = array();
-								$datapdf[0]['col1'] = '<strong>'.strtoupper($_lang['voce']).'</strong> '.$_lang['del'].' <strong>'.DateFormat::convertDataIsoToDataformat($App->item->dateins,$_lang['data format']).'</strong>';
-								$datapdf[0]['col2'] = '<strong>'.strtoupper($_lang['scadenza']).'</strong>: '.DateFormat::convertDataIsoToDataformat($App->item->datesca,$_lang['data format']);
-								
-								$opt = array(
-									'showHeadings'=>0,
-									'gridlines'=>EZ_GRIDLINE_DEFAULT,
-									'fontSize'=>9,
-									'shaded'=>0,
-									'width'=>500,
-									'showLines' =>1,
-									'lineCol'=>array(0.7,0.7,0.7),
-									
-									);
-								$pdf->ezTable($datapdf, $colspdf,'',$opt);
-								/* FINE DATA */
-								
 								/* ARTICOLI */
-								
-								$pdf->ezSetDy(-10);
+								$pdf->setColor('0.8','0.8','0.8');
+								$pdf->setStrokeColor('0.8','0.8','0.8');
+								$pdf->setLineStyle(1);
+								$pdf->line(30,$col-10,560,$col-10);
+								$pdf->ezSetDy(-30);
 				
 								$colsArticolipdf['descrizione'] = '<b>'.ucfirst($_lang['descrizione']).'</b>';
 								$colsArticolipdf['quantità'] = '<b>'.ucfirst($_lang['quantità']).'</b>';
@@ -179,84 +162,67 @@ switch(Core::$request->method) {
 								$col = $pdf->ezTable($articolipdf, $colsArticolipdf,'',$opt);
 								/* FINE ARTICOLI */							
 								
+								/* NOTE */
+								$pdf->ezSetY(310);
+								$pdf->setColor('0.8','0.8','0.8');
+								$pdf->setStrokeColor('0.8','0.8','0.8');
+								$pdf->setLineStyle(1);
+								$pdf->line(30,310,560,310);
+								$pdf->ezSetDy(-10);
+								$colspdf = array('col1'=>$_lang['MODALITÀ PAGAMENTO'],'col2'=>strtoupper($_lang['scadenze'])); 
+								$datapdf = array();
+								$datapdf[1]['col1'] = '<b>'.ucwords($_lang['bonifico bancario']).'</b>';
+								$datapdf[1]['col2'] = '<b>'.DateFormat::convertDataIsoToDataformat($App->item->datesca,$_lang['data format']).'</b>';
+							
+								$y = $pdf->ezTable($datapdf, $colspdf,'',array('showHeadings' => 1,'gridlines'=>EZ_GRIDLINE_DEFAULT,'fontSize'=>9,'width'=>500,'shaded'=> 0,'rowGap'=>3,'colGap'=>10,'showLines'=>1,'lineCol'=>array(0.7,0.7,0.7),'cols'=>array('quantità'=>array('width'=>60,'justification' =>'center'),'prezzounitario'=>array('width'=>80,'justification'=>'right'),'importo'=>array('width'=>130,'justification'=>'right'))));
+								/* FINE NOTE */	
 								
+								/* NOTE */
+								if ($y > 270) $y = 270;
 								
+								$pdf->ezSetDy(-10);
+								$colspdf = array('riepilogo'=>strtoupper($_lang['riepilogo iva']),'importo'=>strtoupper($_lang['importo lordo']),'imposte'=>strtoupper($_lang['imposte'])); 
+								$datapdf = array();								
+								$datapdf[0]['riepilogo'] = $App->company->text_noiva;
+								$datapdf[0]['importo'] = '€ '.number_format($articlesTotal,2,',','.');
+								$datapdf[0]['imposte'] = '€ '.number_format($articlesTaxTotal + $invoiceTotalTax,2,',','.');
+								$opt = array('showHeadings' =>1,'gridlines'=>EZ_GRIDLINE_DEFAULT,'fontSize'=>9,'width'=>500,'shaded'=>0,'rowGap'=>3,'colGap'=>10,'showLines'=>1,'lineCol'=>array(0.7,0.7,0.7),'cols'=>array('imposte'=>array('justification'=>'right'),'importo'=>array('justification'=>'right')));
+								$pdf->ezTable($datapdf, $colspdf,'',$opt);
+								/* FINE NOTE */			
 								
 								/* TOTALI */
 								$pdf->ezSetDy(-10);
-								$colspdf = array('col1'=>'colonna1','col2'=>'colonna2'); 
+								$colspdf = array('titolo'=>'titolo','testo'=>'testo'); 
 								$datapdf = array();
 								$z = 0;
-								$datapdf[$z]['col1'] = strtoupper('totale netto');
-								$datapdf[$z]['col2'] = '€ '.number_format($articlesTotal,2,',','.');
-
+								$datapdf[$z]['titolo'] = strtoupper($_lang['totale onorario']);
+								$datapdf[$z]['testo'] = '€ '.number_format($articlesTotal,2,',','.');
+				
+								
 								if ($App->item->tax > 0) {
 									$z++;
-									$datapdf[$z]['col1'] = strtoupper($_lang['tassa aggiuntiva']);
-									$datapdf[$z]['col2'] = '€ '.number_format($invoiceTotalTax,2,',','.');
+									$datapdf[$z]['titolo'] = strtoupper($_lang['tassa aggiuntiva']);
+									$datapdf[$z]['testo'] = '€ '.number_format($invoiceTotalTax,2,',','.');
 									$z++;
 									}
 								
 								if ($App->item->rivalsa > 0) {
 									$z++;
-									$datapdf[$z]['col1'] = $App->company->text_rivalsa;
-									$datapdf[$z]['col2'] = '€ '.number_format($invoiceTotalRivalsa,2,',','.');
+									$datapdf[$z]['titolo'] = $App->company->text_rivalsa;
+									$datapdf[$z]['testo'] = '€ '.number_format($invoiceTotalRivalsa,2,',','.');
 									$z++;
 									}
-									
-								$datapdf[$z]['col1'] = '<strong>'.strtoupper($_lang['totale'].' '.$_lang['voce']).'</strong>';
-								$datapdf[$z]['col2'] = '€ <strong>'.number_format($invoiceTotal,2,',','.').'</strong>';	
-									
-									
-								$opt = array(
-									'showHeadings'=>0,
-									'gridlines'=>EZ_GRIDLINE_DEFAULT,
-									'fontSize'=>10,
-									'width'=>500,
-									'shaded'=>0,
-									'rowGap'=>2,
-									'colGap' =>10,
-									'showLines' =>0,
-									'lineCol'=>array(0.7,0.7,0.7),
-									'cols'=>array('col1'=>array('justification' =>'right'),'col2'=>array('width'=>110,'justification'=>'right')));
-								$y = $pdf->ezTable($datapdf, $colspdf,'',$opt);
+								$opt = array('showHeadings'=>0,'gridlines'=>EZ_GRIDLINE_DEFAULT,'fontSize'=>10,'width'=>500,'shaded'=>0,'rowGap'=>2,'colGap' =>10,'showLines' =>0,'lineCol'=>array(0.7,0.7,0.7),'cols'=>array('titolo'=>array('justification' =>'right'),'testo'=>array('width'=>110,'justification'=>'right')));
+								$pdf->ezTable($datapdf, $colspdf,'',$opt);
 								/* FINE TOTALI */
 								
-								
-								/* NOTE PAGAMENTO */
-								if ($y > 240) $y = 240;	
-								$pdf->ezSetY($y);
-													
-								$y = $pdf->addText(70,$y,10,"<b>".ucfirst($_lang['pagamento']).":</b> <i>assegno</i>/<i>bonifico</i>/<i>contanti</i>",0); 
-								/* FINE NOTE PAGAMENTO */
-								
-								
-								/* FIRMA */
-								$pdf->ezSetDy(-10);
-								$colspdf = array('col1'=>'Dati e firma della persona/impresa incaricata del preventivo','col2'=>'ACCETTO IL PREVENTIVO.Nome, cognome e firma del cliente'); 
-								
-								$datapdf = array();
-								$datapdf[]['col1'] = '';
-								$datapdf[]['col2'] = '';
-								$datapdf[]['col1'] = '';
-								$datapdf[]['col2'] = '';
-								$opt = array(
-									'showHeadings'=>1,
-									'gridlines'=>EZ_GRIDLINE_DEFAULT,
-									'fontSize'=>9,
-									'shaded'=>0,
-									'width'=>500,
-									
-									);
-								$pdf->ezTable($datapdf, $colspdf,'',$opt);
-								/* FINE FIRMA */
-								/*
-								
-
-
-.
-
-*/
+								/* TOTALI */
+								$pdf->ezSetDy(-5);
+								$cols = array('titolo'=>'titolo','testo'=>'testo'); 
+								$data[0]['titolo'] = '<strong>'.strtoupper($_lang['totale']).'</strong>';
+								$data[0]['testo'] = '€ <strong>'.number_format($invoiceTotal,2,',','.').'</strong>';
+								$pdf->ezTable($data, $cols,'',array('showHeadings'=>0,'gridlines'=>EZ_GRIDLINE_DEFAULT,'fontSize' =>12,'width'=>500,'shaded'=>0,'rowGap'=>5,'colGap'=>10,'showLines'=>0,'lineCol'=>array(0.7,0.7,0.7),'cols'=>array('titolo'=>array('justification'=>'right'),'testo'=>array('width'=>110,'justification'=>'right'))));
+								/* FINE TOTALI */
 								
 								// Output the pdf as stream, but uncompress														
 								$namefile = ucfirst($_lang['voce']).'-'.$App->item->dateins.".pdf";
