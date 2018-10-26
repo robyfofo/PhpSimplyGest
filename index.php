@@ -5,10 +5,10 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * app/index.php v.1.0.0. 27/02/2018
+ * index.php v.1.0.1. 01/03/2018
 */
 
-ini_set('display_errors',1);
+//ini_set('display_errors',1);
 
 define('PATH','');
 define('MAXPATH', str_replace("includes","",dirname(__FILE__)).'');
@@ -52,20 +52,19 @@ $_MY_SESSION_VARS = $my_session->my_session_read();
 $App = new stdClass;
 define('DB_TABLE_PREFIX',Sql::getTablePrefix());
 $App->templateBase = 'site.tpl.php';
-$renderTpl = true;
+$renderTlp = true;
 $renderAjax = false;
-$App->templateApp = '';
 
-$App->pathApplications = 'applications/';
-$App->pathApplicationsCore = 'applications/core/';
+$App->pathApplication = 'application/';
+$App->pathApplicationCore = 'application/core/';
 
 $App->mySessionVars = $_MY_SESSION_VARS;
 $App->globalSettings = $globalSettings;
 
 $App->breadcrumb = '';
-$App->metaTitlePage = SITE_NAME.' v.'.CODE_VERSION;
-$App->metaDescriptionPage = 'Gestione proggetti personali e i tempi lavorativi ad assi associati';
-$App->metaKeywordsPage = 'progetti, progetto, tempo, lavoro, timecard, note, dafare, preventivo, preventivi, contatti, calendario, ora, inizio, fine';
+$App->metaTitlePage = META_TITLE;
+$App->metaDescriptionPage = META_DESCRIPTION;
+$App->metaKeywordsPage = META_KEYWORD;
 
 /* date sito */
 setlocale(LC_TIME, 'ita', 'it_IT');
@@ -80,7 +79,7 @@ $App->coreModule = false;
 $App->modulesCore = array('login','logout','account','password','profile','nopassword','nousername');
 
 /* gestisce la richiesta http parametri get */
-$globalSettings['requestoption']['othemodules'] = array_merge(array('site-users'),$App->modulesCore);
+$globalSettings['requestoption']['othemodules'] = array_merge(array('makeconfig'),$App->modulesCore);
 Core::getRequest($globalSettings['requestoption']);
 
 //print_r(Core::$request);
@@ -98,15 +97,45 @@ if (!isset($_MY_SESSION_VARS['idUser'])){
 		}	
 /* UTENTE */
 
+/* PERMESSI UTENTE */
+/* carica i livelli */
+$App->user_levels = Permissions::getUserLevels();
+if (Core::$resultOp->error == 1) die('Errore lettura permessi utente!');
+if (isset($App->userLoggedData->id_level)) {
+	$App->userLoggedData->labelRole = Permissions::getUserLevelLabel($App->user_levels,$App->userLoggedData->id_level,$App->userLoggedData->is_root);
+	}
+/* PERMESSI UTENTE */
+
 /* gestione template */
 $App->templateUser = Core::$request->templateUser;
 
-/* carica i dati dei moduli */
-Sql::initQuery(DB_TABLE_PREFIX.'modules',array('*'),array(),'active = 1','ordering ASC');
-$App->site_modules = Sql::getRecords();
-if (Core::$resultOp->error == 1) die('Errore db moduli!');
-$App->first_module_active = 'home';
 
+/* carica i dati dei moduli */
+foreach($globalSettings['module sections'] AS $key=>$value) {
+	Sql::initQuery(DB_TABLE_PREFIX.'modules',array('*'),array($key),'active = 1 AND section = ?','ordering ASC');
+	$App->modules[$key] = Sql::getRecords();
+	if (Core::$resultOp->error == 1) die('Errore db moduli!');
+	}
+
+/* carica i moduli disponibili per l'utente corrente */
+$App->user_modules_active = array();
+$App->user_first_module_active = 'home';
+if(isset($App->userLoggedData->id_level) && $App->userLoggedData->id_level > 0) {
+	$obj = new stdClass();
+	Sql::initQuery(DB_TABLE_PREFIX.'levels',array('*'),array($App->userLoggedData->id_level),'active = 1 AND id = ?');
+	$obj = Sql::getRecord();	
+	$App->user_modules_active = explode(',', $obj->modules);	
+	$App->user_first_module_active = $App->user_modules_active[0];
+	}
+/* integra con i core */
+$App->user_modules_active = array_merge($App->user_modules_active, $App->modulesCore);
+
+
+/* controlla permessi */
+/* se non si è connessi */
+if (Permissions::checkAccessUserModule(Core::$request->action,$App->userLoggedData,$App->user_modules_active) == false) {
+	Core::$request->action = $App->user_first_module_active;
+	}
 
 /* LINGUA */
 /* carica la lingua del sito */
@@ -124,41 +153,45 @@ if ($globalSettings['defaul language'] != '') {
 
 /* crea il menu */
 $App->rightMenu = '';
-$x1 = 0;
-foreach($App->site_modules AS $module) {
-	$codemenu = $module->code_menu;
-	$codemenu = preg_replace('/%URLSITE%/',URL_SITE,$codemenu);
-	$codemenu = preg_replace('/%LABEL%/',$module->label,$codemenu);
-	$codemenu = preg_replace('/%NAME%/',$module->name,$codemenu);												
-	/* se active */
-	if (Core::$request->action == $module->name) {
-		$codemenu = preg_replace('/%LICLASS%/','active',$codemenu);
-		} else {
-			$codemenu = preg_replace('/%LICLASS%/','',$codemenu);										
-			}
-		$App->rightMenu .= $codemenu; 
-		$x1++;								
-	}			
-	
-
+foreach($App->modules AS $sectionKey=>$sectionModules) {
+	$x1 = 0;
+	foreach($sectionModules AS $module) {
+		if (Permissions::checkAccessUserModule($module->name,$App->userLoggedData,$App->user_modules_active,$App->modulesCore) === true) {
+			$codemenu = $module->code_menu;
+			$codemenu = preg_replace('/%URLSITE%/',URL_SITE,$codemenu);
+			$codemenu = preg_replace('/%LABEL%/',$module->label,$codemenu);
+			$codemenu = preg_replace('/%NAME%/',$module->name,$codemenu);												
+			/* se active */
+			if (Core::$request->action == $module->name) {
+				$codemenu = preg_replace('/%LICLASS%/','active',$codemenu);
+				} else {
+					$codemenu = preg_replace('/%LICLASS%/','',$codemenu);										
+					}
+				$App->rightMenu .= $codemenu; 
+				$x1++;								
+			}			
+		}
+	if ($x1 > 0) $App->rightMenu .= '<hr>';			
+	}	
 	
 /* INDIRIZZAMENTO */
-$pathApplications = $App->pathApplications;
+$pathApplication = $App->pathApplication;
 $action = Core::$request->action;
 $index = '/index.php';
 
 if (in_array(Core::$request->action,$App->modulesCore) == true) {
 	$App->coreModule = true;
-	$pathApplications = $App->pathApplicationsCore;
+	$pathApplication = $App->pathApplicationCore;
 	$action = '';
 	$index = Core::$request->action.'.php';
 	}
 
-if (file_exists(PATH.$pathApplications.$action.$index)) {
-	include_once(PATH.$pathApplications.$action.$index);
+if (file_exists(PATH.$pathApplication.$action.$index)) {
+	$_MY_SESSION_VARS = $my_session->addSessionsModuleVars($_MY_SESSION_VARS,Core::$request->action,array('page'=>1,'ifp'=>'10'));
+	include_once(PATH.$pathApplication.$action.$index);
 	} else {
-		Core::$request->action = $App->first_module_active;
-		include_once(PATH.$pathApplications.$App->first_module_active."/index.php");
+		Core::$request->action = $App->user_first_module_active;
+		include_once(PATH.$pathApplication.$App->user_first_module_active."/index.php");
 		}
 /* INDIRIZZAMENTO */
 
@@ -175,27 +208,26 @@ if ($show == true) {
 	}
 /* DIV MESSAGGI SISTEMA */
 
+$App->lang = $_lang;
 if ($App->coreModule == true) {
-	$pathtemplateApp = PATH.$pathApplications .= "templates/".$App->templateUser."/";
+	$pathtemplateApp = PATH.$pathApplication .= "templates/".$App->templateUser."/";
 	} else {
-		if ($App->templateApp != '') $App->templateApp = Core::$request->action."/templates/".$App->templateUser."/".$App->templateApp;
+		$App->templateApp = Core::$request->action."/templates/".$App->templateUser."/".$App->templateApp;
 		}
 $pathtemplateBase = PATH."templates/".$App->templateUser;
-$pathtemplateApp = PATH.$pathApplications;
+$pathtemplateApp = PATH.$pathApplication;
 
 /* genera il template */
-if ($renderTpl == true && $App->templateApp != '') {
+if ($renderTlp == true) {
 	
 	$arrayVars = array(
 		'App'=>$App,
 		'Lang'=>$_lang,
 		'URLSITE'=>URL_SITE,
-		'PATHSITE'=>URL_SITE,
 		'UPLOADDIR'=>UPLOAD_DIR,
 		'CoreRequest'=>Core::$request,
 		'CoreResultOp'=>Core::$resultOp,
-		'MySessionVars'=>$_MY_SESSION_VARS,
-		'GlobalSettings'=>$globalSettings
+		'MySessionVars'=>$_MY_SESSION_VARS
 		);
 	$loader = new Twig_Loader_Filesystem($pathtemplateApp);	
 	$loader->addPath($pathtemplateBase,'base');
@@ -206,12 +238,6 @@ if ($renderTpl == true && $App->templateApp != '') {
 	$twig->addExtension(new Twig_Extension_Debug());
 	$template = $twig->loadTemplate('@base/'.$App->templateBase);	
 	echo $template->render($arrayVars);
-	} else { if ($renderAjax != true) echo 'No templateApp found!';}
-	
-if ($renderAjax == true){
-	if (file_exists($pathApplications.$App->templateApp)) {
-		include_once($pathApplications.$App->templateApp);	
-		}
 	}
-print_r($_MY_SESSION_VARS);
+//print_r($_MY_SESSION_VARS);
 ?>

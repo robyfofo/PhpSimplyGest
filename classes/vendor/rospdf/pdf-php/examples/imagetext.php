@@ -7,6 +7,10 @@ include 'Cezpdf.php';
 
 $pdf = new Cezpdf('a4', 'portrait');
 
+if (strpos(PHP_OS, 'WIN') !== false) {
+    $pdf->tempPath = 'C:/temp';
+}
+
 $pdf->selectFont('Courier');
 
 $imgHeight = 20;

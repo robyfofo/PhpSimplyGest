@@ -7,6 +7,10 @@ date_default_timezone_set('UTC');
 include 'Cezpdf.php';
 
 $pdf = new Cezpdf('a4', 'portrait');
+// to test on windows xampp
+if (strpos(PHP_OS, 'WIN') !== false) {
+    $pdf->tempPath = 'C:/temp';
+}
 
 if (!isset($_GET['nocrypt'])) {
     $pdf->addInfo('Title', 'R&OS PDF Title (encrypted)');

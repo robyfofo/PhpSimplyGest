@@ -8,7 +8,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="description" content="{{ App.metaDescriptionPage|e('html_attr') }}">
 		<meta name="keyword" content="{{ App.metaKeywordsPage|e('html_attr') }}">
-		<meta name="author" content="Roberto Mantovani">
+		<meta name="author" content="roberto" >
 
 		<!-- Core CSS - Include with every page -->
 		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -66,6 +66,15 @@
 		{% if App.includeJscriptPHPTop is defined and App.includeJscriptPHPTop != '' %}			
 			{{ include(App.includeJscriptPHPTop|raw) }}
 		{% endif %}
+
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-88049854-1"></script>
+	<script>
+ 			window.dataLayer = window.dataLayer || [];
+  			function gtag(){dataLayer.push(arguments);}
+  			gtag('js', new Date());
+  			gtag('config', 'UA-88049854-1');
+	</script>
 
 	</head>
 
@@ -188,8 +197,6 @@
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/jquery.formvalidation/js/formValidation.min.js" type="text/javascript"></script>	
 
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/bower_components/tinymce/tinymce.min.js" type="text/javascript"></script>
-		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/bower_components/tinymce/config/config.js" type="text/javascript"></script>
-				
 		<!-- SB Admin Scripts - Include with every page -->
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/js/sb-admin-2.js"></script>	
 		

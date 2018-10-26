@@ -4,10 +4,9 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit3493e9ecbc791dbfa46872e73206e9a8
+class ComposerStaticInit13f0c9d5e282128b0027d0df4c171522
 {
     public static $files = array (
-        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
         'd5fa61a7f6cbc1df09dd4df84549a2dc' => __DIR__ . '/..' . '/rospdf/pdf-php/src/Cpdf.php',
         '2d15964294879de66053d54f6bde65d7' => __DIR__ . '/..' . '/rospdf/pdf-php/src/Cezpdf.php',
@@ -17,10 +16,6 @@ class ComposerStaticInit3493e9ecbc791dbfa46872e73206e9a8
         'T' => 
         array (
             'Twig\\' => 5,
-        ),
-        'S' => 
-        array (
-            'Symfony\\Polyfill\\Mbstring\\' => 26,
         ),
         'H' => 
         array (
@@ -36,10 +31,6 @@ class ComposerStaticInit3493e9ecbc791dbfa46872e73206e9a8
         'Twig\\' => 
         array (
             0 => __DIR__ . '/..' . '/twig/twig/src',
-        ),
-        'Symfony\\Polyfill\\Mbstring\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
         ),
         'Html2Text\\' => 
         array (
@@ -71,9 +62,9 @@ class ComposerStaticInit3493e9ecbc791dbfa46872e73206e9a8
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit3493e9ecbc791dbfa46872e73206e9a8::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit3493e9ecbc791dbfa46872e73206e9a8::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit3493e9ecbc791dbfa46872e73206e9a8::$prefixesPsr0;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit13f0c9d5e282128b0027d0df4c171522::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit13f0c9d5e282128b0027d0df4c171522::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit13f0c9d5e282128b0027d0df4c171522::$prefixesPsr0;
 
         }, null, ClassLoader::class);
     }
