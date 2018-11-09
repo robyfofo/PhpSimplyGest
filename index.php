@@ -1,14 +1,14 @@
 <?php
 /**
- * Framework App PHP-Mysql
+ * Framework App PHP-MySQL
  * PHP Version 7
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * index.php v.1.0.1. 01/03/2018
+ * app/index.php v.1.0.0. 06/11/2018
 */
 
-//ini_set('display_errors',1);
+ini_set('display_errors',1);
 
 define('PATH','');
 define('MAXPATH', str_replace("includes","",dirname(__FILE__)).'');
@@ -42,29 +42,29 @@ $Core = new Core();
 //Sql::setDebugMode(1);
 
 /* avvio sessione */
-$my_session = new my_session(SESSIONS_TIME, SESSIONS_GC_TIME,AD_SESSIONS_COOKIE_NAME);
+$my_session = new my_session(SESSIONS_TIME, SESSIONS_GC_TIME,SESSIONS_COOKIE_NAME);
 $my_session->my_session_start();
 $_MY_SESSION_VARS = array();
 $_MY_SESSION_VARS = $my_session->my_session_read();
-
 
 /* variabili globali */
 $App = new stdClass;
 define('DB_TABLE_PREFIX',Sql::getTablePrefix());
 $App->templateBase = 'site.tpl.php';
-$renderTlp = true;
+$renderTpl = true;
 $renderAjax = false;
+$App->templateApp = '';
 
-$App->pathApplication = 'application/';
-$App->pathApplicationCore = 'application/core/';
+$App->pathApplications = 'applications/';
+$App->pathApplicationsCore = 'applications/core/';
 
 $App->mySessionVars = $_MY_SESSION_VARS;
 $App->globalSettings = $globalSettings;
 
 $App->breadcrumb = '';
-$App->metaTitlePage = META_TITLE;
-$App->metaDescriptionPage = META_DESCRIPTION;
-$App->metaKeywordsPage = META_KEYWORD;
+$App->metaTitlePage = SITE_NAME.' v.'.CODE_VERSION;
+$App->metaDescriptionPage = $globalSettings['meta tags page']['description'];
+$App->metaKeywordsPage = $globalSettings['meta tags page']['keyword'];
 
 /* date sito */
 setlocale(LC_TIME, 'ita', 'it_IT');
@@ -75,46 +75,48 @@ $App->nowDateIta = date('d/m/Y');
 $App->nowDateTimeIta = date('d/m/Y H:i:s');
 $App->nowTimeIta = date('H:i:s');
 
+$App->userLoggedData = new stdClass();
+/* carica dati utente loggato */	
+if (isset($_MY_SESSION_VARS['idUser'])) {	
+	Sql::initQuery(DB_TABLE_PREFIX.'users',array('*'),array($_MY_SESSION_VARS['idUser']),'active = 1 AND id = ?','');
+	$App->userLoggedData = Sql::getRecord();
+	$App->userLoggedData->is_root = intval($App->userLoggedData->is_root);
+	}
+
 $App->coreModule = false;
-$App->modulesCore = array('login','logout','account','password','profile','nopassword','nousername');
+$App->modulesCore = array('login','logout','account','password','profile','nopassword','nousername','error');
 
 /* gestisce la richiesta http parametri get */
-$globalSettings['requestoption']['othemodules'] = array_merge(array('makeconfig'),$App->modulesCore);
+$globalSettings['requestoption']['othermodules'] = array_merge(array(),$App->modulesCore);
+$globalSettings['requestoption']['defaultaction'] = 'home';
+if (isset($App->userLoggedData->is_root) && $App->userLoggedData->is_root == 1) $globalSettings['requestoption']['permissionroot'] = true;
 Core::getRequest($globalSettings['requestoption']);
-
 //print_r(Core::$request);
-
-/* UTENTE */
-$App->userLoggedData = new stdClass();
 
 if (!isset($_MY_SESSION_VARS['idUser'])){
 	if (Core::$request->action != "nopassword" && Core::$request->action != "nousername") Core::$request->action = 'login';
-	} else {
-		/* carica dati utente loggato */		
-		Sql::initQuery(DB_TABLE_PREFIX.'users',array('*'),array($_MY_SESSION_VARS['idUser']),'active = 1 AND id = ?','');
-		$App->userLoggedData = Sql::getRecord();
-		$App->userLoggedData->is_root = intval($App->userLoggedData->is_root);
-		}	
-/* UTENTE */
+	}
 
-/* PERMESSI UTENTE */
+/* LIVELLI UTENTE */
 /* carica i livelli */
 $App->user_levels = Permissions::getUserLevels();
-if (Core::$resultOp->error == 1) die('Errore lettura permessi utente!');
+if (Core::$resultOp->error == 1) die('Errore db livello utenti!');
 if (isset($App->userLoggedData->id_level)) {
 	$App->userLoggedData->labelRole = Permissions::getUserLevelLabel($App->user_levels,$App->userLoggedData->id_level,$App->userLoggedData->is_root);
 	}
-/* PERMESSI UTENTE */
+/* LIVELLI UTENTE */
 
 /* gestione template */
-$App->templateUser = Core::$request->templateUser;
+$App->templateUser = $globalSettings['requestoption']['defaulttemplate'];
 
+/* elenco delle tabelle nel db */
+$App->tablesOfDatabase = Sql::getTablesDatabase($globalSettings['database'][DATABASE]['name']);
 
 /* carica i dati dei moduli */
 foreach($globalSettings['module sections'] AS $key=>$value) {
 	Sql::initQuery(DB_TABLE_PREFIX.'modules',array('*'),array($key),'active = 1 AND section = ?','ordering ASC');
 	$App->modules[$key] = Sql::getRecords();
-	if (Core::$resultOp->error == 1) die('Errore db moduli!');
+	if (Core::$resultOp->error == 1) die('Errore db livello utenti!');
 	}
 
 /* carica i moduli disponibili per l'utente corrente */
@@ -131,18 +133,10 @@ if(isset($App->userLoggedData->id_level) && $App->userLoggedData->id_level > 0) 
 $App->user_modules_active = array_merge($App->user_modules_active, $App->modulesCore);
 
 
-/* controlla permessi */
-/* se non si è connessi */
-if (Permissions::checkAccessUserModule(Core::$request->action,$App->userLoggedData,$App->user_modules_active) == false) {
-	Core::$request->action = $App->user_first_module_active;
-	}
-
 /* LINGUA */
-/* carica la lingua del sito */
-
-if ($globalSettings['defaul language'] != '') {
-	if (file_exists(PATH."lang/".$globalSettings['defaul language'].".inc.php")) {
-		include_once(PATH."lang/".$globalSettings['defaul language'].".inc.php");
+if ($globalSettings['default language'] != '') {
+	if (file_exists(PATH."lang/".$globalSettings['default language'].".inc.php")) {
+		include_once(PATH."lang/".$globalSettings['default language'].".inc.php");
 		} else {
 			include_once(PATH."lang/it.inc.php");
 			}
@@ -150,84 +144,60 @@ if ($globalSettings['defaul language'] != '') {
 		include_once(PATH."lang/it.inc.php");
 		}
 /* LINGUA */
-
-/* crea il menu */
-$App->rightMenu = '';
-foreach($App->modules AS $sectionKey=>$sectionModules) {
-	$x1 = 0;
-	foreach($sectionModules AS $module) {
-		if (Permissions::checkAccessUserModule($module->name,$App->userLoggedData,$App->user_modules_active,$App->modulesCore) === true) {
-			$codemenu = $module->code_menu;
-			$codemenu = preg_replace('/%URLSITE%/',URL_SITE,$codemenu);
-			$codemenu = preg_replace('/%LABEL%/',$module->label,$codemenu);
-			$codemenu = preg_replace('/%NAME%/',$module->name,$codemenu);												
-			/* se active */
-			if (Core::$request->action == $module->name) {
-				$codemenu = preg_replace('/%LICLASS%/','active',$codemenu);
-				} else {
-					$codemenu = preg_replace('/%LICLASS%/','',$codemenu);										
-					}
-				$App->rightMenu .= $codemenu; 
-				$x1++;								
-			}			
-		}
-	if ($x1 > 0) $App->rightMenu .= '<hr>';			
-	}	
 	
 /* INDIRIZZAMENTO */
-$pathApplication = $App->pathApplication;
+$pathApplications = $App->pathApplications;
 $action = Core::$request->action;
 $index = '/index.php';
 
 if (in_array(Core::$request->action,$App->modulesCore) == true) {
 	$App->coreModule = true;
-	$pathApplication = $App->pathApplicationCore;
+	$pathApplications = $App->pathApplicationsCore;
 	$action = '';
 	$index = Core::$request->action.'.php';
 	}
+	
+/*
+echo '<br>$pathApplications: '.$pathApplications;
+echo '<br>$action: '.$action;
+echo '<br>$index: '.$index;
+*/
 
-if (file_exists(PATH.$pathApplication.$action.$index)) {
-	$_MY_SESSION_VARS = $my_session->addSessionsModuleVars($_MY_SESSION_VARS,Core::$request->action,array('page'=>1,'ifp'=>'10'));
-	include_once(PATH.$pathApplication.$action.$index);
+
+if (file_exists(PATH."iniapp.php")) include_once(PATH."iniapp.php");
+
+if (file_exists(PATH.$pathApplications.$action.$index)) {
+	include_once(PATH.$pathApplications.$action.$index);
 	} else {
-		Core::$request->action = $App->user_first_module_active;
-		include_once(PATH.$pathApplication.$App->user_first_module_active."/index.php");
+		Core::$request->action =$App->user_first_module_active;
+		include_once(PATH.$pathApplications.$App->user_first_module_active."/index.php");
 		}
 /* INDIRIZZAMENTO */
 
-/* DIV MESSAGGI SISTEMA */
-$App->systemMessages = '';
-$appErrors = Utilities::getMessagesCore(Core::$resultOp);
-list($show,$error,$type,$content) = $appErrors;
-if ($show == true) {
-	$App->systemMessages .= '<div class="row"><div id="systemMessageID" class="alert';
-	if ($error == 2) $App->systemMessages .= ' alert-warning';
-	if ($error == 1) $App->systemMessages .= ' alert-danger';
-	if ($error == 0) $App->systemMessages .= ' alert-success';
-	$App->systemMessages .= '">'.$content.'</div></div>';
-	}
-/* DIV MESSAGGI SISTEMA */
+if (file_exists(PATH."endapp.php")) include_once(PATH."endapp.php");
 
-$App->lang = $_lang;
 if ($App->coreModule == true) {
-	$pathtemplateApp = PATH.$pathApplication .= "templates/".$App->templateUser."/";
+	$pathtemplateApp = PATH.$pathApplications .= "templates/".$App->templateUser."/";
 	} else {
-		$App->templateApp = Core::$request->action."/templates/".$App->templateUser."/".$App->templateApp;
+		if ($App->templateApp != '') $App->templateApp = Core::$request->action."/templates/".$App->templateUser."/".$App->templateApp;
 		}
+
 $pathtemplateBase = PATH."templates/".$App->templateUser;
-$pathtemplateApp = PATH.$pathApplication;
+$pathtemplateApp = PATH.$pathApplications;
 
 /* genera il template */
-if ($renderTlp == true) {
+if ($renderTpl == true && $App->templateApp != '') {
 	
 	$arrayVars = array(
 		'App'=>$App,
 		'Lang'=>$_lang,
 		'URLSITE'=>URL_SITE,
+		'PATHSITE'=>URL_SITE,
 		'UPLOADDIR'=>UPLOAD_DIR,
 		'CoreRequest'=>Core::$request,
 		'CoreResultOp'=>Core::$resultOp,
-		'MySessionVars'=>$_MY_SESSION_VARS
+		'MySessionVars'=>$_MY_SESSION_VARS,
+		'GlobalSettings'=>$globalSettings
 		);
 	$loader = new Twig_Loader_Filesystem($pathtemplateApp);	
 	$loader->addPath($pathtemplateBase,'base');
@@ -238,6 +208,12 @@ if ($renderTlp == true) {
 	$twig->addExtension(new Twig_Extension_Debug());
 	$template = $twig->loadTemplate('@base/'.$App->templateBase);	
 	echo $template->render($arrayVars);
+	} else { if ($renderAjax != true) echo 'No templateApp found!';}
+	
+if ($renderAjax == true){
+	if (file_exists($pathApplications.$App->templateApp)) {
+		include_once($pathApplications.$App->templateApp);	
+		}
 	}
 //print_r($_MY_SESSION_VARS);
 ?>

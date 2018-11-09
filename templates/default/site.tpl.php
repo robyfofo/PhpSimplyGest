@@ -26,8 +26,7 @@
 
 		<!-- OTHER Plugin CSS - Dashboard -->
 		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/lightbox/css/lightbox.min.css" rel="stylesheet">
-		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/bootstrapValidator/css/bootstrapValidator.min.css" rel="stylesheet">
-		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/jquery.formvalidation/css/formValidation.min.css" rel="stylesheet">
+		
 		
 		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -55,7 +54,7 @@
 			var siteTemplatePath = '{{ PATHSITE }}templates/{{ App.templateUser }}/';			
 			var siteDocumentPath = '{{ PATHDOCUMENT }}';	
 			var CoreRequestAction = '{{ CoreRequest.action }}';			
-			var cur_lang = "{{ Lang['user'] }}";
+			var user_lang = "{{ Lang['user'] }}";
 			var messages = new Array();
 			messages['Sei sicuro?'] = '{{ Lang['Sei sicuro?']|e('js') }}';	
 			{% if (App.defaultJavascript is defined) and (App.defaultJavascript != '') %}
@@ -66,7 +65,7 @@
 		{% if App.includeJscriptPHPTop is defined and App.includeJscriptPHPTop != '' %}			
 			{{ include(App.includeJscriptPHPTop|raw) }}
 		{% endif %}
-
+		
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-88049854-1"></script>
 	<script>
@@ -115,8 +114,9 @@
 				<div class="navbar-default sidebar" role="navigation">
 					<div class="sidebar-nav navbar-collapse">
 						<ul class="nav" id="side-menu">
-							{% if (App.rightMenu is defined) and (App.rightMenu != '') %}
-								{{ App.rightMenu|raw }}
+							<!-- code menu -->
+							{% if App.rightCodeMenu is defined and App.rightCodeMenu != '' %}
+								{{ App.rightCodeMenu|raw }}
 							{% endif %}  
 						</ul>
 					</div>
@@ -193,10 +193,10 @@
 
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/bootbox/js/bootbox.min.js" type="text/javascript"></script>
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/lightbox/js/lightbox.min.js" type="text/javascript"></script>
-		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/bootstrapValidator/js/bootstrapValidator.min.js" type="text/javascript"></script>
-		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/jquery.formvalidation/js/formValidation.min.js" type="text/javascript"></script>	
+		
 
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/bower_components/tinymce/tinymce.min.js" type="text/javascript"></script>
+		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/bower_components/tinymce/config/tinymce.config.js" type="text/javascript"></script>
 		<!-- SB Admin Scripts - Include with every page -->
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/js/sb-admin-2.js"></script>	
 		
