@@ -1,11 +1,11 @@
 <?php
 /**
- * Framework siti html-PHP-Mysql
+ * Framework App PHP-MySQL
  * PHP Version 7
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * projects/items.php v.1.0.1. 01/03/2017
+ * projects/items.php v.1.0.0. 28/09/2018
 */
 
 if (isset($_POST['itemsforpage'])) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'ifp',$_POST['itemsforpage']);
@@ -15,15 +15,15 @@ $App->id_cat = 0;
 
 /* GESTIONE CUSTOMERS */
 $App->icustomers = new stdClass;	
-Sql::initQuery($App->params->tables['cust'],array('*'),array(),'active = 1 AND (id_type = 1 OR id_type = 2)');
+Sql::initQuery($App->params->tables['cust'],array('*'),array(),'active = 1 AND (id_type = 2 OR id_type = 3)');
 Sql::setOptions(array('fieldTokeyObj'=>'id'));
 Sql::setOrder('ragione_sociale ASC');
-$App->customers = Sql::getRecords();	
+$App->customers = Sql::getRecords();
 
 switch(Core::$request->method) {
 	case 'activeItem':
 	case 'disactiveItem':
-		Sql::manageFieldActive(substr(Core::$request->method,0,-4),$App->params->tables['item'],$App->id,array('labelA'=>$_lang['voce attivata'],'labelD'=>$_lang['voce disattivata']));
+		Sql::manageFieldActive(substr(Core::$request->method,0,-4),$App->params->tables['item'],$App->id,$opt=array('labelA'=>$_lang['voce'].' '.$_lang['attivato'],'labelD'=>$_lang['voce'].' '.$_lang['disattivato']));
 		$App->viewMethod = 'list';
 	break;
 	
@@ -40,7 +40,7 @@ switch(Core::$request->method) {
 					Sql::initQuery($App->params->tables['todo'],array('id'),array($App->id),'id_project = ?');
 					Sql::deleteRecord();
 					if (Core::$resultOp->error == 0) {
-						Core::$resultOp->message = ucfirst($_lang['voce cancellata']).'!';
+						Core::$resultOp->message = ucfirst(preg_replace('/%ITEM%/',$_lang['voce'],$_lang['%ITEM% cancellato'])).'!';
 						}						
 					}	
 				}		
@@ -65,13 +65,13 @@ switch(Core::$request->method) {
 	
 	case 'timecardItem':
 		if ($App->id > 0) {
-			Sql::switchFieldOnOffInLang($App->params->tables['item'],'timecard','id',$App->id,'timecard',$_lang);	
+			Sql::switchFieldOnOff($App->params->tables['item'],'timecard','id',$App->id,array('labelOn'=>ucfirst(preg_replace('/%ITEM%/',$_lang['timecard'],$_lang['%ITEM% attivata'])).'!','labelOff'=>ucfirst(preg_replace('/%ITEM%/',$_lang['timecard'],$_lang['%ITEM% disattivata'])).'!'));
 			}		
 		$App->viewMethod = 'list';	
 	break;
 	
 	case 'newItem':
-		$App->pageSubTitle = $_lang['inserisci voce'];
+		$App->pageSubTitle = preg_replace('/%ITEM%/',$_lang['voce'],$_lang['inserisci %ITEM%']);
 		$App->viewMethod = 'formNew';	
 	break;
 	
@@ -95,11 +95,11 @@ switch(Core::$request->method) {
 			} else {
 				Core::$resultOp->error = 1;
 				}
-		list($id,$App->viewMethod,$App->pageSubTitle,Core::$resultOp->message) = Form::getInsertRecordFromPostResults(0,Core::$resultOp,$_lang,array());				
+		list($id,$App->viewMethod,$App->pageSubTitle,Core::$resultOp->message) = Form::getInsertRecordFromPostResults(0,Core::$resultOp,array('label inserted'=>preg_replace('/%ITEM%/',$_lang['voce'],$_lang['%ITEM% inserito']),'label insert'=>preg_replace('/%ITEM%/',$_lang['voce'],$_lang['inserisci %ITEM%'])));				
 	break;
 
 	case 'modifyItem':				
-		$App->pageSubTitle = $_lang['modifica voce'];
+		$App->pageSubTitle = preg_replace('/%ITEM%/',$_lang['voce'],$_lang['modifica %ITEM%']);
 		$App->viewMethod = 'formMod';
 	break;
 	
@@ -122,7 +122,7 @@ switch(Core::$request->method) {
 			} else {	
 				Core::$resultOp->error = 1;
 				}	
-		list($id,$App->viewMethod,$App->pageSubTitle,Core::$resultOp->message) = Form::getUpdateRecordFromPostResults($App->id,Core::$resultOp,$_lang,array());	
+		list($id,$App->viewMethod,$App->pageSubTitle,Core::$resultOp->message) = Form::getUpdateRecordFromPostResults($App->id,Core::$resultOp,array('label done'=>$_lang['modifiche effettuate'],'label modified'=>preg_replace('/%ITEM%/',$_lang['voce'],$_lang['%ITEM% modificato']),'label modify'=>preg_replace('/%ITEM%/',$_lang['voce'],$_lang['modifica %ITEM%']),'label insert'=>preg_replace('/%ITEM%/',$_lang['voce'],$_lang['inserisci %ITEM%'])));	
 	break;
 	
 	case 'pageItem':
@@ -157,26 +157,61 @@ switch(Core::$request->method) {
 			}
 		/* end orders */		
 			
-		/* search */
-		/* aggiunge campi join */
-		$where = 'id_owner = ?';
-		$and = ' AND ';
-		$fieldsValue = array($App->userLoggedData->id);
+		/* SEARCH QUERY */
+			
+		$where = '';
+		$and = '';
+		$fieldsValue = array();
+				
+		/* permissions query */
+		list($permClause,$fieldsValuesPermClause) = Permissions::getSqlQueryItemPermissionForUser($App->userLoggedData);
+		if (isset($permClause) && $permClause != '') {
+			$where .= $and.'('.$permClause.')';
+			$and = ' AND ';
+			}
+		if (is_array($fieldsValuesPermClause) && count($fieldsValuesPermClause) > 0) {
+			$fieldsValue = array_merge($fieldsValue,$fieldsValuesPermClause);	
+			}
+		/* end permissions items */
+		
+		$filtering = false;		
 		if (isset($_REQUEST['search']) && is_array($_REQUEST['search']) && count($_REQUEST['search']) > 0) {		
 			if (isset($_REQUEST['search']['value']) && $_REQUEST['search']['value'] != '') {
+				/* field query */				
 				list($w,$fv) = Sql::getClauseVarsFromAppSession($_REQUEST['search']['value'],$App->params->fields['item'],'');
 				if ($w != '') {
 					$where .= $and."(".$w.")";
 					$and = ' AND ';
+					if (is_array($fv) && count($fv) > 0) {
+						$fieldsValue = array_merge($fieldsValue,$fv);
+						$filtering = true;
+						}
 					}
-				if (is_array($fv) && count($fv) > 0) $fieldsValue = array_merge($fieldsValue,$fv);
+								
+				/* field array query */
+				$fields = array('item.status');
+				list($w,$fv) = Sql::getClauseVarsFromArray($_REQUEST['search']['value'],$fields,array());
+				if ($w != '') {
+					$where .= $and."(".$w.")";
+					$and = ' AND ';
+					if (is_array($fv) && count($fv) > 0) {
+						$fieldsValue = array_merge($fieldsValue,$fv);
+						$filtering = true;
+						}
+					}
 				
 				}
 			}
-		/* end search */
+		/* END SEARCH QUERY */
 		
-		$table = $App->params->tables['item']." AS ite";
-		$fields[] = "*";
+		//echo $where;
+		//print_r($fieldsValue);
+		
+		/* conta tutti i records */
+		$recordsTotal = Sql::countRecordQry($App->params->tables['item'],'id','',array());
+		
+		$table = $App->params->tables['item']." AS item";
+		$fields[] = "item.*";
 		Sql::initQuery($table,$fields,$fieldsValue,$where,implode(', ', $order),$limit);
 		if (Core::$resultOp->error <> 1) $obj = Sql::getRecords();
 		/* sistemo dati */	
@@ -185,7 +220,7 @@ switch(Core::$request->method) {
 			foreach ($obj AS $key=>$value) {
 				$actions = '<a class="btn btn-default btn-circle" href="'.URL_SITE.Core::$request->action.'/'.($value->active == 1 ? 'disactive' : 'active').'Item/'.$value->id.'" title="'.($value->active == 1 ? ucfirst($_lang['disattiva']).' '.$_lang['la voce'] : ucfirst($_lang['attiva']).' '.$_lang['la voce']).'"><i class="fa fa-'.($value->active == 1 ? 'unlock' : 'lock').'"> </i></a><a class="btn btn-default btn-circle" href="'.URL_SITE.Core::$request->action.'/modifyItem/'.$value->id.'" title="'.ucfirst($_lang['modifica']).' '.$_lang['la voce'].'"><i class="fa fa-edit"> </i></a><a class="btn btn-default btn-circle confirmdelete" href="'.URL_SITE.Core::$request->action.'/deleteItem/'.$value->id.'" title="'.ucfirst($_lang['cancella']).' '.$_lang['la voce'].'"><i class="fa fa-cut"> </i></a>';
 				$timecards = '<button type="button" href="'.URL_SITE.Core::$request->action.'/getTimecardsProjectAjax/'.$value->id.'" data-remote="false" data-target="#myModal" data-toggle="modal" title="'.ucfirst($_lang['mostra tempo lavorato al progetto']).'" class="btn btn-default btn-circle"><i class="fa fa-clock-o"> </i></button>';											
-				$options = '<a class="btn btn-default btn-circle" href="'.URL_SITE.Core::$request->action.'/timecardItem/'.$value->id.'" title="'.($value->timecard == 1 ? ucfirst($_lang['non associa timecard']) : ucfirst($_lang['associa timecard'])).'"><i class="fa fa-'.($value->timecard == 1 ? 'clock-o' : 'ban').'"> </i></a><a class="btn btn-default btn-circle" href="'.URL_SITE.Core::$request->action.'/currentItem/'.$value->id.'" title="'.($value->current == 1 ? ucfirst($_lang['imposta come non corrente']) : ucfirst($_lang['imposta come corrente'])).'"><i class="fa fa-'.($value->current == 1 ? 'star' : 'star-o').'"> </i></a>';
+				$options = '<a class="btn '.($value->timecard == 1 ? 'btn-info' : 'btn-warning').' btn-circle" href="'.URL_SITE.Core::$request->action.'/timecardItem/'.$value->id.'" title="'.($value->timecard == 1 ? ucfirst($_lang['non associa timecard']) : ucfirst($_lang['associa timecard'])).'"><i class="fa fa-'.($value->timecard == 1 ? 'clock-o' : 'ban').'"> </i></a>&nbsp;<a class="btn btn-default btn-circle" href="'.URL_SITE.Core::$request->action.'/currentItem/'.$value->id.'" title="'.($value->current == 1 ? ucfirst($_lang['imposta come non corrente']) : ucfirst($_lang['imposta come corrente'])).'"><i class="fa fa-'.($value->current == 1 ? 'star' : 'star-o').'"> </i></a>';
 
 				$tablefields = array(
 					'id'=>$value->id,
@@ -199,12 +234,13 @@ switch(Core::$request->method) {
 				$arr[] = $tablefields;
 				}
 			}
-		$totalRows = Sql::getTotalsItems();
 		$App->items = $arr;
+		$recordsFiltered = $recordsTotal;
+		if ($filtering == true) $recordsFiltered = count($App->items);
 		$json = array();
 		//$json['draw'] = intval($_REQUEST['draw']);
-		$json['recordsTotal'] = $totalRows;
-		$json['recordsFiltered'] = $totalRows;
+		$json['recordsTotal'] = $recordsTotal;
+		$json['recordsFiltered'] = $recordsFiltered;	
 		$json['data'] = $App->items;	
 		echo json_encode($json);
 		die();
@@ -224,6 +260,7 @@ switch(Core::$request->method) {
 
 switch((string)$App->viewMethod) {
 	case 'formNew':
+		$App->read_write_access = 2;
 		$App->item = new stdClass;		
 		$App->item->active = 1;
 		$App->item->id_contact = 0;
@@ -235,6 +272,7 @@ switch((string)$App->viewMethod) {
 	break;
 	
 	case 'formMod':
+		$App->read_write_access = Permissions::checkReadWriteAccessOfItem($App->params->tables['item'],$App->id,$App->userLoggedData); // 0 = no access; 1 = read; 2 = read write; 
 		if ($App->id) {
 			$App->item_todo = new stdClass;
 			/* preleva i todo del progetto */
@@ -250,21 +288,24 @@ switch((string)$App->viewMethod) {
 					}
 				}
 			$App->item_todo = $arr;
-			
 			$App->item = new stdClass;
 			Sql::initQuery($App->params->tables['item'],array('*'),array($App->id),'id = ?');
-			$App->item = Sql::getRecord();		
-			if (Core::$resultOp->error == 1) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['item']);
-			$App->templateApp = 'formItem.tpl.php';
-			$App->methodForm = 'updateItem';
-			$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/formItem.js"></script>';
+			$App->item = Sql::getRecord();	
+			if (isset($App->item->id) && $App->item->id > 0) {
+				if (Core::$resultOp->error == 1) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['item']);
+				$App->templateApp = 'formItem.tpl.php';
+				$App->methodForm = 'updateItem';
+				$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/formItem.js"></script>';
+				} else {
+					ToolsStrings::redirect(URL_SITE.'error/404');
+					}
 			} else {
-				ToolsStrings::redirect(URL_SITE.Core::$request->action.'/listItem');
+				ToolsStrings::redirect(URL_SITE.'error/404');
 				}
 	break;
 
 	case 'list':
-		$App->pageSubTitle = $_lang['lista delle voci'];
+		$App->pageSubTitle = preg_replace('/%ITEMS%/',$_lang['voci'],$_lang['lista dei %ITEMS%']);
 		$App->templateApp = 'listItem.tpl.php';			
 		$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/listItem.js"></script>';	
 	break;	

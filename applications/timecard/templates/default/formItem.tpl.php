@@ -1,4 +1,4 @@
-<!-- admin/timecard/formItem.tpl.php v.1.0.1. 06/06/2018 -->
+<!-- timecard/formItem.tpl.php v.1.0.0. 08/11/2018 -->
 
 <div class="row">
 	<div class="col-md-3 new">
@@ -24,6 +24,7 @@
 			</div>	
 		</form>
 		<form id="applicationForm1" class="form-horizontal form-daydata bg-info" role="form" action="{{ URLSITE }}{{ CoreRequest.action }}/modappProj"  enctype="multipart/form-data" method="post">
+						
 			<div class="form-group">
 				<div class="col-md-8">		
 					<select name="id_project" id="id_projectID" class="selectpicker form-control" data-live-search="true" title="{{ Lang['seleziona un progetto']|capitalize }}">
@@ -98,6 +99,7 @@
 	
 	<div class="col-md-6 col-xs-12">
 		<form id="applicationForm2" method="post" class="form-horizontal form-daydata bg-info" role="form" action="{{ URLSITE }}{{ CoreRequest.action }}/{{ App.methodForm }}"  enctype="multipart/form-data" method="post">
+
 				<div class="form-group has-feedback">
 					<label for="dataID" class="col-md-3 control-label">{{ Lang['data']|capitalize }}</label>
 					<div class="col-md-4">
@@ -111,7 +113,7 @@
 						<select name="progetto" class="selectpicker form-control" data-live-search="true" title="{{ Lang['seleziona un progetto']|capitalize }}">
 							{% if App.progetti is iterable %}
 								{% for value in App.progetti %}
-									<option value="{{ value.id }}"{% if App.item.id_project == value.id %} selected="selected" {% endif %}>{{ value.title }}</option>														
+									<option value="{{ value.id }}"{% if App.idProjectForSelect == value.id %} selected="selected" {% endif %}>{{ value.title }}</option>														
 								{% endfor %}
 							{% endif %}
 						</select>										
@@ -180,7 +182,7 @@
 						<select name="project1" class="selectpicker form-control" data-live-search="true" title="{{ Lang['seleziona un progetto']|capitalize }}">
 							{% if App.progetti is iterable %}
 								{% for value in App.progetti %}	
-									<option value="{{ value.id }}"{% if App.currentProject.id == value.id %} selected="selected" {% endif %}>{{ value.title }}</option>														
+									<option value="{{ value.id }}"{% if App.idProjectForSelect == value.id %} selected="selected" {% endif %}>{{ value.title }}</option>														
 								{% endfor %}
 							{% endif %}		
 						</select>

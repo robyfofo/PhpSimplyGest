@@ -1,11 +1,11 @@
 <?php
 /**
- * Framework siti html-PHP-Mysql
+ * Framework App PHP-MySQL
  * PHP Version 7
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * admin/timecard/pitems.php v.1.0.0. 02/03/2018
+ * timecard/pitems.php v.1.0.0. 24/07/2018
 */
 
 if (isset($_POST['itemsforpage'])) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'ifp',$_POST['itemsforpage']);
@@ -15,7 +15,7 @@ if (isset($_POST['searchFromTable'])) $_MY_SESSION_VARS = $my_session->addSessio
 switch(Core::$request->method) {
 	case 'activePite':
 	case 'disactivePite':
-		Sql::manageFieldActive(substr(Core::$request->method,0,-4),$App->params->tables['pite'],$App->id,$_lang);
+		Sql::manageFieldActive(substr(Core::$request->method,0,-4),$App->params->tables['pite'],$App->id,$opt=array('labelA'=>$_lang['voce'].' '.$_lang['attivata'],'labelD'=>$_lang['voce'].' '.$_lang['disattivata']));
 		$App->viewMethod = 'list';
 	break;
 	
@@ -25,7 +25,7 @@ switch(Core::$request->method) {
 				Sql::initQuery($App->params->tables['pite'],array('id'),array($App->id),'id = ?');
 				Sql::deleteRecord();
 				if (Core::$resultOp->error == 0) {
-					Core::$resultOp->message = ucfirst($_lang['voce cancellata']).'!';
+					Core::$resultOp->message = ucfirst(preg_replace('/%ITEM%/',$_lang['voce'],$_lang['%ITEM% cancellata'])).'!';
 					}
 				
 			}		
@@ -33,7 +33,7 @@ switch(Core::$request->method) {
 	break;
 	
 	case 'newPite':
-		$App->pageSubTitle = $_lang['inserisci voce'];
+		$App->pageSubTitle =preg_replace('/%ITEM%/',$_lang['voce'],$_lang['inserisci %ITEM%']);
 		$App->viewMethod = 'formNew';	
 	break;
 	
@@ -41,16 +41,12 @@ switch(Core::$request->method) {
 		if ($_POST) {
 			if (Core::$resultOp->error == 0) {				
 				/* parsa i post in base ai campi */
-				
-				print_r($_POST);
 				Form::parsePostByFields($App->params->fields['pite'],$_lang,array());
-				print_r($_POST);
 				if (Core::$resultOp->error == 0) {						
 					/* controlla l'intervallo */
-					echo $datatimeisoini = $App->nowDate .' '.$_POST['starttime'];
-					echo $datatimeisoend = $App->nowDate .' '.$_POST['endtime'];
-					
-					DateFormat::checkDataTimeIsoIniEndInterval($datatimeisoini,$datatimeisoend,'>');
+					$datatimeisoini = $App->nowDate .' '.$_POST['starttime'];
+					$datatimeisoend = $App->nowDate .' '.$_POST['endtime'];				
+					DateFormat::checkDateTimeIsoIniEndInterval($datatimeisoini,$datatimeisoend,'>');
 					if (Core::$resultOp->error == 0) {
 						$dteStart = new DateTime($datatimeisoini);
 						$dteEnd   = new DateTime($datatimeisoend); 
@@ -69,11 +65,11 @@ switch(Core::$request->method) {
 			} else {
 				Core::$resultOp->error = 1;
 				}			
-		list($id,$App->viewMethod,$App->pageSubTitle,Core::$resultOp->message) = Form::getInsertRecordFromPostResults(0,Core::$resultOp,$_lang,array());
+		list($id,$App->viewMethod,$App->pageSubTitle,Core::$resultOp->message) = Form::getInsertRecordFromPostResults(0,Core::$resultOp,array('label inserted'=>preg_replace('/%ITEM%/',$_lang['voce'],$_lang['%ITEM% inserita']),'label insert'=>preg_replace('/%ITEM%/',$_lang['voce'],$_lang['inserisci %ITEM%'])));				
 	break;
 
 	case 'modifyPite':				
-		$App->pageSubTitle = $_lang['modifica voce'];
+		$App->pageSubTitle = preg_replace('/%ITEM%/',$_lang['voce'],$_lang['modifica %ITEM%']);
 		$App->viewMethod = 'formMod';
 	break;
 	
@@ -85,7 +81,7 @@ switch(Core::$request->method) {
 				/* controlla l'intervallo */
 				$datatimeisoini = $App->nowDate .' '.$_POST['starttime'];
 				$datatimeisoend = $App->nowDate .' '.$_POST['endtime'];				
-				DateFormat::checkDataTimeIsoIniEndInterval($datatimeisoini,$datatimeisoend,'>');
+				DateFormat::checkDateTimeIsoIniEndInterval($datatimeisoini,$datatimeisoend,'>');
 				if (Core::$resultOp->error == 0) {						
 					$dteStart = new DateTime($datatimeisoini);
 					$dteEnd   = new DateTime($datatimeisoend); 
@@ -103,7 +99,7 @@ switch(Core::$request->method) {
 			} else {
 				Core::$resultOp->error = 1;
 				}			
-		list($id,$App->viewMethod,$App->pageSubTitle,Core::$resultOp->message) = Form::getUpdateRecordFromPostResults($App->id,Core::$resultOp,$_lang,array());	
+		list($id,$App->viewMethod,$App->pageSubTitle,Core::$resultOp->message) = Form::getUpdateRecordFromPostResults($App->id,Core::$resultOp,array('label done'=>$_lang['modifiche effettuate'],'label modified'=>preg_replace('/%ITEM%/',$_lang['voce'],$_lang['%ITEM% modificata']),'label modify'=>preg_replace('/%ITEM%/',$_lang['voce'],$_lang['modifica %ITEM%']),'label insert'=>preg_replace('/%ITEM%/',$_lang['voce'],$_lang['inserisci %ITEM%'])));	
 	break;	
 		
 	case 'pagePite':
@@ -140,7 +136,7 @@ switch(Core::$request->method) {
 			
 		/* search */
 		/* aggiunge campi join */
-		$where = 'id_owner = ?';
+		$where = 'id_user = ?';
 		$and = ' AND ';
 		$fieldsValue = array($App->userLoggedData->id);
 		if (isset($_REQUEST['search']) && is_array($_REQUEST['search']) && count($_REQUEST['search']) > 0) {		
@@ -205,9 +201,9 @@ switch((string)$App->viewMethod) {
 		$time = DateTime::createFromFormat('H:i:s',$App->nowTime);
 		$App->timeIniTimecard =  $time->format('H:i');
 		$time->add(new DateInterval('PT1H'));
-		$App->timeEndTimecard = $time->format('H:i<i></i>');	
+		$App->timeEndTimecard = $time->format('H:i');	
 		
-		$App->item = new stdClass;		
+		$App->item = new stdClass;
 		$App->item->active = 1;
 		$App->item->id_contact = 0;
 		$App->item->created = $App->nowDateTime;
@@ -231,7 +227,7 @@ switch((string)$App->viewMethod) {
 			$App->methodForm = 'updatePite';	
 			$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/formPite.js"></script>';
 			} else {
-				ToolsStrings::redirect(URL_SITE.Core::$request->action.'/listPite');
+				ToolsStrings::redirect(URL_SITE.'error/404');
 				}
 	break;
 
@@ -239,7 +235,7 @@ switch((string)$App->viewMethod) {
 		$time = DateTime::createFromFormat('H:i:s',$App->nowTime);
 		$App->timeIniTimecard =  $time->format('H:i');
 		$time->add(new DateInterval('PT1H'));
-		$App->timeEndTimecard = $time->format('H:i<i></i>');	
+		$App->timeEndTimecard = $time->format('H:i');	
 				
 		$App->items = new stdClass;			
 		$App->itemsForPage = (isset($_MY_SESSION_VARS[$App->sessionName]['ifp']) ? $_MY_SESSION_VARS[$App->sessionName]['ifp'] : 5);

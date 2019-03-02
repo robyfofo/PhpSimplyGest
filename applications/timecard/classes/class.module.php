@@ -20,7 +20,7 @@ class Module {
 		$opt = array_merge($optDef,$opt);
 		$item = new stdClass();				
 		$valueRif = array($userid,$data,$starttime,$endtime,$starttime,$endtime,$starttime,$endtime);	
-		$clauseRif = 'id_owner = ? AND datains = ? AND (? BETWEEN starttime AND endtime OR ? BETWEEN starttime AND endtime OR starttime BETWEEN ? AND ? OR endtime BETWEEN ? AND ?)';
+		$clauseRif = 'id_user = ? AND datains = ? AND (? BETWEEN starttime AND endtime OR ? BETWEEN starttime AND endtime OR starttime BETWEEN ? AND ? OR endtime BETWEEN ? AND ?)';
 		if ($opt['id_timecard'] > 0) {
 			$clauseRif = $clauseRif.' AND id <> ?';
 			$valueRif[] = $opt['id_timecard'];

@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * language EN v.1.0.0. 06/06/2018
+ * language EN v.1.0.0. 19/02/2018
 */
 
 $_lang['user'] = 'en';
@@ -19,7 +19,6 @@ $_lang['data time format string'] = "%DAY%th, %STRINGMONTH% %YEAR% %HH%:%II%";
 $_lang['data format string alt'] = "%STRINGDATADAY% %DAY%th, %STRINGMONTH% %YEAR%";
 $_lang['datepicker data time format'] = "m/d/Y H:i";
 $_lang['datepicker data format'] = "m/d/Y";
-$_lang['datepicker time format'] = "H:i A";
 $_lang['charset'] = 'en-EN';
 $_lang['charset date'] = 'en_EN';
 
@@ -57,7 +56,6 @@ $_lang['attiva %ITEM%'] = "active %ITEM%";
 $_lang['disattiva'] = "disactive";
 $_lang['disattiva %ITEM%'] = "disactive %ITEM%";
 $_lang['indietro'] = "back";
-$_lang['resetta'] = "reset";
 
 $_lang['gestisci'] = "manage";
 $_lang['loggati'] = "login";
@@ -72,7 +70,7 @@ $_lang['ultimo'] = "last";
 $_lang['ultime'] = "ultime";
 
 $_lang['selezionato'] = "selected";
-$_lang['completato'] = "completed";
+$_lang['complatato'] = "completed";
 $_lang['predefinito'] = "default";
 
 $_lang['dimenticati'] = "forgotten";
@@ -152,7 +150,6 @@ $_lang['iva'] = "iva";
 $_lang['testo no iva'] = "testo no IVA";
 
 $_lang['totale'] = "total";
-$_lang['totali'] = "totals";
 $_lang['totale articoli'] = "totale articoli";
 $_lang['totale onorario'] = "totale onorario";
 $_lang['importo'] = "importo";
@@ -165,8 +162,6 @@ $_lang['rivalsa'] = "rivalsa";
 $_lang['testo rivalsa'] = "testo rivalsa";
 
 $_lang['modalità pagamento'] = "modalità pagamento";
-$_lang['MODALITÀ PAGAMENTO'] = "MODALITÀ PAGAMENTO";
-$_lang['pagamento'] = "pagamento";
 
 $_lang['accesso'] = "login";
 $_lang['username'] = "username";
@@ -354,7 +349,6 @@ $_lang['proprietario'] = "owner";
 
 $_lang['sezione'] = "section";
 $_lang['etichetta'] = "label";
-$_lang['nota'] = "nota";
 
 $_lang['ordine'] = "ordering";
 $_lang['ordine-abb'] = "ord.";
@@ -396,8 +390,6 @@ $_lang['ultimi'] = "last";
 $_lang['ultime'] = "last";
 $_lang['ultimo'] = "last";
 $_lang['ultima'] = "last";
-
-$_lang['esporta in pdf'] = "esporta in pdf";
 
 $_lang['inserisci un titolo'] = "enter a title";
 $_lang['inserisci un costo_orario'] = "enter a cost for hour";
@@ -496,7 +488,6 @@ $_lang['La ora inizio deve essere prima della ora fine!'] = "The start time must
 /* messaggi errore */
 $_lang['Progetto non trovato!'] = "Project not found!";
 $_lang['Timecard non trovata!'] = "Timecard not found!";
-$_lang['Categoria non trovata!'] = "Categoria non trovata!";
 
 $_lang['Devi selezionare un progetto!'] = "You must select one project!";
 $_lang['Devi selezionare una timecard!'] = "You must select one timecard!";
@@ -514,8 +505,6 @@ $_lang['Intervallo ti tempo si sovrappone ad un altro inserito nella stessa data
 $_lang['Errore! Ci sono ancora voci associate!'] = "Errore! Ci sono ancora voci associate!";
 $_lang['Errore! Ci sono ancora figli associati!'] = "Errore! Ci sono ancora figli associati!";
 $_lang['Errore! Ci sono ancora prodotti associati!'] = "Errore! Ci sono ancora prodotti associati!";
-
-$_lang['Errore lettura dati categoria!'] = "Errore lettura dati categoria!";
 
 /* sezione core nousername */
 $_lang['nousername core - title'] = "Request user name.";

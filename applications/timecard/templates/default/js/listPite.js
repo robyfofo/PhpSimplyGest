@@ -1,4 +1,4 @@
-/* admin/timecard/pitems.js v.3.0.0. 20/10/2016 */
+/* timecard/pitems.js v.1.0.0. 08/07/2018 */
 var requestSent = false;
 
 $(document).ready(function() {

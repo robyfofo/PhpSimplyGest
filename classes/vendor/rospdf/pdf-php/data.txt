@@ -29,6 +29,22 @@ Note that this document was generated using the demo script 'readme.php' which c
 
 1<Changelog>
 
+3<0.12.49>
+
+- fixed issue #113
+
+3<0.12.48>
+
+- possible fix for #104 allowing addTextWrap to again wrap line break
+
+3<0.12.47>
+
+- fixed issue #105
+
+3<0.12.46>
+
+- applied PR #103 and fixed background repeater
+
 3<0.12.45>
 
 - clean up some code in 'addText' and 'getDirectives' method
@@ -42,20 +58,6 @@ Note that this document was generated using the demo script 'readme.php' which c
 
 - replaced each() method for PHP 7.2 compatibility reason #96
 - applied PR #98
-
-3<0.12.43>
-
-- fixed issue #84
-
-3<0.12.42>
-
-- PR #92
-
-3<0.12.41>
-
-- fixed issue #80
-- applied several PR's related to coding standards
-- replaced pack with md5 raw output
 
 Please refer to https://github.com/rospdf/pdf-php for all previous changes
 

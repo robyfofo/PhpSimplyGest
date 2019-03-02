@@ -1,12 +1,12 @@
 RewriteEngine On
-RewriteBase /phpsimplygest/
+RewriteBase /phprojekt.altervista.org/phpsimplygest/
 
 # Don't compress images
 SetEnvIfNoCase Request_URI \
 \.(?:gif|jpe?g|png)$ no-gzip dont-vary
 
 #Split the friendly URL and compose the real URL
-RewriteRule ^(ajax|scripts|classes|css|images|include|js|templates|tmp|applications) - [L]
+RewriteRule ^(ajax|scripts|classes|css|images|include|js|templates|tmp|application) - [L]
 
 #engine
 RewriteCond %{REQUEST_FILENAME} !-f

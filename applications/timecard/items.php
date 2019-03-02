@@ -1,26 +1,59 @@
 <?php
 /**
- * Framework siti html-PHP-Mysql
+ * Framework App PHP-MySQL
  * PHP Version 7
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * admin/timecard/items.php v.1.0.0. 13/05/2018
+ * timecard/items.php v.1.0.0. 06/08/2018
+*/
+
+/* trova tutti i progetti con timecard attivata */
+$App->progetti = new stdClass;
+
+Sql::initQuery($App->params->tables['prog'],array('*'),array(),'active = 1 AND timecard = 1','current DESC');
+$App->progetti = Sql::getRecords();
+
+/* trova tutti i progetti */
+$App->allprogetti = new stdClass;
+Sql::initQuery($App->params->tables['prog'],array('*'),array(),'active = 1','current DESC');
+$App->allprogetti = Sql::getRecords();
+	
+/* trova tutte le timecard predefinite */
+$App->allpreftimecard = new stdClass;
+Sql::initQuery($App->params->tables['pite'],array('*'),array(),'active = 1');
+$App->allpreftimecard = Sql::getRecords();
+
+/* trova il progetto predefinito */
+$App->projectForSelect = new stdClass;
+Sql::initQuery($App->params->tables['prog'],array('*'),array(),'active = 1 AND current = 1','');
+$App->projectForSelect = Sql::getRecords();
+$App->currentProjectId = 0;
+if (isset($App->projectForSelect->id)) $App->currentProjectId = $App->projectForSelect->id;
+		
+/* GESTIONE SELECT */
+$App->idProjectForSelect = $App->currentProjectId;
+if (isset($_MY_SESSION_VARS[$App->sessionName]['id_project'])) $App->idProjectForSelect = $_MY_SESSION_VARS[$App->sessionName]['id_project'];
+
+/*
+echo 'idProjectSession: '.$_MY_SESSION_VARS[$App->sessionName]['id_project'];
+echo ' - idProjectForSelect: '.$App->idProjectForSelect;
+echo ' - currentProjectId: '.$App->currentProjectId;
 */
 
 switch(Core::$request->method) {
 
 	case 'modappData':
 		if (isset($_POST['appdata'])) {
-			$data = DateFormat::convertDataFromDatepickerToIso($_POST['appdata'],$_lang['datepicker data format'],$App->nowDate);
-			$_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'data-timecard',$data);
+			$data = DateFormat::convertDatepickerToIso($_POST['appdata'],$_lang['datepicker data format'],'Y-m-d',$App->nowDate);
+			$_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'data-timecard',$data);			
 			}	
 		$App->viewMethod = 'list';
 	break;
 
 	case 'setappData':
 		if (isset(Core::$request->param)) {
-			$data = DateFormat::checkConvertDataIso(Core::$request->param,$App->nowDate);
+			$data = (DateFormat::checkDateFormat(Core::$request->param,'Y-m-d') == true ? Core::$request->param : $App->nowDate);
 			$_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'data-timecard',$data);
 			}	
 		$App->viewMethod = 'list';
@@ -28,7 +61,10 @@ switch(Core::$request->method) {
 
 	case 'modappProj':
 		if (isset($_POST['id_project'])) {
-			$_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'id_project',intval($_POST['id_project']));
+			$id_project = intval($_POST['id_project']);
+			$_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'id_project',$id_project);
+			$App->currentProjectId = $id_project;
+			if (ToolsStrings::findValueInArrayWithObject($App->progetti,'id',$id_project,array()) == true) $App->idProjectForSelect = $id_project;
 			}	
 		$App->viewMethod = 'list';
 	break;
@@ -38,7 +74,7 @@ switch(Core::$request->method) {
 			Sql::initQuery($App->params->tables['item'],array('id'),array($App->id),'id = ?');
 			Sql::deleteRecord();
 			if (Core::$resultOp->error == 0) {
-				Core::$resultOp->message = ucfirst($App->params->labels['item']['item']).' cancellat'.$App->params->labels['item']['itemSex'].'!';		
+				Core::$resultOp->message = ucfirst(preg_replace('/%ITEM%/',$_lang['voce'],$_lang['%ITEM% cancellata'])).'!';
 				}
 				
 			}		
@@ -46,6 +82,14 @@ switch(Core::$request->method) {
 	break;
 	
 	case 'modifyTime':	
+		$App->item = new stdClass;
+		Sql::initQuery($App->params->tables['item'],array('*'),array($App->id),'id = ?');
+		$App->item = Sql::getRecord();		
+		if (Core::$resultOp->error == 1) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['item']);	
+		$App->defaultFormData = $App->item->datains;
+		$App->timeIniTimecard = $App->item->starttime;
+		$App->timeEndTimecard = $App->item->endtime;
+		$App->idProjectForSelect =  $App->item->id_project;		
 		$App->viewMethod = 'form';
 	break;
 	
@@ -53,20 +97,18 @@ switch(Core::$request->method) {
 		if ($_POST) {	
 			$id_progetto = (isset($_POST['project1']) ? intval($_POST['project1']) : 0);
 			if ($id_progetto > 0) {
-				$datarif = DateFormat::convertDataFromDatepickerToIso($_POST['data1'],$_lang['datepicker data format'],$_MY_SESSION_VARS[$App->sessionName]['data-timecard']);	
+				$datarif = DateFormat::convertDatepickerToIso($_POST['data1'],$_lang['datepicker data format'],'Y-m-d',$_MY_SESSION_VARS[$App->sessionName]['data-timecard']);
 				$_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'data-timecard',$datarif);
 				/* trova la timecard */
 				if (isset($_POST['timecard']) && $_POST['timecard'] != '') {											
 					$App->timecard = new stdClass;
 					Sql::initQuery($App->params->tables['pite'],array('*'),array(intval($_POST['timecard'])),'id = ?');
 					$App->timecard = Sql::getRecord();		
-					if (Core::$resultOp->error == 0 && isset($App->timecard->id) && $App->timecard->id > 0) {
-						
-						
+					if (Core::$resultOp->error == 0 && isset($App->timecard->id) && $App->timecard->id > 0) {						
 						$starttimeiso = $App->timecard->starttime;
 						$holdtime = 0;
 						if (isset($_POST['usedata']) && $_POST['usedata'] == 1)	{
-							$starttimeiso = DateFormat::convertTimeFromDatepickerToIso($_POST['starttime1'],$_lang['datepicker time format'],'00:00:01');
+							$starttimeiso = DateFormat::convertDatepickerToIso($_POST['starttime1'],$_lang['datepicker time format'],'H:i:s','00:00:01');							
 							$holdtime = 1;
 							}										
 						$endtimeiso = $App->timecard->endtime;
@@ -89,15 +131,14 @@ switch(Core::$request->method) {
 									}
 								}																
 						$Module->checkTimeInterval($App->userLoggedData->id,$id_progetto,$datarif,$starttimeiso,$endtimeiso,$opt=array());
-						if (Core::$resultOp->error == 0) {
-															
+						if (Core::$resultOp->error == 0) {															
 							/* salva il tutto */
-							$fields = array('id_owner','id_project','datains','starttime','endtime','worktime','content');
+							$fields = array('id_user','id_project','datains','starttime','endtime','worktime','content');
 		   	 			$fieldsValues = array($App->userLoggedData->id,$id_progetto,$datarif,$starttimeiso,$endtimeiso,$App->timecard->worktime,$App->timecard->content);
 			  	  	 		Sql::initQuery($App->params->tables['item'],$fields,$fieldsValues,'');
 	 						Sql::insertRecord();					
 							if (Core::$resultOp->error == 0) {
-	 								Core::$resultOp->message = $_lang['Tempo inserito!'];
+	 								Core::$resultOp->message = ucfirst(preg_replace('/%ITEM%/',$_lang['tempo'],$_lang['%ITEM% inserito']))."!";
 	 							}
 
 							} else {
@@ -105,7 +146,7 @@ switch(Core::$request->method) {
 		      				Core::$resultOp->error = 1;
 								}									
 						} else {
-	     					Core::$resultOp->message = $_lang['Timecard non trovata!'];	 
+	     					Core::$resultOp->message = $_lang['Timecard non trovata!'];	
 	      				Core::$resultOp->error = 1;
 							}					
 					} else {
@@ -128,15 +169,15 @@ switch(Core::$request->method) {
 		if ($_POST) {
 			$id_progetto = (isset($_POST['progetto']) ? intval($_POST['progetto']) : 0);
 			if ($id_progetto > 0) {	
-				$datarif = DateFormat::convertDataFromDatepickerToIso($_POST['data'],$_lang['datepicker data format'],$_MY_SESSION_VARS[$App->sessionName]['data-timecard']);					
-				$_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'data-timecard',$datarif);
+				$datarif = DateFormat::convertDatepickerToIso($_POST['data'],$_lang['datepicker data format'],'Y-m-d',$_MY_SESSION_VARS[$App->sessionName]['data-timecard']);					
+				$_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'Y-m-d',$datarif);
 				/* controlla l'ora iniziale */
-				$starttimeiso = DateFormat::convertTimeFromDatepickerToIso($_POST['startTime'],$_lang['datepicker time format'],'00:00:01');
-				$endtimeiso = DateFormat::convertTimeFromDatepickerToIso($_POST['endTime'],$_lang['datepicker time format'],'12:00:01');								
+				$starttimeiso = DateFormat::convertDatepickerToIso($_POST['startTime'],$_lang['datepicker time format'],'H:i:s','00:00:01');
+				$endtimeiso = DateFormat::convertDatepickerToIso($_POST['endTime'],$_lang['datepicker time format'],'H:i:s','00:00:01');							
 				/* controlla l'intervallo */
 				$datatimeisoini = $datarif .' '.$starttimeiso;
 				$datatimeisoend = $datarif .' '.$endtimeiso;
-				DateFormat::checkDataTimeIsoIniEndInterval($datatimeisoini,$datatimeisoend,'>');
+				DateFormat::checkDateTimeIsoIniEndInterval($datatimeisoini,$datatimeisoend,'>');
 				if (Core::$resultOp->error == 0) {
 								
 								$Module->checkTimeInterval($App->userLoggedData->id,$id_progetto,$datarif,$starttimeiso,$endtimeiso,$opt=array());
@@ -147,12 +188,12 @@ switch(Core::$request->method) {
 		   						$dteDiff  = $dteStart->diff($dteEnd);
 		   						$workHour = $dteDiff->format("%H:%I");
 		   											
-									$fields = array('id_owner','id_project','datains','starttime','endtime','worktime','content');
+									$fields = array('id_user','id_project','datains','starttime','endtime','worktime','content');
 				   	 			$fieldsValues = array($App->userLoggedData->id,$id_progetto,$datarif,$starttimeiso,$endtimeiso,$workHour,$_POST['content']);
 					  	  	 		Sql::initQuery($App->params->tables['item'],$fields,$fieldsValues,'');
 			 						Sql::insertRecord();					
 									if (Core::$resultOp->error == 0) {
-			 								Core::$resultOp->message = $_lang['Tempo inserito!'];
+			 								Core::$resultOp->message = ucfirst(preg_replace('/%ITEM%/',$_lang['tempo'],$_lang['%ITEM% inserito']))."!";
 			 							}
 	
 									} else {
@@ -182,15 +223,15 @@ switch(Core::$request->method) {
 			$id = (isset($_POST['id']) ? intval($_POST['id']) : 0);
 			if ($id > 0) {
 				if ($id_progetto > 0) {
-					$datarif = DateFormat::convertDataFromDatepickerToIso($_POST['data'],$_lang['datepicker data format'],$_MY_SESSION_VARS[$App->sessionName]['data-timecard']);					
+					$datarif = DateFormat::convertDatepickerToIso($_POST['data'],$_lang['datepicker data format'],'Y-m-d',$_MY_SESSION_VARS[$App->sessionName]['data-timecard']);					
 					$_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'data-timecard',$datarif);
 					/* controlla l'ora iniziale */
-					$starttimeiso = DateFormat::convertTimeFromDatepickerToIso($_POST['startTime'],$_lang['datepicker time format'],'00:00:01');
-					$endtimeiso = DateFormat::convertTimeFromDatepickerToIso($_POST['endTime'],$_lang['datepicker time format'],'12:00:01');								
+					$starttimeiso = DateFormat::convertDatepickerToIso($_POST['startTime'],$_lang['datepicker time format'],'H:i:s','00:00:01');
+					$endtimeiso = DateFormat::convertDatepickerToIso($_POST['endTime'],$_lang['datepicker time format'],'H:i:s','00:00:01');							
 					/* controlla l'intervallo */
 					$datatimeisoini = $datarif .' '.$starttimeiso;
 					$datatimeisoend = $datarif .' '.$endtimeiso;
-					DateFormat::checkDataTimeIsoIniEndInterval($datatimeisoini,$datatimeisoend,'>');
+					DateFormat::checkDateTimeIsoIniEndInterval($datatimeisoini,$datatimeisoend,'>');
 					if (Core::$resultOp->error == 0) {
 						$Module->checkTimeInterval($App->userLoggedData->id,$id_progetto,$datarif,$starttimeiso,$endtimeiso,$opt=array('id_timecard'=>$id));
 						if (Core::$resultOp->error == 0) {
@@ -205,7 +246,7 @@ switch(Core::$request->method) {
 			  	  	 		Sql::initQuery($App->params->tables['item'],$fields,$fieldsValues,'id = ?');
 	 						Sql::updateRecord();					
 							if (Core::$resultOp->error == 0) {
-	 								Core::$resultOp->message = $_lang['Tempo modificato!'];	 
+	 								Core::$resultOp->message = ucfirst(preg_replace('/%ITEM%/',$_lang['tempo'],$_lang['%ITEM% modificato']))."!";
 	 							}
 				 										 							
 							} else {
@@ -237,41 +278,18 @@ switch(Core::$request->method) {
 	break;	
 	}
 
+/*
+echo 'idProjectSession: '.$_MY_SESSION_VARS[$App->sessionName]['id_project'];
+echo ' - idProjectForSelect: '.$App->idProjectForSelect;
+echo ' - currentProjectId: '.$App->currentProjectId;
+*/
 
 /* SEZIONE SWITCH VISUALIZZAZIONE TEMPLATE (LIST, FORM, ECC) */
 
-switch((string)$App->viewMethod) {
-	case 'form':
-		$App->item = new stdClass;
-		Sql::initQuery($App->params->tables['item'],array('*'),array($App->id),'id = ?');
-		$App->item = Sql::getRecord();		
-		if (Core::$resultOp->error == 1) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['item']);	
-		$App->defaultFormData = $App->item->datains;
-		$App->timeIniTimecard = $App->item->starttime;
-		$App->timeEndTimecard = $App->item->endtime;
-
-		$App->methodForm = 'updateTime';
-		$App->templateApp = 'formItem.tpl.php';	
-	break;
-	
-	case 'list':
-		$App->item = new stdClass;
-		$App->item->id_project = $App->currentProjectId;
-		/* sistemo ora inizio e fine */
-		$time = DateTime::createFromFormat('H:i:s',$App->nowTime);
-		$App->timeIniTimecard =  $time->format($_lang['datepicker time format']);
-		$time->add(new DateInterval('PT1H'));
-		$App->timeEndTimecard = $time->format($_lang['datepicker time format']);	
-		$App->defaultFormData = $_MY_SESSION_VARS[$App->sessionName]['data-timecard'];
-		$App->methodForm = 'insertTime';
-		$App->templateApp = 'formItem.tpl.php';
-	break;
-	
-	default:
-	break;
-	}
-
 	/* trova tutti i giorni del mese corrente */
+	
+	
+	
 	$data = DateTime::createFromFormat('Y-m-d',$_MY_SESSION_VARS[$App->sessionName]['data-timecard']);
 	
 	$month = $data->format('m');
@@ -310,23 +328,32 @@ switch((string)$App->viewMethod) {
  		}
 
 	$App->timecards_total_time = DateFormat::sum_the_time($tottimes);
- 		
- 	/* trova tutti i progetti con timecard attivata */
- 	$App->progetti = new stdClass;
-	Sql::initQuery($App->params->tables['prog'],array('*'),array(),'active = 1 AND timecard = 1','current DESC');
-	$App->progetti = Sql::getRecords();
-	
-	/* trova tutti i progetti */
- 	$App->allprogetti = new stdClass;
-	Sql::initQuery($App->params->tables['prog'],array('*'),array(),'active = 1','current DESC');
-	$App->allprogetti = Sql::getRecords();
-	
-	/* trova tutte le timecard predefinite */
-	$App->allpreftimecard = new stdClass;
-	Sql::initQuery($App->params->tables['pite'],array('*'),array(),'active = 1');
-	$App->allpreftimecard = Sql::getRecords();
-	
+ 			
+		
 	$App->methodForm1 = 'insert1Time';
 	$App->defaultFormData1 = $_MY_SESSION_VARS[$App->sessionName]['data-timecard'];
+
+
+switch((string)$App->viewMethod) {
+	case 'form':
+		$App->methodForm = 'updateTime';
+		$App->templateApp = 'formItem.tpl.php';	
+	break;
 	
+	case 'list':
+		$App->item = new stdClass;
+		$App->item->id_project = $App->currentProjectId;
+		/* sistemo ora inizio e fine */
+		$time = DateTime::createFromFormat('H:i:s',$App->nowTime);
+		$App->timeIniTimecard =  $time->format($_lang['datepicker time format']);
+		$time->add(new DateInterval('PT1H'));
+		$App->timeEndTimecard = $time->format($_lang['datepicker time format']);	
+		$App->defaultFormData = $_MY_SESSION_VARS[$App->sessionName]['data-timecard'];
+		$App->methodForm = 'insertTime';
+		$App->templateApp = 'formItem.tpl.php';
+	break;
+	
+	default:
+	break;
+	}
 ?>

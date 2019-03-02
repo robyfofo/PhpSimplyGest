@@ -15,7 +15,7 @@
 $globalSettings['site name'] = "PhpSimplyGest";
 $globalSettings['code version'] = '1.0.0.';
 
-define('FOLDER_SITE', 'phpsimplygest/');
+define('FOLDER_SITE', 'phprojekt.altervista.org/phpsimplygest/');
 define('SITE_HOST', '192.168.1.10/');
 define('SERVER_SMTP','');
 define('TIMEZONE','');
@@ -35,7 +35,7 @@ define('PATH_UPLOAD_DIR', PATH_SITE.'uploads/');
 /* DATABASE */
 define('DATABASE', 'locale');
 $globalSettings['database'] = array(
-	'locale'=>array('user'=>'root','password'=>'fofofofo','host'=>'localhost','name'=>'phpsimplygest','tableprefix'=>'psg_'),
+	'locale'=>array('user'=>'root','password'=>'fofofofo','host'=>'localhost','name'=>'phprojekt.altervista','tableprefix'=>'psg_'),
 	'remoto'=>array('user'=>'','password'=>'','host'=>'','name'=>'','tableprefix'=>'')
 );
 
@@ -45,9 +45,9 @@ define('SESSIONS_TIME',86400*10);
 define('SESSIONS_GC_TIME',2592000);
 
 /* COOKIES */
-define('SESSIONS_COOKIE_NAME','loc_phpsimplygest_id');
-define('AD_SESSIONS_COOKIE_NAME','ad_loc_phpsimplygest_id');
-define('DATA_SESSIONS_COOKIE_NAME','data_loc_phpsimplygest_id');
+define('SESSIONS_COOKIE_NAME','loalt_phpsimplygest_id');
+define('AD_SESSIONS_COOKIE_NAME','ad_loalt_phpsimplygest_id');
+define('DATA_SESSIONS_COOKIE_NAME','data_loalt_phpsimplygest_id');
 
 /* MAIL */
 /* indirizzo emial sito */
@@ -82,9 +82,6 @@ $globalSettings['defaul language'] = 'it';
 /* da non modificare */
 $globalSettings['type pages'] = array('default'=>'Default','label'=>'Etichetta','url'=>'URL','module'=>'Link a modulo');
 $globalSettings['link targets'] = array('_self','_blank','_parent','_top');
-$globalSettings['status to do'] = array('n.d.','visto','in lavorazione','sospeso','cancellato','rifiutato','finito');
-$globalSettings['status project'] = array('n.d.','preventivato','in lavorazione','sospeso','cancellato','rifiutato','finito');
-
 $globalSettings['languages'] = array('it','en');
 $globalSettings['module sections'] = array('Gestione Utenti','Moduli Generali Sito','Moduli Personalizzati Sito','Moduli E-Commerce','Impostazioni Sito','Root');
 

@@ -7,7 +7,7 @@
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * invoices/pdf.php v.1.0.0. 12/02/2018
 */
-ini_set('display_errors',0);
+//ini_set('display_errors',0);
 //print_r(Core::$request);
 
 switch(Core::$request->method) {
@@ -62,7 +62,7 @@ switch(Core::$request->method) {
 										$articolipdf[$z]['importotax'] = '€ '.number_format($value->price_tax,2,',','.').' ';
 										}
 									$articolipdf[$z]['descrizione'] = $value->content;
-									$articolipdf[$z]['quantità'] = $value->quantity;
+									$articolipdf[$z]['quantità'] = number_format($value->quantity,2,',','.');
 									$articolipdf[$z]['prezzounitario'] = '€ '.number_format($value->price_unity,2,',','.').' ';
 									$articolipdf[$z]['importo'] = '€ '.number_format($value->price_unity * $value->quantity,2,',','.').' ';
 									$z++;									 
@@ -107,7 +107,10 @@ switch(Core::$request->method) {
 								$headpdf[0]['titolo'] = $App->company->ragione_sociale;
 								$headpdf[1]['titolo'] = $App->company->street.' - '.$App->company->zip_code.' - '.$App->company->city.' ('.$App->company->province.')';
 								$headpdf[2]['titolo'] = $_lang['P. IVA'].' '.$App->company->partita_iva.' - '.$_lang['C. Fiscale'].' '.$App->company->codice_fiscale;
-								$headpdf[3]['titolo'] = '<strong>'.strtoupper($_lang['fattura']).'</strong> '.$_lang['nr.'].' <b>'.$App->invoice->number.'</b> '.$_lang['del'].' <b>'.DateFormat::convertDataIsoToDataformat($App->invoice->dateins,$_lang['data format']).'</b>';								
+								$headpdf[3]['titolo'] = '<strong>'.strtoupper($_lang['fattura']).'</strong> '.$_lang['nr.'].' <b>'.$App->invoice->number.'</b> '.$_lang['del'].' <b>'.DateFormat::convertDateFormats($App->invoice->dateins,'Y-m-d',$_lang['data format'],$App->nowDate).'</b>';	
+	
+								
+															
 								$headpdf[4]['titolo'] = $App->invoice->note;
 								$col = $pdf->ezTable($headpdf,$colsheadpdf,'',array('showHeadings'=> 0,'gridlines'=>EZ_GRIDLINE_DEFAULT,'showLines'=>0,'fontSize'=>10,'shaded'=>0,'rowGap'=>2,'colGap'=>20,'xPos'=>270,'xOrientation'=>'right','cols'=>array('titolo'=>array('showLines'=>1),'testo'=>array('showLines'=>0))));
 								$pdf->setColor('0.8','0.8','0.8');
@@ -151,22 +154,18 @@ switch(Core::$request->method) {
 								$y = $pdf->ezTable($articolipdf, $colsArticolipdf,'',$opt);
 								/* FINE ARTICOLI */							
 								
-								/* LINEA */
-								$pdf->ezSetDy(-30);
-								$pdf->setColor('0.8','0.8','0.8');
-								$pdf->setStrokeColor('0.8','0.8','0.8');
-								$pdf->setLineStyle(1);
-								$pdf->line(30,$y-20,560,$y-20);
+								
 						
 								
 								/* NOTE */
 								if ($y > 270) $y = 270;
 								
-								$pdf->ezSetY($y-30);
+								$pdf->ezSetY($y);
+																
 								$colspdf = array('titolo'=>strtoupper($_lang['modalità pagamento']),'testo'=>strtoupper($_lang['scadenze'])); 
 								$datapdf = array();
 								$datapdf[1]['titolo'] = '<b>'.ucwords($_lang['bonifico bancario']).'</b>';
-								$datapdf[1]['testo'] = '<b>'.DateFormat::convertDataIsoToDataformat($App->invoice->datesca,$_lang['data format']).'</b>';
+								$datapdf[1]['testo'] = '<b>'.DateFormat::convertDateFormats($App->invoice->datesca,'Y-m-d',$_lang['data format'],$App->nowDate).'</b>';
 								$datapdf[2]['titolo'] = 'IBAN: <b>'.$App->company->iban.'</b>';
 								$datapdf[2]['testo'] = '';
 								$datapdf[3]['titolo'] = $App->company->intestatario;
@@ -220,6 +219,7 @@ switch(Core::$request->method) {
 								/* FINE TOTALI */
 								
 								//Output the pdf as stream, but uncompress
+								$namefile = ucfirst($_lang['fattura']).'-'.$App->invoice->number.".pdf";
 								$applicationtype = "application/pdf";   
 								header("Content-type: $applicationtype");
 								header("Content-Disposition: attachment; filename=".basename($namefile).";");

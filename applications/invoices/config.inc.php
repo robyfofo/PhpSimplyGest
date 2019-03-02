@@ -1,15 +1,15 @@
 <?php
 /**
- * Framework App PHP-Mysql
+ * Framework App PHP-MySQL
  * PHP Version 7
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * invoices/config.inc.php v.1.0.0. 20/02/2017
+ * invoices/config.inc.php v.1.0.0. 24/07/2018
 */
 
 $App->params = new stdClass();
-
+$App->params->label = ucfirst($_lang['fatture']);
 /* prende i dati del modulo */
 Sql::initQuery(DB_TABLE_PREFIX.'modules',array('label','help_small','help'),array('invoices'),'name = ?');
 $obj = Sql::getRecord();
@@ -31,66 +31,64 @@ $App->params->ordersType = array();
 /* INVOICES PURCHASE type = 0 */
 $App->params->tables['InvPur']  = DB_TABLE_PREFIX.'invoices_purchases';
 $App->params->fields['InvPur']  = array(
-	'id'=>array('label'=>'ID','required'=>false,'type'=>'autoinc','primary'=>true),
-	'id_owner'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>true,'type'=>'int','defValue'=>$App->userLoggedData->id),
-	'id_customer'=>array('label'=>$_lang['cliente'],'searchTable'=>false,'required'=>true,'type'=>'int','defValue'=>'0','validate'=>'int'),
+	'id'=>array('label'=>'ID','required'=>false,'type'=>'int|8','autoinc'=>true,'nodb'=>true,'primary'=>true),
+	'id_user'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>true,'type'=>'int|8','defValue'=>$App->userLoggedData->id),
+	'id_customer'=>array('label'=>$_lang['cliente'],'searchTable'=>false,'required'=>true,'type'=>'int|8','defValue'=>'0','validate'=>'int'),
 	'dateins'=>array('label'=>$_lang['data'],'searchTable'=>true,'required'=>true,'type'=>'date','defValue'=>$App->nowDate,'validate'=>'datepicker'),
 	'datesca'=>array('label'=>$_lang['data scadenza'],'searchTable'=>true,'required'=>true,'type'=>'date','defValue'=>$App->nowDate,'validate'=>'datepicker'),
-	'number'=>array('label'=>$_lang['numero'],'searchTable'=>true,'required'=>true,'type'=>'varchar','defValue'=>''),
-	'type'=>array('label'=>$_lang['tipo'],'searchTable'=>false,'required'=>true,'type'=>'varchar','defValue'=>'0','validate'=>'int'),
-	'created'=>array('label'=>$_lang['creazione'],'searchTable'=>false,'required'=>false,'type'=>'datatime','defValue'=>$App->nowDateTime,'validate'=>'datetimeiso'),
-	'active'=>array('label'=>ucfirst($_lang['attiva']),'required'=>false,'type'=>'int','defValue'=>'0','validate'=>'int')
+	'number'=>array('label'=>$_lang['numero'],'searchTable'=>true,'required'=>true,'type'=>'varchar|20','defValue'=>''),
+	'type'=>array('label'=>$_lang['tipo'],'searchTable'=>false,'required'=>true,'type'=>'int|1','defValue'=>'0','validate'=>'int'),
+	'created'=>array('label'=>$_lang['creazione'],'searchTable'=>false,'required'=>false,'type'=>'datatime','defValue'=>$App->nowDateTime,'validate'=>'datatimeiso'),
+	'active'=>array('label'=>$_lang['attiva'],'required'=>false,'type'=>'int|1','defValue'=>0,'validate'=>'int')
 	);
 	
 /* INVOICES SALES type = 1 */
 $App->params->tables['InvSal']  = DB_TABLE_PREFIX.'invoices_sales';
 $App->params->fields['InvSal']  = array(
-	'id'=>array('label'=>'ID','required'=>false,'type'=>'autoinc','primary'=>true),
-	'id_owner'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>true,'type'=>'int','defValue'=>$App->userLoggedData->id),
-	'id_customer'=>array('label'=>$_lang['cliente'],'searchTable'=>false,'required'=>true,'type'=>'int','defValue'=>'0','validate'=>'int'),
+	'id'=>array('label'=>'ID','required'=>false,'type'=>'int|8','autoinc'=>true,'nodb'=>true,'primary'=>true),
+	'id_user'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>true,'type'=>'int|8','defValue'=>$App->userLoggedData->id),
+	'id_customer'=>array('label'=>$_lang['cliente'],'searchTable'=>false,'required'=>true,'type'=>'int|8','defValue'=>'0','validate'=>'int'),
 	'dateins'=>array('label'=>$_lang['data'],'searchTable'=>true,'required'=>true,'type'=>'date','defValue'=>$App->nowDate,'validate'=>'datepicker'),
 	'datesca'=>array('label'=>$_lang['data scadenza'],'searchTable'=>true,'required'=>true,'type'=>'date','defValue'=>$App->nowDate,'validate'=>'datepicker'),
-	'number'=>array('label'=>$_lang['numero'],'searchTable'=>true,'required'=>true,'type'=>'varchar','defValue'=>''),
-	'note'=>array('label'=>$_lang['Note (visibili in fattura)'],'searchTable'=>true,'required'=>false,'type'=>'varchar','defValue'=>''),
-	'type'=>array('label'=>$_lang['tipo'],'searchTable'=>false,'required'=>true,'type'=>'varchar','defValue'=>'0','validate'=>'int'),
-	
-	'tax'=>array('label'=>'IVA','searchTable'=>false,'required'=>false,'type'=>'int','defValue'=>'0','validate'=>'int'),
-	'rivalsa'=>array('label'=>'Rivalsa','searchTable'=>false,'required'=>false,'type'=>'int','defValue'=>'0','validate'=>'int'),
-
-	'created'=>array('label'=>$_lang['creazione'],'searchTable'=>false,'required'=>false,'type'=>'datatime','defValue'=>$App->nowDateTime,'validate'=>'datetimeiso'),
-	'active'=>array('label'=>ucfirst($_lang['attiva']),'required'=>false,'type'=>'int','defValue'=>'0','validate'=>'int')
+	'number'=>array('label'=>$_lang['numero'],'searchTable'=>true,'required'=>true,'type'=>'varchar|20','defValue'=>''),
+	'note'=>array('label'=>$_lang['Note (visibili in fattura)'],'searchTable'=>true,'required'=>false,'type'=>'varchar|255','defValue'=>''),
+	'type'=>array('label'=>$_lang['tipo'],'searchTable'=>false,'required'=>true,'type'=>'int|1','defValue'=>'0','validate'=>'int'),
+	'tax'=>array('label'=>'IVA','searchTable'=>false,'required'=>false,'type'=>'int|2','defValue'=>'0','validate'=>'int'),
+	'rivalsa'=>array('label'=>'Rivalsa','searchTable'=>false,'required'=>false,'type'=>'int|2','defValue'=>'0','validate'=>'int'),
+	'created'=>array('label'=>$_lang['creazione'],'searchTable'=>false,'required'=>false,'type'=>'datatime','defValue'=>$App->nowDateTime,'validate'=>'datatimeiso'),
+	'active'=>array('label'=>$_lang['attiva'],'required'=>false,'type'=>'int|1','defValue'=>0,'validate'=>'int')
 	);
 	
 /* INVOICES PURCHASE ARTICLES */
 $App->params->tables['ArtPur']  = DB_TABLE_PREFIX.'invoices_purchases_articles';
 $App->params->fields['ArtPur']  = array(
-	'id'=>array('label'=>'ID','required'=>false,'type'=>'autoinc','primary'=>true),
-	'id_owner'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>true,'type'=>'int','defValue'=>$App->userLoggedData->id),
-	'id_invoice'=>array('label'=>$_lang['voce'],'searchTable'=>false,'required'=>true,'type'=>'int','defValue'=>'0','validate'=>'int'),
+	'id'=>array('label'=>'ID','required'=>false,'type'=>'int|8','autoinc'=>true,'nodb'=>true,'primary'=>true),
+	'id_user'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>true,'type'=>'int|8','defValue'=>$App->userLoggedData->id),
+	'id_invoice'=>array('label'=>$_lang['voce'],'searchTable'=>false,'required'=>true,'type'=>'int|8','defValue'=>'0','validate'=>'int'),
 	'content'=>array('label'=>$_lang['contenuto'],'searchTable'=>false,'required'=>true,'type'=>'text','defValue'=>''),
-	'price_unity'=>array('label'=>$_lang['prezzo unitario'],'searchTable'=>true,'required'=>true,'type'=>'float','defValue'=>'0.00','validate'=>'float'),
-	'price_tax'=>array('label'=>$_lang['imponibile'],'searchTable'=>true,'required'=>true,'type'=>'float','defValue'=>'0.00','validate'=>'float'),
-	'price_total'=>array('label'=>$_lang['prezzo totale'],'searchTable'=>true,'required'=>true,'type'=>'float','defValue'=>'0.00','validate'=>'float'),
-	'quantity'=>array('label'=>$_lang['quantità'],'searchTable'=>true,'required'=>true,'type'=>'int','defValue'=>'22','validate'=>'int'),	
-	'tax'=>array('label'=>$_lang['tassa'],'searchTable'=>true,'required'=>true,'type'=>'varchar','defValue'=>'22'),
-	'created'=>array('label'=>$_lang['creazione'],'searchTable'=>false,'required'=>false,'type'=>'datatime','defValue'=>$App->nowDateTime,'validate'=>'datetimeiso'),
-	'active'=>array('label'=>ucfirst($_lang['attiva']),'required'=>false,'type'=>'int','defValue'=>'0','validate'=>'int')
+	'price_unity'=>array('label'=>$_lang['prezzo unitario'],'searchTable'=>true,'required'=>true,'type'=>'float|10,2','defValue'=>'0.00','validate'=>'float'),
+	'price_tax'=>array('label'=>$_lang['imponibile'],'searchTable'=>true,'required'=>true,'type'=>'float|10,2','defValue'=>'0.00','validate'=>'float'),
+	'price_total'=>array('label'=>$_lang['prezzo totale'],'searchTable'=>true,'required'=>true,'type'=>'float|10,2','defValue'=>'0.00','validate'=>'float'),
+	'quantity'=>array('label'=>$_lang['quantità'],'searchTable'=>true,'required'=>true,'type'=>'int|4','defValue'=>'22','validate'=>'loat|4,1'),	
+	'tax'=>array('label'=>$_lang['tassa'],'searchTable'=>true,'required'=>true,'type'=>'int|2','defValue'=>'22'),
+	'created'=>array('label'=>$_lang['creazione'],'searchTable'=>false,'required'=>false,'type'=>'datatime','defValue'=>$App->nowDateTime,'validate'=>'datatimeiso'),
+	'active'=>array('label'=>$_lang['attiva'],'required'=>false,'type'=>'int|1','defValue'=>0,'validate'=>'int')
 	);
 	
 /* INVOICES SALES ARTICLES */
 $App->params->tables['ArtSal']  = DB_TABLE_PREFIX.'invoices_sales_articles';
 $App->params->fields['ArtSal']  = array(
-	'id'=>array('label'=>'ID','required'=>false,'type'=>'autoinc','primary'=>true),
-	'id_owner'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>true,'type'=>'int','defValue'=>$App->userLoggedData->id),
+	'id'=>array('label'=>'ID','required'=>false,'type'=>'int|8','autoinc'=>true,'nodb'=>true,'primary'=>true),
+	'id_user'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>true,'type'=>'int|8','defValue'=>$App->userLoggedData->id),
 	'id_invoice'=>array('label'=>$_lang['voce'],'searchTable'=>false,'required'=>true,'type'=>'int','defValue'=>'0','validate'=>'int'),
 	'content'=>array('label'=>$_lang['contenuto'],'searchTable'=>false,'required'=>true,'type'=>'text','defValue'=>''),
-	'price_unity'=>array('label'=>$_lang['prezzo unitario'],'searchTable'=>true,'required'=>true,'type'=>'float','defValue'=>'0.00','validate'=>'float'),
+	'price_unity'=>array('label'=>$_lang['prezzo unitario'],'searchTable'=>true,'required'=>true,'type'=>'float|','defValue'=>'0.00','validate'=>'float'),
 	'price_tax'=>array('label'=>$_lang['imponibile'],'searchTable'=>true,'required'=>true,'type'=>'float','defValue'=>'0.00','validate'=>'float'),
 	'price_total'=>array('label'=>$_lang['prezzo totale'],'searchTable'=>true,'required'=>true,'type'=>'float','defValue'=>'0.00','validate'=>'float'),
-	'quantity'=>array('label'=>$_lang['quantità'],'searchTable'=>true,'required'=>true,'type'=>'int','defValue'=>'22','validate'=>'int'),	
+	'quantity'=>array('label'=>$_lang['quantità'],'searchTable'=>true,'required'=>true,'type'=>'int','defValue'=>'22','validate'=>'float|4,1'),	
 	'tax'=>array('label'=>$_lang['tassa'],'searchTable'=>true,'required'=>true,'type'=>'varchar','defValue'=>'22'),
-	'created'=>array('label'=>$_lang['creazione'],'searchTable'=>false,'required'=>false,'type'=>'datatime','defValue'=>$App->nowDateTime,'validate'=>'datetimeiso'),
-	'active'=>array('label'=>ucfirst($_lang['attiva']),'required'=>false,'type'=>'int','defValue'=>'0','validate'=>'int')
+	'created'=>array('label'=>$_lang['creazione'],'searchTable'=>false,'required'=>false,'type'=>'datatime','defValue'=>$App->nowDateTime,'validate'=>'datatimeiso'),
+	'active'=>array('label'=>$_lang['attiva'],'required'=>false,'type'=>'int|1','defValue'=>0,'validate'=>'int')
 	);
 /* THIRDPARTY */
 $App->params->tables['cust']  = DB_TABLE_PREFIX.'thirdparty';

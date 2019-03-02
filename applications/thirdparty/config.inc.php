@@ -5,13 +5,13 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * third-party/config.inc.php v.1.0.0. 06/06/2018
+ * third-party/config.inc.php v.1.0.0. 08/02/2018
 */
 
 $App->params = new stdClass();
 $App->params->label = "Soggetti Terzi"; 
 /* prende i dati del modulo */
-Sql::initQuery(DB_TABLE_PREFIX.'modules',array('label','help_small','help'),array('thirdparty'),'name = ?');
+Sql::initQuery(DB_TABLE_PREFIX.'modules',array('label','help_small','help'),array('third-party'),'name = ?');
 $obj = Sql::getRecord();
 if (Core::$resultOp->error == 0 && isset($obj)) $App->params = $obj;
 

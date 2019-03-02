@@ -1,4 +1,4 @@
-/* admin/timecard/items.js v.3.0.0. 20/10/2016 */
+/* timecard/items.js v.1.0.0. 08/07/2018 */
 
 $(document).ready(function() {
 
@@ -13,25 +13,25 @@ $(document).ready(function() {
 	    });
 	
 	$('#dataDPID').datetimepicker({
-		locale: cur_lang,
+		locale: user_lang,
 		defaultDate: defaultdata,
 		format: 'L'
 		});
 		
 	$('#data1DPID').datetimepicker({
-		locale: cur_lang,
+		locale: user_lang,
 		defaultDate: defaultdata1,
 		format: 'L'
 		});
 		
 	$('#appdataDPID').datetimepicker({
-		locale: cur_lang,
+		locale: user_lang,
 		defaultDate: defaultappdata,
 		format: 'L',
 		});
 		
 	$('#startTimeID').datetimepicker({
-		locale: cur_lang,
+		locale: user_lang,
 		format: 'LT',
  		defaultDate:  moment(defaultTimeIni, 'LT'),
 		allowInputToggle: true,
@@ -40,7 +40,7 @@ $(document).ready(function() {
 		timeZone: null,
 		});
 	$('#endTimeID').datetimepicker({
-		locale: cur_lang,
+		locale: user_lang,
 		format: 'LT',
  		defaultDate:  moment(defaultTimeEnd, 'LT'),
 		allowInputToggle: true,
@@ -58,7 +58,7 @@ $(document).ready(function() {
 		});	
 
 	$('#starttime1ID').datetimepicker({
-		locale: cur_lang,
+		locale: user_lang,
 		format: 'LT',
  		defaultDate:  moment(defaultTimeIni, 'LT'),
 		allowInputToggle: true,

@@ -1,11 +1,11 @@
 <?php
 /**
- * Framework siti html-PHP-Mysql
+ * Framework App PHP-MySQL
  * PHP Version 7
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * admin/projects/ajax.php v.3.0.0. 30/01/2017
+ * projects/ajax.php v.1.0.0. 04/07/2018
 */
 
 switch(Core::$request->method) {

@@ -21,7 +21,8 @@
 				</form>					
 			</div>
 			<div class="panel-footer">
-					<a href="{{ URLSITE }}nousername" title="{{ Lang['clicca per recuperare lo username']|capitalize }}">{{ Lang['username']|capitalize }}</a> o <a href="{{ URLSITE }}nopassword" title="{{ Lang['clicca per recuperare la password']|capitalize }}">{{ Lang['password']|capitalize }}</a> {{ Lang['dimenticati'] }}
+					<p>Attenzione! Versione in continuo sviluppo.<br>
+Per accedere: utente: <b>user</b>; password: <b>user</b></p>
 			</div>
 		</div>
 	</div>

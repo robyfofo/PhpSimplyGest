@@ -1,11 +1,11 @@
 <?php
 /**
- * Framework App PHP-Mysql
+ * Framework App PHP-MySQL
  * PHP Version 7
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * timecard/index.php v.1.0.0. 06/06/2018
+ * timecard/index.php v.1.0.0. 09/07/2018
 */
 
 //Core::setDebugMode(1);

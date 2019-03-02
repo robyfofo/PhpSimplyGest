@@ -1,32 +1,20 @@
 <?php
 /**
- * Framework siti html-PHP-Mysql
+ * Framework App PHP-MySQL
  * PHP Version 7
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * Projects language IT v.1.0.0. 27/02/2017
+ * Projects language IT v.1.0.0. 24/07/2018
 */
+
 $_lang['pagetitle'] = "Progetti";
 $_lang['pagesubtitle'] = "pagina dei progetti";
 
-$_lang['lista delle voci'] = 'lista dei progetti';
-$_lang['nuova voce'] = 'nuovo progetto';
-$_lang['inserisci nuova voce'] = 'inserisci un nuovo progetto';
-$_lang['inserisci voce'] = 'inserisci progetto';
-$_lang['voce inserita'] = 'progetto inserito';
-
-$_lang['modifica voce'] = 'modifica progetto';
-$_lang['voce modificata'] = 'progetto modificato';
-
-$_lang['cancella voce'] = 'cancella progetto';
-$_lang['voce cancellata'] = 'progetto modificato';
-
-$_lang['voce attivata'] = "progetto attivato";
-$_lang['voce disattivata'] = "progetto disattivato";
-
-$_lang['timecard attivata'] = "timecard attivata";
-$_lang['timecard disattivata'] = "imecard disattivata";
+$_lang['voce']  = "progetto";
+$_lang['voci']  = "progetti";
+$_lang['la voce']  = "il progetto";
+$_lang['le voci']  = "i progetti";
 
 $_lang['voce corrente'] = "progetto selezionato";
 
@@ -49,6 +37,4 @@ $_lang['imposta come non corrente'] = "imposta questo progetto come non corrente
 $_lang['tempo lavorato totale'] = "tempo lavorato totale";
 $_lang['tempo lavorato mese corrente'] = "tempo lavorato mese corrente";
 $_lang['tempo lavorato mese precedente'] = "tempo lavorato mese precedente";
-
-$_lang['la voce']  = "il progetto";
 ?>

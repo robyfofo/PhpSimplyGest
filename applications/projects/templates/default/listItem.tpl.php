@@ -1,7 +1,7 @@
-<!-- projects/listItem.tpl.php v.1.0.0. 28/02/2017 -->
+<!-- projects/listItem.tpl.php v.1.0.0. 24/07/2018 -->
 <div class="row">
 	<div class="col-md-3 new">
- 		<a href="{{ URLSITE }}{{ CoreRequest.action }}/newItem" title="{{ Lang['inserisci nuova voce']|capitalize }}" class="btn btn-primary">{{ Lang['nuova voce']|capitalize }}</a>
+ 		<a href="{{ URLSITE }}{{ CoreRequest.action }}/newItem" title="{{ Lang['inserisci un nuovo %ITEM%']|replace({'%ITEM%': Lang['voce']})|capitalize }}" class="btn btn-primary">{{ Lang['nuovo %ITEM%']|replace({'%ITEM%': Lang['voce']})|capitalize }}</a>
 	</div>
 	<div class="col-md-7 help-small-list">
 		{% if App.params.help_small is defined %}{{ App.params.help_small }}{% endif %}
@@ -43,7 +43,7 @@
        
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">{{ App.lang['chiudi']|capitalize }}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{ Lang['chiudi']|capitalize }}</button>
       </div>
     </div>
   </div>
