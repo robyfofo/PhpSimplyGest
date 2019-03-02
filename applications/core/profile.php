@@ -68,20 +68,24 @@ switch(Core::$request->method) {
 			if ($_POST) {			
 				if (!isset($_POST['active'])) $_POST['active'] = 1;								
 				/* recupero dati avatar */
-				list($_POST['avatar'],$_POST['avatar_info']) = $Module->getAvatarData($App->id);
-				if ($Module->error == 0) {
+				list($_POST['avatar'],$_POST['avatar_info']) = $Module->getAvatarData($App->id,$_lang);
+				if ($Module->errorType > 0) {
+					Core::$resultOp->messages[] = $Module->message;
+					Core::$resultOp->type =  $Module->errorType;
+					Core::$resultOp->error =  $Module->error;
+					}
+				if (Core::$resultOp->error == 0) {
 					/* controlla i campi obbligatori */
 					Sql::checkRequireFields($fields);
-					if(Core::$resultOp->error == 0) {	
+					if (Core::$resultOp->error == 0) {	
 						Sql::stripMagicFields($_POST);
 						Sql::updateRawlyPost($fields,DB_TABLE_PREFIX."users",'id',$App->id);
 						if(Core::$resultOp->error == 0) {
-							Core::$resultOp->message = $_lang['profilo core - profilo modificato'];
+							Core::$resultOp->message = ucfirst(preg_replace('/%ITEM%/',$_lang['profilo utente'],$_lang['%ITEM% modificato'])).'!';
 							}
+						}
 					}		
-				} else {
-					Core::$resultOp->error = 1;
-					}	
+				
 				} 
 								
 		/* recupera i dati memorizzati */

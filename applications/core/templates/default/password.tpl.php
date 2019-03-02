@@ -1,4 +1,4 @@
-<!-- core/password.tpl.php v.1.0.0. 17/02/2018 -->
+<!-- core/password.tpl.php v.1.0.0. 04/07/2018 -->
 
 <div class="row">
 	<div class="col-md-12">
@@ -9,7 +9,7 @@
 			<div class="tab-content">
 <!-- sezione dati base --> 	
 				<div class="tab-pane active" id="datibase-tab">	
-					<fieldset class="form-group">
+					<fieldset>
 						<div class="form-group">
 							<label for="nameID" class="col-md-3 control-label">{{ Lang['username']|capitalize }}</label>
 							<div class="col-md-3">
@@ -20,13 +20,13 @@
 						<div class="form-group">
 							<label for="passwordID" class="col-md-3 control-label">{{ Lang['password']|capitalize }}</label>
 							<div class="col-md-3">
-								<input required type="password" required name="password" class="form-control" id="passwordID" placeholder="{{ Lang['inserisci una password']|capitalize }}"  value="">
+								<input required="required" type="password" id="passwordID" name="password" class="form-control" placeholder="{{ Lang['inserisci una password']|capitalize }}"  value="" oninvalid="this.setCustomValidity('{{ Lang['Devi inserire il campo %FIELD%!']|replace({'%FIELD%': Lang['password']}) }}')" oninput="setCustomValidity('')">
 					    	</div>
 						</div>				
 						<div class="form-group">
 							<label for="passwordCKID" class="col-md-3 control-label">{{ Lang['password di controllo']|capitalize }}</label>
 							<div class="col-md-3">
-								<input required type="password" required name="passwordCK" class="form-control" id="passwordCKID" placeholder="{{ Lang['inserisci una password di controllo']|capitalize }}"  value="">
+								<input required="required" type="password" id="passwordCKID" name="passwordCK" class="form-control" placeholder="{{ Lang['inserisci una password di controllo']|capitalize }}"  value="" oninvalid="this.setCustomValidity('{{ Lang['Devi inserire il campo %FIELD%!']|replace({'%FIELD%': Lang['password di controllo']}) }}')" oninput="setCustomValidity('')">
 					    	</div>
 						</div>
 					</fieldset>

@@ -1,11 +1,11 @@
 <?php
 /**
- * Framework App PHP-Mysql
+ * Framework App PHP-MySQL
  * PHP Version 7
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * third-party/items.php v.1.0.0. 24/02/2018
+ * thirdparty/items.php v.1.0.0. 31/10/2018
 */
 
 if (isset($_POST['itemsforpage']) && isset($_MY_SESSION_VARS[$App->sessionName]['ifp']) && $_MY_SESSION_VARS[$App->sessionName]['ifp'] != $_POST['itemsforpage']) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'ifp',$_POST['itemsforpage']);
@@ -17,10 +17,11 @@ Sql::initQuery($App->params->tables['type'],array('*'),array(),'active = 1','');
 Sql::setOptions(array('fieldTokeyObj'=>'id'));
 $App->types = Sql::getRecords();
 
+
 switch(Core::$request->method) {
 	case 'activeItem':
 	case 'disactiveItem':
-		Sql::manageFieldActive(substr(Core::$request->method,0,-4),$App->params->tables['item'],$App->id,$_lang);
+		Sql::manageFieldActive(substr(Core::$request->method,0,-4),$App->params->tables['item'],$App->id,$opt=array('labelA'=>$_lang['voce'].' '.$_lang['attivato'],'labelD'=>$_lang['voce'].' '.$_lang['disattivato']));
 		$App->viewMethod = 'list';		
 	break;
 	
@@ -29,14 +30,14 @@ switch(Core::$request->method) {
 			Sql::initQuery($App->params->tables['item'],array('id'),array($App->id),'id = ?');
 			Sql::deleteRecord();
 			if (Core::$resultOp->error == 0) {
-				Core::$resultOp->message = ucfirst($_lang['voce cancellata']).'!';
+				Core::$resultOp->message = ucfirst(preg_replace('/%ITEM%/',$_lang['voce'],$_lang['%ITEM% cancellato'])).'!';
 				}
 			}		
 		$App->viewMethod = 'list';
 	break;
 	
 	case 'newItem':			
-		$App->pageSubTitle = $_lang['inserisci voce'];
+		$App->pageSubTitle = preg_replace('/%ITEM%/',$_lang['voce'],$_lang['inserisci %ITEM%']);
 		$App->viewMethod = 'formNew';	
 	break;
 	
@@ -52,11 +53,11 @@ switch(Core::$request->method) {
 			} else {
 				Core::$resultOp->error = 1;
 				}			
-		list($id,$App->viewMethod,$App->pageSubTitle,Core::$resultOp->message) = Form::getInsertRecordFromPostResults(0,Core::$resultOp,$_lang,array());
+		list($id,$App->viewMethod,$App->pageSubTitle,Core::$resultOp->message) = Form::getInsertRecordFromPostResults(0,Core::$resultOp,array('label inserted'=>preg_replace('/%ITEM%/',$_lang['voce'],$_lang['%ITEM% inserito']),'label insert'=>preg_replace('/%ITEM%/',$_lang['voce'],$_lang['inserisci %ITEM%'])));				
 	break;
 
 	case 'modifyItem':				
-		$App->pageSubTitle = $_lang['modifica voce'];
+		$App->pageSubTitle = preg_replace('/%ITEM%/',$_lang['voce'],$_lang['modifica %ITEM%']);
 		$App->viewMethod = 'formMod';
 	break;
 	
@@ -73,7 +74,7 @@ switch(Core::$request->method) {
 			} else {
 				Core::$resultOp->error = 1;
 				}			
-		list($id,$App->viewMethod,$App->pageSubTitle,Core::$resultOp->message) = Form::getUpdateRecordFromPostResults($App->id,Core::$resultOp,$_lang,array());		
+		list($id,$App->viewMethod,$App->pageSubTitle,Core::$resultOp->message) = Form::getUpdateRecordFromPostResults($App->id,Core::$resultOp,array('label done'=>$_lang['modifiche effettuate'],'label modified'=>preg_replace('/%ITEM%/',$_lang['voce'],$_lang['%ITEM% modificato']),'label modify'=>preg_replace('/%ITEM%/',$_lang['voce'],$_lang['modifica %ITEM%']),'label insert'=>preg_replace('/%ITEM%/',$_lang['voce'],$_lang['inserisci %ITEM%'])));	
 	break;
 	
 	case 'checkUserAjaxItem':
@@ -108,12 +109,6 @@ switch(Core::$request->method) {
 	case 'pageItem':
 		$_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'page',$App->id);
 		$App->viewMethod = 'list';	
-	break;
-
-	case 'messageItem':
-		Core::$resultOp->error = $App->id;
-		Core::$resultOp->message = urldecode(Core::$request->params[0]);
-		$App->viewMethod = 'list';		
 	break;
 
 	case 'listAjaxItem':
@@ -169,12 +164,11 @@ switch(Core::$request->method) {
 		$arr = array();
 		if (is_array($obj) && count($obj) > 0) {
 			foreach ($obj AS $key=>$value) {
-				$value->active = 1;
-				$actions = '<a class="btn btn-default btn-circle" href="'.URL_SITE.Core::$request->action.'/'.($value->active == 1 ? 'disactive' : 'active').'Item/'.$value->id.'" title="'.($value->active == 1 ? ucfirst($_lang['disattiva']).' '.$_lang['la voce'] : ucfirst($_lang['attiva']).' '.$_lang['la voce']).'"><i class="fa fa-'.($value->active == 1 ? 'unlock' : 'lock').'"> </i></a><a class="btn btn-default btn-circle" href="'.URL_SITE.Core::$request->action.'/modifyItem/'.$value->id.'" title="'.ucfirst($_lang['modifica']).' '.$_lang['la voce'].'"><i class="fa fa-edit"> </i></a><a class="btn btn-default btn-circle confirmdelete" href="'.URL_SITE.Core::$request->action.'/deleteItem/'.$value->id.'" title="'.ucfirst($_lang['cancella']).' '.$_lang['la voce'].'"><i class="fa fa-cut"> </i></a>';
+				$actions = '<a class="btn btn-default btn-circle" href="'.URL_SITE.Core::$request->action.'/'.($value->active == 0 ? 'active' : 'disactive').'Item/'.$value->id.'" title="'.($value->active == 0 ? ucfirst($_lang['attiva']).' '.$_lang['la voce'] : ucfirst($_lang['disattiva']).' '.$_lang['la voce']).'"><i class="fa fa-'.($value->active == 1 ? 'unlock' : 'lock').'"> </i></a><a class="btn btn-default btn-circle" href="'.URL_SITE.Core::$request->action.'/modifyItem/'.$value->id.'" title="'.ucfirst($_lang['modifica']).' '.$_lang['la voce'].'"><i class="fa fa-edit"> </i></a><a class="btn btn-default btn-circle confirmdelete" href="'.URL_SITE.Core::$request->action.'/deleteItem/'.$value->id.'" title="'.ucfirst($_lang['cancella']).' '.$_lang['la voce'].'"><i class="fa fa-cut"> </i></a>';
 				$tablefields = array(
 					'id'=>$value->id,
 					'category'=>$value->category,
-					'type'=>$value->type,
+					'type'=>$value->id_type.' - '.$value->type,
 					'ragione_sociale'=>$value->ragione_sociale,
 					'email'=>$value->email,
 					'actions'=>$actions
@@ -220,21 +214,29 @@ switch((string)$App->viewMethod) {
 	break;
 	
 	case 'formMod':
-		$App->item = new stdClass;
-		$App->subcategories = new stdClass();		
-		/* select per subcategories */
-		$opt = array('tableCat'=>$App->params->tables['scat'],'type'=>0,'multilanguage'=>0,'ordering'=>0,'hideId'=>0,'hideSons'=>0,'rifId'=>'id','rifIdValue'=>$App->id,'lang'=>$_lang['user']);
-		$App->subcategories = Categories::getObjFromSubCategories($opt);				
-		Sql::initQuery($App->params->tables['item'],array('*'),array($App->id),'id = ?');
-		$App->item = Sql::getRecord();
-		if (Core::$resultOp->error == 1) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['item']);
-		$App->templateApp = 'formItem.tpl.php';
-		$App->methodForm = 'updateItem';	
-		$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/formItem.js"></script>';
+		if ($App->id) {
+			$App->item = new stdClass;
+			$App->subcategories = new stdClass();		
+			/* select per subcategories */
+			$opt = array('tableCat'=>$App->params->tables['scat'],'type'=>0,'multilanguage'=>0,'ordering'=>0,'hideId'=>0,'hideSons'=>0,'rifId'=>'id','rifIdValue'=>$App->id,'lang'=>$_lang['user']);
+			$App->subcategories = Categories::getObjFromSubCategories($opt);				
+			Sql::initQuery($App->params->tables['item'],array('*'),array($App->id),'id = ?');
+			$App->item = Sql::getRecord();
+			if (isset($App->item->id) && $App->item->id > 0) {
+				if (Core::$resultOp->error == 1) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['item']);
+				$App->templateApp = 'formItem.tpl.php';
+				$App->methodForm = 'updateItem';	
+				$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/formItem.js"></script>';
+				} else {
+					ToolsStrings::redirect(URL_SITE.'error/404');
+					}
+			} else {
+				ToolsStrings::redirect(URL_SITE.'error/404');
+				}
 	break;
 
 	case 'list':
-		$App->pageSubTitle = $_lang['lista delle voci'];
+		$App->pageSubTitle = preg_replace('/%ITEMS%/',$_lang['voci'],$_lang['lista delle %ITEMS%']);
 		$App->templateApp = 'listItem.tpl.php';
 		$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/listItem.js"></script>';	
 	break;

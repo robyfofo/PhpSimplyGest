@@ -1,11 +1,11 @@
 <?php
 /**
- * Framework App PHP-Mysql
+ * Framework App PHP-MySQL
  * PHP Version 7
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * third-party/subcategories.php v.1.0.0. 16/02/2018
+ * thirdparty/subcategories.php v.1.0.0. 24/07/2018
 */
 
 if (isset($_POST['itemsforpage']) && isset($_MY_SESSION_VARS[$App->sessionName]['ifp']) && $_MY_SESSION_VARS[$App->sessionName]['ifp'] != $_POST['itemsforpage']) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'ifp',$_POST['itemsforpage']);
@@ -15,7 +15,7 @@ switch(Core::$request->method) {
 	
 	case 'activeScat':
 	case 'disactiveScat':
-		Sql::manageFieldActive(substr(Core::$request->method,0,-4),$App->params->tables['scat'],$App->id,array('labelA'=>$_lang['categoria attivata'],'labelD'=>$_lang['categoria disattivata']));
+		Sql::manageFieldActive(substr(Core::$request->method,0,-4),$App->params->tables['scat'],$App->id,$opt=array('labelA'=>$_lang['categoria'].' '.$_lang['attivata'],'labelD'=>$_lang['categoria'].' '.$_lang['disattivata']));
 		$App->viewMethod = 'list';
 	break;
 
@@ -24,14 +24,14 @@ switch(Core::$request->method) {
 			$delete = true;
 			/* controlla se ha figli */
 			if (Sql::countRecordQry($App->params->tables['scat'],'id','parent = ?',array($App->id)) > 0) {
-				Core::$resultOp->error = 2;
+				Core::$resultOp->error = 1;
 				Core::$resultOp->message = $_lang['Errore! Ci sono ancora figli associati!'];
 				$delete = false;	
 				}
 			
 			/* controlla se ha associati */
 			if (Sql::countRecordQry($App->params->tables['item'],'id','id_cat = ?',array($App->id)) > 0) {
-				Core::$resultOp->error = 2;
+				Core::$resultOp->error = 1;
 				Core::$resultOp->message = $_lang['Errore! Ci sono ancora voci associate!'];
 				$delete = false;	
 				}
@@ -42,7 +42,7 @@ switch(Core::$request->method) {
 				Sql::initQuery($App->params->tables['scat'],array('id'),array($App->id),'id = ?');
 				Sql::deleteRecord();
 				if (Core::$resultOp->error == 0) {
-					Core::$resultOp->message = ucfirst($_lang['categoria cancellata']).'!';		
+					Core::$resultOp->message = ucfirst(preg_replace('/%ITEM%/',$_lang['categoria'],$_lang['%ITEM% cancellata'])).'!';
 					}
 				}				
 			}		
@@ -50,7 +50,7 @@ switch(Core::$request->method) {
 	break;
 
 	case 'newScat':
-		$App->pageSubTitle = $_lang['inserisci categoria'];
+		$App->pageSubTitle = preg_replace('/%ITEM%/',$_lang['categoria'],$_lang['inserisci %ITEM%']);
 		$App->viewMethod = 'formNew';
 	break;
 	
@@ -68,11 +68,11 @@ switch(Core::$request->method) {
 			} else {					
 				Core::$resultOp->error = 1;
 				}				
-		list($id,$App->viewMethod,$App->pageSubTitle,Core::$resultOp->message) = Form::getInsertRecordFromPostResults(0,Core::$resultOp,$_lang,array('label inserted'=>$_lang['categoria inserita'],'label insert'=>$_lang['inserisci categoria']));
+		list($id,$App->viewMethod,$App->pageSubTitle,Core::$resultOp->message) = Form::getInsertRecordFromPostResults(0,Core::$resultOp,array('label inserted'=>preg_replace('/%ITEM%/',$_lang['categoria'],$_lang['%ITEM% inserita']),'label insert'=>preg_replace('/%ITEM%/',$_lang['categoria'],$_lang['inserisci %ITEM%'])));				
 	break;
 	
 	case 'modifyScat':	
-		$App->pageSubTitle = $_lang['modifica categoria'];
+		$App->pageSubTitle = preg_replace('/%ITEM%/',$_lang['categoria'],$_lang['modifica %ITEM%']);
 		$App->viewMethod = 'formMod';
 	break;
 	
@@ -96,7 +96,7 @@ switch(Core::$request->method) {
 			} else {					
 				Core::$resultOp->error = 1;
 				}			
-		list($id,$App->viewMethod,$App->pageSubTitle,Core::$resultOp->message) = Form::getUpdateRecordFromPostResults($App->id,Core::$resultOp,$_lang,array('label modified'=>$_lang['categoria modificata'],'label modify'=>$_lang['modifica categoria'],'label insert'=>$_lang['inserisci categoria']));	   		
+		list($id,$App->viewMethod,$App->pageSubTitle,Core::$resultOp->message) = Form::getUpdateRecordFromPostResults($App->id,Core::$resultOp,array('label done'=>$_lang['modifiche effettuate'],'label modified'=>preg_replace('/%ITEM%/',$_lang['categoria'],$_lang['%ITEM% modificata']),'label modify'=>preg_replace('/%ITEM%/',$_lang['categoria'],$_lang['modifica %ITEM%']),'label insert'=>preg_replace('/%ITEM%/',$_lang['categoria'],$_lang['inserisci %ITEM%'])));	
 	break;
 	
 	case 'pageScat':
@@ -161,7 +161,7 @@ switch((string)$App->viewMethod) {
 		$App->items = $Module->getMainData();
 		//print_r($App->items);
 		$App->pagination = $Module->getPagination();	
-		$App->pageSubTitle = $_lang['lista delle categorie'];
+		$App->pageSubTitle = preg_replace('/%ITEMS%/',$_lang['categorie'],$_lang['lista delle %ITEMS%']);
 		$App->templateApp = 'listScat.tpl.php';
 		$App->css[] = '<link href="'.URL_SITE.'templates/'.$App->templateUser.'/plugins/jquery.treegrid/jquery.treegrid.css" rel="stylesheet">';
 		$App->css[] = '<link href="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/css/listScat.css" rel="stylesheet">';

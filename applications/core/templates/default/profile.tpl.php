@@ -1,4 +1,4 @@
-<!-- core/profile.tpl.php v.1.0.0. 17/02/2018 -->
+<!-- core/profile.tpl.php v.1.0.0. 05/07/2018 -->
 <div class="row">
 	<div class="col-md-12">
 		<ul class="nav nav-tabs">
@@ -8,11 +8,11 @@
 			<div class="tab-content">
 <!-- sezione dati base --> 	
 				<div class="tab-pane active" id="datibase-tab">	
-					<fieldset class="form-group">
+					<fieldset>
 						<div class="form-group">
 							<label for="nameID" class="col-md-3 control-label">{{ Lang['nome']|capitalize }}</label>
 							<div class="col-md-7">
-								<input required type="text" name="name" class="form-control" id="nameID" placeholder="{{ Lang['inserisci un nome'] }}" value="{{ App.item.name|e('html') }}">
+								<input type="text" name="name" class="form-control" id="nameID" placeholder="{{ Lang['inserisci un nome'] }}" value="{{ App.item.name|e('html') }}">
 					    	</div>
 						</div>
 						<div class="form-group">

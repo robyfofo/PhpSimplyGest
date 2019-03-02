@@ -1,16 +1,20 @@
 {
     "name": "roberto/classes",
-    "description": "MyProjects - Gestione timecard progetti",
     "authors": [
         {
-            "name": "Roberto Mantovani",
-            "email": "me@robertomantovani.vr.it"
+            "name": "robyfofo",
+            "email": "robymant@tiscali.it"
         }
     ],
     "require": {
+<<<<<<< HEAD
         "twig/twig": "1.*",
         "swiftmailer/swiftmailer": "^6.0",
+=======
+        "rospdf/pdf-php": "^0.12.48",
+        "twig/twig": "^2.5",
+>>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
         "soundasleep/html2text": "^0.5.0",
-        "rospdf/pdf-php": "^0.12.41"
+        "swiftmailer/swiftmailer": "^6.1"
     }
 }

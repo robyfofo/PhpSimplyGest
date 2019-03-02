@@ -1,11 +1,11 @@
 <?php
 /**
- * Framework App PHP-Mysql
+ * Framework App PHP-MySQL
  * PHP Version 7
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * app/index.php v.1.0.0. 27/02/2018
+ * app/index.php v.1.0.0. 06/11/2018
 */
 
 ini_set('display_errors',1);
@@ -42,11 +42,10 @@ $Core = new Core();
 //Sql::setDebugMode(1);
 
 /* avvio sessione */
-$my_session = new my_session(SESSIONS_TIME, SESSIONS_GC_TIME,AD_SESSIONS_COOKIE_NAME);
+$my_session = new my_session(SESSIONS_TIME, SESSIONS_GC_TIME,SESSIONS_COOKIE_NAME);
 $my_session->my_session_start();
 $_MY_SESSION_VARS = array();
 $_MY_SESSION_VARS = $my_session->my_session_read();
-
 
 /* variabili globali */
 $App = new stdClass;
@@ -64,8 +63,8 @@ $App->globalSettings = $globalSettings;
 
 $App->breadcrumb = '';
 $App->metaTitlePage = SITE_NAME.' v.'.CODE_VERSION;
-$App->metaDescriptionPage = 'Gestione proggetti personali e i tempi lavorativi ad assi associati';
-$App->metaKeywordsPage = 'progetti, progetto, tempo, lavoro, timecard, note, dafare, preventivo, preventivi, contatti, calendario, ora, inizio, fine';
+$App->metaDescriptionPage = $globalSettings['meta tags page']['description'];
+$App->metaKeywordsPage = $globalSettings['meta tags page']['keyword'];
 
 /* date sito */
 setlocale(LC_TIME, 'ita', 'it_IT');
@@ -76,44 +75,68 @@ $App->nowDateIta = date('d/m/Y');
 $App->nowDateTimeIta = date('d/m/Y H:i:s');
 $App->nowTimeIta = date('H:i:s');
 
+$App->userLoggedData = new stdClass();
+/* carica dati utente loggato */	
+if (isset($_MY_SESSION_VARS['idUser'])) {	
+	Sql::initQuery(DB_TABLE_PREFIX.'users',array('*'),array($_MY_SESSION_VARS['idUser']),'active = 1 AND id = ?','');
+	$App->userLoggedData = Sql::getRecord();
+	$App->userLoggedData->is_root = intval($App->userLoggedData->is_root);
+	}
+
 $App->coreModule = false;
-$App->modulesCore = array('login','logout','account','password','profile','nopassword','nousername');
+$App->modulesCore = array('login','logout','account','password','profile','nopassword','nousername','error');
 
 /* gestisce la richiesta http parametri get */
-$globalSettings['requestoption']['othemodules'] = array_merge(array('site-users'),$App->modulesCore);
+$globalSettings['requestoption']['othermodules'] = array_merge(array(),$App->modulesCore);
+$globalSettings['requestoption']['defaultaction'] = 'home';
+if (isset($App->userLoggedData->is_root) && $App->userLoggedData->is_root == 1) $globalSettings['requestoption']['permissionroot'] = true;
 Core::getRequest($globalSettings['requestoption']);
-
 //print_r(Core::$request);
-
-/* UTENTE */
-$App->userLoggedData = new stdClass();
 
 if (!isset($_MY_SESSION_VARS['idUser'])){
 	if (Core::$request->action != "nopassword" && Core::$request->action != "nousername") Core::$request->action = 'login';
-	} else {
-		/* carica dati utente loggato */		
-		Sql::initQuery(DB_TABLE_PREFIX.'users',array('*'),array($_MY_SESSION_VARS['idUser']),'active = 1 AND id = ?','');
-		$App->userLoggedData = Sql::getRecord();
-		$App->userLoggedData->is_root = intval($App->userLoggedData->is_root);
-		}	
-/* UTENTE */
+	}
+
+/* LIVELLI UTENTE */
+/* carica i livelli */
+$App->user_levels = Permissions::getUserLevels();
+if (Core::$resultOp->error == 1) die('Errore db livello utenti!');
+if (isset($App->userLoggedData->id_level)) {
+	$App->userLoggedData->labelRole = Permissions::getUserLevelLabel($App->user_levels,$App->userLoggedData->id_level,$App->userLoggedData->is_root);
+	}
+/* LIVELLI UTENTE */
 
 /* gestione template */
-$App->templateUser = Core::$request->templateUser;
+$App->templateUser = $globalSettings['requestoption']['defaulttemplate'];
+
+/* elenco delle tabelle nel db */
+$App->tablesOfDatabase = Sql::getTablesDatabase($globalSettings['database'][DATABASE]['name']);
 
 /* carica i dati dei moduli */
-Sql::initQuery(DB_TABLE_PREFIX.'modules',array('*'),array(),'active = 1','ordering ASC');
-$App->site_modules = Sql::getRecords();
-if (Core::$resultOp->error == 1) die('Errore db moduli!');
-$App->first_module_active = 'home';
+foreach($globalSettings['module sections'] AS $key=>$value) {
+	Sql::initQuery(DB_TABLE_PREFIX.'modules',array('*'),array($key),'active = 1 AND section = ?','ordering ASC');
+	$App->modules[$key] = Sql::getRecords();
+	if (Core::$resultOp->error == 1) die('Errore db livello utenti!');
+	}
+
+/* carica i moduli disponibili per l'utente corrente */
+$App->user_modules_active = array();
+$App->user_first_module_active = 'home';
+if(isset($App->userLoggedData->id_level) && $App->userLoggedData->id_level > 0) {
+	$obj = new stdClass();
+	Sql::initQuery(DB_TABLE_PREFIX.'levels',array('*'),array($App->userLoggedData->id_level),'active = 1 AND id = ?');
+	$obj = Sql::getRecord();	
+	$App->user_modules_active = explode(',', $obj->modules);	
+	$App->user_first_module_active = $App->user_modules_active[0];
+	}
+/* integra con i core */
+$App->user_modules_active = array_merge($App->user_modules_active, $App->modulesCore);
 
 
 /* LINGUA */
-/* carica la lingua del sito */
-
-if ($globalSettings['defaul language'] != '') {
-	if (file_exists(PATH."lang/".$globalSettings['defaul language'].".inc.php")) {
-		include_once(PATH."lang/".$globalSettings['defaul language'].".inc.php");
+if ($globalSettings['default language'] != '') {
+	if (file_exists(PATH."lang/".$globalSettings['default language'].".inc.php")) {
+		include_once(PATH."lang/".$globalSettings['default language'].".inc.php");
 		} else {
 			include_once(PATH."lang/it.inc.php");
 			}
@@ -121,26 +144,6 @@ if ($globalSettings['defaul language'] != '') {
 		include_once(PATH."lang/it.inc.php");
 		}
 /* LINGUA */
-
-/* crea il menu */
-$App->rightMenu = '';
-$x1 = 0;
-foreach($App->site_modules AS $module) {
-	$codemenu = $module->code_menu;
-	$codemenu = preg_replace('/%URLSITE%/',URL_SITE,$codemenu);
-	$codemenu = preg_replace('/%LABEL%/',$module->label,$codemenu);
-	$codemenu = preg_replace('/%NAME%/',$module->name,$codemenu);												
-	/* se active */
-	if (Core::$request->action == $module->name) {
-		$codemenu = preg_replace('/%LICLASS%/','active',$codemenu);
-		} else {
-			$codemenu = preg_replace('/%LICLASS%/','',$codemenu);										
-			}
-		$App->rightMenu .= $codemenu; 
-		$x1++;								
-	}			
-	
-
 	
 /* INDIRIZZAMENTO */
 $pathApplications = $App->pathApplications;
@@ -153,33 +156,32 @@ if (in_array(Core::$request->action,$App->modulesCore) == true) {
 	$action = '';
 	$index = Core::$request->action.'.php';
 	}
+	
+/*
+echo '<br>$pathApplications: '.$pathApplications;
+echo '<br>$action: '.$action;
+echo '<br>$index: '.$index;
+*/
+
+
+if (file_exists(PATH."iniapp.php")) include_once(PATH."iniapp.php");
 
 if (file_exists(PATH.$pathApplications.$action.$index)) {
 	include_once(PATH.$pathApplications.$action.$index);
 	} else {
-		Core::$request->action = $App->first_module_active;
-		include_once(PATH.$pathApplications.$App->first_module_active."/index.php");
+		Core::$request->action =$App->user_first_module_active;
+		include_once(PATH.$pathApplications.$App->user_first_module_active."/index.php");
 		}
 /* INDIRIZZAMENTO */
 
-/* DIV MESSAGGI SISTEMA */
-$App->systemMessages = '';
-$appErrors = Utilities::getMessagesCore(Core::$resultOp);
-list($show,$error,$type,$content) = $appErrors;
-if ($show == true) {
-	$App->systemMessages .= '<div class="row"><div id="systemMessageID" class="alert';
-	if ($error == 2) $App->systemMessages .= ' alert-warning';
-	if ($error == 1) $App->systemMessages .= ' alert-danger';
-	if ($error == 0) $App->systemMessages .= ' alert-success';
-	$App->systemMessages .= '">'.$content.'</div></div>';
-	}
-/* DIV MESSAGGI SISTEMA */
+if (file_exists(PATH."endapp.php")) include_once(PATH."endapp.php");
 
 if ($App->coreModule == true) {
 	$pathtemplateApp = PATH.$pathApplications .= "templates/".$App->templateUser."/";
 	} else {
 		if ($App->templateApp != '') $App->templateApp = Core::$request->action."/templates/".$App->templateUser."/".$App->templateApp;
 		}
+
 $pathtemplateBase = PATH."templates/".$App->templateUser;
 $pathtemplateApp = PATH.$pathApplications;
 

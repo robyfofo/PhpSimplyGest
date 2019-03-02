@@ -1,9 +1,12 @@
 <?php
-if (in_array(DB_TABLE_PREFIX.'timecard',$tablesDb) && file_exists(PATH.$App->pathApplications."timecard/index.php")) {
+if (in_array(DB_TABLE_PREFIX.'timecard',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."timecard/index.php")) {
 
 	$App->homeBlocks['timecard'] = array(
 		'table'=>DB_TABLE_PREFIX.'timecard',
-		'where'=>'datains > ?',
+		'sqloption'=> array(
+			'clause' => '',
+			'clausevals' => array()
+			),
 		'datafields'=>array($App->lastLogin),
 		'icon panel'=>'fa-clock-o',
 		'label'=>ucfirst($_lang['timecard']),
@@ -15,6 +18,7 @@ if (in_array(DB_TABLE_PREFIX.'timecard',$tablesDb) && file_exists(PATH.$App->pat
 			'opz'=>array()
 			)
 		);	
+
 
 	$App->homeTables['timecard'] = array(
 		'table'=>DB_TABLE_PREFIX.'timecard',
@@ -42,11 +46,13 @@ if (in_array(DB_TABLE_PREFIX.'timecard',$tablesDb) && file_exists(PATH.$App->pat
 				'url'=>false
 				)
 			)
-		);	
+		);
+
 
 	}
 /* Thirdparty */
-if (in_array(DB_TABLE_PREFIX.'thirdparty',$tablesDb) && file_exists(PATH.$App->pathApplications."third-party/index.php") == true) {
+
+if (in_array(DB_TABLE_PREFIX.'thirdparty',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."thirdparty/index.php") == true) {
 	$App->homeBlocks['thirdparty'] = array(
 		'table'=>DB_TABLE_PREFIX.'thirdparty',
 		'icon panel'=>'fa-users',
@@ -80,7 +86,7 @@ if (in_array(DB_TABLE_PREFIX.'thirdparty',$tablesDb) && file_exists(PATH.$App->p
 	}
 	
 /* Projects */
-if (in_array(DB_TABLE_PREFIX.'projects',$tablesDb) && file_exists(PATH.$App->pathApplications."projects/index.php") == true) {
+if (in_array(DB_TABLE_PREFIX.'projects',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."projects/index.php") == true) {
 	$App->homeBlocks['projects'] = array(
 		'table'=>DB_TABLE_PREFIX.'projects',
 		'icon panel'=>'fa-cog',
@@ -92,8 +98,7 @@ if (in_array(DB_TABLE_PREFIX.'projects',$tablesDb) && file_exists(PATH.$App->pat
 			'string'=>URL_SITE.'projects',
 			'opz'=>array()
 			)
-		);	
-		
+		);
 	$App->homeTables['projects'] = array(
 		'table'=>DB_TABLE_PREFIX.'projects',
 		'icon panel'=>'fa-cog',
@@ -114,7 +119,7 @@ if (in_array(DB_TABLE_PREFIX.'projects',$tablesDb) && file_exists(PATH.$App->pat
 	}
 	
 /* Todo */
-if (in_array(DB_TABLE_PREFIX.'todo',$tablesDb) && file_exists(PATH.$App->pathApplications."todo/index.php")  == true) {
+if (in_array(DB_TABLE_PREFIX.'todo',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."todo/index.php")  == true) {
 	$App->homeBlocks['todo'] = array(
 		'table'=>DB_TABLE_PREFIX.'todo',
 		'icon panel'=>'fa-bookmark-o',
@@ -148,7 +153,7 @@ if (in_array(DB_TABLE_PREFIX.'todo',$tablesDb) && file_exists(PATH.$App->pathApp
 	}
 	
 /* Invoices sales */
-if (in_array(DB_TABLE_PREFIX.'invoices_sales',$tablesDb) && file_exists(PATH.$App->pathApplications."invoices/index.php") == true) {
+if (in_array(DB_TABLE_PREFIX.'invoices_sales',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."invoices/index.php") == true) {
 	$App->homeBlocks['invoices_sales'] = array(
 		'table'=>DB_TABLE_PREFIX.'invoices_sales',
 		'icon panel'=>'fa-wpforms',
@@ -205,7 +210,7 @@ if (in_array(DB_TABLE_PREFIX.'invoices_sales',$tablesDb) && file_exists(PATH.$Ap
 	}
 	
 /* Invoices purchases */
-if (in_array(DB_TABLE_PREFIX.'invoices_purchases',$tablesDb) && file_exists(PATH.$App->pathApplications."invoices/index.php") == true) {
+if (in_array(DB_TABLE_PREFIX.'invoices_purchases',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."invoices/index.php") == true) {
 	$App->homeBlocks['invoices_purchases'] = array(
 		'table'=>DB_TABLE_PREFIX.'invoices_purchases',
 		'icon panel'=>'fa-wpforms',
@@ -253,7 +258,7 @@ if (in_array(DB_TABLE_PREFIX.'invoices_purchases',$tablesDb) && file_exists(PATH
 	}
 	
 /* Estimates  */
-if (in_array(DB_TABLE_PREFIX.'estimates',$tablesDb) && file_exists(PATH.$App->pathApplications."estimates/index.php") == true) {
+if (in_array(DB_TABLE_PREFIX.'estimates',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."estimates/index.php") == true) {
 	$App->homeBlocks['estimates'] = array(
 		'table'=>DB_TABLE_PREFIX.'estimates',
 		'icon panel'=>'fa-bullseye',

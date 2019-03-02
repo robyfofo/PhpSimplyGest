@@ -1,4 +1,4 @@
-<!-- third-party/script.js.php v.1.0.0. 19/02/2018 -->
+<!-- thirdparty/script.js.php v.1.0.0. 05/07/2018 -->
 <script language="javascript">
 var lang = new Array();
 lang['search'] = '{{ Lang['cerca']|capitalize}}';

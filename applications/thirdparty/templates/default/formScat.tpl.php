@@ -1,4 +1,4 @@
-<!-- third-party/formScat.tpl.php v.1.0.0. 05/06/2018 -->
+<!-- thirdparty/formScat.tpl.php v.1.0.0. 05/07/2018 -->
 <div class="row">
 	<div class="col-md-3 new">
  	</div>
@@ -19,11 +19,11 @@
 			<!-- Tab panes -->
 			<div class="tab-content">
 				<div class="tab-pane active" id="datibase-tab">	
-					<fieldset class="form-group">
+					<fieldset>
 						<div class="form-group">
 							<label for="title_{{ lang }}ID" class="col-md-2 control-label">{{ Lang['titolo']|capitalize }} {{ lang }}</label>
 							<div class="col-md-7">
-								<input required type="text" class="form-control" name="title" placeholder="{{ Lang['inserisci un titolo']|capitalize }}" id="titleID" value="{{ App.item.title|e('html') }}">
+								<input required="required" type="text" class="form-control" name="title" placeholder="{{ Lang['inserisci un %ITEM%']|replace({'%ITEM%': Lang['titolo']})|capitalize }}" id="titleID" value="{{ App.item.title|e('html') }}" oninvalid="this.setCustomValidity('{{ Lang['Devi inserire una %ITEM%!']|replace({'%ITEM%': Lang['titolo']}) }}')" oninput="setCustomValidity('')">
 							</div>
 						</div>
 						<hr>
@@ -58,14 +58,16 @@
 			<!--/Tab panes -->			
 			<hr>			
 			<div class="form-group">
-				<div class="col-md-offset-2 col-md-7">
+				<div class="col-md-offset-2 col-md-7 actionsform">
 			    	<input type="hidden" name="bk_parent" value="{{ App.item.parent }}">		      
 			      <input type="hidden" name="id" id="idID" value="{{ App.id }}">
 					<input type="hidden" name="method" value="{{ App.methodForm }}">
-					<button type="submit" name="submitForm" value="submit" class="btn btn-primary">{{ Lang['invia']|capitalize }}</button>
-					<button type="submit" name="applyForm" value="apply" class="btn btn-primary">{{ Lang['applica']|capitalize }}</button>
+					<button type="submit" name="submitForm" value="submit" class="btn btn-primary submittheform">{{ Lang['invia']|capitalize }}</button>
+					{% if App.id > 0 %}
+						<button type="submit" name="applyForm" value="apply" class="btn btn-primary">{{ Lang['applica']|capitalize }}</button>
+					{% endif %}
 				</div>
-	 			<div class="col-md-2">				
+	 			<div class="col-md-3 actionsform">
 					<a href="{{ URLSITE }}{{ CoreRequest.action }}/listScat" title="{{ Lang['torna alla lista']|capitalize }}" class="btn btn-success">{{ Lang['indietro']|capitalize }}</a>
 				</div>
 			</div>

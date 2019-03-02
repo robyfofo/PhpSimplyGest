@@ -1,4 +1,4 @@
-/* third-party/listItem.js v.1.0.0. 13/04/2018 */
+/* thirdparty/listItem.js v.1.0.0. 05/07/2018  */
 var requestSent = false;
 
 $(document).ready(function() {

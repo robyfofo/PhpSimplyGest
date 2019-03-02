@@ -1,4 +1,4 @@
-<!-- admin/todo/formItem.tpl.php v.1.0.0. 22/02/2017 -->
+<!-- todo/formItem.tpl.php v.1.0.0. 17/07/2018 -->
 <div class="row">
 	<div class="col-md-3 new">
  	</div>
@@ -18,11 +18,11 @@
 		
 			<div class="tab-content">			
 				<div class="tab-pane active" id="datibase-tab">
-					<fieldset class="form-group">
+					<fieldset>
 						<div class="form-group">
 							<label for="titleID" class="col-md-2 control-label">{{ Lang['titolo']|capitalize }}</label>
 							<div class="col-md-7">
-								<input required type="text" class="form-control" name="title" placeholder="{{ Lang['inserisci un titolo']|capitalize }}" id="titleID" value="{{ App.item.title }}">
+								<input required="required" type="text" class="form-control" name="title" placeholder="{{ Lang['inserisci un %ITEM%']|replace({'%ITEM%': Lang['titolo']})|capitalize }}" id="titleID" value="{{ App.item.title }}" oninvalid="this.setCustomValidity('{{ Lang['Devi inserire un %ITEM%!']|replace({'%ITEM%': Lang['titolo']}) }}')" oninput="setCustomValidity('')">
 							</div>
 						</div>
 						<div class="form-group">
@@ -35,11 +35,11 @@
 				</div>
 <!-- sezione opzioni --> 
 				<div class="tab-pane" id="options-tab">
-					<fieldset class="form-group">
+					<fieldset>
 						<div class="form-group">						
 							<label for="id_projectID" class="col-md-2 control-label">{{ Lang['progetto']|capitalize }}</label>
 							<div class="col-md-7">
-								<select name="id_project" class="selectpicker" data-live-search="true" title="{{ Lang['seleziona un progetto']|capitalize }}">
+								<select name="id_project" class="selectpicker" data-live-search="true" title="{{ Lang['seleziona un %ITEM%']|replace({'%ITEM%': Lang['progetto']})|capitalize }}">
 									{% if App.progetti is iterable %}
 										{% for value in App.progetti %}
 											<option value="{{ value.id }}"{% if (App.item.id_project is defined) and (App.item.id_project == value.id)  %} selected="selected" {% endif %}>{{ value.title }}</option>														
@@ -51,7 +51,7 @@
 						<div class="form-group">
 							<label for="statusID" class="col-md-2 control-label">{{ Lang['status']|capitalize }}</label>
 							<div class="col-md-7">
-								<select name="status" class="selectpicker" data-live-search="true" title="{{ Lang['seleziona uno status']|capitalize }}">
+								<select name="status" class="selectpicker" data-live-search="true" title="{{ Lang['seleziona uno %ITEM%']|replace({'%ITEM%': Lang['status']})|capitalize }}">
 									{% if App.params.status is iterable %}
 										{% for key,value in App.params.status %}	
 											<option value="{{ key }}"{% if key == App.item.status %} selected="selected"{% endif %}>{{ (Lang[value] is defined and Lang[value] != '') ? Lang[value]|capitalize : value|capitalize }}</option>														
@@ -77,16 +77,16 @@
 <!--/Tab panes -->			
 			<hr>
 			<div class="form-group">
-				<div class="col-md-offset-2 col-md-7">
+				<div class="col-md-offset-2 col-md-7 actionsform">
 					<input type="hidden" name="created" id="createdID" value="{{ App.item.created }}">
 					<input type="hidden" name="id" id="idID" value="{{ App.id }}">
 					<input type="hidden" name="method" value="{{ App.methodForm }}">
-					<button type="submit" name="submitForm" value="submit" class="btn btn-primary">{{ Lang['invia']|capitalize }}</button>
+					<button type="submit" name="submitForm" value="submit" class="btn btn-primary submittheform">{{ Lang['invia']|capitalize }}</button>
 					{% if App.id > 0 %}
-						<button type="submit" name="applyForm" value="apply" class="btn btn-primary">{{ Lang['applica']|capitalize }}</button>
+						<button type="submit" name="applyForm" value="apply" class="btn btn-primary submittheform">{{ Lang['applica']|capitalize }}</button>
 					{% endif %}
 				</div>
-				<div class="col-md-2">				
+				<div class="col-md-3 actionsform">				
 					<a href="{{ URLSITE }}{{ CoreRequest.action }}/listItem" title="{{ Lang['torna alla lista']|capitalize }}" class="btn btn-success">{{ Lang['indietro']|capitalize }}</a>
 				</div>
 			</div>

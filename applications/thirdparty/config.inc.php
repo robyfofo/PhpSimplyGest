@@ -1,19 +1,23 @@
 <?php
 /**
- * Framework App PHP-Mysql
+ * Framework App PHP-MySQL
  * PHP Version 7
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+<<<<<<< HEAD
  * third-party/config.inc.php v.1.0.0. 08/02/2018
+=======
+ * third-party/config.inc.php v.1.0.0. 05/07/2018
+>>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
 */
 
 $App->params = new stdClass();
-$App->params->label = "Soggetti Terzi"; 
+$App->params->label = ucfirst($_lang['soggetti terzi']); 
 /* prende i dati del modulo */
 Sql::initQuery(DB_TABLE_PREFIX.'modules',array('label','help_small','help'),array('third-party'),'name = ?');
 $obj = Sql::getRecord();
-if (Core::$resultOp->error == 0 && isset($obj)) $App->params = $obj;
+if (Core::$resultOp->error == 0 && is_object($obj)) $App->params = $obj;
 
 $App->params->codeVersion = ' 1.0.0.';
 $App->params->pageTitle = $App->params->label;
@@ -28,41 +32,39 @@ $App->params->ordersType = array();
 /* ITEMS */
 $App->params->tables['item']  = DB_TABLE_PREFIX.'thirdparty';
 $App->params->fields['item']  = array(
-	'id'=>array('label'=>'ID','required'=>false,'type'=>'autoinc','primary'=>true),
-	'id_owner'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>true,'type'=>'int','defValue'=>$App->userLoggedData->id),
-	'id_cat'=>array('label'=>'ID Categoria','required'=>true,'type'=>'int'),
-	'id_type'=>array('label'=>'Tipo','required'=>false,'type'=>'int','defValue'=>0,'validate'=>'int'),
-	'ragione_sociale'=>array('label'=>'Ragione Sociale','searchTable'=>true,'required'=>true,'type'=>'varchar'),
-	'name'=>array('label'=>'Nome','searchTable'=>false,'required'=>false,'type'=>'varchar'),
-	'surname'=>array('label'=>'Cognome','searchTable'=>false,'required'=>false,'type'=>'varchar'),
-	'street'=>array('label'=>'Via','searchTable'=>false,'required'=>false,'type'=>'varchar'),
-	'city'=>array('label'=>'Città','searchTable'=>false,'required'=>false,'type'=>'varchar'),
-	'zip_code'=>array('label'=>'C.A.P.','searchTable'=>false,'required'=>false,'type'=>'varchar'),
-	'province'=>array('label'=>'Provincia','searchTable'=>false,'required'=>false,'type'=>'varchar'),
-	'state'=>array('label'=>'Stato','searchTable'=>false,'required'=>false,'type'=>'varchar'),
-	'telephone'=>array('label'=>'Telefono','searchTable'=>false,'required'=>false,'type'=>'varchar'),
-	'email'=>array('label'=>'Email','searchTable'=>true,'required'=>false,'type'=>'varchar'),
-	'mobile'=>array('label'=>'Cellulare','searchTable'=>false,'required'=>false,'type'=>'varchar'),
-	'fax'=>array('label'=>'Fax','searchTable'=>false,'required'=>false,'type'=>'varchar'),
-	'partita_iva'=>array('label'=>'Partita IVA','searchTable'=>false,'required'=>false,'type'=>'varchar'),
-	'codice_fiscale'=>array('label'=>'Codice Fiscale','searchTable'=>false,'required'=>false,'type'=>'varchar'),
+	'id'=>array('label'=>'ID','required'=>false,'type'=>'int|8','autoinc'=>true,'nodb'=>true,'primary'=>true),
+	'id_user'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>true,'type'=>'int|8','defValue'=>$App->userLoggedData->id),
+	'id_cat'=>array('label'=>'ID '.$_lang['categoria'],'required'=>true,'type'=>'int|8'),
+	'id_type'=>array('label'=>$_lang['tipo'],'required'=>false,'type'=>'int','defValue'=>0,'validate'=>'int|1'),
+	'ragione_sociale'=>array('label'=>$_lang['ragione sociale'],'searchTable'=>true,'required'=>true,'type'=>'varchar|255'),
+	'name'=>array('label'=>$_lang['nome'],'searchTable'=>true,'required'=>false,'type'=>'varchar|50'),
+	'surname'=>array('label'=>$_lang['cognome'],'searchTable'=>true,'required'=>false,'type'=>'varchar|50'),
+	'street'=>array('label'=>$_lang['via'],'searchTable'=>false,'required'=>false,'type'=>'varchar|100'),
+	'city'=>array('label'=>$_lang['città'],'searchTable'=>false,'required'=>false,'type'=>'varchar|100'),
+	'zip_code'=>array('label'=>$_lang['cap'],'searchTable'=>false,'required'=>false,'type'=>'varchar|10'),
+	'province'=>array('label'=>$_lang['provincia'],'searchTable'=>false,'required'=>false,'type'=>'varchar|100'),
+	'state'=>array('label'=>$_lang['stato'],'searchTable'=>false,'required'=>false,'type'=>'varchar|100'),
+	'telephone'=>array('label'=>$_lang['telefono'],'searchTable'=>false,'required'=>false,'type'=>'varchar|20'),
+	'email'=>array('label'=>$_lang['email'],'searchTable'=>true,'required'=>false,'type'=>'varchar|255'),
+	'mobile'=>array('label'=>$_lang['cellulare'],'searchTable'=>true,'required'=>false,'type'=>'varchar|20'),
+	'fax'=>array('label'=>$_lang['fax'],'searchTable'=>true,'required'=>false,'type'=>'varchar|20'),
+	'partita_iva'=>array('label'=>$_lang['partita IVA'],'searchTable'=>false,'required'=>false,'type'=>'varchar|50'),
+	'codice_fiscale'=>array('label'=>$_lang['codice fiscale'],'searchTable'=>false,'required'=>false,'type'=>'varchar|50'),
 	'created'=>array('label'=>$_lang['creazione'],'searchTable'=>false,'required'=>false,'type'=>'datatime','defValue'=>$App->nowDateTime,'validate'=>'datatimeiso'),
-	'active'=>array('label'=>ucfirst($_lang['attiva']),'required'=>false,'type'=>'int','defValue'=>1,'validate'=>'int')
+	'active'=>array('label'=>$_lang['attiva'],'required'=>false,'type'=>'int|1','defValue'=>0,'validate'=>'int')
 	);	
 	
 /* SUBCATEGORIES */
 $App->params->tables['scat']  = DB_TABLE_PREFIX.'thirdparty_subcategories';
 $App->params->fields['scat']  = array(
-	'id'=>array('label'=>'ID','required'=>false,'type'=>'autoinc','primary'=>true),
+	'id'=>array('label'=>'ID','required'=>false,'type'=>'int|8','autoinc'=>true,'nodb'=>true,'primary'=>true),
+	'id_user'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>true,'type'=>'int|8','defValue'=>$App->userLoggedData->id),
 	'parent'=>array('label'=>'Parent','required'=>false,'type'=>'int','defValue'=>0,'validate'=>'int'),
-	'id_owner'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>true,'type'=>'int','defValue'=>$App->userLoggedData->id),
-	'title'=>array('label'=>'Titolo','searchTable'=>true,'required'=>true,'type'=>'varchar'),
+	'title'=>array('label'=>$_lang['titolo'],'searchTable'=>true,'required'=>true,'type'=>'varchar'),
 	'created'=>array('label'=>$_lang['creazione'],'searchTable'=>false,'required'=>false,'type'=>'datatime','defValue'=>$App->nowDateTime,'validate'=>'datatimeiso'),
-	'active'=>array('label'=>ucfirst($_lang['attiva']),'required'=>false,'type'=>'int','defValue'=>1,'validate'=>'int')
+	'active'=>array('label'=>$_lang['attiva'],'required'=>false,'type'=>'int|1','defValue'=>0,'validate'=>'int')
 	);	
 	
 /* TYPES */
 $App->params->tables['type']  = DB_TABLE_PREFIX.'thirdparty_types';
-
-
 ?>

@@ -12,7 +12,7 @@
 
 include_once(PATH.$App->pathApplications.Core::$request->action."/lang/".$_lang['user'].".inc.php");
 include_once(PATH.$App->pathApplications.Core::$request->action."/config.inc.php");
-include_once(PATH.$App->pathApplications.Core::$request->action."/class.module.php");
+include_once(PATH.$App->pathApplications.Core::$request->action."/classes/class.module.php");
 $App->includeJscriptPHPTop = Core::$request->action."/templates/".$App->templateUser."/js/script.js.php";
 
 $App->sessionName = Core::$request->action;
@@ -31,6 +31,7 @@ switch(substr(Core::$request->method,-4,4)) {
 		include_once(PATH.$App->pathApplications.Core::$request->action."/subcategories.php");	
 	break;		
 	default:
+		if (Sql::countRecordQry($App->params->tables['scat'],'id','active = ?',array(1)) == 0) ToolsStrings::redirect(URL_SITE.'error/module/'.urlencode($App->params->label).'/'.urlencode(preg_replace('/%ITEM%/',$_lang['categoria'],$_lang['Devi creare o attivare almeno una %ITEM%'])));
 		if (!isset($_MY_SESSION_VARS[$App->sessionName]['page'])) $_MY_SESSION_VARS = $my_session->addSessionsModuleVars($_MY_SESSION_VARS,$App->sessionName,array('page'=>1,'ifp'=>'10','srcTab'=>'','id_cat'=>0));
 		$Module = new Module(Core::$request->action,$App->params->tables['item']);
 		include_once(PATH.$App->pathApplications.Core::$request->action."/items.php");	

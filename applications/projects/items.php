@@ -174,7 +174,12 @@ switch(Core::$request->method) {
 			}
 		/* end permissions items */
 		
+<<<<<<< HEAD
 		$filtering = false;		
+=======
+		
+		
+>>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
 		if (isset($_REQUEST['search']) && is_array($_REQUEST['search']) && count($_REQUEST['search']) > 0) {		
 			if (isset($_REQUEST['search']['value']) && $_REQUEST['search']['value'] != '') {
 				/* field query */				
@@ -182,10 +187,14 @@ switch(Core::$request->method) {
 				if ($w != '') {
 					$where .= $and."(".$w.")";
 					$and = ' AND ';
+<<<<<<< HEAD
 					if (is_array($fv) && count($fv) > 0) {
 						$fieldsValue = array_merge($fieldsValue,$fv);
 						$filtering = true;
 						}
+=======
+					if (is_array($fv) && count($fv) > 0) $fieldsValue = array_merge($fieldsValue,$fv);
+>>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
 					}
 								
 				/* field array query */
@@ -194,10 +203,14 @@ switch(Core::$request->method) {
 				if ($w != '') {
 					$where .= $and."(".$w.")";
 					$and = ' AND ';
+<<<<<<< HEAD
 					if (is_array($fv) && count($fv) > 0) {
 						$fieldsValue = array_merge($fieldsValue,$fv);
 						$filtering = true;
 						}
+=======
+					if (is_array($fv) && count($fv) > 0) $fieldsValue = array_merge($fieldsValue,$fv);
+>>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
 					}
 				
 				}
@@ -207,8 +220,11 @@ switch(Core::$request->method) {
 		//echo $where;
 		//print_r($fieldsValue);
 		
+<<<<<<< HEAD
 		/* conta tutti i records */
 		$recordsTotal = Sql::countRecordQry($App->params->tables['item'],'id','',array());
+=======
+>>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
 		
 		$table = $App->params->tables['item']." AS item";
 		$fields[] = "item.*";

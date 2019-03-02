@@ -1,4 +1,4 @@
-<!-- 	admin/site-home/list.tpl.php v.3.0.0. 04/03/2017 -->
+<!-- 	app/home/list.tpl.php v.1.0.0. 02/07/2018 -->
 
 <div class="row">
 	<div class="col-lg-4 new">
@@ -67,7 +67,7 @@
 <div class="row">
 	{% if App.homeTables is iterable %}
 		{% for key,value in App.homeTables %}
-			{% if value['itemdata'] is iterable %}
+			{% if value['itemdata'] is iterable and value['itemdata']|length > 0 %}
 				<div class="col-lg-6">
 					<div class="panel panel-default">
 						<div class="panel-heading">

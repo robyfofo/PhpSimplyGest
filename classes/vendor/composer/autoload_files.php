@@ -7,7 +7,12 @@ $baseDir = dirname($vendorDir);
 
 return array(
     '320cde22f66dd4f5d3fd621d3e88b98f' => $vendorDir . '/symfony/polyfill-ctype/bootstrap.php',
+<<<<<<< HEAD
     '2c102faa651ef8ea5874edb585946bce' => $vendorDir . '/swiftmailer/swiftmailer/lib/swift_required.php',
+=======
+    '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => $vendorDir . '/symfony/polyfill-mbstring/bootstrap.php',
+>>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
     'd5fa61a7f6cbc1df09dd4df84549a2dc' => $vendorDir . '/rospdf/pdf-php/src/Cpdf.php',
     '2d15964294879de66053d54f6bde65d7' => $vendorDir . '/rospdf/pdf-php/src/Cezpdf.php',
+    '2c102faa651ef8ea5874edb585946bce' => $vendorDir . '/swiftmailer/swiftmailer/lib/swift_required.php',
 );

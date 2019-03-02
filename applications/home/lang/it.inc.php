@@ -2,6 +2,11 @@
 $_lang['pagesubtitle'] = "la pagina home utente";
 $_lang['ultimo accesso'] = "ultimo accesso";
 $_lang['creata il'] = "creata il";
+
+/* base */
+$_lang['ultimi utenti'] = "ultimi utenti";
+
+/* custom */
 $_lang['terze parti'] = "terze parti";
 $_lang['fatture vendite'] = "fatture vendite";
 $_lang['fatture acquisti'] = "fatture acquisti";

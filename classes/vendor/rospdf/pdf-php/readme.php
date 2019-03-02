@@ -72,7 +72,11 @@ class Creport extends Cezpdf
 // this code has been modified to use ezpdf.
 
 $project_url = "https://github.com/rospdf/";
+<<<<<<< HEAD
 $project_version = "0.12.49";
+=======
+$project_version = "0.12.48";
+>>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
 
 $pdf = new Creport('a4', 'portrait', 'none', null);
 

@@ -1,7 +1,7 @@
-<!-- third-party/listScat.tpl.php v.1.0.0. 16/02/2018 -->
+<!-- thirdparty/listScat.tpl.php v.1.0.0. 24/07/2018 -->
 <div class="row">
 	<div class="col-md-3 new">
-		<a href="{{ URLSITE }}{{ CoreRequest.action }}/newScat" title="{{ Lang['inserisci nuova categoria']|capitalize }}" class="btn btn-primary">{{ Lang['nuova categoria']|capitalize }}</a>
+		<a href="{{ URLSITE }}{{ CoreRequest.action }}/newScat" title="{{ Lang['inserisci una nuova %ITEM%']|replace({'%ITEM%': Lang['categoria']})|capitalize }}" class="btn btn-primary">{{ Lang['nuova %ITEM%']|replace({'%ITEM%': Lang['categoria']})|capitalize }}</a>
 	</div>
 	<div class="col-md-7 help-small-list">
 		{% if App.params.help_small is defined %}{{ App.params.help_small }}{% endif %}
@@ -18,10 +18,10 @@
 					<tr>
 						<th></th>
 						{% if App.userLoggedData.is_root == 1 %}
-							<th><small>ID</small></th>						
+							<th class="id">ID</th>						
 						{% endif %}
 						<th>{{ Lang['titolo']|capitalize }}</th>
-						<th>{{ Lang['clienti']|capitalize }}</th>									
+						<th>{{ Lang['voci']|capitalize }}</th>									
 						<th></th>						
 					</tr>
 				</thead>

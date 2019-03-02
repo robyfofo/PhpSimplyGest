@@ -461,4 +461,15 @@ table.listData td.ordering a {margin-right:2px;}
 
 hr.divider-top-module {margin-top:10px;margin-bottom:10px;}
 
+@media(max-width:768px) {
+    .actionsform {
+       margin-bottom: 5px;
+    }
+    
+    .input-group {
+    	padding-left: 15px;
+    	padding-right: 15px;
+    	}
+}
+
 
