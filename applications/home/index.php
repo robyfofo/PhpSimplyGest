@@ -327,9 +327,11 @@ for ($x=1;$x<=12;$x++) {
 	$table = DB_TABLE_PREFIX."invoices_purchases AS i";
 	$fields = array("i.id,i.dateins,(SELECT SUM(price_total) FROM ".DB_TABLE_PREFIX."invoices_purchases_articles AS a WHERE i.id = a.id_invoice) AS total");
 	$fieldsVals = array($dini,$dend);
-	$where = "i.dateins >= ? AND i.dateins <= ?";	
+	$where = "i.dateins BETWEEN ? AND ?";	
+		
 	Sql::initQuery($table,$fields,$fieldsVals,$where,'','','',false);
 	$obj = Sql::getRecords();
+	Core::setDebugMode(0);
 	if (is_array($obj) && count($obj) > 0) {
 		foreach ($obj AS $value) {
 			if (isset($value->total) && $value->total > 0)  $acquisti += $value->total;			
@@ -340,7 +342,7 @@ for ($x=1;$x<=12;$x++) {
 	$table = DB_TABLE_PREFIX."invoices_sales AS i";
 	$fields = array("i.id,i.dateins,(SELECT SUM(a.price_total) + ((SUM(a.price_total) * i.tax) / 100) + ((SUM(a.price_total) * i.rivalsa) / 100) FROM ".DB_TABLE_PREFIX."invoices_sales_articles AS a WHERE i.id = a.id_invoice) AS total");
 	$fieldsVals = array($dini,$dend);
-	$where = "i.dateins > ? AND i.dateins < ?";	
+	$where = "i.dateins BETWEEN ? AND ?";	
 	Sql::initQuery($table,$fields,$fieldsVals,$where,'','','',false);
 	$obj = Sql::getRecords();
 	if (is_array($obj) && count($obj) > 0) {

@@ -7,11 +7,11 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Twig\\' => array($vendorDir . '/twig/twig/src'),
-<<<<<<< HEAD
-=======
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
-    'Symfony\\Polyfill\\Ctype\\' => array($vendorDir . '/symfony/polyfill-ctype'),
+    'Psr\\SimpleCache\\' => array($vendorDir . '/psr/simple-cache/src'),
+    'PhpOffice\\PhpSpreadsheet\\' => array($vendorDir . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet'),
+    'Matrix\\' => array($vendorDir . '/markbaker/matrix/classes/src'),
     'Html2Text\\' => array($vendorDir . '/soundasleep/html2text/src'),
     'Egulias\\EmailValidator\\' => array($vendorDir . '/egulias/email-validator/EmailValidator'),
+    'Complex\\' => array($vendorDir . '/markbaker/complex/classes/src'),
 );

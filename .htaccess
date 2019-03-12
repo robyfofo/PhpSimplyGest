@@ -1,9 +1,5 @@
 RewriteEngine On
-<<<<<<< HEAD
 RewriteBase /phprojekt.altervista.org/phpsimplygest/
-=======
-RewriteBase /phprojekt.altervista.org/myprojects/
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
 
 # Don't compress images
 SetEnvIfNoCase Request_URI \

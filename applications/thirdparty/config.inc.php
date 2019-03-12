@@ -50,6 +50,8 @@ $App->params->fields['item']  = array(
 	'fax'=>array('label'=>$_lang['fax'],'searchTable'=>true,'required'=>false,'type'=>'varchar|20'),
 	'partita_iva'=>array('label'=>$_lang['partita IVA'],'searchTable'=>false,'required'=>false,'type'=>'varchar|50'),
 	'codice_fiscale'=>array('label'=>$_lang['codice fiscale'],'searchTable'=>false,'required'=>false,'type'=>'varchar|50'),
+	'pec'=>array('label'=>'PEC','searchTable'=>true,'required'=>false,'type'=>'varchar|255'),
+	'sid'=>array('label'=>'SID','searchTable'=>true,'required'=>false,'type'=>'varchar|50'),
 	'created'=>array('label'=>$_lang['creazione'],'searchTable'=>false,'required'=>false,'type'=>'datatime','defValue'=>$App->nowDateTime,'validate'=>'datatimeiso'),
 	'active'=>array('label'=>$_lang['attiva'],'required'=>false,'type'=>'int|1','defValue'=>0,'validate'=>'int')
 	);	

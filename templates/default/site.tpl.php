@@ -74,10 +74,6 @@
   			gtag('js', new Date());
   			gtag('config', 'UA-88049854-1');
 	</script>
-<<<<<<< HEAD
-
-=======
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
 
 	</head>
 

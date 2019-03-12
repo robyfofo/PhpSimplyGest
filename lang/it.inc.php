@@ -5,11 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
-<<<<<<< HEAD
- * language IT v.1.0.0. 19/02/2018
-=======
  * language IT v.1.0.0. 05/10/2018
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
 */
 
 $_lang['user'] = 'it';
@@ -31,7 +27,7 @@ $_lang['months'] = array('1' => 'gennaio','2' => 'febbraio','3' => 'marzo','4' =
 $_lang['days'] = array('0' => 'domenica','1' => 'lunedì','2' => 'martedì','3' => 'mercoledì','4' => 'giovedi','5' => 'venerdì','6' => 'sabato');
 $_lang['codice'] = "codice";
 $_lang['aiuto'] = "aiuto";
-<<<<<<< HEAD
+
 $_lang['cerca'] = "cerca";
 $_lang['invia'] = "invia";
 $_lang['aggiungi'] = "aggiungi";
@@ -51,7 +47,6 @@ $_lang['indietro'] = "indietro";
 $_lang['gestisci'] = "gestisci";
 $_lang['loggati'] = "login";
 
-=======
 $_lang['aiuto breve'] = "aiuto breve";
 $_lang['hash'] = "hash";
 $_lang['sezione'] = "sezione";
@@ -68,7 +63,7 @@ $_lang['prossimo'] = "prossimo";
 $_lang['prossima'] = "prossima";
 $_lang['prossimi'] = "prossimi";
 $_lang['prossime'] = "prossime";
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
+
 $_lang['nuovo'] = "nuovo";
 $_lang['nuova'] = "nuova";
 $_lang['nuovi'] = "nuovi";
@@ -82,16 +77,13 @@ $_lang['prima'] = "prima";
 $_lang['primi'] = "primi";
 $_lang['prime'] = "prime";
 
-<<<<<<< HEAD
 $_lang['selezionato'] = "selezionato";
 $_lang['complatato'] = "complatato";
 $_lang['predefinito'] = "predefinito";
 
 $_lang['dimenticati'] = "dimenticati";
 
-=======
 $_lang['tutto'] = "tutto";
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
 $_lang['tutti'] = "tutti";
 $_lang['tutte'] = "tutte";
 
@@ -193,10 +185,7 @@ $_lang['prezzo unitario'] = "prezzo unitario";
 $_lang['prezzo totale'] = "prezzo totale";
 
 $_lang['totale'] = "totale";
-<<<<<<< HEAD
 $_lang['totale articoli'] = "totale articoli";
-=======
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
 $_lang['totale onorario'] = "totale onorario";
 
 $_lang['importo'] = "importo";
@@ -210,9 +199,8 @@ $_lang['bonifico bancario'] = "bonifico bancario";
 $_lang['rivalsa'] = "rivalsa";
 $_lang['riepilogo iva'] = "riepilogo iva";
 
-<<<<<<< HEAD
 $_lang['modalità pagamento'] = "modalità pagamento";
-=======
+
 $_lang['destinatario'] = "destinatario";
 
 $_lang['lista %ITEMS%'] = "lista %ITEMS%";
@@ -228,7 +216,6 @@ $_lang['nuovo %ITEM%'] = "nuovo %ITEM%";
 $_lang['nuova %ITEM%'] = 'nuova %ITEM%';
 $_lang['nuovi %ITEMS%'] = 'nuova %ITEMS%';
 $_lang['nuove %ITEMS%'] = 'nuove %ITEMS%';
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
 
 $_lang['username'] = "username";
 $_lang['nome utente'] = "nome utente";
@@ -296,12 +283,9 @@ $_lang['resetta'] = "resetta";
 $_lang['loggati'] = "login";
 $_lang['chiudi'] = "chiudi";
 
-<<<<<<< HEAD
 $_lang['sezione'] = "sezione";
 $_lang['etichetta'] = "etichetta";
-=======
 $_lang['gestisci'] = "gestisci";
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
 
 $_lang['esporta in pdf'] = "esporta in pdf";
 
@@ -332,7 +316,7 @@ $_lang['mostra da %START% a %END% di %ITEM% elementi'] = 'mostra da %START% a %E
 $_lang['Mostra _MENU_ voci per pagina'] = "Mostra _MENU_ voci per pagina";
 $_lang['Mostra pagina _PAGE_ di _PAGES_'] = "Mostra pagina _PAGE_ di _PAGES_";
 $_lang['fitrati da _MAX_ voci totali'] = "fitrati da _MAX_ voci totali";
-<<<<<<< HEAD
+
 $_lang['precedente'] = "precedente";
 $_lang['prossima'] = "prossima";
 $_lang['prossimo'] = "prossimo";
@@ -345,14 +329,11 @@ $_lang['ultime'] = "ultime";
 $_lang['ultimo'] = "ultimo";
 $_lang['ultima'] = "ultima";
 
-
 $_lang['inserisci un titolo'] = "inserisci un titolo";
 $_lang['inserisci un costo_orario'] = "inserisci un costo_orario";
 $_lang['inserisci una percentuale di completamento'] = "inserisci una percentuale di completamento";
 $_lang['inserisci una data'] = "inserisci una data";
 $_lang['inserisci un alias'] = "inserisci un alias";
-=======
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
 
 $_lang['clicca per recuperare lo username'] = "clicca per recuperare lo username";
 $_lang['clicca per recuperare la password'] = "clicca per recuperare la password";
@@ -404,7 +385,6 @@ $_lang['Non è possibile aumentare ordinamento!'] = "Non è possibile aumentare 
 $_lang['Errore! Ci sono ancora figli associati!'] = "Errore! Ci sono ancora figli associati!";
 $_lang['Errore! Ci sono ancora voci associate!'] = "Errore! Ci sono ancora voci associate!";
 
-<<<<<<< HEAD
 $_lang['nousername core - intro'] = "Richiesta username. Inserisci email";
 $_lang['nousername core - testo'] = "Dopo aver compilato correttamente i campi il sistema cercherà lo username associato all'indirizzo email indicato e vi sarà inviato.<br>
 Se dopo la fine della procedura non riceverete l'email controllate che essa non sia nel filtro antispan (se presente) oppure contattare l'amministratore.";
@@ -461,10 +441,10 @@ $_lang['La data %FIELD% inserita non è valida!'] = "La data %FIELD% inserita no
 
 $_lang['La ora fine inserita non è valida!'] = "La ora fine inserita non è valida!";
 $_lang['La ora inizio inserita non è valida!'] = "La ora inizio inserita non è valida!";
-=======
+
 $_lang['Intervallo ti tempo si sovrappone ad un altro inserito nella stessa data!'] = "Intervallo ti tempo si sovrappone ad un altro inserito nella stessa data!";
 $_lang['Intervallo tra le due date errato!'] = "Intervallo tra le due date errato!";
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
+
 $_lang['La data inserita non è valida!'] = "La data inserita non è valida!";
 
 $_lang['Errore nel modulo %MODULE%!'] = "Errore nel modulo %MODULE%!";
@@ -474,11 +454,7 @@ $_lang['Access Error!'] = "Accesso Negato!";
 $_lang['testo errore generico'] = "Il server ha riscontrato qualcosa di inaspettato che non gli ha permesso di completare la richiesta. Ci scusiamo.";
 $_lang['testo errore accesso'] = "Non hai i permessi per accedere alla risorsa richiesta.";
 
-<<<<<<< HEAD
 /* sezione core nousername */
-=======
-
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
 $_lang['nousername core - title'] = "Richiesta nome utente";
 $_lang['nousername core - subtitle'] = "Richiedi il nome utente dimenticato";
 $_lang['nousername core - intro'] = "Richiesta nome utente. Inserisci il tuo indirizzo email";

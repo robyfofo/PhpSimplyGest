@@ -6,6 +6,10 @@ date_default_timezone_set('UTC');
 include_once '../src/Cezpdf.php';
 $pdf = new CezPDF('a4');
 
+if (strpos(PHP_OS, 'WIN') !== false) {
+    $pdf->tempPath = 'C:/temp';
+}
+
 $pdf->selectFont('Helvetica');
 
 // some general data used for table output
@@ -16,8 +20,7 @@ array('num' => 1, 'name' => 'gandalf', 'type' => 'wizard', 'typeFill' => array(0
 $cols = array('num' => 'No', 'type' => 'Type', 'name' => '<i>Alias</i>');
 
 $conf = array(
-'evenColumns' => 2,
-'evenColumnsMin' => 40,
+'evenColumns' => 1,
 'maxWidth' => 350,
 'shadeHeadingCol' => array(0.6, 0.6, 0.5),
 'shaded' => 1,

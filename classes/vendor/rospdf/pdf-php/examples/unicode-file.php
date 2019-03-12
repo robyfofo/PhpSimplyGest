@@ -20,6 +20,11 @@ class Creport extends Cezpdf
 }
 $pdf = new Creport('a4', 'portrait');
 
+// to test on windows xampp
+if (strpos(PHP_OS, 'WIN') !== false) {
+    $pdf->tempPath = 'C:/temp';
+}
+
 $start = microtime(true);
 
 $pdf->ezSetMargins(20, 20, 20, 20);

@@ -1,229 +1,36 @@
 [
     {
-<<<<<<< HEAD
-        "name": "soundasleep/html2text",
-        "version": "0.5.0",
-        "version_normalized": "0.5.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/soundasleep/html2text.git",
-            "reference": "cdb89f6ffa2c4cc78f8ed9ea6ee0594a9133ccad"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/soundasleep/html2text/zipball/cdb89f6ffa2c4cc78f8ed9ea6ee0594a9133ccad",
-            "reference": "cdb89f6ffa2c4cc78f8ed9ea6ee0594a9133ccad",
-            "shasum": ""
-        },
-        "require": {
-            "ext-dom": "*",
-            "ext-libxml": "*",
-            "php": ">=5.3.2"
-        },
-        "require-dev": {
-            "phpunit/phpunit": ">=4.0",
-            "soundasleep/component-tests": "dev-master"
-        },
-        "time": "2017-04-19T22:01:50+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Html2Text\\": "src"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "EPL-1.0"
-        ],
-        "authors": [
-            {
-                "name": "Jevon Wright",
-                "homepage": "https://jevon.org",
-                "role": "Developer"
-            }
-        ],
-        "description": "A PHP script to convert HTML into a plain text format",
-        "homepage": "https://github.com/soundasleep/html2text",
-=======
-        "name": "rospdf/pdf-php",
-        "version": "0.12.48",
-        "version_normalized": "0.12.48.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/rospdf/pdf-php.git",
-            "reference": "7af97bde9fdfc91fecfa571134c84ce3dc6f88ea"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/rospdf/pdf-php/zipball/7af97bde9fdfc91fecfa571134c84ce3dc6f88ea",
-            "reference": "7af97bde9fdfc91fecfa571134c84ce3dc6f88ea",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.4.0"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "3.7.38",
-            "squizlabs/php_codesniffer": "2.8.*"
-        },
-        "time": "2018-08-24T18:25:10+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-experimental": "0.13.x-dev",
-                "dev-master": "0.12.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "files": [
-                "src/Cpdf.php",
-                "src/Cezpdf.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Lars Olesen",
-                "email": "lars@intraface.dk",
-                "role": "Developer"
-            },
-            {
-                "name": "Ole Koeckemann",
-                "email": "ole.k@web.de",
-                "role": "Project Head / Developer"
-            },
-            {
-                "name": "Sune Jensen",
-                "email": "sj@sunet.dk",
-                "role": "Developer"
-            },
-            {
-                "name": "Nicola Asuni",
-                "email": "info@tecnick.com",
-                "role": "Developer"
-            },
-            {
-                "name": "Wayne Munro",
-                "email": "pdf@ros.co.nz",
-                "role": "Founder / Inactive"
-            }
-        ],
-        "description": "The R&OS Pdf class supports the creation of PDF documents without any adiditional modules or extensions.",
-        "homepage": "https://github.com/rospdf/pdf-php"
-    },
-    {
-        "name": "symfony/polyfill-ctype",
-        "version": "v1.9.0",
-        "version_normalized": "1.9.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/polyfill-ctype.git",
-            "reference": "e3d826245268269cd66f8326bd8bc066687b4a19"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/e3d826245268269cd66f8326bd8bc066687b4a19",
-            "reference": "e3d826245268269cd66f8326bd8bc066687b4a19",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "suggest": {
-            "ext-ctype": "For best performance"
-        },
-        "time": "2018-08-06T14:22:27+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.9-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Symfony\\Polyfill\\Ctype\\": ""
-            },
-            "files": [
-                "bootstrap.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Symfony Community",
-                "homepage": "https://symfony.com/contributors"
-            },
-            {
-                "name": "Gert de Pagter",
-                "email": "BackEndTea@gmail.com"
-            }
-        ],
-        "description": "Symfony polyfill for ctype functions",
-        "homepage": "https://symfony.com",
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
-        "keywords": [
-            "compatibility",
-            "ctype",
-            "polyfill",
-            "portable"
-        ]
-    },
-    {
-<<<<<<< HEAD
-        "name": "symfony/polyfill-ctype",
-        "version": "v1.10.0",
-        "version_normalized": "1.10.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/polyfill-ctype.git",
-            "reference": "e3d826245268269cd66f8326bd8bc066687b4a19"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/e3d826245268269cd66f8326bd8bc066687b4a19",
-            "reference": "e3d826245268269cd66f8326bd8bc066687b4a19",
-=======
         "name": "symfony/polyfill-mbstring",
-        "version": "v1.9.0",
-        "version_normalized": "1.9.0.0",
+        "version": "v1.5.0",
+        "version_normalized": "1.5.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/polyfill-mbstring.git",
-            "reference": "d0cd638f4634c16d8df4508e847f14e9e43168b8"
+            "reference": "7c8fae0ac1d216eb54349e6a8baa57d515fe8803"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/d0cd638f4634c16d8df4508e847f14e9e43168b8",
-            "reference": "d0cd638f4634c16d8df4508e847f14e9e43168b8",
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
+            "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/7c8fae0ac1d216eb54349e6a8baa57d515fe8803",
+            "reference": "7c8fae0ac1d216eb54349e6a8baa57d515fe8803",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
         },
         "suggest": {
-            "ext-ctype": "For best performance"
+            "ext-mbstring": "For best performance"
         },
-        "time": "2018-08-06T14:22:27+00:00",
+        "time": "2017-06-14T15:44:48+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.9-dev"
+                "dev-master": "1.5-dev"
             }
         },
-        "installation-source": "dist",
+        "installation-source": "source",
         "autoload": {
             "psr-4": {
-                "Symfony\\Polyfill\\Ctype\\": ""
+                "Symfony\\Polyfill\\Mbstring\\": ""
             },
             "files": [
                 "bootstrap.php"
@@ -235,83 +42,56 @@
         ],
         "authors": [
             {
-                "name": "Symfony Community",
-                "homepage": "https://symfony.com/contributors"
+                "name": "Nicolas Grekas",
+                "email": "p@tchwork.com"
             },
             {
-                "name": "Gert de Pagter",
-                "email": "BackEndTea@gmail.com"
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
             }
         ],
-        "description": "Symfony polyfill for ctype functions",
+        "description": "Symfony polyfill for the Mbstring extension",
         "homepage": "https://symfony.com",
         "keywords": [
             "compatibility",
-            "ctype",
+            "mbstring",
             "polyfill",
-            "portable"
+            "portable",
+            "shim"
         ]
     },
     {
         "name": "twig/twig",
-<<<<<<< HEAD
-        "version": "v1.37.1",
-        "version_normalized": "1.37.1.0",
+        "version": "v2.4.4",
+        "version_normalized": "2.4.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/twigphp/Twig.git",
-            "reference": "66be9366c76cbf23e82e7171d47cbfa54a057a62"
+            "reference": "eddb97148ad779f27e670e1e3f19fb323aedafeb"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/twigphp/Twig/zipball/66be9366c76cbf23e82e7171d47cbfa54a057a62",
-            "reference": "66be9366c76cbf23e82e7171d47cbfa54a057a62",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.4.0",
-            "symfony/polyfill-ctype": "^1.8"
-=======
-        "version": "v2.5.0",
-        "version_normalized": "2.5.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/twigphp/Twig.git",
-            "reference": "6a5f676b77a90823c2d4eaf76137b771adf31323"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/twigphp/Twig/zipball/6a5f676b77a90823c2d4eaf76137b771adf31323",
-            "reference": "6a5f676b77a90823c2d4eaf76137b771adf31323",
+            "url": "https://api.github.com/repos/twigphp/Twig/zipball/eddb97148ad779f27e670e1e3f19fb323aedafeb",
+            "reference": "eddb97148ad779f27e670e1e3f19fb323aedafeb",
             "shasum": ""
         },
         "require": {
             "php": "^7.0",
-            "symfony/polyfill-ctype": "^1.8",
             "symfony/polyfill-mbstring": "~1.0"
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
         },
         "require-dev": {
             "psr/container": "^1.0",
-            "symfony/debug": "^2.7",
-            "symfony/phpunit-bridge": "^3.4.19|^4.1.8"
+            "symfony/debug": "~2.7",
+            "symfony/phpunit-bridge": "~3.3@dev"
         },
-<<<<<<< HEAD
-        "time": "2019-01-14T14:59:29+00:00",
+        "time": "2017-09-27T18:10:31+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.37-dev"
-=======
-        "time": "2018-07-13T07:18:09+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.5-dev"
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
+                "dev-master": "2.4-dev"
             }
         },
-        "installation-source": "dist",
+        "installation-source": "source",
         "autoload": {
             "psr-0": {
                 "Twig_": "lib/"
@@ -338,18 +118,17 @@
             },
             {
                 "name": "Twig Team",
-                "homepage": "https://twig.symfony.com/contributors",
+                "homepage": "http://twig.sensiolabs.org/contributors",
                 "role": "Contributors"
             }
         ],
         "description": "Twig, the flexible, fast, and secure template language for PHP",
-        "homepage": "https://twig.symfony.com",
+        "homepage": "http://twig.sensiolabs.org",
         "keywords": [
             "templating"
         ]
     },
     {
-<<<<<<< HEAD
         "name": "doctrine/lexer",
         "version": "v1.0.1",
         "version_normalized": "1.0.1.0",
@@ -367,7 +146,161 @@
         "require": {
             "php": ">=5.3.2"
         },
-=======
+        "time": "2014-09-09T13:34:57+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0.x-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "Doctrine\\Common\\Lexer\\": "lib/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Roman Borschel",
+                "email": "roman@code-factory.org"
+            },
+            {
+                "name": "Guilherme Blanco",
+                "email": "guilhermeblanco@gmail.com"
+            },
+            {
+                "name": "Johannes Schmitt",
+                "email": "schmittjoh@gmail.com"
+            }
+        ],
+        "description": "Base library for a lexer that can be used in Top-Down, Recursive Descent Parsers.",
+        "homepage": "http://www.doctrine-project.org",
+        "keywords": [
+            "lexer",
+            "parser"
+        ]
+    },
+    {
+        "name": "egulias/email-validator",
+        "version": "2.1.2",
+        "version_normalized": "2.1.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/egulias/EmailValidator.git",
+            "reference": "bc31baa11ea2883e017f0a10d9722ef9d50eac1c"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/bc31baa11ea2883e017f0a10d9722ef9d50eac1c",
+            "reference": "bc31baa11ea2883e017f0a10d9722ef9d50eac1c",
+            "shasum": ""
+        },
+        "require": {
+            "doctrine/lexer": "^1.0.1",
+            "php": ">= 5.5"
+        },
+        "require-dev": {
+            "dominicsayers/isemail": "dev-master",
+            "phpunit/phpunit": "^4.8.0",
+            "satooshi/php-coveralls": "dev-master"
+        },
+        "suggest": {
+            "ext-intl": "PHP Internationalization Libraries are required to use the SpoofChecking validation"
+        },
+        "time": "2017-01-30T22:07:36+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.0.x-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "Egulias\\EmailValidator\\": "EmailValidator"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Eduardo Gulias Davis"
+            }
+        ],
+        "description": "A library for validating emails against several RFCs",
+        "homepage": "https://github.com/egulias/EmailValidator",
+        "keywords": [
+            "email",
+            "emailvalidation",
+            "emailvalidator",
+            "validation",
+            "validator"
+        ]
+    },
+    {
+        "name": "swiftmailer/swiftmailer",
+        "version": "v6.0.2",
+        "version_normalized": "6.0.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/swiftmailer/swiftmailer.git",
+            "reference": "412333372fb6c8ffb65496a2bbd7321af75733fc"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/412333372fb6c8ffb65496a2bbd7321af75733fc",
+            "reference": "412333372fb6c8ffb65496a2bbd7321af75733fc",
+            "shasum": ""
+        },
+        "require": {
+            "egulias/email-validator": "~2.0",
+            "php": ">=7.0.0"
+        },
+        "require-dev": {
+            "mockery/mockery": "~0.9.1",
+            "symfony/phpunit-bridge": "~3.3@dev"
+        },
+        "time": "2017-09-30T22:39:41+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "6.0-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "files": [
+                "lib/swift_required.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Chris Corbyn"
+            },
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            }
+        ],
+        "description": "Swiftmailer, free feature-rich PHP mailer",
+        "homepage": "http://swiftmailer.symfony.com",
+        "keywords": [
+            "email",
+            "mail",
+            "mailer"
+        ]
+    },
+    {
         "name": "soundasleep/html2text",
         "version": "0.5.0",
         "version_normalized": "0.5.0.0",
@@ -420,224 +353,27 @@
         ]
     },
     {
-        "name": "doctrine/lexer",
-        "version": "v1.0.1",
-        "version_normalized": "1.0.1.0",
+        "name": "rospdf/pdf-php",
+        "version": "0.12.41",
+        "version_normalized": "0.12.41.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/doctrine/lexer.git",
-            "reference": "83893c552fd2045dd78aef794c31e694c37c0b8c"
+            "url": "https://github.com/rospdf/pdf-php.git",
+            "reference": "641e95ec005169b85d81d412a167465851f017fc"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/doctrine/lexer/zipball/83893c552fd2045dd78aef794c31e694c37c0b8c",
-            "reference": "83893c552fd2045dd78aef794c31e694c37c0b8c",
+            "url": "https://api.github.com/repos/rospdf/pdf-php/zipball/641e95ec005169b85d81d412a167465851f017fc",
+            "reference": "641e95ec005169b85d81d412a167465851f017fc",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.2"
         },
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
-        "time": "2014-09-09T13:34:57+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.0.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Doctrine\\Common\\Lexer\\": "lib/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Roman Borschel",
-                "email": "roman@code-factory.org"
-            },
-            {
-                "name": "Guilherme Blanco",
-                "email": "guilhermeblanco@gmail.com"
-            },
-            {
-                "name": "Johannes Schmitt",
-                "email": "schmittjoh@gmail.com"
-            }
-        ],
-        "description": "Base library for a lexer that can be used in Top-Down, Recursive Descent Parsers.",
-        "homepage": "http://www.doctrine-project.org",
-        "keywords": [
-            "lexer",
-            "parser"
-        ]
-    },
-    {
-        "name": "egulias/email-validator",
-<<<<<<< HEAD
-        "version": "2.1.7",
-        "version_normalized": "2.1.7.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/egulias/EmailValidator.git",
-            "reference": "709f21f92707308cdf8f9bcfa1af4cb26586521e"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/709f21f92707308cdf8f9bcfa1af4cb26586521e",
-            "reference": "709f21f92707308cdf8f9bcfa1af4cb26586521e",
-=======
-        "version": "2.1.5",
-        "version_normalized": "2.1.5.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/egulias/EmailValidator.git",
-            "reference": "54859fabea8b3beecbb1a282888d5c990036b9e3"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/54859fabea8b3beecbb1a282888d5c990036b9e3",
-            "reference": "54859fabea8b3beecbb1a282888d5c990036b9e3",
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
-            "shasum": ""
-        },
-        "require": {
-            "doctrine/lexer": "^1.0.1",
-            "php": ">= 5.5"
-        },
         "require-dev": {
-            "dominicsayers/isemail": "dev-master",
-            "phpunit/phpunit": "^4.8.35||^5.7||^6.0",
-            "satooshi/php-coveralls": "^1.0.1"
-        },
-        "suggest": {
-            "ext-intl": "PHP Internationalization Libraries are required to use the SpoofChecking validation"
-        },
-<<<<<<< HEAD
-        "time": "2018-12-04T22:38:24+00:00",
-=======
-        "time": "2018-08-16T20:49:45+00:00",
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.0.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Egulias\\EmailValidator\\": "EmailValidator"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Eduardo Gulias Davis"
-            }
-        ],
-        "description": "A library for validating emails against several RFCs",
-        "homepage": "https://github.com/egulias/EmailValidator",
-        "keywords": [
-            "email",
-            "emailvalidation",
-            "emailvalidator",
-            "validation",
-            "validator"
-        ]
-    },
-    {
-        "name": "swiftmailer/swiftmailer",
-        "version": "v6.1.3",
-        "version_normalized": "6.1.3.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/swiftmailer/swiftmailer.git",
-            "reference": "8ddcb66ac10c392d3beb54829eef8ac1438595f4"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/8ddcb66ac10c392d3beb54829eef8ac1438595f4",
-            "reference": "8ddcb66ac10c392d3beb54829eef8ac1438595f4",
-            "shasum": ""
-        },
-        "require": {
-            "egulias/email-validator": "~2.0",
-            "php": ">=7.0.0"
-        },
-        "require-dev": {
-            "mockery/mockery": "~0.9.1",
-            "symfony/phpunit-bridge": "~3.3@dev"
-        },
-        "suggest": {
-            "ext-intl": "Needed to support internationalized email addresses",
-            "true/punycode": "Needed to support internationalized email addresses, if ext-intl is not installed"
-        },
-        "time": "2018-09-11T07:12:52+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "6.1-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "files": [
-                "lib/swift_required.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Chris Corbyn"
-            },
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            }
-        ],
-        "description": "Swiftmailer, free feature-rich PHP mailer",
-        "homepage": "https://swiftmailer.symfony.com",
-        "keywords": [
-            "email",
-            "mail",
-            "mailer"
-        ]
-<<<<<<< HEAD
-    },
-    {
-        "name": "rospdf/pdf-php",
-        "version": "0.12.49",
-        "version_normalized": "0.12.49.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/rospdf/pdf-php.git",
-            "reference": "db50fadfbc1588d6063f501285aae2e3837d0725"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/rospdf/pdf-php/zipball/db50fadfbc1588d6063f501285aae2e3837d0725",
-            "reference": "db50fadfbc1588d6063f501285aae2e3837d0725",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.4.0"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "3.7.38",
             "squizlabs/php_codesniffer": "2.8.*"
         },
-        "time": "2018-12-08T10:28:04+00:00",
+        "time": "2017-09-14T07:51:31+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -685,7 +421,320 @@
         ],
         "description": "The R&OS Pdf class supports the creation of PDF documents without any adiditional modules or extensions.",
         "homepage": "https://github.com/rospdf/pdf-php"
-=======
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
+    },
+    {
+        "name": "markbaker/matrix",
+        "version": "1.1.4",
+        "version_normalized": "1.1.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/MarkBaker/PHPMatrix.git",
+            "reference": "6ea97472b5baf12119b4f31f802835b820dd6d64"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/MarkBaker/PHPMatrix/zipball/6ea97472b5baf12119b4f31f802835b820dd6d64",
+            "reference": "6ea97472b5baf12119b4f31f802835b820dd6d64",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.6.0|^7.0.0"
+        },
+        "require-dev": {
+            "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3",
+            "phpcompatibility/php-compatibility": "^8.0",
+            "phpdocumentor/phpdocumentor": "2.*",
+            "phploc/phploc": "2.*",
+            "phpmd/phpmd": "2.*",
+            "phpunit/phpunit": "^4.8.35|^5.4.0",
+            "sebastian/phpcpd": "2.*",
+            "squizlabs/php_codesniffer": "^3.3.0"
+        },
+        "time": "2018-11-04T22:12:12+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Matrix\\": "classes/src/"
+            },
+            "files": [
+                "classes/src/functions/adjoint.php",
+                "classes/src/functions/antidiagonal.php",
+                "classes/src/functions/cofactors.php",
+                "classes/src/functions/determinant.php",
+                "classes/src/functions/diagonal.php",
+                "classes/src/functions/identity.php",
+                "classes/src/functions/inverse.php",
+                "classes/src/functions/minors.php",
+                "classes/src/functions/trace.php",
+                "classes/src/functions/transpose.php",
+                "classes/src/operations/add.php",
+                "classes/src/operations/directsum.php",
+                "classes/src/operations/subtract.php",
+                "classes/src/operations/multiply.php",
+                "classes/src/operations/divideby.php",
+                "classes/src/operations/divideinto.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Mark Baker",
+                "email": "mark@lange.demon.co.uk"
+            }
+        ],
+        "description": "PHP Class for working with matrices",
+        "homepage": "https://github.com/MarkBaker/PHPMatrix",
+        "keywords": [
+            "mathematics",
+            "matrix",
+            "vector"
+        ]
+    },
+    {
+        "name": "markbaker/complex",
+        "version": "1.4.7",
+        "version_normalized": "1.4.7.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/MarkBaker/PHPComplex.git",
+            "reference": "1ea674a8308baf547cbcbd30c5fcd6d301b7c000"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/MarkBaker/PHPComplex/zipball/1ea674a8308baf547cbcbd30c5fcd6d301b7c000",
+            "reference": "1ea674a8308baf547cbcbd30c5fcd6d301b7c000",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.6.0|^7.0.0"
+        },
+        "require-dev": {
+            "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3",
+            "phpcompatibility/php-compatibility": "^8.0",
+            "phpdocumentor/phpdocumentor": "2.*",
+            "phploc/phploc": "2.*",
+            "phpmd/phpmd": "2.*",
+            "phpunit/phpunit": "^4.8.35|^5.4.0",
+            "sebastian/phpcpd": "2.*",
+            "squizlabs/php_codesniffer": "^3.3.0"
+        },
+        "time": "2018-10-13T23:28:42+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Complex\\": "classes/src/"
+            },
+            "files": [
+                "classes/src/functions/abs.php",
+                "classes/src/functions/acos.php",
+                "classes/src/functions/acosh.php",
+                "classes/src/functions/acot.php",
+                "classes/src/functions/acoth.php",
+                "classes/src/functions/acsc.php",
+                "classes/src/functions/acsch.php",
+                "classes/src/functions/argument.php",
+                "classes/src/functions/asec.php",
+                "classes/src/functions/asech.php",
+                "classes/src/functions/asin.php",
+                "classes/src/functions/asinh.php",
+                "classes/src/functions/atan.php",
+                "classes/src/functions/atanh.php",
+                "classes/src/functions/conjugate.php",
+                "classes/src/functions/cos.php",
+                "classes/src/functions/cosh.php",
+                "classes/src/functions/cot.php",
+                "classes/src/functions/coth.php",
+                "classes/src/functions/csc.php",
+                "classes/src/functions/csch.php",
+                "classes/src/functions/exp.php",
+                "classes/src/functions/inverse.php",
+                "classes/src/functions/ln.php",
+                "classes/src/functions/log2.php",
+                "classes/src/functions/log10.php",
+                "classes/src/functions/negative.php",
+                "classes/src/functions/pow.php",
+                "classes/src/functions/rho.php",
+                "classes/src/functions/sec.php",
+                "classes/src/functions/sech.php",
+                "classes/src/functions/sin.php",
+                "classes/src/functions/sinh.php",
+                "classes/src/functions/sqrt.php",
+                "classes/src/functions/tan.php",
+                "classes/src/functions/tanh.php",
+                "classes/src/functions/theta.php",
+                "classes/src/operations/add.php",
+                "classes/src/operations/subtract.php",
+                "classes/src/operations/multiply.php",
+                "classes/src/operations/divideby.php",
+                "classes/src/operations/divideinto.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Mark Baker",
+                "email": "mark@lange.demon.co.uk"
+            }
+        ],
+        "description": "PHP Class for working with complex numbers",
+        "homepage": "https://github.com/MarkBaker/PHPComplex",
+        "keywords": [
+            "complex",
+            "mathematics"
+        ]
+    },
+    {
+        "name": "psr/simple-cache",
+        "version": "1.0.1",
+        "version_normalized": "1.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/php-fig/simple-cache.git",
+            "reference": "408d5eafb83c57f6365a3ca330ff23aa4a5fa39b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/php-fig/simple-cache/zipball/408d5eafb83c57f6365a3ca330ff23aa4a5fa39b",
+            "reference": "408d5eafb83c57f6365a3ca330ff23aa4a5fa39b",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "time": "2017-10-23T01:57:42+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Psr\\SimpleCache\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "PHP-FIG",
+                "homepage": "http://www.php-fig.org/"
+            }
+        ],
+        "description": "Common interfaces for simple caching",
+        "keywords": [
+            "cache",
+            "caching",
+            "psr",
+            "psr-16",
+            "simple-cache"
+        ]
+    },
+    {
+        "name": "phpoffice/phpspreadsheet",
+        "version": "1.6.0",
+        "version_normalized": "1.6.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
+            "reference": "bf00f0cc5f55c354018f9a9ef15e6e3e1a229051"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/bf00f0cc5f55c354018f9a9ef15e6e3e1a229051",
+            "reference": "bf00f0cc5f55c354018f9a9ef15e6e3e1a229051",
+            "shasum": ""
+        },
+        "require": {
+            "ext-ctype": "*",
+            "ext-dom": "*",
+            "ext-fileinfo": "*",
+            "ext-gd": "*",
+            "ext-iconv": "*",
+            "ext-libxml": "*",
+            "ext-mbstring": "*",
+            "ext-simplexml": "*",
+            "ext-xml": "*",
+            "ext-xmlreader": "*",
+            "ext-xmlwriter": "*",
+            "ext-zip": "*",
+            "ext-zlib": "*",
+            "markbaker/complex": "^1.4",
+            "markbaker/matrix": "^1.1",
+            "php": "^5.6|^7.0",
+            "psr/simple-cache": "^1.0"
+        },
+        "require-dev": {
+            "doctrine/instantiator": "^1.0.0",
+            "dompdf/dompdf": "^0.8.0",
+            "friendsofphp/php-cs-fixer": "@stable",
+            "jpgraph/jpgraph": "^4.0",
+            "mpdf/mpdf": "^7.0.0",
+            "phpcompatibility/php-compatibility": "^8.0",
+            "phpunit/phpunit": "^5.7",
+            "squizlabs/php_codesniffer": "^3.3",
+            "tecnickcom/tcpdf": "^6.2"
+        },
+        "suggest": {
+            "dompdf/dompdf": "Option for rendering PDF with PDF Writer",
+            "jpgraph/jpgraph": "Option for rendering charts, or including charts with PDF or HTML Writers",
+            "mpdf/mpdf": "Option for rendering PDF with PDF Writer",
+            "tecnickcom/tcpdf": "Option for rendering PDF with PDF Writer"
+        },
+        "time": "2019-01-02T04:42:54+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "PhpOffice\\PhpSpreadsheet\\": "src/PhpSpreadsheet"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "LGPL-2.1-or-later"
+        ],
+        "authors": [
+            {
+                "name": "Erik Tilt"
+            },
+            {
+                "name": "Adrien Crivelli"
+            },
+            {
+                "name": "Maarten Balliauw",
+                "homepage": "https://blog.maartenballiauw.be"
+            },
+            {
+                "name": "Mark Baker",
+                "homepage": "https://markbakeruk.net"
+            },
+            {
+                "name": "Franck Lefevre",
+                "homepage": "https://rootslabs.net"
+            }
+        ],
+        "description": "PHPSpreadsheet - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
+        "homepage": "https://github.com/PHPOffice/PhpSpreadsheet",
+        "keywords": [
+            "OpenXML",
+            "excel",
+            "gnumeric",
+            "ods",
+            "php",
+            "spreadsheet",
+            "xls",
+            "xlsx"
+        ]
     }
 ]

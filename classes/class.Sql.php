@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * classes/class.Sql.php v.1.0.0. 11/08/2018
+ * classes/class.Sql.php v.1.1.0. 18/02/2019
 */
 
 class Sql extends Core {
@@ -475,7 +475,7 @@ class Sql extends Core {
 			if (self::$debugMode == 1) echo $pe->getMessage();
 			self::$resultOp->message .= "Errore lettura max field";
 			self::$resultOp->error = 1;
-			}		
+			}
 		}
 	
 	public static function getMaxValueOfField($table,$field,$clause='') {
@@ -497,9 +497,12 @@ class Sql extends Core {
 			}	
 		}	
 	
-	public static function countRecordQry($table,$keyRif,$clauseRif,$valueRif) {
+	public static function countRecordQry($table,$keyRif,$clauseRif,$valueRif,$opts=array()) {
+		$optsDef = array();	
+		$opts = array_merge($optsDef,$opts);
 		$qry = "SELECT COUNT(".$keyRif.") FROM ".$table;
-		if ($clauseRif != '') $qry .= " WHERE ".$clauseRif;			
+		if ($clauseRif != '') $qry .= " WHERE ".$clauseRif;	
+		if (isset($opts['groupby']) && $opts['groupby'] != '') $qry .= ' GROUP BY '.$opts['groupby'];
 		if (self::$debugMode == 1) echo '<br>'.$qry;
 		try{
 			$dbName = self::$dbName;
@@ -855,7 +858,7 @@ class Sql extends Core {
 		}
 		
 	public static function setOptions($value){
-		self::$opts = $value;
+		self::$opts = $value;	
 		}
 
 	public static function setResultPaged($value){

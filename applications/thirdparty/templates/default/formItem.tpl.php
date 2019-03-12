@@ -102,12 +102,6 @@
 								<input type="text" name="fax" class="form-control" id="faxID" placeholder="{{ Lang['inserisci un %ITEM%']|replace({'%ITEM%': Lang['numero di fax']})|capitalize }}"  value="{{ App.item.fax|e('html') }}">
 					    	</div>
 						</div>
-						<div class="form-group">
-							<label for="skypeID" class="col-md-2 control-label">{{ Lang['skype']|capitalize }}</label>
-							<div class="col-md-3">
-								<input type="text" name="skype" class="form-control" id="skypeID" placeholder="{{ Lang['inserisci un %ITEM%']|replace({'%ITEM%': Lang['nome utente skype']})|capitalize }}"  value="{{ App.item.skype|e('html') }}">
-					    	</div>
-						</div>
 					</fieldset>				
 				</div>
 	<!-- sezione contacts -->
@@ -124,6 +118,18 @@
 							<label for="codice_fiscaleID" class="col-md-2 control-label">{{ Lang['codice fiscale']|capitalize }}</label>
 							<div class="col-md-3">
 								<input type="text" name="codice_fiscale" class="form-control" id="codice_fiscaleID" placeholder="{{ Lang['inserisci un %ITEM%']|replace({'%ITEM%': Lang['codice fiscale']})|capitalize }}"  value="{{ App.item.codice_fiscale|e('html') }}">
+					    	</div>
+						</div>
+						<div class="form-group">
+							<label for="pecID" class="col-md-2 control-label">PEC</label>
+							<div class="col-md-3">
+								<input type="text" name="pec" class="form-control" id="pecID" placeholder="{{ Lang['inserisci una %ITEM%']|replace({'%ITEM%': 'PEC'})|capitalize }}"  value="{{ App.item.pec|e('html') }}">
+					    	</div>
+						</div>
+						<div class="form-group">
+							<label for="sidID" class="col-md-2 control-label">SID</label>
+							<div class="col-md-3">
+								<input type="text" name="sid" class="form-control" id="sidID" placeholder="{{ Lang['inserisci un %ITEM%']|replace({'%ITEM%': 'SID'})|capitalize }}"  value="{{ App.item.sid|e('html') }}">
 					    	</div>
 						</div>
 					</fieldset>				
