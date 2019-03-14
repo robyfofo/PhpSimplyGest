@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * app/index.php v.1.0.0. 06/11/2018
+ * app/index.php v.1.0.0. 12/03/2019
 */
 
 ini_set('display_errors',1);
@@ -80,6 +80,7 @@ $App->userLoggedData = new stdClass();
 if (isset($_MY_SESSION_VARS['idUser'])) {	
 	Sql::initQuery(DB_TABLE_PREFIX.'users',array('*'),array($_MY_SESSION_VARS['idUser']),'active = 1 AND id = ?','');
 	$App->userLoggedData = Sql::getRecord();
+	if (Core::$resultOp->error == 1) die('Errore db utenti!');
 	$App->userLoggedData->is_root = intval($App->userLoggedData->is_root);
 	}
 

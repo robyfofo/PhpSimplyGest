@@ -38,6 +38,24 @@ $App->params->fields['InvPur']  = array(
 	'datesca'=>array('label'=>$_lang['data scadenza'],'searchTable'=>true,'required'=>true,'type'=>'date','defValue'=>$App->nowDate,'validate'=>'datepicker'),
 	'number'=>array('label'=>$_lang['numero'],'searchTable'=>true,'required'=>true,'type'=>'varchar|20','defValue'=>''),
 	'type'=>array('label'=>$_lang['tipo'],'searchTable'=>false,'required'=>true,'type'=>'int|1','defValue'=>'0','validate'=>'int'),
+	
+	'ragione_sociale'=>array('label'=>$_lang['ragione sociale'],'searchTable'=>true,'required'=>true,'type'=>'varchar|255'),
+	'name'=>array('label'=>$_lang['nome'],'searchTable'=>true,'required'=>false,'type'=>'varchar|50'),
+	'surname'=>array('label'=>$_lang['cognome'],'searchTable'=>true,'required'=>false,'type'=>'varchar|50'),
+	'street'=>array('label'=>$_lang['via'],'searchTable'=>false,'required'=>false,'type'=>'varchar|100'),
+	'city'=>array('label'=>$_lang['città'],'searchTable'=>false,'required'=>false,'type'=>'varchar|100'),
+	'zip_code'=>array('label'=>$_lang['cap'],'searchTable'=>false,'required'=>false,'type'=>'varchar|10'),
+	'province'=>array('label'=>$_lang['provincia'],'searchTable'=>false,'required'=>false,'type'=>'varchar|100'),
+	'state'=>array('label'=>$_lang['stato'],'searchTable'=>false,'required'=>false,'type'=>'varchar|100'),
+	'telephone'=>array('label'=>$_lang['telefono'],'searchTable'=>false,'required'=>false,'type'=>'varchar|20'),
+	'email'=>array('label'=>$_lang['email'],'searchTable'=>true,'required'=>false,'type'=>'varchar|255'),
+	'mobile'=>array('label'=>$_lang['cellulare'],'searchTable'=>true,'required'=>false,'type'=>'varchar|20'),
+	'fax'=>array('label'=>$_lang['fax'],'searchTable'=>true,'required'=>false,'type'=>'varchar|20'),
+	'partita_iva'=>array('label'=>$_lang['partita IVA'],'searchTable'=>false,'required'=>false,'type'=>'varchar|50'),
+	'codice_fiscale'=>array('label'=>$_lang['codice fiscale'],'searchTable'=>false,'required'=>false,'type'=>'varchar|50'),
+	'pec'=>array('label'=>'PEC','searchTable'=>true,'required'=>false,'type'=>'varchar|255'),
+	'sid'=>array('label'=>'SID','searchTable'=>true,'required'=>false,'type'=>'varchar|50'),
+	
 	'created'=>array('label'=>$_lang['creazione'],'searchTable'=>false,'required'=>false,'type'=>'datatime','defValue'=>$App->nowDateTime,'validate'=>'datatimeiso'),
 	'active'=>array('label'=>$_lang['attiva'],'required'=>false,'type'=>'int|1','defValue'=>0,'validate'=>'int')
 	);
@@ -55,6 +73,23 @@ $App->params->fields['InvSal']  = array(
 	'type'=>array('label'=>$_lang['tipo'],'searchTable'=>false,'required'=>true,'type'=>'int|1','defValue'=>'0','validate'=>'int'),
 	'tax'=>array('label'=>'IVA','searchTable'=>false,'required'=>false,'type'=>'int|2','defValue'=>'0','validate'=>'int'),
 	'rivalsa'=>array('label'=>'Rivalsa','searchTable'=>false,'required'=>false,'type'=>'int|2','defValue'=>'0','validate'=>'int'),
+	
+	'ragione_sociale'=>array('label'=>$_lang['ragione sociale'],'searchTable'=>true,'required'=>true,'type'=>'varchar|255'),
+	'name'=>array('label'=>$_lang['nome'],'searchTable'=>true,'required'=>false,'type'=>'varchar|50'),
+	'surname'=>array('label'=>$_lang['cognome'],'searchTable'=>true,'required'=>false,'type'=>'varchar|50'),
+	'street'=>array('label'=>$_lang['via'],'searchTable'=>false,'required'=>false,'type'=>'varchar|100'),
+	'city'=>array('label'=>$_lang['città'],'searchTable'=>false,'required'=>false,'type'=>'varchar|100'),
+	'zip_code'=>array('label'=>$_lang['cap'],'searchTable'=>false,'required'=>false,'type'=>'varchar|10'),
+	'province'=>array('label'=>$_lang['provincia'],'searchTable'=>false,'required'=>false,'type'=>'varchar|100'),
+	'state'=>array('label'=>$_lang['stato'],'searchTable'=>false,'required'=>false,'type'=>'varchar|100'),
+	'telephone'=>array('label'=>$_lang['telefono'],'searchTable'=>false,'required'=>false,'type'=>'varchar|20'),
+	'email'=>array('label'=>$_lang['email'],'searchTable'=>true,'required'=>false,'type'=>'varchar|255'),
+	'fax'=>array('label'=>$_lang['fax'],'searchTable'=>true,'required'=>false,'type'=>'varchar|20'),
+	'partita_iva'=>array('label'=>$_lang['partita IVA'],'searchTable'=>false,'required'=>false,'type'=>'varchar|50'),
+	'codice_fiscale'=>array('label'=>$_lang['codice fiscale'],'searchTable'=>false,'required'=>false,'type'=>'varchar|50'),
+	'pec'=>array('label'=>'PEC','searchTable'=>true,'required'=>false,'type'=>'varchar|255'),
+	'sid'=>array('label'=>'SID','searchTable'=>true,'required'=>false,'type'=>'varchar|50'),
+	
 	'created'=>array('label'=>$_lang['creazione'],'searchTable'=>false,'required'=>false,'type'=>'datatime','defValue'=>$App->nowDateTime,'validate'=>'datatimeiso'),
 	'active'=>array('label'=>$_lang['attiva'],'required'=>false,'type'=>'int|1','defValue'=>0,'validate'=>'int')
 	);

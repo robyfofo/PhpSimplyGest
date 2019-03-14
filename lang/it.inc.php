@@ -19,6 +19,7 @@ $_lang['data time format string'] = "%DAY% %STRINGMONTH% %YEAR% %HH%:%II%";
 $_lang['data format string alt'] = "%STRINGDATADAY% %DAY% %STRINGMONTH% %YEAR%";
 $_lang['datepicker data time format'] = "d/m/Y H:i";
 $_lang['datepicker data format'] = "d/m/Y";
+$_lang['datepicker time format'] = "H:i";
 $_lang['charset'] = 'it-IT';
 $_lang['charset date'] = 'it_IT';
 
@@ -27,26 +28,6 @@ $_lang['months'] = array('1' => 'gennaio','2' => 'febbraio','3' => 'marzo','4' =
 $_lang['days'] = array('0' => 'domenica','1' => 'lunedì','2' => 'martedì','3' => 'mercoledì','4' => 'giovedi','5' => 'venerdì','6' => 'sabato');
 $_lang['codice'] = "codice";
 $_lang['aiuto'] = "aiuto";
-
-$_lang['cerca'] = "cerca";
-$_lang['invia'] = "invia";
-$_lang['aggiungi'] = "aggiungi";
-$_lang['applica'] = "applica";
-$_lang['cancella'] = "cancella";
-$_lang['cancella %ITEM%'] = "cancella %ITEM%";
-$_lang['modifica'] = "modifica";
-$_lang['modifica %ITEM%'] = "modifica %ITEM%";
-$_lang['edita'] = "edita";
-$_lang['edita %ITEM%'] = "edita %ITEM%";
-$_lang['attiva'] = "attiva";
-$_lang['attiva %ITEM%'] = "attiva %ITEM%";
-$_lang['disattiva'] = "disattiva";
-$_lang['disattiva %ITEM%'] = "disattiva %ITEM%";
-$_lang['indietro'] = "indietro";
-
-$_lang['gestisci'] = "gestisci";
-$_lang['loggati'] = "login";
-
 $_lang['aiuto breve'] = "aiuto breve";
 $_lang['hash'] = "hash";
 $_lang['sezione'] = "sezione";
@@ -63,7 +44,6 @@ $_lang['prossimo'] = "prossimo";
 $_lang['prossima'] = "prossima";
 $_lang['prossimi'] = "prossimi";
 $_lang['prossime'] = "prossime";
-
 $_lang['nuovo'] = "nuovo";
 $_lang['nuova'] = "nuova";
 $_lang['nuovi'] = "nuovi";
@@ -76,12 +56,6 @@ $_lang['primo'] = "primo";
 $_lang['prima'] = "prima";
 $_lang['primi'] = "primi";
 $_lang['prime'] = "prime";
-
-$_lang['selezionato'] = "selezionato";
-$_lang['complatato'] = "complatato";
-$_lang['predefinito'] = "predefinito";
-
-$_lang['dimenticati'] = "dimenticati";
 
 $_lang['tutto'] = "tutto";
 $_lang['tutti'] = "tutti";
@@ -185,7 +159,6 @@ $_lang['prezzo unitario'] = "prezzo unitario";
 $_lang['prezzo totale'] = "prezzo totale";
 
 $_lang['totale'] = "totale";
-$_lang['totale articoli'] = "totale articoli";
 $_lang['totale onorario'] = "totale onorario";
 
 $_lang['importo'] = "importo";
@@ -198,8 +171,6 @@ $_lang['bonifico bancario'] = "bonifico bancario";
 
 $_lang['rivalsa'] = "rivalsa";
 $_lang['riepilogo iva'] = "riepilogo iva";
-
-$_lang['modalità pagamento'] = "modalità pagamento";
 
 $_lang['destinatario'] = "destinatario";
 
@@ -283,8 +254,6 @@ $_lang['resetta'] = "resetta";
 $_lang['loggati'] = "login";
 $_lang['chiudi'] = "chiudi";
 
-$_lang['sezione'] = "sezione";
-$_lang['etichetta'] = "etichetta";
 $_lang['gestisci'] = "gestisci";
 
 $_lang['esporta in pdf'] = "esporta in pdf";
@@ -316,24 +285,6 @@ $_lang['mostra da %START% a %END% di %ITEM% elementi'] = 'mostra da %START% a %E
 $_lang['Mostra _MENU_ voci per pagina'] = "Mostra _MENU_ voci per pagina";
 $_lang['Mostra pagina _PAGE_ di _PAGES_'] = "Mostra pagina _PAGE_ di _PAGES_";
 $_lang['fitrati da _MAX_ voci totali'] = "fitrati da _MAX_ voci totali";
-
-$_lang['precedente'] = "precedente";
-$_lang['prossima'] = "prossima";
-$_lang['prossimo'] = "prossimo";
-$_lang['primi'] = "primi";
-$_lang['prime'] = "prime";
-$_lang['primo'] = "primo";
-$_lang['prima'] = "prima";
-$_lang['ultimi'] = "ultimi";
-$_lang['ultime'] = "ultime";
-$_lang['ultimo'] = "ultimo";
-$_lang['ultima'] = "ultima";
-
-$_lang['inserisci un titolo'] = "inserisci un titolo";
-$_lang['inserisci un costo_orario'] = "inserisci un costo_orario";
-$_lang['inserisci una percentuale di completamento'] = "inserisci una percentuale di completamento";
-$_lang['inserisci una data'] = "inserisci una data";
-$_lang['inserisci un alias'] = "inserisci un alias";
 
 $_lang['clicca per recuperare lo username'] = "clicca per recuperare lo username";
 $_lang['clicca per recuperare la password'] = "clicca per recuperare la password";
@@ -385,66 +336,8 @@ $_lang['Non è possibile aumentare ordinamento!'] = "Non è possibile aumentare 
 $_lang['Errore! Ci sono ancora figli associati!'] = "Errore! Ci sono ancora figli associati!";
 $_lang['Errore! Ci sono ancora voci associate!'] = "Errore! Ci sono ancora voci associate!";
 
-$_lang['nousername core - intro'] = "Richiesta username. Inserisci email";
-$_lang['nousername core - testo'] = "Dopo aver compilato correttamente i campi il sistema cercherà lo username associato all'indirizzo email indicato e vi sarà inviato.<br>
-Se dopo la fine della procedura non riceverete l'email controllate che essa non sia nel filtro antispan (se presente) oppure contattare l'amministratore.";
-$_lang['nopassword core - intro'] = "Richiesta password. Inserisci username";
-$_lang['nopassword core - testo'] = "Dopo aver compilato correttamente i campi il sistema genererà una password casuale che vi sarà inviata nella email indicata nel profilo.
-Se dopo la fine delle procedura non riceverete l'email controllate che essa non sia nel filtro antispan (se presente) oppure contattare l'amministratore.";
-
-/* MESSAGGI */
-/* messaggi conferma */
-$_lang['Tempo inserito!'] = "Tempo inserito!";
-$_lang['Tempo modificato!'] = "Tempo modificato!";
-
-/* messaggi invito */
-$_lang['inserisci un username'] = "inserisci un username";
-$_lang['inserisci un nome utente'] = "inserisci un nome utente";
-$_lang['inserisci una password'] = "inserisci una password";
-$_lang['inserisci una password di controllo'] = "inserisci una password di controllo";
-$_lang['inserisci una ragione sociale'] = "inserisci una ragione sociale";
-$_lang['inserisci un nome'] = "inserisci un nome";
-$_lang['inserisci un cognome'] = "inserisci un cognome";
-$_lang['inserisci un indirizzo'] = "inserisci un indirizzo";
-$_lang['inserisci un cap'] = "inserisci un C.A.P.";
-$_lang['inserisci una città'] = "inserisci una città";
-$_lang['inserisci una provincia'] = "inserisci una provincia";
-$_lang['inserisci uno stato'] = "inserisci uno stato";
-$_lang['inserisci un numero di telefono'] = "inserisci un numero di telefono";
-$_lang['inserisci un numero di cellulare'] = "inserisci un numero di cellulare";
-$_lang['inserisci un numero di fax'] = "inserisci un numero di fax";
-$_lang['inserisci un indirizzo email'] = "inserisci un indirizzo email";
-$_lang['inserisci un codice fiscale'] = "inserisci un codice fiscale";
-$_lang['inserisci una partita IVA'] = "inserisci una partita IVA";
-$_lang['inserisci un username skype'] = "inserisci un username skype";
-
-$_lang['inserisci una banca'] = "inserisci un indirizzo email";
-$_lang['inserisci un intestatario'] = "inserisci un intestatario";
-$_lang['inserisci un iban'] = "inserisci un IBAN";
-$_lang['inserisci un bic swift'] = "inserisci un BIC/SWIFT";
-
-$_lang['inserisci una iva'] = "inserisci una IVA";
-$_lang['inserisci una rivalsa'] = "inserisci una rivalsa";
-
-$_lang['La ora inizio deve essere prima della ora fine!'] = "La ora inizio deve essere prima della ora fine!";
-
-/* messaggi errore */
-$_lang['Progetto non trovato!'] = "Progetto non trovato!";
-$_lang['Timecard non trovata!'] = "Timecard non trovata!";
-
-$_lang['Devi selezionare un progetto!'] = "Devi selezionare un progetto!";
-$_lang['Devi selezionare una timecard!'] = "Devi selezionare una timecard!";
-
-$_lang['Devi inserire il campo %FIELD%!'] = "Devi inserire il campo %FIELD%!";
-$_lang['Il campo %FIELD% deve avere un valore superiore o uguale a %MIN% e inferiore o uguale a %MAX%!'] = "Il campo %FIELD% deve avere un valore superiore o uguale a %MIN% e inferiore o uguale a %MAX%!";
-$_lang['La data %FIELD% inserita non è valida!'] = "La data %FIELD% inserita non è valida!";
-
-$_lang['La ora fine inserita non è valida!'] = "La ora fine inserita non è valida!";
-$_lang['La ora inizio inserita non è valida!'] = "La ora inizio inserita non è valida!";
-
 $_lang['Intervallo ti tempo si sovrappone ad un altro inserito nella stessa data!'] = "Intervallo ti tempo si sovrappone ad un altro inserito nella stessa data!";
 $_lang['Intervallo tra le due date errato!'] = "Intervallo tra le due date errato!";
-
 $_lang['La data inserita non è valida!'] = "La data inserita non è valida!";
 
 $_lang['Errore nel modulo %MODULE%!'] = "Errore nel modulo %MODULE%!";
@@ -454,7 +347,7 @@ $_lang['Access Error!'] = "Accesso Negato!";
 $_lang['testo errore generico'] = "Il server ha riscontrato qualcosa di inaspettato che non gli ha permesso di completare la richiesta. Ci scusiamo.";
 $_lang['testo errore accesso'] = "Non hai i permessi per accedere alla risorsa richiesta.";
 
-/* sezione core nousername */
+
 $_lang['nousername core - title'] = "Richiesta nome utente";
 $_lang['nousername core - subtitle'] = "Richiedi il nome utente dimenticato";
 $_lang['nousername core - intro'] = "Richiesta nome utente. Inserisci il tuo indirizzo email";

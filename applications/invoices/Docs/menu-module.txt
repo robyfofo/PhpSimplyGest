@@ -1,0 +1,8 @@
+
+{
+	"name":"%NAME%","icon":"<i class=\"fa fa-wpforms fa-fw\"><\/i>","label":"%LABEL%","submenus":
+		[
+			{"action":"%NAME%","name":"listInvSal","icon":"<i class=\"fa fa-wpforms fa-fw\"><\/i>","label":"Fatture Vendite"},
+			{"action":"%NAME%","name":"listInvPur","icon":"<i class=\"fa fa-wpforms fa-fw\"><\/i>","label":"Fatture Acquisti"}
+		]
+}

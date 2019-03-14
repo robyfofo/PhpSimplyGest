@@ -5,11 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
-<<<<<<< HEAD
- * language EN v.1.0.0. 19/02/2018
-=======
  * language EN v.1.0.0. 05/10/2018
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
 */
 
 $_lang['user'] = 'en';
@@ -23,10 +19,7 @@ $_lang['data time format string'] = "%DAY%th, %STRINGMONTH% %YEAR% %HH%:%II%";
 $_lang['data format string alt'] = "%STRINGDATADAY% %DAY%th, %STRINGMONTH% %YEAR%";
 $_lang['datepicker data time format'] = "m/d/Y H:i";
 $_lang['datepicker data format'] = "m/d/Y";
-<<<<<<< HEAD
-=======
 $_lang['datepicker time format'] = "H:i";
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
 $_lang['charset'] = 'en-EN';
 $_lang['charset date'] = 'en_EN';
 
@@ -35,27 +28,6 @@ $_lang['months'] = array('1' => 'january','2' => 'february','3' => 'march','4' =
 $_lang['days'] = array('0' => 'sunday','1' => 'monday','2' => 'tuesday','3' => 'wednesday','4' => 'thursday','5' => 'friday','6' => 'saturday');
 $_lang['codice'] = "code";
 $_lang['aiuto'] = "help";
-<<<<<<< HEAD
-$_lang['cerca'] = "search";
-$_lang['invia'] = "send";
-$_lang['aggiungi'] = "add";
-$_lang['applica'] = "apply";
-$_lang['cancella'] = "delete";
-$_lang['cancella %ITEM%'] = "delete %ITEM%";
-$_lang['modifica'] = "modify";
-$_lang['modifica %ITEM%'] = "modify %ITEM%";
-$_lang['edita'] = "edit";
-$_lang['edita %ITEM%'] = "edit %ITEM%";
-$_lang['attiva'] = "active";
-$_lang['attiva %ITEM%'] = "active %ITEM%";
-$_lang['disattiva'] = "disactive";
-$_lang['disattiva %ITEM%'] = "disactive %ITEM%";
-$_lang['indietro'] = "back";
-
-$_lang['gestisci'] = "manage";
-$_lang['loggati'] = "login";
-
-=======
 $_lang['aiuto breve'] = "small help";
 $_lang['hash'] = "hash";
 $_lang['sezione'] = "section";
@@ -72,21 +44,11 @@ $_lang['prossimo'] = "next";
 $_lang['prossima'] = "next";
 $_lang['prossimi'] = "next";
 $_lang['prossime'] = "next";
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
 $_lang['nuovo'] = "new";
 $_lang['nuova'] = "new";
 $_lang['nuovi'] = "new";
 $_lang['nuove'] = "new";
 $_lang['ultimo'] = "last";
-<<<<<<< HEAD
-$_lang['ultime'] = "ultime";
-
-$_lang['selezionato'] = "selected";
-$_lang['complatato'] = "completed";
-$_lang['predefinito'] = "default";
-
-$_lang['dimenticati'] = "forgotten";
-=======
 $_lang['ultima'] = "last";
 $_lang['ultimi'] = "last";
 $_lang['ultime'] = "last";
@@ -94,7 +56,6 @@ $_lang['primo'] = "first";
 $_lang['prima'] = "first";
 $_lang['primi'] = "first";
 $_lang['prime'] = "first";
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
 
 $_lang['tutto'] = "all";
 $_lang['tutti'] = "all";
@@ -198,10 +159,6 @@ $_lang['prezzo unitario'] = "prezzo unitario";
 $_lang['prezzo totale'] = "prezzo totale";
 
 $_lang['totale'] = "total";
-<<<<<<< HEAD
-$_lang['totale articoli'] = "totale articoli";
-=======
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
 $_lang['totale onorario'] = "totale onorario";
 
 $_lang['importo'] = "importo";
@@ -215,9 +172,6 @@ $_lang['bonifico bancario'] = "bonifico bancario";
 $_lang['rivalsa'] = "rivalsa";
 $_lang['riepilogo iva'] = "riepilogo iva";
 
-<<<<<<< HEAD
-$_lang['modalità pagamento'] = "modalità pagamento";
-=======
 $_lang['destinatario'] = "destinatario";
 
 $_lang['lista %ITEMS%'] = "list %ITEMS%";
@@ -233,7 +187,6 @@ $_lang['nuovo %ITEM%'] = "new %ITEM%";
 $_lang['nuova %ITEM%'] = 'new %ITEM%';
 $_lang['nuovi %ITEMS%'] = 'new %ITEMS%';
 $_lang['nuove %ITEMS%'] = 'new %ITEMS%';
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
 
 $_lang['username'] = "username";
 $_lang['nome utente'] = "username";
@@ -301,12 +254,7 @@ $_lang['resetta'] = "reset";
 $_lang['loggati'] = "login";
 $_lang['chiudi'] = "close";
 
-<<<<<<< HEAD
-$_lang['sezione'] = "section";
-$_lang['etichetta'] = "label";
-=======
 $_lang['gestisci'] = "manage";
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
 
 $_lang['esporta in pdf'] = "export in pdf";
 
@@ -337,26 +285,6 @@ $_lang['mostra da %START% a %END% di %ITEM% elementi'] = 'view from %START% to %
 $_lang['Mostra _MENU_ voci per pagina'] = "View _MENU_ items for page";
 $_lang['Mostra pagina _PAGE_ di _PAGES_'] = "View pages _PAGE_ of _PAGES_";
 $_lang['fitrati da _MAX_ voci totali'] = "filtered from _MAX_ total items";
-<<<<<<< HEAD
-$_lang['precedente'] = "previous";
-$_lang['prossima'] = "next";
-$_lang['prossimo'] = "next";
-$_lang['primi'] = "first";
-$_lang['prime'] = "first";
-$_lang['primo'] = "first";
-$_lang['prima'] = "first";
-$_lang['ultimi'] = "last";
-$_lang['ultime'] = "last";
-$_lang['ultimo'] = "last";
-$_lang['ultima'] = "last";
-
-$_lang['inserisci un titolo'] = "enter a title";
-$_lang['inserisci un costo_orario'] = "enter a cost for hour";
-$_lang['inserisci una percentuale di completamento'] = "enter a percentage of completion";
-$_lang['inserisci una data'] = "enter a date";
-$_lang['inserisci un alias'] = "enter an alias";
-=======
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
 
 $_lang['clicca per recuperare lo username'] = "click to retrieve the username";
 $_lang['clicca per recuperare la password'] = "click to retrieve the password";
@@ -400,79 +328,8 @@ $_lang['Errore accesso db!'] = "Error accessing db!";
 $_lang['Accesso negato!'] = "Access denied!!";
 $_lang['I dati di accesso sono errati!'] = "I dati di accesso sono errati!";
 
-<<<<<<< HEAD
-$_lang['nessuna voce trovata!'] = "no items found!";
-$_lang['voce attivata'] = "item actived";
-$_lang['voce disattivata'] = "item not actived";
-$_lang['profilo core - profilo modificato'] = "Profile changed successfully! To see the modifications made must log off and log in again.";
-$_lang['Le due password non corrispondono!'] = "The two passwords do not match!";
-$_lang['Riempi il campo password!'] = "Fill out the password field!";
-$_lang['Password modificata correttamente! Sarà effettiva al prossimo login.'] = "Password successfully changed! It will take effect at the next login.";
-
-$_lang['nousername core - intro'] = "Request username. Enter email";
-$_lang['nousername core - testo'] = "After filling the fields correctly the system will search the username associated with the email address and you will be sent. <br>
-If after the end of the procedure you do not receive the email check that it is not in antispan filter (if present) or contact your administrator.";
-$_lang['nopassword core - intro'] = "Request password. Enter username";
-$_lang['nopassword core - testo'] = "After filling the fields correctly the system will generate a random password that will be sent to the email indicated in the profile.
-If after the end of the procedure you do not receive the email check that it is not in antispan filter (if present) or contact your administrator.";
-
-
-/* MESSAGGI */
-/* messaggi conferma */
-$_lang['Tempo inserito!'] = "Time added!";
-$_lang['Tempo modificato!'] = "Time modified!";
-
-/* messaggi invito */
-$_lang['inserisci un username'] = "enter a username";
-$_lang['inserisci un nome utente'] = "enter a username";
-$_lang['inserisci una password'] = "enter a password";
-$_lang['inserisci una password di controllo'] = "enter a password for check";
-$_lang['inserisci una ragione sociale'] = "enter a una ragione sociale";
-$_lang['inserisci un nome'] = "enter a name";
-$_lang['inserisci un cognome'] = "enter a surname";
-$_lang['inserisci un indirizzo'] = "enter an address";
-$_lang['inserisci un cap'] = "enter a zip code";
-$_lang['inserisci una città'] = "enter a city";
-$_lang['inserisci una provincia'] = "enter a country";
-$_lang['inserisci uno stato'] = "enter a state";
-$_lang['inserisci un numero di telefono'] = "enter a telephone number";
-$_lang['inserisci un numero di cellulare'] = "enter a mobile number";
-$_lang['inserisci un numero di fax'] = "enter a fax number";
-$_lang['inserisci un indirizzo email'] = "enter a email address";
-$_lang['inserisci un codice fiscale'] = "enter a codice fiscale";
-$_lang['inserisci una partita IVA'] = "enter a partita IVA";
-$_lang['inserisci un username skype'] = "enter a skype username";
-
-$_lang['inserisci una banca'] = "inserisci un indirizzo email";
-$_lang['inserisci un intestatario'] = "inserisci un intestatario";
-$_lang['inserisci un iban'] = "inserisci un IBAN";
-$_lang['inserisci un bic swift'] = "inserisci un BIC/SWIFT";
-
-$_lang['inserisci una iva'] = "inserisci una IVA";
-$_lang['inserisci una rivalsa'] = "inserisci una rivalsa";
-
-$_lang['La ora inizio deve essere prima della ora fine!'] = "The start time must be before the end time!";
-
-/* messaggi errore */
-$_lang['Progetto non trovato!'] = "Project not found!";
-$_lang['Timecard non trovata!'] = "Timecard not found!";
-
-$_lang['Devi selezionare un progetto!'] = "You must select one project!";
-$_lang['Devi selezionare una timecard!'] = "You must select one timecard!";
-
-$_lang['Devi inserire il campo %FIELD%!'] = "Devi inserire il campo %FIELD%!";
-$_lang['Il campo %FIELD% deve avere un valore superiore o uguale a %MIN% e inferiore o uguale a %MAX%!'] = "Il campo %FIELD% deve avere un valore superiore o uguale a %MIN% e inferiore o uguale a %MAX%!";
-$_lang['La data %FIELD% inserita non è valida!'] = "The date %FIELD% added is not valid!";
-
-$_lang['La ora fine inserita non è valida!'] = "The end time entered is not valid!";
-$_lang['La ora inizio inserita non è valida!'] = "The start time entered is not valid!";
-$_lang['La data inserita non è valida!'] = "The date entered is not valid!";
-$_lang['Intervallo tra le due date è errato!'] = "The interval between two time is wrong!";
-$_lang['Intervallo ti tempo si sovrappone ad un altro inserito nella stessa data!'] = "The time will range overlaps with another placed in the same day!";
-=======
 $_lang['username <strong>%USERNAME%</strong> risulta già presente nel nostro database'] = " the username <strong>%USERNAME%</strong> is already present in our database";
 $_lang['indirizzo <strong>%EMAIL%</strong> risulta già presente nel nostro database'] = "the address <strong>%EMAIL%</strong> is already present in our database";
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
 
 $_lang['Errore! Ci sono ancora figli associati!'] = "Errore! Ci sono ancora figli associati!";
 $_lang['Errore! Ci sono ancora voci associate!'] = "Errore! Ci sono ancora voci associate!";
@@ -481,16 +338,12 @@ $_lang['Intervallo ti tempo si sovrappone ad un altro inserito nella stessa data
 $_lang['Intervallo tra le due date errato!'] = "Intervallo tra le due date errato!";
 $_lang['La data inserita non è valida!'] = "La data inserita non è valida!";
 
-<<<<<<< HEAD
-/* sezione core nousername */
-=======
 $_lang['Errore!'] = "Errore!";
 $_lang['Internal Server Error!'] = "Errore Interno Server";
 $_lang['Access Error!'] = "Access Denied!";
 $_lang['testo errore generico'] = "The server encountered something unexpected that didn't allow it to complete the request. We apologize.";
 $_lang['testo errore accesso'] = "You do not have permission to access the requested resource.";
 
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
 $_lang['nousername core - title'] = "Request user name.";
 $_lang['nousername core - subtitle'] = "Request user name. Request your forgotten user name";
 $_lang['nousername core - intro'] = "Request user name. Enter email";

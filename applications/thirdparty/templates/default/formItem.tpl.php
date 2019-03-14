@@ -1,4 +1,4 @@
-<!-- thirdparty/formItem.tpl.php v.1.0.0. 26/07/2018 -->
+<!-- thirdparty/formItem.tpl.php v.1.0.0. 12/03/2019 -->
 <div class="row">
 	<div class="col-md-3 new">
  	</div>
@@ -97,7 +97,7 @@
 					    	</div>
 						</div>
 						<div class="form-group">
-							<label for="emailID" class="col-md-2 control-label">{{ Lang['fax']|capitalize }}</label>
+							<label for="faxID" class="col-md-2 control-label">{{ Lang['fax']|capitalize }}</label>
 							<div class="col-md-3">
 								<input type="text" name="fax" class="form-control" id="faxID" placeholder="{{ Lang['inserisci un %ITEM%']|replace({'%ITEM%': Lang['numero di fax']})|capitalize }}"  value="{{ App.item.fax|e('html') }}">
 					    	</div>

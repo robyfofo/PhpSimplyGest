@@ -67,7 +67,6 @@ $(document).ready(function() {
 		
 	});
 
-
 function alertDelete() {
 	$("#listDataID").on('click','.confirmdelete',function(e) {
 		e.preventDefault(e);
