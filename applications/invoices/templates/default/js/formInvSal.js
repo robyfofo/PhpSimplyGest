@@ -16,6 +16,43 @@ $(document).ready(function() {
 	
 	}); // end document
 	
+$('#id_customerID').on('change',function(event) {
+	var id = $('#id_customerID').val();
+	if (id > 0) {
+		$.ajax({
+			url: siteUrl+'thirdparty/getItemAjaxItem',
+			async: "true",
+			cache: "false",
+			type: "POST",
+			data: {'id':id},
+			dataType: 'json'
+		})
+		.done(function(data) {
+			$('#ragione_socialeID').val(data.ragione_sociale);
+			$('#nameID').val(data.name);
+			$('#surnameID').val(data.surname);
+			$('#streetID').val(data.street);
+			$('#cityID').val(data.city);
+			$('#zip_codeID').val(data.zip_code);
+			$('#provinceID').val(data.province);
+			$('#stateID').val(data.state);
+			$('#emailID').val(data.email);
+			$('#faxID').val(data.fax);
+			$('#partita_ivaID').val(data.partita_iva);
+			$('#codice_fiscaleID').val(data.codice_fiscale);
+			$('#pecID').val(data.pec);
+			$('#sidID').val(data.sid);
+
+			
+			
+		})		
+		.fail(function() {
+			alert("Ajax failed to fetch data article for module");
+		})	
+	}
+}); // end function
+
+	
 $('#art_price_unityID').on('keyup',function(event) {
 	refreshValuesFromPrice();
 	}); // end function

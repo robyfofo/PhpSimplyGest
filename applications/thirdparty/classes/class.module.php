@@ -25,6 +25,16 @@ class Module {
 		$this->messages = array();
 		}
 		
+	public function getUserdataAjax($id) {
+		$obj = new stdClass;	
+		if (intval($id) > 0) {
+			/* recupera i dati memorizzati */		
+			Sql::initQuery($this->table,array('*'),array($id),'id = ?');	
+			$obj = Sql::getRecord();			
+			}
+		return $obj;
+	}
+		
 	public function listMainData($fields,$page,$itemsForPage,$languages,$opt=array()) {
 		$optDef = array('lang'=>'it','type'=>0,'multilanguage'=>0,'tableItems'=>'','levelString'=>'<button type="button" class="btn btn-primary btn-xs"><i class="fa fa-chevron-right "></i></button>&nbsp;');	
 		$opt = array_merge($optDef,$opt);	

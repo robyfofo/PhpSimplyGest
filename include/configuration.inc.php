@@ -27,7 +27,7 @@ $globalSettings['server timezone'] = '';
 $database = 'remote';
 if ($servermode == 'locale') $database = 'locale';
 $globalSettings['database'] = array(
-	'locale'=>array('user'=>'root','password'=>'fofofofo','host'=>'localhost','name'=>'phprojekt.altervista','tableprefix'=>'mprj_'),
+	'locale'=>array('user'=>'root','password'=>'fofofofo','host'=>'localhost','name'=>'phprojekt.altervista_phpsimplygest','tableprefix'=>'mprj_'),
 	'remote'=>array('user'=>'phprojekt','password'=>'robyfofo','host'=>'localhost','name'=>'phprojekt.altervista','tableprefix'=>'mprj_')
 	);
 

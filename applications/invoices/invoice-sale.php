@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * invoices/invoice-sale.php v.1.0.0. 27/08/2018
+ * invoices/invoice-sale.php v.1.0.0. 14/03/2019
 */
 
 if (isset($_POST['itemsforpage']) && isset($_MY_SESSION_VARS[$App->sessionName]['ifp']) && $_MY_SESSION_VARS[$App->sessionName]['ifp'] != $_POST['itemsforpage']) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'ifp',$_POST['itemsforpage']);
@@ -218,7 +218,7 @@ switch(Core::$request->method) {
 		/* end limit */	
 
 		/* orders */
-		$orderFields = array('id','dateins','datesca','customer','number','note','total','total_tax','total_invoice');
+		$orderFields = array('id','dateins','datesca','ragione_sociale','number','note','total','total_tax','total_invoice');
 		$order = array();
 		/* default da sessione */
 		if (isset($_MY_SESSION_VARS[$App->sessionName]['order']) && $_MY_SESSION_VARS[$App->sessionName]['order'] != '') {
@@ -241,8 +241,7 @@ switch(Core::$request->method) {
 		$fieldsValue = array();
 		
 		/* aggiunge campi join */
-		
-		$App->params->fields['InvSal']['cus.ragione_sociale'] = array('searchTable'=>true,'type'=>'varchar');
+		//$App->params->fields['InvSal']['cus.ragione_sociale'] = array('searchTable'=>true,'type'=>'varchar');
 		//$App->params->fields['itap']['ite.total'] = array('searchTable'=>true,'type'=>'float');
 		
 		
@@ -263,10 +262,9 @@ switch(Core::$request->method) {
 		/* end search */
 
 		$table = $App->params->tables['InvSal']." AS ite";
-		$table .= " LEFT JOIN ".$App->params->tables['cust']." AS cus  ON (ite.id_customer = cus.id)";
+		//$table .= " LEFT JOIN ".$App->params->tables['cust']." AS cus  ON (ite.id_customer = cus.id)";
 		$table .= " LEFT JOIN ".$App->params->tables['ArtSal']." AS art  ON (ite.id = art.id_invoice)";		
 		$fields[] = 'ite.*';
-		$fields[] = "cus.ragione_sociale AS customer";
 		$fields[] = "SUM(art.price_total) AS total,SUM(art.price_tax) AS total_tax";
 		$fields[] = "SUM(art.price_total) + ((SUM(art.price_total) * ite.tax) / 100) + ((SUM(art.price_total) * ite.rivalsa) / 100) AS total_invoice";
 		
@@ -319,7 +317,7 @@ switch(Core::$request->method) {
 					'dateinslocal'=>DateFormat::convertDateFormats($value->dateins,'Y-m-d',$_lang['data format'],$App->nowDate),
 					'datescalocal'=>DateFormat::convertDateFormats($value->datesca,'Y-m-d',$_lang['data format'],$App->nowDate),
 					'pagata'=>$pagata,
-					'customer'=>$value->customer,
+					'customer'=>$value->customer_ragione_sociale,
 					'note'=>$value->note,
 					'total'=>$value->totalLabel,
 					'totaltaxes'=>$value->totalTaxesLabel,

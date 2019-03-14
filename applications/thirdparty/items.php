@@ -19,6 +19,14 @@ $App->types = Sql::getRecords();
 
 
 switch(Core::$request->method) {
+	case 'getItemAjaxItem';
+		if ($App->id > 0) {
+			$obj = $Module->getUserdataAjax($App->id);
+			 if (isset($obj->id)) echo json_encode($obj);			
+		}
+		die();
+	break;
+	
 	case 'activeItem':
 	case 'disactiveItem':
 		Sql::manageFieldActive(substr(Core::$request->method,0,-4),$App->params->tables['item'],$App->id,$opt=array('labelA'=>$_lang['voce'].' '.$_lang['attivato'],'labelD'=>$_lang['voce'].' '.$_lang['disattivato']));

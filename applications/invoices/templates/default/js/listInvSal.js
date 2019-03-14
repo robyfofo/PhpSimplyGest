@@ -1,4 +1,4 @@
-/* invoices/listInvSal.js v.1.0.0. 12/04/2018 */
+/* invoices/listInvSal.js v.1.0.0. 14/03/2019 */
 var requestSent = false;
 
 $(document).ready(function() {
@@ -10,29 +10,19 @@ $(document).ready(function() {
 		order: [
 			[ 1, "desc" ]
 			],
-		columns: [
-			{data: "id"},
-			{data: "dateinslocal" },
-			{data: "datescalocal" },
-			{data: "customer" },
-			{data: "number" },
-			{data: "note" },
-			{data: "total" },
-			{data: "totaltaxes" },
-			{data: "totalinvoice" },
-			{data: "articles" },
-			{data: "pdf" },
-			{data: "actions" }
-			],
-		columnDefs: [
-			{orderable: false, "targets": 9},
-			{orderable: false, "targets": 10},
-    		{orderable: false, "targets": 11},
-    		{className: "text-right", "targets": 6},
-    		{className: "text-right", "targets": 7},
-    		{className: "text-right", "targets": 8},
-    		{className: "text-right", "targets": 9},
-    		{className: "text-right", "targets": 10}
+		columns: [			
+			{"data":"id","targets":0},
+			{"data":"dateinslocal","targets":1},
+			{"data":"datescalocal","targets":2},
+			{"data":"pagata","targets":3,"orderable":false},
+			{"data":"customer","targets":4},
+			{"data":"number","targets":5},
+			{"data":"note","targets":6},
+			{"data":"total","targets":7,"className":"text-right"},
+			{"data":"totaltaxes","targets":8,"className":"text-right"},
+			{"data":"totalinvoice","targets":9,"className":"text-right"},
+			{"data":"pdf","targets":10,"orderable":false},
+			{"data":"actions","targets":11,"orderable":false,"className":"text-right"}
   			],
 		language: {
 			sSearch: lang['search'],
@@ -58,6 +48,7 @@ $(document).ready(function() {
 			dataSrc: function ( json ) {
 				//Make your callback here.
 				alertDelete();
+				alertSegnapagata();
 				return json.data;
             }       
 		 	}
@@ -67,8 +58,21 @@ $(document).ready(function() {
 		
 	});
 
+
 function alertDelete() {
 	$("#listDataID").on('click','.confirmdelete',function(e) {
+		e.preventDefault(e);
+		var location = $(this).attr('href');
+		bootbox.confirm(messages['Sei sicuro?'],function(confirmed) {
+			if(confirmed) {
+				window.location.replace(location);
+				}
+			});
+		});     
+	};
+	
+function alertSegnapagata() {
+	$("#listDataID").on('click','.segnapagata',function(e) {
 		e.preventDefault(e);
 		var location = $(this).attr('href');
 		bootbox.confirm(messages['Sei sicuro?'],function(confirmed) {
