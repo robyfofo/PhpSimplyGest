@@ -15,7 +15,6 @@ switch(Core::$request->method) {
 	case 'invoicesExpPdf':
 		$App->invoice = new stdClass;
 		$App->invoice_articoli = new stdClass;
-		$App->customer = new stdClass;
 		$id_invoice = intval(Core::$request->param);
 		
 		$headerpdf = array();
@@ -37,10 +36,7 @@ switch(Core::$request->method) {
 					$App->invoice_articoli = Sql::getRecords();
 					if (Core::$resultOp->error == 0) {
 						
-						/* preleva customer */
-						Sql::initQuery($App->params->tables['cust'],array('*'),array($App->invoice->id_customer),'id = ?');
-						$App->invoice_customer = Sql::getRecord();
-						if (Core::$resultOp->error == 0) {							
+										
 							/* settings */	
 							$App->company->gestione_iva = 0;
 							$App->company->gestione_rivalsa = 1;
@@ -121,14 +117,14 @@ switch(Core::$request->method) {
 								$pdf->ezSetDy(-20);
 								$tablecols = array('titolo'=>'','testo'=>'Cliente'); 
 								$tabledata = array();
-								$tabledata[0]['titolo'] = '<strong>'.$_lang['P.IVA'].'</strong> '.$App->invoice_customer->partita_iva;
+								$tabledata[0]['titolo'] = '<strong>'.$_lang['P.IVA'].'</strong> '.$App->invoice->customer_partita_iva;
 								$tabledata[0]['testo'] = ucfirst($_lang['destinatario']);
-								$tabledata[1]['titolo'] = '<strong>'.$_lang['C.F.'].'</strong> '.$App->invoice_customer->codice_fiscale;
-								$tabledata[1]['testo'] = '<strong>'.$App->invoice_customer->ragione_sociale.'</strong>';
-								$tabledata[2]['titolo'] = '<strong>'.strtoupper($_lang['email']).'</strong> '.$App->invoice_customer->email;
-								$tabledata[2]['testo'] = $App->invoice_customer->street;
+								$tabledata[1]['titolo'] = '<strong>'.$_lang['C.F.'].'</strong> '.$App->invoice->customer_codice_fiscale;
+								$tabledata[1]['testo'] = '<strong>'.$App->invoice->customer_ragione_sociale.'</strong>';
+								$tabledata[2]['titolo'] = '<strong>'.strtoupper($_lang['email']).'</strong> '.$App->invoice->customer_email;
+								$tabledata[2]['testo'] = $App->invoice->customer_street;
 								$tabledata[3]['titolo'] = '';
-								$tabledata[3]['testo'] = $App->invoice_customer->zip_code.' '.$App->invoice_customer->city.' ('.$App->invoice_customer->province.')';
+								$tabledata[3]['testo'] = $App->invoice->customer_zip_code.' '.$App->invoice->customer_city.' ('.$App->invoice->customer_province.')';
 								$col = $pdf->ezTable($tabledata,$tablecols,'',array('showHeadings'=>0,'gridlines'=>EZ_GRIDLINE_DEFAULT,'showLines'=>0,'fontSize'=>11,'width'=>500,'shaded'=>0,'rowGap' => 2, 'colGap' => 2, 'lineCol'=>array(0.7,0.7,0.7), 'cols'=> array( 'titolo'=>array( ), 'testo'=>array( 'showLines' => 0 ), ) ) );
 								/* FINE HEADER */
 								
@@ -224,7 +220,7 @@ switch(Core::$request->method) {
 								header("Content-type: $applicationtype");
 								header("Content-Disposition: attachment; filename=".basename($namefile).";");
 								$pdf->ezStream(array('compress'=>0,'download'=>1,'Content-Disposition'=>$namefile));	
-							}
+							
 						}			
 					}
 					

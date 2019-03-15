@@ -197,95 +197,95 @@
 						</div>
 						<hr>
 						<div class="form-group">
-							<label for="ragione_socialeID" class="col-md-2 control-label">{{ Lang['ragione sociale']|capitalize }}</label>
+							<label for="customer_ragione_socialeID" class="col-md-2 control-label">{{ Lang['ragione sociale']|capitalize }}</label>
 							<div class="col-md-7">
-								<input required="required" type="text" name="ragione_sociale" class="form-control" id="ragione_socialeID" placeholder="{{ Lang['inserisci una %ITEM%']|replace({'%ITEM%': Lang['ragione sociale']})|capitalize }}" value="{{ App.item.ragione_sociale|e('html') }}" oninvalid="this.setCustomValidity('{{ Lang['Devi inserire una %ITEM%!']|replace({'%ITEM%': Lang['ragione sociale']}) }}')" oninput="setCustomValidity('')">
+								<input required="required" type="text" name="customer_ragione_sociale" class="form-control" id="customer_ragione_socialeID" placeholder="{{ Lang['inserisci una %ITEM%']|replace({'%ITEM%': Lang['ragione sociale']})|capitalize }}" value="{{ App.item.customer_ragione_sociale|e('html') }}" oninvalid="this.setCustomValidity('{{ Lang['Devi inserire una %ITEM%!']|replace({'%ITEM%': Lang['ragione sociale']}) }}')" oninput="setCustomValidity('')">
 					    	</div>
 						</div>
 						<div class="form-group">
-							<label for="nameID" class="col-md-2 control-label">{{ Lang['nome']|capitalize }}</label>
+							<label for="customer_nameID" class="col-md-2 control-label">{{ Lang['nome']|capitalize }}</label>
 							<div class="col-md-7">
-								<input type="text" name="name" class="form-control" id="nameID" placeholder="{{ Lang['inserisci un %ITEM%']|replace({'%ITEM%': Lang['nome']})|capitalize }}" value="{{ App.item.name|e('html') }}">
+								<input type="text" name="customer_name" class="form-control" id="customer_nameID" placeholder="{{ Lang['inserisci un %ITEM%']|replace({'%ITEM%': Lang['nome']})|capitalize }}" value="{{ App.item.customer_name|e('html') }}">
 					    	</div>
 						</div>
 						<div class="form-group">
-							<label for="surnameID" class="col-md-2 control-label">{{ Lang['cognome']|capitalize }}</label>
+							<label for="customer_surnameID" class="col-md-2 control-label">{{ Lang['cognome']|capitalize }}</label>
 							<div class="col-md-7">
-								<input type="text" name="surname" class="form-control" id="surnameID" placeholder="{{ Lang['inserisci un %ITEM%']|replace({'%ITEM%': Lang['cognome']})|capitalize }}" value="{{ App.item.surname|e('html') }}">
+								<input type="text" name="customer_surname" class="form-control" id="customer_surnameID" placeholder="{{ Lang['inserisci un %ITEM%']|replace({'%ITEM%': Lang['cognome']})|capitalize }}" value="{{ App.item.customer_surname|e('html') }}">
 					    	</div>
 						</div>
 						<div class="form-group">
-							<label for="streetID" class="col-md-2 control-label">{{ Lang['via']|capitalize }}</label>
+							<label for="customer_streetID" class="col-md-2 control-label">{{ Lang['via']|capitalize }}</label>
 							<div class="col-md-7">
-								<input type="text" name="street" class="form-control" id="streetID" placeholder="{{ Lang['inserisci una %ITEM%']|replace({'%ITEM%': Lang['via']})|capitalize }}" value="{{ App.item.street|e('html') }}">
+								<input type="text" name="customer_street" class="form-control" id="customer_streetID" placeholder="{{ Lang['inserisci una %ITEM%']|replace({'%ITEM%': Lang['via']})|capitalize }}" value="{{ App.item.customer_street|e('html') }}">
 					    	</div>
 						</div>		
 						<div class="form-group">
-							<label for="cityID" class="col-md-2 control-label">{{ Lang['città']|capitalize }}</label>
+							<label for="customer_cityID" class="col-md-2 control-label">{{ Lang['città']|capitalize }}</label>
 							<div class="col-md-7">
-								<input type="text" name="city" class="form-control" id="cityID" placeholder="{{ Lang['inserisci una %ITEM%']|replace({'%ITEM%': Lang['città']})|capitalize }}" value="{{ App.item.city|e('html') }}">
+								<input type="text" name="customer_city" class="form-control" id="customer_cityID" placeholder="{{ Lang['inserisci una %ITEM%']|replace({'%ITEM%': Lang['città']})|capitalize }}" value="{{ App.item.customer_city|e('html') }}">
 					    	</div>
 						</div>	
 						<div class="form-group">
-							<label for="zip_codeID" class="col-md-2 control-label">{{ Lang['cap']|capitalize }}</label>
+							<label for="customer_zip_codeID" class="col-md-2 control-label">{{ Lang['cap']|capitalize }}</label>
 							<div class="col-md-2">
-								<input type="text" name="zip_code" class="form-control" id="zip_codeID" placeholder="{{ Lang['inserisci un %ITEM%']|replace({'%ITEM%': Lang['cap']})|capitalize }}" value="{{ App.item.zip_code|e('html') }}">
+								<input type="text" name="customer_zip_code" class="form-control" id="customer_zip_codeID" placeholder="{{ Lang['inserisci un %ITEM%']|replace({'%ITEM%': Lang['cap']})|capitalize }}" value="{{ App.item.customer_zip_code|e('html') }}">
 					    	</div>
 						</div>
 						<div class="form-group">
-							<label for="provinceID" class="col-md-2 control-label">{{ Lang['provincia']|capitalize }}</label>
+							<label for="customer_provinceID" class="col-md-2 control-label">{{ Lang['provincia']|capitalize }}</label>
 							<div class="col-md-7">
-								<input type="text" name="province" class="form-control" id="provinceID" placeholder="{{ Lang['inserisci una %ITEM%']|replace({'%ITEM%': Lang['provincia']})|capitalize }}" value="{{ App.item.province|e('html') }}">
+								<input type="text" name="customer_province" class="form-control" id="customer_provinceID" placeholder="{{ Lang['inserisci una %ITEM%']|replace({'%ITEM%': Lang['provincia']})|capitalize }}" value="{{ App.item.customer_province|e('html') }}">
 					    	</div>
 						</div>
 						<div class="form-group form-inline">
-							<label for="provinceID" class="col-md-2 text-right">{{ Lang['stato']|capitalize }}</label>
+							<label for="customer_stateID" class="col-md-2 text-right">{{ Lang['stato']|capitalize }}</label>
 							<div class="col-md-7">
-								<input type="text" name="state" class="form-control" id="stateID" placeholder="{{ Lang['inserisci un %ITEM%']|replace({'%ITEM%': Lang['stato']})|capitalize }}" value="{{ App.item.state|e('html') }}">
+								<input type="text" name="customer_state" class="form-control" id="customer_stateID" placeholder="{{ Lang['inserisci un %ITEM%']|replace({'%ITEM%': Lang['stato']})|capitalize }}" value="{{ App.item.customer_state|e('html') }}">
 					    	</div>
 						</div>
 						<div class="form-group">
-							<label for="emailID" class="col-md-2 control-label">{{ Lang['email']|capitalize }}</label>
+							<label for="ecustomer_mailID" class="col-md-2 control-label">{{ Lang['email']|capitalize }}</label>
 							<div class="col-md-3">
-								<input type="email" name="email" class="form-control" id="emailID" placeholder="{{ Lang['inserisci una %ITEM%']|replace({'%ITEM%': Lang['indirizzo email']})|capitalize }}"  value="{{ App.item.email|e('html') }}">
+								<input type="email" name="customer_email" class="form-control" id="customer_emailID" placeholder="{{ Lang['inserisci una %ITEM%']|replace({'%ITEM%': Lang['indirizzo email']})|capitalize }}"  value="{{ App.item.customer_email|e('html') }}">
 					    	</div>
 					    	<div class="col-md-6" id="emailMessageID"></div>
 						</div>
 						<div class="form-group">
-							<label for="telephoneID" class="col-md-2 control-label">{{ Lang['telefono']|capitalize }}</label>
+							<label for="customer_telephoneID" class="col-md-2 control-label">{{ Lang['telefono']|capitalize }}</label>
 							<div class="col-md-3">
-								<input type="text" name="telephone" class="form-control" id="telephoneID" placeholder="{{ Lang['inserisci un %ITEM%']|replace({'%ITEM%': Lang['numero di telefono']})|capitalize }}"  value="{{ App.item.telephone|e('html') }}">
+								<input type="text" name="customer_telephone" class="form-control" id="customer_telephoneID" placeholder="{{ Lang['inserisci un %ITEM%']|replace({'%ITEM%': Lang['numero di telefono']})|capitalize }}"  value="{{ App.item.customer_telephone|e('html') }}">
 					    	</div>
 						</div>
 						<div class="form-group">
-							<label for="faxID" class="col-md-2 control-label">{{ Lang['fax']|capitalize }}</label>
+							<label for="customer_faxID" class="col-md-2 control-label">{{ Lang['fax']|capitalize }}</label>
 							<div class="col-md-3">
-								<input type="text" name="fax" class="form-control" id="faxID" placeholder="{{ Lang['inserisci un %ITEM%']|replace({'%ITEM%': Lang['numero di fax']})|capitalize }}"  value="{{ App.item.fax|e('html') }}">
+								<input type="text" name="customer_fax" class="form-control" id="customer_faxID" placeholder="{{ Lang['inserisci un %ITEM%']|replace({'%ITEM%': Lang['numero di fax']})|capitalize }}"  value="{{ App.item.customer_fax|e('html') }}">
 					    	</div>
 						</div>
 				
 						<div class="form-group">
-							<label for="partita_ivaID" class="col-md-2 control-label">{{ Lang['partita IVA']|capitalize }}</label>
+							<label for="customer_partita_ivaID" class="col-md-2 control-label">{{ Lang['partita IVA']|capitalize }}</label>
 							<div class="col-md-5">
-								<input required="required" type="partita_iva" name="partita_iva" class="form-control" id="partita_ivaID" placeholder="{{ Lang['inserisci una %ITEM%']|replace({'%ITEM%': Lang['partita IVA']})|capitalize }}"  value="{{ App.item.partita_iva|e('html') }}">
+								<input required="required" type="customer_partita_iva" name="customer_partita_iva" class="form-control" id="customer_partita_ivaID" placeholder="{{ Lang['inserisci una %ITEM%']|replace({'%ITEM%': Lang['partita IVA']})|capitalize }}"  value="{{ App.item.customer_partita_iva|e('html') }}">
 					    	</div>
 						</div>
 						<div class="form-group">
-							<label for="codice_fiscaleID" class="col-md-2 control-label">{{ Lang['codice fiscale']|capitalize }}</label>
+							<label for="customer_codice_fiscaleID" class="col-md-2 control-label">{{ Lang['codice fiscale']|capitalize }}</label>
 							<div class="col-md-5">
-								<input required="required" type="text" name="codice_fiscale" class="form-control" id="codice_fiscaleID" placeholder="{{ Lang['inserisci un %ITEM%']|replace({'%ITEM%': Lang['codice fiscale']})|capitalize }}"  value="{{ App.item.codice_fiscale|e('html') }}">
+								<input required="required" type="text" name="customer_codice_fiscale" class="form-control" id="customer_codice_fiscaleID" placeholder="{{ Lang['inserisci un %ITEM%']|replace({'%ITEM%': Lang['codice fiscale']})|capitalize }}"  value="{{ App.item.customer_codice_fiscale|e('html') }}">
 					    	</div>
 						</div>
 						<div class="form-group">
-							<label for="pecID" class="col-md-2 control-label">PEC</label>
+							<label for="customer_pecID" class="col-md-2 control-label">PEC</label>
 							<div class="col-md-5">
-								<input required="required" type="text" name="pec" class="form-control" id="pecID" placeholder="{{ Lang['inserisci una %ITEM%']|replace({'%ITEM%': 'PEC'})|capitalize }}"  value="{{ App.item.pec|e('html') }}">
+								<input required="required" type="text" name="customer_pec" class="form-control" id="customer_pecID" placeholder="{{ Lang['inserisci una %ITEM%']|replace({'%ITEM%': 'PEC'})|capitalize }}"  value="{{ App.item.customer_pec|e('html') }}">
 					    	</div>
 						</div>
 						<div class="form-group">
-							<label for="sidID" class="col-md-2 control-label">SID</label>
+							<label for="customer_sidID" class="col-md-2 control-label">SID</label>
 							<div class="col-md-5">
-								<input required="required" type="text" name="sid" class="form-control" id="sidID" placeholder="{{ Lang['inserisci un %ITEM%']|replace({'%ITEM%': 'SID'})|capitalize }}"  value="{{ App.item.sid|e('html') }}">
+								<input required="required" type="text" name="customer_sid" class="form-control" id="customer_sidID" placeholder="{{ Lang['inserisci un %ITEM%']|replace({'%ITEM%': 'SID'})|capitalize }}"  value="{{ App.item.customer_sid|e('html') }}">
 					    	</div>
 						</div>
 					</fieldset>				

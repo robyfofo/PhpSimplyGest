@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * app/index.php v.1.0.0. 12/03/2019
+ * app/index.php v.1.0.0. 14/03/2019
 */
 
 ini_set('display_errors',1);

@@ -28,20 +28,20 @@ $('#id_customerID').on('change',function(event) {
 			dataType: 'json'
 		})
 		.done(function(data) {
-			$('#ragione_socialeID').val(data.ragione_sociale);
-			$('#nameID').val(data.name);
-			$('#surnameID').val(data.surname);
-			$('#streetID').val(data.street);
-			$('#cityID').val(data.city);
-			$('#zip_codeID').val(data.zip_code);
-			$('#provinceID').val(data.province);
-			$('#stateID').val(data.state);
-			$('#emailID').val(data.email);
-			$('#faxID').val(data.fax);
-			$('#partita_ivaID').val(data.partita_iva);
-			$('#codice_fiscaleID').val(data.codice_fiscale);
-			$('#pecID').val(data.pec);
-			$('#sidID').val(data.sid);
+			$('#customer_ragione_socialeID').val(data.ragione_sociale);
+			$('#customer_nameID').val(data.name);
+			$('#customer_surnameID').val(data.surname);
+			$('#customer_streetID').val(data.street);
+			$('#customer_cityID').val(data.city);
+			$('#customer_zip_codeID').val(data.zip_code);
+			$('#customer_provinceID').val(data.province);
+			$('#customer_stateID').val(data.state);
+			$('#customer_emailID').val(data.email);
+			$('#customer_faxID').val(data.fax);
+			$('#customer_partita_ivaID').val(data.partita_iva);
+			$('#customer_codice_fiscaleID').val(data.codice_fiscale);
+			$('#customer_pecID').val(data.pec);
+			$('#customer_sidID').val(data.sid);
 
 			
 			
