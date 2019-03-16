@@ -1,4 +1,4 @@
-/* invoices/listInvPur.js v.1.0.0. 12/04/2018 */
+/* invoices/listInvPur.js v.1.0.0. 14/03/2019 */
 
 var requestSent = false;
 
@@ -32,8 +32,7 @@ $(document).ready(function() {
 { "data":"customer","targets":3},
 { "data":"number","targets":4},
 { "data":"total","targets":5,"className":"text-right"},
-{ "data":"articles","targets":6,"orderable":false},
-{ "data":"actions","targets":7,"orderable":false,"className":"text-right"}
+{ "data":"actions","targets":6,"orderable":false,"className":"text-right"}
 
   			],
 		language: {

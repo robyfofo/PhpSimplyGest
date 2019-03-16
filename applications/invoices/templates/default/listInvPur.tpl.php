@@ -1,7 +1,7 @@
-<!-- invoices/listInvPur.tpl.php v.1.0.0. 12/04/2018 -->
+<!-- invoices/listInvPur.tpl.php v.1.0.0. 15/03/2019 -->
 <div class="row">
 	<div class="col-md-3 new">
- 		<a href="{{ URLSITE }}{{ CoreRequest.action }}/newInvPur" title="{{ Lang['inserisci nuova voce-p']|capitalize }}" class="btn btn-primary">{{ Lang['nuova voce-p']|capitalize }}</a>
+ 		<a href="{{ URLSITE }}{{ CoreRequest.action }}/newInvPur" title="{{ Lang['inserisci una nuova %ITEM%']|replace({'%ITEM%': Lang['voce-p']})|capitalize }}" class="btn btn-primary">{{ Lang['nuova %ITEM%']|replace({'%ITEM%': Lang['voce-p']})|capitalize }}</a>
 	</div>
 	<div class="col-md-7 help-small-list">
 		{% if App.params.help_small is defined %}{{ App.params.help_small }}{% endif %}
@@ -21,7 +21,6 @@
 					<th>{{ Lang['cliente']|capitalize }}</th>
 					<th>{{ Lang['numero']|capitalize }}</th>
 					<th>{{ Lang['totale']|capitalize }}</th>
-					<th>{{ Lang['articoli abbreviato']|capitalize }}</th>
 					<th></th>					
 				</tr>
 			</thead>

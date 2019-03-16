@@ -5,11 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
-<<<<<<< HEAD
- * third-party/config.inc.php v.1.0.0. 08/02/2018
-=======
- * third-party/config.inc.php v.1.0.0. 05/07/2018
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
+ * third-party/config.inc.php v.1.0.0. 15/03/2019
 */
 
 $App->params = new stdClass();

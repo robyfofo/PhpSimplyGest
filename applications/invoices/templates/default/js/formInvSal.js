@@ -1,4 +1,4 @@
-/* invoices/formInvSal.js v.1.0.0. 28/07/2018 */
+/* invoices/formInvSal.js v.1.0.0. v.1.0.0. 15/03/2019 */
 var requestSent = false;
 $(document).ready(function() {	
 	

@@ -56,7 +56,7 @@
 					</fieldset>					
 				</div>
 				
-<!-- sezione articles -->
+<!-- sezione movimenti -->
 				{% if App.id > 0 %}
 				<div class="tab-pane{% if App.tabActive == 2 %} active{% endif %}" id="articles-tab">
 
@@ -179,7 +179,7 @@
 				{% endif %}		
 <!-- /sezione movimenti -->
 
-<!-- /sezione articles -->	
+<!-- sezione anagrafica -->
 				<div class="tab-pane" id="anagrafica-tab">			
 					<fieldset>					
 						<div class="form-group">
@@ -290,7 +290,7 @@
 						</div>
 					</fieldset>				
 				</div>
-	<!-- sezione fiscale -->
+<!-- /sezione anagrafica -->
 
 <!-- sezione opzioni --> 
 				<div class="tab-pane" id="options-tab">

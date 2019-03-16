@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * invoices/invoice-purchase.php v.1.0.0. 11/09/2018
+ * invoices/invoice-purchase.php v.1.0.0. 14/03/2019
 */
 
 if (isset($_POST['itemsforpage']) && isset($_MY_SESSION_VARS[$App->sessionName]['ifp']) && $_MY_SESSION_VARS[$App->sessionName]['ifp'] != $_POST['itemsforpage']) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'ifp',$_POST['itemsforpage']);
@@ -158,6 +158,7 @@ switch(Core::$request->method) {
 					
 			} else {
 				Core::$resultOp->error = 1;
+
 				}			
 		list($id,$App->viewMethod,$App->pageSubTitle,Core::$resultOp->message) = Form::getUpdateRecordFromPostResults($App->id,Core::$resultOp,array('label done'=>$_lang['modifiche effettuate'],'label modified'=>preg_replace('/%ITEM%/',$_lang['voce'],$_lang['%ITEM% modificato']),'label modify'=>preg_replace('/%ITEM%/',$_lang['voce'],$_lang['modifica %ITEM%']),'label insert'=>preg_replace('/%ITEM%/',$_lang['voce'],$_lang['inserisci %ITEM%'])));			
 	break;
@@ -196,7 +197,7 @@ switch(Core::$request->method) {
 
 		/* orders */
 		$order = array();
-		$orderFields = array('id','dateins','datesca','customer','number','total');	
+		$orderFields = array('id','dateins','datesca','ragione_sociale','number','total');	
 		/* default da sessione */
 		if (isset($_MY_SESSION_VARS[$App->sessionName]['order']) && $_MY_SESSION_VARS[$App->sessionName]['order'] != '') {
 			$order[] = $_MY_SESSION_VARS[$App->sessionName]['order'];
@@ -235,15 +236,11 @@ switch(Core::$request->method) {
 		//print_r($fieldsValue);
 		/* end search */
 		
-		
-		//echo $where;
-		////print_r($fieldsValue);
-
 		$table = $App->params->tables['InvPur']." AS ite";
-		$table .= " LEFT JOIN ".$App->params->tables['cust']." AS cus  ON (ite.id_customer = cus.id)";
+		//$table .= " LEFT JOIN ".$App->params->tables['cust']." AS cus  ON (ite.id_customer = cus.id)";
 		$table .= " LEFT JOIN ".$App->params->tables['ArtPur']." AS art  ON (ite.id = art.id_invoice)";		
 		$fields[] = 'ite.*';
-		$fields[] = "cus.ragione_sociale AS customer";
+		//$fields[] = "cus.ragione_sociale AS customer";
 		$fields[] = "SUM(art.price_total) AS total";
 		$fields[] = "SUM(art.price_tax) AS total_tax";
 		
@@ -276,8 +273,8 @@ switch(Core::$request->method) {
 					'id'=>$value->id,
 					'number'=>$value->number,
 					'dateinslocal'=>$data->format($_lang['data format']),
-					'datescalocal'=>$data1->format($_lang['data format']).$scadenza,
-					'customer'=>$value->customer,
+					'datescalocal'=>$data1->format($_lang['data format']),
+					'customer'=>$value->customer_ragione_sociale,
 					'total'=>$value->totalLabel,
 					'actions'=>$actions
 					);
