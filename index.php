@@ -39,6 +39,10 @@ $Config = new Config();
 Config::setGlobalSettings($globalSettings);
 $Core = new Core();
 
+		use PhpOffice\PhpSpreadsheet\Spreadsheet as GlobalSpreadsheet;
+		use PhpOffice\PhpSpreadsheet\Writer\Xlsx as GlobalXlsx;
+
+
 //Sql::setDebugMode(1);
 
 /* avvio sessione */

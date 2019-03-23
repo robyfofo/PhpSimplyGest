@@ -42,6 +42,20 @@ if (!isset($_MY_SESSION_VARS[$App->sessionName]['id_project'])) $_MY_SESSION_VAR
 
 
 switch(substr(Core::$request->method,-4,4)) {
+	case 'Aite':
+		$App->css[] = '<link href="'.URL_SITE.'templates/'.$App->templateUser.'/bower_components/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">';
+		$App->css[] = '<link href="'.URL_SITE.'templates/'.$App->templateUser.'/plugins/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">';
+		$App->css[] = '<link href="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/css/aitems.css" rel="stylesheet">';
+		$App->jscript[] = '<script src="'.URL_SITE.'templates/'.$App->templateUser.'/bower_components/bootstrap-select/dist/js/bootstrap-select.min.js" type="text/javascript"></script>';
+		$App->jscript[] = '<script src="'.URL_SITE.'templates/'.$App->templateUser.'/plugins/moment/moment-with-locales.min.js" type="text/javascript"></script>';
+		$App->jscript[] = '<script src="'.URL_SITE.'templates/'.$App->templateUser.'/plugins/datetimepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>';	
+		$App->sessionName = $App->sessionName.'-pite';
+		if (!isset($_MY_SESSION_VARS[$App->sessionName]['page'])) $_MY_SESSION_VARS = $my_session->addSessionsModuleVars($_MY_SESSION_VARS,$App->sessionName,array('page'=>1,'ifp'=>'10','order'=>'datains DESC'));
+		$Module = new Module($App->sessionName,$App->params->tables['item']);
+		include_once(PATH.$App->pathApplications.Core::$request->action."/aitems.php");
+		$App->defaultJavascript = "defaultTimeIni = '".$App->timeIniTimecard."';";
+		$App->defaultJavascript .= "defaultTimeEnd = '".$App->timeEndTimecard."';";
+	break;
 	case 'Pite':
 		$App->css[] = '<link href="'.URL_SITE.'templates/'.$App->templateUser.'/bower_components/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">';
 		$App->css[] = '<link href="'.URL_SITE.'templates/'.$App->templateUser.'/plugins/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">';

@@ -1,7 +1,6 @@
-<!-- timecard/listPite.tpl.php v.1.0.0. 24/07/2018 -->
+<!-- timecard/listAite.tpl.php v.1.0.0. 02/03/2019 -->
 <div class="row">
 	<div class="col-md-3 new">
- 		<a href="{{ URLSITE }}{{ CoreRequest.action }}/newPite" title="{{ Lang['inserisci una nuova %ITEM%']|replace({'%ITEM%': Lang['voce']})|capitalize }}" class="btn btn-primary">{{ Lang['nuova %ITEM%']|replace({'%ITEM%': Lang['voce']})|capitalize }}</a>
 	</div>
 	<div class="col-md-7 help-small-list">
 		{% if App.params.help_small is defined %}{{ App.params.help_small }}{% endif %}
@@ -16,12 +15,16 @@
 			<thead>
 				<tr>
 					<th>ID</th>
-					<th>{{ Lang['titolo']|capitalize }}</th>
+					<th>ID {{ Lang['utente']|capitalize }}</th>
+					<th>{{ Lang['progetto']|capitalize }}</th>
 					<th>{{ Lang['contenuto']|capitalize }}</th>
+					<th>{{ Lang['data']|capitalize }}</th>
 					<th>{{ Lang['ora inizio']|capitalize }}</th>
 					<th>{{ Lang['ora fine']|capitalize }}</th>
 					<th>{{ Lang['ore lavoro']|capitalize }}</th>
-					<th></th>			
+					<th class="text-right">
+						<a class="export" href="#" title="{{ Lang['esporta in xls']|capitalize }}"><i class="fa fa-file-excel-o" aria-hidden="true"></i></a>
+					</th>		
 				</tr>
 			</thead>
 			<tbody>				

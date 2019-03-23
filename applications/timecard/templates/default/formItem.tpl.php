@@ -221,5 +221,9 @@
 				<button type="submit" name="submitForm" value="submit" class="btn btn-primary">{{ Lang['invia']|capitalize }}</button>			
 			</div>
 		</form>
+		
+		<div class="text-center" style="padding-top:50px;">
+			<a class="btn btn-primary" href="{{ URLSITE }}{{ CoreRequest.action }}/listAite" title="{{ Lang['archivio timecard']|capitalize }}">{{ Lang['archivio timecard']|capitalize }}</a>
+		</div>
 	</div>
 </div>

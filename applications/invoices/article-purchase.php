@@ -78,7 +78,7 @@ switch(Core::$request->method) {
 	break;
 	
 	case 'updateArtPur':
-		//print_r($_POST);
+		print_r($_POST);
 		if (isset($_POST)) {	
 			$_POST['id'] = $_POST['id_article'];	
 			$_POST['active'] = 1;

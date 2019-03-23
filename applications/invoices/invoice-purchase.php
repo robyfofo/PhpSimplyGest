@@ -105,7 +105,7 @@ switch(Core::$request->method) {
 				$_POST['quantity'] = $_POST['art_quantity'];
 				$_POST['tax'] = $_POST['art_tax'];
 				
-				if ($_POST['quantity'] > 0 && $_POST['price_unity'] > 0) {			
+				if ($_POST['quantity'] > 0 && isset($_POST['price_unity'])) {			
 					$_POST = $Module->calculateArt($_POST);	
 									
 					if (isset($_POST['artFormMode']) &&  $_POST['artFormMode'] == 'ins') {
@@ -215,7 +215,6 @@ switch(Core::$request->method) {
 
 		/* search */
 		/* aggiunge campi join */
-		$App->params->fields['InvPur']['cus.ragione_sociale'] = array('searchTable'=>true,'type'=>'varchar');
 		$where = '';
 		$and = '';
 		$fieldsValue = array();
@@ -234,7 +233,11 @@ switch(Core::$request->method) {
 				}
 			}
 		//print_r($fieldsValue);
+		///echo $where;
 		/* end search */
+		
+		
+		
 		
 		$table = $App->params->tables['InvPur']." AS ite";
 		//$table .= " LEFT JOIN ".$App->params->tables['cust']." AS cus  ON (ite.id_customer = cus.id)";

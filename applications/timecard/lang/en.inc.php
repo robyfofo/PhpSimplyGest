@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * Timecard language EN v.1.0.0. 24/07/2018
+ * Timecard language EN v.1.0.0. 04/03/2019
 */
 
 $_lang['pagetitle'] = "Custom timecard";
@@ -23,6 +23,8 @@ $_lang['inserisci una timecard predefinita'] = "insert a custom timecard";
 $_lang['gestisci le timecard predefinite'] = "manage custom timecard";
 $_lang['usa questo inizio'] = "use this start";
 $_lang['lista delle voci custom'] = "lista delle timecard predefinite dall'utente";
+$_lang['lista delle voci'] = "lista delle timecard";
+$_lang['archivio timecard'] = "archivio timecard";
 $_lang['ora inizio'] = "start hour";
 $_lang['ora fine'] = "end hour";
 $_lang['ore lavoro'] = "working hours";

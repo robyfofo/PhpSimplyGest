@@ -257,6 +257,7 @@ $_lang['chiudi'] = "chiudi";
 $_lang['gestisci'] = "gestisci";
 
 $_lang['esporta in pdf'] = "esporta in pdf";
+$_lang['esporta in xls'] = "esporta in xls";
 
 $_lang['aggiungi'] = "aggiungi";
 $_lang['aggiungi %ITEM%'] = "aggiungi %ITEM%";
