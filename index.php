@@ -8,7 +8,7 @@
  * app/index.php v.1.0.0. 14/03/2019
 */
 
-ini_set('display_errors',1);
+//ini_set('display_errors',1);
 
 define('PATH','');
 define('MAXPATH', str_replace("includes","",dirname(__FILE__)).'');
@@ -39,8 +39,8 @@ $Config = new Config();
 Config::setGlobalSettings($globalSettings);
 $Core = new Core();
 
-		use PhpOffice\PhpSpreadsheet\Spreadsheet as GlobalSpreadsheet;
-		use PhpOffice\PhpSpreadsheet\Writer\Xlsx as GlobalXlsx;
+use PhpOffice\PhpSpreadsheet\Spreadsheet as GlobalSpreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx as GlobalXlsx;
 
 
 //Sql::setDebugMode(1);

@@ -62,7 +62,59 @@
 		</div>
 		<!-- /.panel -->
 	</div>
+	
+	
+	{% if App.ricaviannoprecedentechartsdata is defined %}
+	
+	<div class="col-lg-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+ 				<i class="fa fa-bar-chart-o fa-fw"></i> {{ Lang['fiscale anno']|title }} {{ App.annoprecedente }}
+			</div>
+			<!-- /.panel-heading -->
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-lg-12">
+						<div id="fiscaleannoprecedente-chart"></div>
+					</div>
+				</div>
+				<!-- /.row -->
+			</div>
+			<!-- /.panel-body -->
+		</div>
+		<!-- /.panel -->
+	</div>
+	
+	
+	{% endif %}
+	
+	{% if App.ricaviannocorrentechartsdata is defined %}
+	
+	<div class="col-lg-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+ 				<i class="fa fa-bar-chart-o fa-fw"></i> {{ Lang['fiscale anno']|title }} {{ App.annocorrente }}
+			</div>
+			<!-- /.panel-heading -->
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-lg-12">
+						<div id="fiscaleannocorrente-chart"></div>
+					</div>
+				</div>
+				<!-- /.row -->
+			</div>
+			<!-- /.panel-body -->
+		</div>
+		<!-- /.panel -->
+	</div>
+	
+	
+	{% endif %}
+	
 </div>
+
+
 
 <div class="row">
 	{% if App.homeTables is iterable %}

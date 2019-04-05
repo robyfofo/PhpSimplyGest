@@ -1,4 +1,4 @@
-/* invoices/formInvSal.js v.1.0.0. v.1.0.0. 15/03/2019 */
+/* invoices/formInvSal.js v.1.0.0. v.1.0.0. 05/04/2019 */
 var requestSent = false;
 $(document).ready(function() {	
 	
@@ -37,6 +37,7 @@ $('#id_customerID').on('change',function(event) {
 			$('#customer_provinceID').val(data.province);
 			$('#customer_stateID').val(data.state);
 			$('#customer_emailID').val(data.email);
+			$('#customer_telephoneID').val(data.telephone);
 			$('#customer_faxID').val(data.fax);
 			$('#customer_partita_ivaID').val(data.partita_iva);
 			$('#customer_codice_fiscaleID').val(data.codice_fiscale);
