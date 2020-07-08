@@ -1,11 +1,11 @@
 <?php
 /**
- * Framework siti html-PHP-Mysql
+ * Framework App html-PHP-Mysql
  * PHP Version 7
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * admin/levels/index.php v.4.5.0. 12/03/2018
+ * levels/index.php v.1.2.0. 17/12/2019
 */
 
 //Core::setDebugMode(1);
@@ -27,7 +27,6 @@ switch(substr(Core::$request->method,-4,4)) {
 		if (!isset($_MY_SESSION_VARS['page'])) $_MY_SESSION_VARS = $my_session->addSessionsModuleVars($_MY_SESSION_VARS,$App->sessionName,array('page'=>1,'ifp'=>'10'));
 		$Module = new Module($App->sessionName,$App->params->tables['item']);
 		include_once(PATH.$App->pathApplications.Core::$request->action."/items.php");	
-		$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/items.js"></script>';
 	break;
-	}
+}
 ?>

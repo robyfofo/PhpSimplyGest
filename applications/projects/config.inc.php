@@ -5,11 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
-<<<<<<< HEAD
- * projects/config.inc.php v.1.0.0. 08/11/2018
-=======
- * projects/config.inc.php v.1.0.0. 07/08/2018
->>>>>>> 9b7a2d240ced5cf983e9b60dd3bd7b65ab67fb69
+ * projects/config.inc.php v.1.2.0. 21/12/2019
 */
 
 $App->params = new stdClass();
@@ -21,7 +17,7 @@ if (Core::$resultOp->error == 0 && is_object($obj)) $App->params = $obj;
 
 $App->params->codeVersion = ' 1.0.0.';
 $App->params->pageTitle = $App->params->label;
-$App->params->breadcrumb = '<li class="active"><i class="icon-projects"></i> '.ucfirst($_lang['progetti']).'</li>';
+//$App->params->breadcrumb = '<li class="active"><i class="icon-projects"></i> '.ucfirst($_lang['progetti']).'</li>';
 
 $App->params->tables = array();
 $App->params->fields = array();
@@ -42,7 +38,7 @@ $App->params->ordersType['item'] = 'DESC';
 $App->params->tables['item'] = DB_TABLE_PREFIX.'projects';
 $App->params->fields['item'] = array(
 	'id'=>array('label'=>'ID','required'=>false,'type'=>'int|8','autoinc'=>true,'nodb'=>true,'primary'=>true),
-	'id_user'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>true,'type'=>'int|8','defValue'=>$App->userLoggedData->id),
+	'users_id'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>false,'type'=>'int|8','defValue'=>$App->userLoggedData->id),
 	'id_contact'=>array('label'=>$_lang['contatto'],'searchTable'=>false,'required'=>false,'type'=>'int|8','defValue'=>0,'validate'=>'int'),
 	'title'=>array('label'=>$_lang['titolo'],'searchTable'=>true,'required'=>true,'type'=>'varchar|100'),
 	'content'=>array('label'=>$_lang['contenuto'],'searchTable'=>true,'required'=>false,'type'=>'mediumtext'),

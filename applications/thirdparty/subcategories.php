@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * thirdparty/subcategories.php v.1.0.0. 24/07/2018
+ * thirdparty/subcategories.php v.1.2.0. 16/12/2019
 */
 
 if (isset($_POST['itemsforpage']) && isset($_MY_SESSION_VARS[$App->sessionName]['ifp']) && $_MY_SESSION_VARS[$App->sessionName]['ifp'] != $_POST['itemsforpage']) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'ifp',$_POST['itemsforpage']);
@@ -132,9 +132,9 @@ switch((string)$App->viewMethod) {
 		$opt = array('tableCat'=>$App->params->tables['scat'],'type'=>0,'multilanguage'=>0,'ordering'=>0,'languages'=>$globalSettings['languages'],'lang'=>$_lang['user']);
 		$App->parents = Categories::getObjFromSubCategories($opt);				
 		if ($Module->error == 1) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['scat']);
-		$App->templateApp = 'formScat.tpl.php';
+		$App->templateApp = 'formScat.html';
 		$App->methodForm = 'insertScat';
-		$App->jscript[] = '<script src="'.URL_SITE.'application/'.Core::$request->action.'/templates/'.$App->templateUser.'/js/formScat.js" type="text/javascript"></script>';
+		$App->jscript[] = '<script src="'.URL_SITE.'application/'.Core::$request->action.'/templates/'.$App->templateUser.'/js/formScat.js"></script>';
 
 	break;
 	
@@ -147,9 +147,9 @@ switch((string)$App->viewMethod) {
 		Sql::initQuery($App->params->tables['scat'],array('*'),array($App->id),'id = ?');
 		$App->item = Sql::getRecord();
 		if (Core::$resultOp->error == 1) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['scat']);
-		$App->templateApp = 'formScat.tpl.php';
+		$App->templateApp = 'formScat.html';
 		$App->methodForm = 'updateScat';
-		$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/formScat.js" type="text/javascript"></script>';
+		$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/formScat.js"></script>';
 	break;
 	
 	case 'list':
@@ -162,12 +162,12 @@ switch((string)$App->viewMethod) {
 		//print_r($App->items);
 		$App->pagination = $Module->getPagination();	
 		$App->pageSubTitle = preg_replace('/%ITEMS%/',$_lang['categorie'],$_lang['lista delle %ITEMS%']);
-		$App->templateApp = 'listScat.tpl.php';
+		$App->templateApp = 'listScat.html';
 		$App->css[] = '<link href="'.URL_SITE.'templates/'.$App->templateUser.'/plugins/jquery.treegrid/jquery.treegrid.css" rel="stylesheet">';
 		$App->css[] = '<link href="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/css/listScat.css" rel="stylesheet">';
-		$App->jscript[] = '<script src="'.URL_SITE.'templates/'.$App->templateUser.'/plugins/jquery.cookie/jquery.cookie.js" type="text/javascript"></script>';
-		$App->jscript[] = '<script src="'.URL_SITE.'templates/'.$App->templateUser.'/plugins/jquery.treegrid/jquery.treegrid.min.js" type="text/javascript"></script>';
-		$App->jscript[] = '<script src="'.URL_SITE.'templates/'.$App->templateUser.'/plugins/jquery.treegrid/jquery.treegrid.bootstrap3.js" type="text/javascript"></script>';		
+		$App->jscript[] = '<script src="'.URL_SITE.'templates/'.$App->templateUser.'/plugins/jquery.cookie/jquery.cookie.js"></script>';
+		$App->jscript[] = '<script src="'.URL_SITE.'templates/'.$App->templateUser.'/plugins/jquery.treegrid/jquery.treegrid.min.js"></script>';
+		//$App->jscript[] = '<script src="'.URL_SITE.'templates/'.$App->templateUser.'/plugins/jquery.treegrid/jquery.treegrid.bootstrap4.js"></script>';		
 		$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/listScat.js" type="text/javascript"></script>';		
 	default:
 	break;

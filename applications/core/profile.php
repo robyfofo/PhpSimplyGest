@@ -5,20 +5,20 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * core/profile.php v.1.0.0. 29/01/2018
+ * core/profile.php v.1.2.0. 30/11/2019
 */
 
-//Core::setDebugMode(1);
+//Sql::setDebugMode(1);
 
 include_once(PATH.$App->pathApplicationsCore."class.module.php");
-$Module = new Module();
+$Module = new Module(DB_TABLE_PREFIX."users");
 
 /* variabili ambiente */
-$App->codeVersion = ' 1.0.0.';
-$App->pageTitle = ucfirst($_lang['profilo utente']);
-$App->pageSubTitle = $_lang['modifica profilo utente'];
-$App->breadcrumb .= '<li class="active"><i class="icon-user"></i> '.$_lang['profilo utente'].'</li>';
-$App->templateApp = Core::$request->action.'.tpl.php';
+$App->codeVersion = ' 3.5.4.';
+$App->pageTitle = ucfirst($_lang['profilo']);
+$App->pageSubTitle = preg_replace('/%ITEM%/', $_lang['profilo'], $_lang['modifica il %ITEM%']);
+//$App->breadcrumb[] = '<li class="active"><i class="icon-user"></i> '.$_lang['profilo'].'</li>';
+$App->templateApp = Core::$request->action.'.html';
 $App->id = intval(Core::$request->param);
 if (isset($_POST['id'])) $App->id = intval($_POST['id']);
 $App->coreModule = true;
@@ -48,14 +48,14 @@ switch(Core::$request->method) {
 		$id = intval(Core::$request->param);
 		$App->item = new stdClass;
 	   if ($id > 0) {	
-			Sql::initQuery(DB_TABLE_PREFIX.'users',array('*'),array($id),"id = ?");
+			Sql::initQuery(DB_TABLE_PREFIX.'users',array('*'),array($App->id),"id = ?");
 			$App->item = Sql::getRecord();	
 			if (Core::$resultOp->error == 0) {	
 				if (isset($App->item->avatar)) {
 					$array_avatarInfo = unserialize($App->item->avatar_info);					
 					$img = $App->item->avatar;
 					@header ("Content-type: ".$array_avatarInfo['type']);
-					echo $img;					
+					echo $img;				
 					}
 				}
 			}
@@ -64,16 +64,15 @@ switch(Core::$request->method) {
 	
 	default;
 		$App->item = new stdClass;
+		//echo $App->id;
 		if ($App->id > 0) {
 			if ($_POST) {			
 				if (!isset($_POST['active'])) $_POST['active'] = 1;								
 				/* recupero dati avatar */
 				list($_POST['avatar'],$_POST['avatar_info']) = $Module->getAvatarData($App->id,$_lang);
-				if ($Module->errorType > 0) {
-					Core::$resultOp->messages[] = $Module->message;
-					Core::$resultOp->type =  $Module->errorType;
-					Core::$resultOp->error =  $Module->error;
-					}
+				if ($Module->message != '') Core::$resultOp->messages[] = $Module->message;
+				Core::$resultOp->type =  $Module->errorType;
+				Core::$resultOp->error =  $Module->error;
 				if (Core::$resultOp->error == 0) {
 					/* controlla i campi obbligatori */
 					Sql::checkRequireFields($fields);
@@ -81,11 +80,12 @@ switch(Core::$request->method) {
 						Sql::stripMagicFields($_POST);
 						Sql::updateRawlyPost($fields,DB_TABLE_PREFIX."users",'id',$App->id);
 						if(Core::$resultOp->error == 0) {
-							Core::$resultOp->message = ucfirst(preg_replace('/%ITEM%/',$_lang['profilo utente'],$_lang['%ITEM% modificato'])).'!';
+							Core::$resultOp->message = $_lang['Account modificato correttamente! Per rendere effettive le modifiche devi uscire dal sistema e loggarti nuovamente.'];	
 							}
-						}
 					}		
-				
+				} else {
+					Core::$resultOp->error = 1;
+					}	
 				} 
 								
 		/* recupera i dati memorizzati */
@@ -96,12 +96,11 @@ switch(Core::$request->method) {
 		if($Module->error == 1) {	
 			Core::$resultOp->error = 1;
 			Core::$resultOp->message = $Module->message;
-			}		
+			}
 		} else {
-			ToolsStrings::redirect(URL_SITE."home");
+			ToolsStrings::redirect(URL_SITE_ADMIN."home");
 			die();						
 			}
 	break;	
 	}
-$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplicationsCore.'/templates/'.$App->templateUser.'/js/profile.js" type="text/javascript"></script>';
 ?>

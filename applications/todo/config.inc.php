@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public	License
- * todo/config.inc.php v.1.0.0. 13/07/2018
+ * todo/config.inc.php v.1.2.0. 21/12/2019
 */
 
 $App->params = new stdClass();
@@ -35,7 +35,7 @@ $App->params->ordersType['item'] = 'DESC';
 $App->params->tables['item'] = DB_TABLE_PREFIX.'todo';
 $App->params->fields['item'] = array(
 	'id'=>array('label'=>'ID','required'=>false,'type'=>'int|8','autoinc'=>true,'nodb'=>true,'primary'=>true),
-	'id_user'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>true,'type'=>'int|8','defValue'=>$App->userLoggedData->id),
+	'users_id'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>false,'type'=>'int|8','defValue'=>$App->userLoggedData->id),
 	'id_project'=>array('label'=>ucfirst($_lang['progetto']),'required'=>true,'type'=>'int','defValue'=>0,'validate'=>'int|8','validate'=>'int'),
 	'title'=>array('label'=>ucfirst($_lang['titolo']),'searchTable'=>true,'required'=>true,'type'=>'varchar|100'),
 	'content'=>array('label'=>ucfirst($_lang['contenuto']),'searchTable'=>true,'required'=>false,'type'=>'text'),

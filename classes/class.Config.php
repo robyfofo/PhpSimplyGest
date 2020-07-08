@@ -29,7 +29,7 @@ class Config {
 		self::$debugMode = 0;
 		self::$dbName = DATABASE;
 		//self::$globalSettings = $globalSettings;
-		//self::$dbConfig = $globalSettings['database'][self::$dbName]		
+		//self::$dbConfig = $globalSettings['database'][self::$dbName]
 		}	
 		
 

@@ -37,4 +37,5 @@ $_lang['Timecard non trovata!'] = "Timecard non trovata!";
 $_lang['Devi selezionare una timecard!'] = "Devi selezionare una timecard!";
 $_lang['Devi selezionare un progetto!'] = "Devi selezionare un progetto!";
 $_lang['La ora inizio deve essere prima della ora fine!'] = "La ora inizio deve essere prima della ora fine!";
+$_lang['seleziona un progetto'] = "seleziona un progetto";
 ?>

@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * timecard/items.php v.1.0.0. 06/08/2018
+ * timecard/items.php v.1.2.0. 10/12/2019
 */
 
 /* trova tutti i progetti con timecard attivata */
@@ -337,7 +337,7 @@ echo ' - currentProjectId: '.$App->currentProjectId;
 switch((string)$App->viewMethod) {
 	case 'form':
 		$App->methodForm = 'updateTime';
-		$App->templateApp = 'formItem.tpl.php';	
+		$App->templateApp = 'formItem.html';	
 	break;
 	
 	case 'list':
@@ -349,8 +349,9 @@ switch((string)$App->viewMethod) {
 		$time->add(new DateInterval('PT1H'));
 		$App->timeEndTimecard = $time->format($_lang['datepicker time format']);	
 		$App->defaultFormData = $_MY_SESSION_VARS[$App->sessionName]['data-timecard'];
+		$App->pageSubTitle = $_lang['lista delle voci'];
 		$App->methodForm = 'insertTime';
-		$App->templateApp = 'formItem.tpl.php';
+		$App->templateApp = 'formItem.html';
 	break;
 	
 	default:

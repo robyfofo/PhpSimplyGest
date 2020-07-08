@@ -1,11 +1,5 @@
 <?php
-/**
- * Framework siti html-PHP-Mysql
- * PHP Version 7
- * @author Roberto Mantovani (<me@robertomantovani.vr.it>
- * @copyright 2009 Roberto Mantovani
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * admin/site-core/renderAvatarDB.php v.3.0.0. 04/11/2016
+/*	framework siti html-PHP-Mysql	copyright 2011 Roberto Mantovani	http://www.robertomantovani.vr;it	email: me@robertomantovani.vr.it	core/renderAvatarDB.php v.2.5.0. UTF-8 02/09/2015
 */
 
 define('PATH','../');

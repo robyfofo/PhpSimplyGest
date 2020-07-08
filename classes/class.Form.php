@@ -65,26 +65,31 @@ class Form extends Core {
 			foreach($fields AS $key=>$value) {
 				$namefield = $key;
 				$labelField = (isset($value['label']) ? $value['label'] : '');				
-				/* aggiorna con il default se vuoti o niente */
-				if (!isset($_POST[$namefield]) || (isset($_POST[$namefield]) && $_POST[$namefield] == '')) {	
-					if (isset($value['defValue'])) $_POST[$namefield] = $value['defValue'];
-					}				
+				
 				/* controlla se e richiesto */
-				if (isset($value['required']) && $value['required'] == true) {
-					if (!isset($_POST[$namefield]) || (isset($_POST[$namefield]) && $_POST[$namefield] == '')) {
+				if ( isset($value['required']) && $value['required'] == true ) {
+					if ( !isset($_POST[$namefield]) || (isset($_POST[$namefield]) && $_POST[$namefield] == '') ) {
 						self::$resultOp->error = 1;
-						self::$resultOp->message = preg_replace('/%FIELD%/',$value['label'],$_lang['Devi inserire il campo %FIELD%!']);						
-						}					
-					}
-					/* valida i campi se richiesto */
-					if (isset($value['validate']) && $value['validate'] != false) {
-						$_POST[$namefield] = self::validateField($namefield,$labelField,$value,$_lang);					
-						}
-				/* aggiunge gli slashes */
-				if ($opz['stripmagicfields'] == true) $_POST[$namefield] = SanitizeStrings::stripMagic($_POST[$namefield]);
+						self::$resultOp->messages[] = preg_replace('/%FIELD%/',$value['label'],$_lang['Devi inserire il campo %FIELD%!']);
+						break;
+					}				
 				}
-			}		
-		}
+				
+				/* aggiorna con il default se vuoti */
+				if ( !isset($_POST[$namefield]) ) {						
+					if ( isset($value['defValue']) ) $_POST[$namefield] = $value['defValue'];
+				}
+
+				/* valida i campi se richiesto */
+				if ( isset($value['validate']) && $value['validate'] != false ) {
+					$_POST[$namefield] = self::validateField($namefield,$labelField,$value,$_lang);					
+				}
+				
+				/* aggiunge gli slashes */
+				if ($opz['stripmagicfields'] == true && isset($_POST[$namefield])) $_POST[$namefield] = SanitizeStrings::stripMagic($_POST[$namefield]);
+			}
+		}		
+	}
 		
 	public static function validateField($namefield,$labelField,$value,$_lang) {
 		$str = '';

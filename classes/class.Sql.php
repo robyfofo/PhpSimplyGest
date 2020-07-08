@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * classes/class.Sql.php v.1.1.0. 18/02/2019
+ * classes/class.Sql.php v.1.2.0. 30/11/2019
 */
 
 class Sql extends Core {
@@ -242,8 +242,7 @@ class Sql extends Core {
 		}
 		
 	public static function countRecord() {
-		self::generateQuery('count');
-		
+		self::generateQuery('count');	
 		if (self::$debugMode == 1) {
 			echo '<br>'.self::$qry.'<br>'.print_r(self::$fieldsValue);
 			}
@@ -475,7 +474,7 @@ class Sql extends Core {
 			if (self::$debugMode == 1) echo $pe->getMessage();
 			self::$resultOp->message .= "Errore lettura max field";
 			self::$resultOp->error = 1;
-			}
+			}		
 		}
 	
 	public static function getMaxValueOfField($table,$field,$clause='') {
@@ -497,12 +496,9 @@ class Sql extends Core {
 			}	
 		}	
 	
-	public static function countRecordQry($table,$keyRif,$clauseRif,$valueRif,$opts=array()) {
-		$optsDef = array();	
-		$opts = array_merge($optsDef,$opts);
+	public static function countRecordQry($table,$keyRif,$clauseRif,$valueRif) {
 		$qry = "SELECT COUNT(".$keyRif.") FROM ".$table;
-		if ($clauseRif != '') $qry .= " WHERE ".$clauseRif;	
-		if (isset($opts['groupby']) && $opts['groupby'] != '') $qry .= ' GROUP BY '.$opts['groupby'];
+		if ($clauseRif != '') $qry .= " WHERE ".$clauseRif;			
 		if (self::$debugMode == 1) echo '<br>'.$qry;
 		try{
 			$dbName = self::$dbName;
@@ -632,25 +628,26 @@ class Sql extends Core {
 		return array($wf,$wfv);
 		}
 
-	 public static function manageFieldActive($method,$appTable,$id,$opt){
-	 	$optDef = array('labelA'=>'voce attivata','labelD'=>'voce disattivata');	
+	public static function manageFieldActive($method,$appTable,$id,$opt){
+		$optDef = array('label'=>'voce','attivata'=>'attivata','disattivata'=>'disattivata');	
 		$opt = array_merge($optDef,$opt);
    	switch($method) {
    		case 'active':
    			self::initQuery($appTable,array('active'),array('1',$id),'id = ?');
 				self::updateRecord();	
-   			self::$resultOp->message = ucfirst($opt['labelA'])."!";
+   			self::$resultOp->message = ucfirst($opt['label'])." ".$opt['attivata']."!";
    		break;
 			case 'disactive':
 				self::initQuery($appTable,array('active'),array('0',$id),'id = ?');
 				self::updateRecord();
-   			self::$resultOp->message = ucfirst($opt['labelD'])."!";
+   			self::$resultOp->message = ucfirst($opt['label'])." ".$opt['disattivata']."!";
    		break;   		
-   		}  	
-   	}
+		}  	
+	}
 
- 
-	public static function switchFieldOnOff($appTable,$field,$fieldRif,$id,$label='Voce',$sex='a'){
+	public static function switchFieldOnOff($appTable,$field,$fieldRif,$id,$opt){
+		$optDef = array('labelOn'=>'voce attivata','labelOff'=>'voce disattivata');
+		$opt = array_merge($optDef,$opt);	
    	/* preleva il valore del flag */
    	self::initQuery($appTable,array($field),array($id),$fieldRif.' = ?');
    	if (!isset($appData)) $appData = new stdClass();
@@ -670,40 +667,11 @@ class Sql extends Core {
 		self::updateRecord();
 		switch($appData->item->$field) {
 			case 0:
-				self::$resultOp->message = $label." disattivat".$sex."!";
+				self::$resultOp->message = $opt['labelOff'];
 			break;
 			case 1:
 			default:
-				self::$resultOp->message = $label." attivat".$sex."!";
-			break;
-   		}
-   	}
-   	
-	public static function switchFieldOnOffInLang($appTable,$field,$fieldRif,$id,$item='voce',$lang){
-   	/* preleva il valore del flag */
-   	self::initQuery($appTable,array($field),array($id),$fieldRif.' = ?');
-   	if (!isset($appData)) $appData = new stdClass();
-   	if (!isset($appData->item)) $appData->item = new stdClass();
-		$appData->item = Sql::getRecord();
-		switch($appData->item->$field) {
-			case 0:
-				$appData->item->$field = 1;
-			break;
-			case 1:
-			default:
-				$appData->item->$field = 0;
-			break;
-   		}
-   	/* lo aggiorna */
-		self::initQuery($appTable,array($field),array($appData->item->$field,$id),$fieldRif.' = ?');
-		self::updateRecord();
-		switch($appData->item->$field) {
-			case 0:
-				self::$resultOp->message = ucfirst($lang[$item.' attivata'])."!";
-			break;
-			case 1:
-			default:
-				self::$resultOp->message = ucfirst($lang[$item.' disattivata'])."!";
+				self::$resultOp->message = $opt['labelOn'];
 			break;
    		}
    	}
@@ -858,7 +826,7 @@ class Sql extends Core {
 		}
 		
 	public static function setOptions($value){
-		self::$opts = $value;	
+		self::$opts = $value;
 		}
 
 	public static function setResultPaged($value){

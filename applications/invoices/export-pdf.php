@@ -29,6 +29,9 @@ switch(Core::$request->method) {
 				/* preleva invoice */
 				Sql::initQuery($App->params->tables['InvSal'],array('*'),array($id_invoice),'id = ?');
 				$App->invoice = Sql::getRecord();
+				
+				//print_r($App->invoice); die();
+				
 				if (Core::$resultOp->error == 0) {
 					
 					/* preleva articoli */
@@ -58,8 +61,12 @@ switch(Core::$request->method) {
 										$articolipdf[$z]['importotax'] = '€ '.number_format($value->price_tax,2,',','.').' ';
 										}
 									$articolipdf[$z]['descrizione'] = $value->content;
-									$articolipdf[$z]['quantità'] = number_format($value->quantity,2,',','.');
-									$articolipdf[$z]['prezzounitario'] = '€ '.number_format($value->price_unity,2,',','.').' ';
+									if ($App->invoice->stampa_quantita == 1) {
+										$articolipdf[$z]['quantità'] = number_format($value->quantity,2,',','.');
+									}
+									if ($App->invoice->stampa_unita == 1) {
+										$articolipdf[$z]['prezzounitario'] = '€ '.number_format($value->price_unity,2,',','.').' ';
+									}
 									$articolipdf[$z]['importo'] = '€ '.number_format($value->price_unity * $value->quantity,2,',','.').' ';
 									$z++;									 
 									}
@@ -136,8 +143,15 @@ switch(Core::$request->method) {
 								$pdf->ezSetDy(-30);
 				
 								$colsArticolipdf['descrizione'] = '<b>'.ucfirst($_lang['descrizione']).'</b>';
-								$colsArticolipdf['quantità'] = '<b>'.ucfirst($_lang['quantità']).'</b>';
-								$colsArticolipdf['prezzounitario'] = '<b>'.ucwords($_lang['prezzo unità']).'</b>';
+								
+								if ($App->invoice->stampa_quantita == 1) {
+									$colsArticolipdf['quantità'] = '<b>'.ucfirst($_lang['quantità']).'</b>';
+								}
+								
+								if ($App->invoice->stampa_unita == 1) {
+									$colsArticolipdf['prezzounitario'] = '<b>'.ucwords($_lang['prezzo unità']).'</b>';
+								}
+								
 								$colsArticolipdf['importo'] = '<b>'.ucwords($_lang['importo']).'</b>';
 								/* se iva */
 								if ($App->company->gestione_iva == 1) {

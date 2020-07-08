@@ -16,12 +16,11 @@ class Permissions extends Core {
 	
 	public static function getUserLevels(){		
 		Sql::initQuery(Sql::getTablePrefix().'levels',array('*'),array(),'active = 1','title ASC');
-		//Sql::setOptions(array('fieldTokeyObj'=>'id'));
-		$obj1 = Sql::getRecords();
-		$obj2[0] = (object)array('id'=>0,'title'=>'Anonimo','modules'=>'','active'=>1);
-		$obj = array_merge($obj2,$obj1);
+		Sql::setOptions(array('fieldTokeyObj'=>'id'));
+		$obj = Sql::getRecords();
+		$obj[0] = (object)array('id'=>0,'title'=>'Anonimo','modules'=>'','active'=>1);
 		return $obj;		
-		}
+	}
 		
 	public static function getUserLevelLabel($user_levels,$id_level,$is_root=0) {
 		$s = '';
@@ -55,24 +54,28 @@ class Permissions extends Core {
 				}
 			}
 
-	public static function getSqlQueryItemPermissionForUser($userLoggedData) {
+	public static function getSqlQueryItemPermissionForUser($userLoggedData,$opt=array()) {
+		$optDef = array('onlyuser'=>false,'fieldprefix'=>'');	
+		$opt = array_merge($optDef,$opt); 
 		$clause = '';
 		$clauseValues = array();
 		
 		/* permissionfor user owner only */
-		$clause = 'id_user = ?';
+		$clause = $opt['fieldprefix'].'users_id = ?';
 		$clauseValues[] = $userLoggedData->id;
 		
-		/* add item public - access_type 0 */
-		$clause .= ' OR access_type = 0';
-	
+		if ($opt['onlyuser'] == false) {
+			// add item public - access_type 0
+			$clause .= ' OR '.$opt['fieldprefix'].'access_type = 0';
+		}
+			
 		/* se root azzerra tutto */
 		if (isset($userLoggedData->is_root) && intval($userLoggedData->is_root) === 1) {
 			$clause = '';
 			$clauseValues = array();
 			}
 		return array($clause,$clauseValues);
-		}
+	}
 		
 	public static function  checkReadWriteAccessOfItem($table,$id,$userLoggedData) {
 		//print_r($userLoggedData);

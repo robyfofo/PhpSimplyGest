@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- *	classes/class.Utilities.php v.1.0.0. 03/07/2018
+ *	classes/class.Utilities.php v.1.2.0. 30/11/2019
 */
 class Utilities extends Core {	
 	static $totalpage = 0;
@@ -133,7 +133,7 @@ class Utilities extends Core {
 		}	
 
 	public static function decreaseFieldOrdering($id,$lang,$opt) {
-		$optDef = array('addclauseparent'=>'','addclauseparentvalues'=>array(),'idFieldRif'=>'id','parent'=>0,'parentField'=>'parent','orderingFieldRif'=>'ordering','orderingType'=>'DESC','labelError'=>'Non è possibile diminuire ordinamento!','label'=>'voce spostata','table'=>'');	
+		$optDef = array('addclauseparent'=>'','addclauseparentvalues'=>array(),'idFieldRif'=>'id','parent'=>0,'parentField'=>'parent','orderingFieldRif'=>'ordering','orderingType'=>'DESC','label'=>$lang['voce'].' '.$lang['spostata'],'table'=>'');	
 		$opt = array_merge($optDef,$opt); 
 		$orderingFieldRif = $opt['orderingFieldRif'];
 		$parentField = $opt['parentField'];
@@ -159,7 +159,7 @@ class Utilities extends Core {
    				if ($opt['addclauseparent'] != '') $where .= ' AND '.$opt['addclauseparent'];	      				
 	      		}
 	      	$count = Sql::initQuery($opt['table'],array($id),$fieldsValues,$where);
-	      	if (self::$resultOp->error == 0) {
+	      	if (self::$resultOp->type == 0) {
 					$count = Sql::countRecord();				
 					if ($count > 0) {	
 						$where = $opt['orderingFieldRif'].' = ?';
@@ -172,8 +172,8 @@ class Utilities extends Core {
 	      				}
 		      		/* controlla se c'e un ordine inferiore */					
 						$count = Sql::initQuery($opt['table'],array($id),$fieldsValues,$where);
-						$count = Sql::countRecord();
-						if (self::$resultOp->error == 0) {
+						$count = Sql::countRecord();					
+						if (self::$resultOp->type == 0) {
 							if ($count > 0) {	
 								$where = $opt['orderingFieldRif'].' = ?';
 		      				$fieldsValues = array($itemData->$orderingFieldRif,$itemData->$orderingFieldRif-1);
@@ -196,29 +196,39 @@ class Utilities extends Core {
 		      					}      		
 								Sql::initQuery($opt['table'],array($opt['orderingFieldRif']),$fieldsValues,$where);
 								Sql::updateRecord();
-								if (self::$resultOp->error == 0) {
+								if (self::$resultOp->type == 0) {
 									self::$resultOp->message =  ($opt['orderingType'] == 'DESC' ? $opt['label'].' '.$lang['giu'].'!' : $opt['label'].' '.$lang['su'].'!');
 									self::$resultOp->message = ucfirst(self::$resultOp->message);								
-									}		
-	      				} 
+									} else {
+										self::$resultOp->type = 1;
+										self::$resultOp->message = $lang['Non è possibile diminuire ordinamento!'];
+										}			
+	      				} else {
+								self::$resultOp->type = 1;
+								self::$resultOp->message = $lang['Non è possibile diminuire ordinamento!'];
+								}
 	      			} else {
-							self::$resultOp->error = 1;
-							}				
-					}	 
-				} else {
-					self::$resultOp->error = 1;
-					}
-			}
+							self::$resultOp->type = 1;
+							self::$resultOp->message = $lang['Non è possibile diminuire ordinamento!'];
+							}
 				
-		if (self::$resultOp->error == 1)	{
-			self::$resultOp->type = 1;
-			self::$resultOp->error = 0;
-			self::$resultOp->message = $opt['labelError'];
-			}		
+					} else {
+						self::$resultOp->type = 1;
+						self::$resultOp->message = $lang['Non è possibile diminuire ordinamento!'];
+						}		 
+				} else {
+					self::$resultOp->type = 1;
+					self::$resultOp->message = $lang['Non è possibile diminuire ordinamento!'];
+					}
+			} else {
+				self::$resultOp->type = 1;
+				self::$resultOp->message = $lang['Non è possibile diminuire ordinamento!'];
+				}
+		self::$resultOp->error = 0;			
 		}
 
 	public static function increaseFieldOrdering($id,$lang,$opt) {
-		$optDef = array('addclauseparent'=>'','addclauseparentvalues'=>array(),'idFieldRif'=>'id','parent'=>0,'parentField'=>'parent','orderingFieldRif'=>'ordering','orderingType'=>'DESC','labelError'=>'Non è possibile aumentare ordinamento!','label'=>'voce spostata','table'=>'');	
+		$optDef = array('addclauseparent'=>'','addclauseparentvalues'=>array(),'idFieldRif'=>'id','parent'=>0,'parentField'=>'parent','orderingFieldRif'=>'ordering','orderingType'=>'DESC','label'=>$lang['voce'].' '.$lang['spostata'],'table'=>'');	
 		$opt = array_merge($optDef,$opt);
 		$orderingFieldRif = $opt['orderingFieldRif'];
 		$parentField = $opt['parentField'];
@@ -244,7 +254,7 @@ class Utilities extends Core {
 	      		if ($opt['addclauseparent'] != '') $where .= ' AND '.$opt['addclauseparent'];	  
 	      		}
 	      	$count = Sql::initQuery($opt['table'],array($id),$fieldsValues,$where);
-	      	if (self::$resultOp->error == 0) {
+	      	if (self::$resultOp->type == 0) {
 					$count = Sql::countRecord();				
 					if ($count > 0) {	
 						/* controlla se c'e un ordine superiore */
@@ -259,7 +269,7 @@ class Utilities extends Core {
 		      		/* controlla se c'e un ordine superiore */					
 						$count = Sql::initQuery($opt['table'],array($id),$fieldsValues,$where);
 						$count = Sql::countRecord();					
-						if (self::$resultOp->error == 0) {
+						if (self::$resultOp->type == 0) {
 							if ($count > 0) {	
 								$where = $opt['orderingFieldRif'].' = ?';
 		      				$fieldsValues = array($itemData->$orderingFieldRif,$itemData->$orderingFieldRif+1);
@@ -282,28 +292,35 @@ class Utilities extends Core {
 		      					}      		
 								Sql::initQuery($opt['table'],array($opt['orderingFieldRif']),$fieldsValues,$where);
 								Sql::updateRecord();
-								if (self::$resultOp->error == 0) {  
+								if (self::$resultOp->type == 0) {  
 									self::$resultOp->message = ($opt['orderingType'] == 'DESC' ? $opt['label'].' '.$lang['su'].'!' : $opt['label'].' '.$lang['giu'].'!');
 									self::$resultOp->message = ucfirst(self::$resultOp->message);
-									}										
+									} else {
+										self::$resultOp->type == 1;
+										self::$resultOp->message = $lang['Non è possibile aumentare ordinamento!'];
+										}											
 	      				} else {
-								self::$resultOp->error = 1;								
+								self::$resultOp->type = 1;
+								self::$resultOp->message = $lang['Non è possibile aumentare ordinamento!'];
 								}
 	      			} else {
-							self::$resultOp->error = 1;
-							}				
-					}
+							self::$resultOp->type = 1;
+							self::$resultOp->message = $lang['Non è possibile aumentare ordinamento!'];
+							}
+				
+					} else {
+						self::$resultOp->type = 1;
+						self::$resultOp->message = $lang['Non è possibile aumentare ordinamento!'];
+						}		 
 				} else {
-					self::$resultOp->error = 1;
+					self::$resultOp->type = 1;
+					self::$resultOp->message = $lang['Non è possibile aumentare ordinamento!'];
 					}	
-			}
-							
-		if (self::$resultOp->error == 1)	{
-			self::$resultOp->type = 1;
-			self::$resultOp->error = 0;
-			self::$resultOp->message = $opt['labelError'];
-			}		
-		
+			} else {
+				self::$resultOp->type = 1;
+				self::$resultOp->message = $lang['Non è possibile aumentare ordinamento!'];
+				}
+		self::$resultOp->error = 0;
 		}
 		
 	public static function setItemDataObjWithPost($obj,$fields) {

@@ -1,5 +1,5 @@
 RewriteEngine On
-RewriteBase /phprojekt.altervista.org/phpsimplygest/
+RewriteBase /phprojekt.altervista.org/phpsimplygest120/
 
 # Don't compress images
 SetEnvIfNoCase Request_URI \

@@ -14,7 +14,4 @@ $_lang['vendite'] = "vendite";
 $_lang['acquisti'] = "acquisti";
 $_lang['preventivi'] = "estimates";
 $_lang['bilancio ultimi 12 mesi'] = "bilancio ultimi 12 mesi";
-$_lang['utile'] = "utile";
-$_lang['fiscale anno'] = "fiscale anno";
-$_lang['tasse'] = "tasse";
 ?>

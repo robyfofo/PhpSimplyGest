@@ -32,27 +32,29 @@ $(document).ready(function() {
 			{orderable: false, "targets": 4},
 			{orderable: false, "targets": 5},
     		{orderable: false, "targets": 6},
-    		{className: "text-right",targets: 6},
+    		{className: "actions",targets: 6},
   			],
 		language: {
 			sSearch: lang['search'],
-         lengthMenu: lang['lengthMenu'],
-         zeroRecords: lang['zeroRecords'],
-         info: lang['datatableInfo'],
-         infoEmpty: lang['infoEmpty'],
-         infoFiltered: lang['infoFiltered'],
-         loadingRecords: lang['loadingRecords'],
+         	lengthMenu: lang['lengthMenu'],
+         	zeroRecords: lang['zeroRecords'],
+         	info: lang['datatableInfo'],
+         	infoEmpty: lang['infoEmpty'],
+         	infoFiltered: lang['infoFiltered'],
+         	loadingRecords: lang['loadingRecords'],
     		processing:     lang['processing'],
-         paginate: {
+         	paginate: {
         		first:      lang['paginate']['first'],
         		last:       lang['paginate']['last'],
         		next:       lang['paginate']['next'],
         		previous:   lang['paginate']['previous']
-    			}
-      	}	 
-		});
-		
-	});
+			}
+      	}, 
+      drawCallback: function () {
+			$('#listDataID_paginate ul.pagination').addClass("pagination-sm");
+      }		 
+	});	
+});
 
 
 function alertDelete() {

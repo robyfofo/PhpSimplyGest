@@ -1,20 +1,42 @@
-/* invoices/formInvSal.js v.1.0.0. v.1.0.0. 05/04/2019 */
+/* invoices/formInvSal.js v.1.2.0. 03/12/2019 */
 var requestSent = false;
 $(document).ready(function() {	
 	
 	$('#dateinsDPID').datetimepicker({
 		locale: user_lang,
 		defaultDate: defDateins,
-		format: 'L'
-		});
+		format: 'L',
+		icons: {
+			time: 'fas fa-clock',
+            date: 'fas fa-calendar',
+        	up: 'fas fa-chevron-up',
+       		down: 'fas fa-chevron-down',
+       		previous: 'fas fa-chevron-left',
+    		next: 'fas fa-chevron-right',
+     		today: 'fas fa-check',
+      		clear: 'fas fa-trash',
+         	close: 'fas fa-times'
+       	}
+	});
 
 	$('#datescaDPID').datetimepicker({
 		locale: user_lang,
 		defaultDate: defDatesca,
-		format: 'L'
-		});
+		format: 'L',
+		icons: {
+			time: 'fas fa-clock',
+            date: 'fas fa-calendar',
+        	up: 'fas fa-chevron-up',
+       		down: 'fas fa-chevron-down',
+       		previous: 'fas fa-chevron-left',
+    		next: 'fas fa-chevron-right',
+     		today: 'fas fa-check',
+      		clear: 'fas fa-trash',
+         	close: 'fas fa-times'
+       	}
+	});
 	
-	}); // end document
+}); // end document
 	
 $('#id_customerID').on('change',function(event) {
 	var id = $('#id_customerID').val();
@@ -28,6 +50,7 @@ $('#id_customerID').on('change',function(event) {
 			dataType: 'json'
 		})
 		.done(function(data) {
+
 			$('#customer_ragione_socialeID').val(data.ragione_sociale);
 			$('#customer_nameID').val(data.name);
 			$('#customer_surnameID').val(data.surname);
@@ -37,14 +60,23 @@ $('#id_customerID').on('change',function(event) {
 			$('#customer_provinceID').val(data.province);
 			$('#customer_stateID').val(data.state);
 			$('#customer_emailID').val(data.email);
-			$('#customer_telephoneID').val(data.telephone);
 			$('#customer_faxID').val(data.fax);
 			$('#customer_partita_ivaID').val(data.partita_iva);
 			$('#customer_codice_fiscaleID').val(data.codice_fiscale);
 			$('#customer_pecID').val(data.pec);
 			$('#customer_sidID').val(data.sid);
-
 			
+			if (data.stampa_quantita == '1') {
+				$('#stampa_quantitaID').attr( "checked",true );
+			} else {
+				$('#stampa_quantitaID').attr( "checked",false );
+			}
+			
+			if (data.stampa_unita == '1') {
+				$('#stampa_unitaID').attr( "checked",true );
+			} else {
+				$('#stampa_unitaID').attr( "checked",false );
+			}
 			
 		})		
 		.fail(function() {

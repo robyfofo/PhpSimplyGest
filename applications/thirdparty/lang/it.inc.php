@@ -14,6 +14,8 @@ $_lang['la voce']  = "il soggetto terzo";
 $_lang['le voci']  = "i soggetti terzi";
 $_lang['soggetti terzi associati']  = "soggetti terzi associati";
 
+$_lang['opzioni stampa']  = "opzioni stampa";
+
 $_lang['categoria']  = "categoria";
 $_lang['categorie']  = "categorie";
 $_lang['la categoria']  = "la categoria";

@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * app/include/configuration.inc.php v.2.0.0. 08/11/2018
+ * app/include/configuration.inc.php v.1.2.0. 24/12/2019
 */
 
 /* specifiche altervista */
@@ -18,8 +18,8 @@ if (isset($_SERVER['HTTPS'])) $http = 'https://';
 
 /* SERVER */
 $globalSettings['site name'] = "PhpSimplyGest";
-$globalSettings['code version'] = '1.0.0.';
-$globalSettings['folder site'] = 'phprojekt.altervista.org/phpsimplygest/';
+$globalSettings['code version'] = '1.2.0.';
+$globalSettings['folder site'] = 'phprojekt.altervista.org/phpsimplygest120/';
 $globalSettings['site host'] = '192.168.1.10/';
 $globalSettings['server timezone'] = '';
 
@@ -27,7 +27,7 @@ $globalSettings['server timezone'] = '';
 $database = 'remote';
 if ($servermode == 'locale') $database = 'locale';
 $globalSettings['database'] = array(
-	'locale'=>array('user'=>'root','password'=>'fofofofo','host'=>'localhost','name'=>'phprojekt.altervista_phpsimplygest','tableprefix'=>'psg_'),
+	'locale'=>array('user'=>'root','password'=>'fofofofo','host'=>'localhost','name'=>'phprojekt.altervista_phpsimplygest120','tableprefix'=>'psg120_'),
 	'remote'=>array('user'=>'phprojekt','password'=>'robyfofo','host'=>'localhost','name'=>'phprojekt.altervista','tableprefix'=>'psg_')
 	);
 

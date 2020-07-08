@@ -1,3 +1,1 @@
-<li class="%LICLASS%"><a href="%URLSITE%%NAME%"><i class="fa fa-bookmark-o fa-fw"></i> %LABEL%</a></li>
-
-{"name":"%NAME%","icon":"<i class=\"fa fa-bookmark-o fa-fw\"><\/i>","label":"%LABEL%"}
+{"name":"%NAME%","icon":"<i class=\"fas fa-bookmark\"><\/i>","label":"%LABEL%"}

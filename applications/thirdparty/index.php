@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * third-party/index.php v.1.0.0. 28/02/2018
+ * third-party/index.php v.1.2.0. 06/12/2019
 */
 
 //Core::setDebugMode(1);
@@ -36,5 +36,5 @@ switch(substr(Core::$request->method,-4,4)) {
 		$Module = new Module(Core::$request->action,$App->params->tables['item']);
 		include_once(PATH.$App->pathApplications.Core::$request->action."/items.php");	
 	break;
-	}
+}
 ?>

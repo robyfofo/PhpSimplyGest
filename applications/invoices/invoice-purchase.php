@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * invoices/invoice-purchase.php v.1.0.0. 14/03/2019
+ * invoices/invoice-purchase.php v.1.2.0. 21/12/2019
 */
 
 if (isset($_POST['itemsforpage']) && isset($_MY_SESSION_VARS[$App->sessionName]['ifp']) && $_MY_SESSION_VARS[$App->sessionName]['ifp'] != $_POST['itemsforpage']) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'ifp',$_POST['itemsforpage']);
@@ -218,6 +218,18 @@ switch(Core::$request->method) {
 		$where = '';
 		$and = '';
 		$fieldsValue = array();
+		
+		/* permissions query */
+		list($permClause,$fieldsValuesPermClause) = Permissions::getSqlQueryItemPermissionForUser($App->userLoggedData,array('fieldprefix'=>'ite.','onlyuser'=>true));
+		if (isset($permClause) && $permClause != '') {
+			$where .= $and.'('.$permClause.')';
+			$and = ' AND ';
+		}
+		if (is_array($fieldsValuesPermClause) && count($fieldsValuesPermClause) > 0) {
+			$fieldsValue = array_merge($fieldsValue,$fieldsValuesPermClause);	
+		}
+		/* end permissions items */
+
 		$filtering = false;
 		if (isset($_REQUEST['search']) && is_array($_REQUEST['search']) && count($_REQUEST['search']) > 0) {		
 			if (isset($_REQUEST['search']['value']) && $_REQUEST['search']['value'] != '') {
@@ -248,7 +260,7 @@ switch(Core::$request->method) {
 		$fields[] = "SUM(art.price_tax) AS total_tax";
 		
 		/* conta tutti i records */
-		$recordsTotal = Sql::countRecordQry($App->params->tables['InvPur'],'id','',array());
+		$recordsTotal = Sql::countRecordQry($App->params->tables['InvPur'],'id',$where,$fieldsValue);
 		$recordsFiltered = $recordsTotal;
 				
 		if ($filtering == true) {
@@ -267,7 +279,7 @@ switch(Core::$request->method) {
 		if (is_array($obj) && count($obj) > 0) {
 			foreach ($obj AS $key=>$value) {
 				/* crea la colonna actions */
-				$actions = '<a class="btn btn-default btn-circle" href="'.URL_SITE.Core::$request->action.'/modifyInvPur/'.$value->id.'" title="'.ucfirst($_lang['modifica']).' '.$_lang['la voce-p'].'"><i class="fa fa-edit"> </i></a><a class="btn btn-default btn-circle confirmdelete" href="'.URL_SITE.Core::$request->action.'/deleteInvPur/'.$value->id.'" title="'.ucfirst($_lang['cancella']).' '.$_lang['la voce-p'].'"><i class="fa fa-cut"> </i></a>';
+				$actions = '<a class="btn btn-default btn-sm" href="'.URL_SITE.Core::$request->action.'/modifyInvPur/'.$value->id.'" title="'.ucfirst($_lang['modifica']).' '.$_lang['la voce-p'].'"><i class="far fa-edit"> </i></a><a class="btn btn-default btn-sm confirmdelete" href="'.URL_SITE.Core::$request->action.'/deleteInvPur/'.$value->id.'" title="'.ucfirst($_lang['cancella']).' '.$_lang['la voce-p'].'"><i class="fas fa-trash-alt"> </i></a>';
 				$data = DateTime::createFromFormat('Y-m-d',$value->dateins);
 				$data1 = DateTime::createFromFormat('Y-m-d',$value->datesca);						
 				$value->totalLabel = '€ '.number_format($value->total + $value->total_tax,2,',','.');				
@@ -310,7 +322,7 @@ switch((string)$App->viewMethod) {
 		$App->item->datesca = $App->nowDate;		
 		$App->item->active = 1;
 		if (Core::$resultOp->error == 1) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['InvPur']);
-		$App->templateApp = 'formInvPur.tpl.php';
+		$App->templateApp = 'formInvPur.html';
 		$App->methodForm = 'insertInvPur';
 		$App->css[] = '<link href="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/css/formInvPur.css" rel="stylesheet">';
 		$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/formInvPur.js"></script>';
@@ -335,8 +347,12 @@ switch((string)$App->viewMethod) {
 			if (Core::$resultOp->error <> 1) $obj = Sql::getRecords();	
 			/* sistemo dati */	
 			$tot_price_total = 0;
+			
+			$tot_quantity_total = 0;
+			
 			$tot_price_tax = 0;
 			$tot_total = 0;
+			
 
 			$arr = array();
 			if (is_array($obj) && count($obj) > 0) {
@@ -347,6 +363,9 @@ switch((string)$App->viewMethod) {
 					$value->price_tax_label = '€ '.number_format($value->price_tax,2,',','.');
 					$value->total_label = '€ '.number_format($value->total,2,',','.');
 					$tot_price_total += $value->price_total;
+					
+					$tot_quantity_total += $value->quantity;
+					
 					$tot_price_tax += $value->price_tax;
 					$tot_total += $value->total;			
 					$arr[] = $value;
@@ -354,6 +373,9 @@ switch((string)$App->viewMethod) {
 				}
 			$App->item_articles = $arr;	
 			$App->item->art_tot_price_total_label = '€ '.number_format($tot_price_total,2,',','.');
+			
+			$App->item->art_tot_quantity_label = $tot_quantity_total;
+			
 			$App->item->art_tot_price_tax_label = '€ '.number_format($tot_price_tax,2,',','.');
 			$App->item->art_tot_total_label = '€ '.number_format($tot_total,2,',','.');
 			/* calcola tassa aggiuntiva */
@@ -365,7 +387,7 @@ switch((string)$App->viewMethod) {
 			$App->item->invoiceTotalRivalsa_label = '€ '.number_format($App->item->invoiceTotalRivalsa,2,',','.');
 			$App->item->invoiceTotal_label = '€ '.number_format($App->item->invoiceTotal,2,',','.');
 
-			$App->templateApp = 'formInvPur.tpl.php';
+			$App->templateApp = 'formInvPur.html';
 			$App->methodForm = 'updateInvPur';	
 			$App->css[] = '<link href="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/css/formInvPur.css" rel="stylesheet">';
 			$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/formInvPur.js"></script>';
@@ -381,7 +403,7 @@ switch((string)$App->viewMethod) {
 		$App->item->dateins = $App->nowDate;
 		$App->item->datesca = $App->nowDate;
 		$App->pageSubTitle = preg_replace('/%ITEMS%/',$_lang['voci-p'],$_lang['lista delle %ITEMS%']);
-		$App->templateApp = 'listInvPur.tpl.php';
+		$App->templateApp = 'listInvPur.html';
 		$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/listInvPur.js"></script>';	
 	break;
 	

@@ -35,47 +35,63 @@ foreach($App->modules AS $sectionKey=>$sectionModules) {
 				$menu = json_decode($module->code_menu);
 				$havesubmenu = 0;
 				if (isset($menu->submenus) && count($menu->submenus)) $havesubmenu = 1;
-				$class = '';
-				if (isset( $App->breadcrumb[1]['name']) && $App->breadcrumb[1]['name'] == $module->name) $class = ' class="active"'; 
+				$class = ' class="nav-item"';
+				if (isset( $App->breadcrumb[1]['name']) && $App->breadcrumb[1]['name'] == $module->name) $class = ' class="nav-item active"'; 
+
 				$li = '<li'.$class.'>';
 				$codemenu = $li.PHP_EOL;
-				$codemenu .= '<a href="'.URL_SITE.$menu->name.'">'.$menu->icon.' <span class="nav-label">'.$menu->label.'</span>'.($havesubmenu == 1 ? '<span class="fa arrow"></span>' : '').'</a>';
-			
-				/* aggiunge submenu 1 */
+				
+				$label = '';
+				if (isset($menu->label)) $label = $menu->label;
+				if (isset($_lang[$label])) $label = $_lang[$label];
+				
+				$moduleName = (isset($menu->name) ? $menu->name : '');
+				$moduleIcon = (isset($menu->icon) ? $menu->icon : '');
+				$moduleAction = (isset($menu->action) ? $menu->action : '');
+				
+				$hrefclass = 'nav-link';	
+				$hrefdata = '';		
 				if (isset($menu->submenus) && is_array($menu->submenus) && count($menu->submenus) > 0) {
-					$codemenu .= '<ul class="nav nav-second-level">';
+					$hrefclass = 'nav-link collapsed';
+					$hrefdata = ' data-toggle="collapse" data-target="#collapse'.$moduleName.'" aria-expanded="true" aria-controls="collapse'.$moduleName.'"';
+				}										
+				$codemenu .= '<a class="'.$hrefclass.'"'.$hrefdata.' href="'.URL_SITE.$moduleName.'">'.$moduleIcon.' <span>'.$label.'</span>'.($havesubmenu == 1 ? '<span class="fa arrow"></span>' : '').'</a>';
+			
+			
+/* aggiunge submenu 1 */
+				if (isset($menu->submenus) && is_array($menu->submenus) && count($menu->submenus) > 0) {
+					
+					$divclass = 'collapse abcde';
+//echo '#'.$moduleAction.'#';
+//echo '#'.Core::$request->action.'#';
+					if ($moduleAction == Core::$request->action) $divclass .= 'collapse 12345 show';
+					
+					
+					$codemenu .= '<div id="collapse'.$moduleName.'" class="'.$divclass.'" aria-labelledby="heading'.$moduleName.'" data-parent="#accordionSidebar"><div class="bg-white py-2 collapse-inner rounded">';
 					foreach ($menu->submenus AS $submenu) {
 						$havesubmenu1 = 0;
 						if (isset($submenu->submenus) && count($submenu->submenus)) $havesubmenu1 = 1;
 						$class = '';
-						if (isset( $App->breadcrumb[2]['name']) && $App->breadcrumb[2]['name'] == $submenu->name) $class = ' class="active"'; 
-						$li = '<li'.$class.'>';		
-						$codemenu .= $li.PHP_EOL;
-						$url = URL_SITE;
-						if (isset($submenu->action)) $url .= $submenu->action.'/';
-						$codemenu .= '<a href="'.$url.$submenu->name.'">'.$submenu->label.'</span>'.($havesubmenu1 == 1 ? '<span class="fa arrow"></span>' : '').'</a>'.PHP_EOL;
-						
-						if (isset($submenu->submenus) && is_array($submenu->submenus) && count($submenu->submenus) > 0) {
-							$codemenu .= '<ul class="nav nav-third-level">'.PHP_EOL;
-							foreach ($submenu->submenus AS $submenu1) {
-								$class = '';
-								if (isset( $App->breadcrumb[3]['name']) && $App->breadcrumb[3]['name'] == $submenu1->name) $class = ' class="active"'; 
-								$li = '<li'.$class.'>'.PHP_EOL;
-								$codemenu .= $li.PHP_EOL;
-								$url = '';
-								if ($submenu1->action != '') {
-									$url = URL_SITE.$submenu1->action.'/'.$submenu1->name;						
-									}
-								$codemenu .= '<a href="'.$url.'">'.$submenu1->label.'</a>'.PHP_EOL;
-								$codemenu .= '</li>'.PHP_EOL;	
-								}
-							$codemenu .= '</ul>'.PHP_EOL;
-							}
-						$codemenu .= '</li>'.PHP_EOL;		
+						if (isset( $App->breadcrumb[2]['name']) && $App->breadcrumb[2]['name'] == $submenu->name) $class = ' class="active"'; 						
+						$subauth = 0;
+						if (isset($submenu->auth) && $submenu->auth == "1") $subauth = 1; 						
+						if ($subauth == 0) {
+							$url = URL_SITE;							
+							$label = $submenu->label;
+							if (isset($_lang[$label])) $label = $_lang[$label];								
+							$submoduleName = (isset($submenu->name) ? $submenu->name : '');
+							$submoduleIcon = (isset($submenu->icon) ? $submenu->icon : '');
+							
+							if (isset($submenu->action) && $submenu->action != '') $url .= $submenu->action.'/';	
+							$hrefclass = 'collapse-item';	
+							$hrefdata = '';	
+							$codemenu .= '<a class="'.$hrefclass.'" href="'.$url.$submoduleName.'">'.$submoduleIcon.' '.$label.($havesubmenu1 == 1 ? '<span class="fa arrow"></span>' : '').'</a>'.PHP_EOL;			
+							
+							}	
 						}
-					$codemenu .= '</ul>'.PHP_EOL;
+					$codemenu .= '</div></div>'.PHP_EOL;
 					}
-				/* fine aggiunge submenu 1 */
+				/* fine aggiunge submenu 1 */				
 	
 				$codemenu .= '</li>'.PHP_EOL;	
 				$codemenu = preg_replace('/%LABEL%/',$module->label,$codemenu);

@@ -1,5 +1,6 @@
 <?php
-if (in_array(DB_TABLE_PREFIX.'timecard',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."timecard/index.php")) {
+
+if (Permissions::checkAccessUserModule('timecard',$App->userLoggedData,$App->user_modules_active) == true && in_array(DB_TABLE_PREFIX.'timecard',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."timecard/index.php")) {
 
 	$App->homeBlocks['timecard'] = array(
 		'table'=>DB_TABLE_PREFIX.'timecard',
@@ -8,7 +9,7 @@ if (in_array(DB_TABLE_PREFIX.'timecard',$App->tablesOfDatabase) && file_exists(P
 			'clausevals' => array()
 			),
 		'datafields'=>array($App->lastLogin),
-		'icon panel'=>'fa-clock-o',
+		'icon panel'=>'fas fa-clock',
 		'label'=>ucfirst($_lang['timecard']),
 		'sex suffix'=>ucfirst($_lang['nuove']),
 		'type'=>'info',
@@ -27,7 +28,7 @@ if (in_array(DB_TABLE_PREFIX.'timecard',$App->tablesOfDatabase) && file_exists(P
 			'fieldcreated'=>'datains',
 			'datecreateformat'=>'date'
 			),
-		'icon panel'=>'fa-clock-o',
+		'icon panel'=>'fas fa-clock',
 		'label'=>ucfirst($_lang['ultime']).' '.$_lang['timecard'],
 		'fields'=>array(
 			'content'=>array(
@@ -50,12 +51,12 @@ if (in_array(DB_TABLE_PREFIX.'timecard',$App->tablesOfDatabase) && file_exists(P
 
 
 	}
-/* Thirdparty */
+// Thirdparty 
 
-if (in_array(DB_TABLE_PREFIX.'thirdparty',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."thirdparty/index.php") == true) {
+if (Permissions::checkAccessUserModule('thirdparty',$App->userLoggedData,$App->user_modules_active) == true && in_array(DB_TABLE_PREFIX.'thirdparty',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."thirdparty/index.php") == true) {
 	$App->homeBlocks['thirdparty'] = array(
 		'table'=>DB_TABLE_PREFIX.'thirdparty',
-		'icon panel'=>'fa-users',
+		'icon panel'=>'fas fa-users',
 		'label'=>ucfirst($_lang['terze parti']),
 		'sex suffix'=>ucfirst($_lang['nuove']),
 		'type'=>'info',
@@ -68,7 +69,7 @@ if (in_array(DB_TABLE_PREFIX.'thirdparty',$App->tablesOfDatabase) && file_exists
 		
 	$App->homeTables['contacts'] = array(
 		'table'=>DB_TABLE_PREFIX.'thirdparty',
-		'icon panel'=>'fa-users',
+		'icon panel'=>'fas fa-users',
 		'label'=>ucfirst($_lang['ultime']).' '.$_lang['terze parti'],
 		'fields'=>array(
 			'ragione_sociale'=>array(
@@ -84,12 +85,12 @@ if (in_array(DB_TABLE_PREFIX.'thirdparty',$App->tablesOfDatabase) && file_exists
 			)
 		);	
 	}
-	
-/* Projects */
-if (in_array(DB_TABLE_PREFIX.'projects',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."projects/index.php") == true) {
+
+// Projects 
+if (Permissions::checkAccessUserModule('projects',$App->userLoggedData,$App->user_modules_active) == true && in_array(DB_TABLE_PREFIX.'projects',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."projects/index.php") == true) {
 	$App->homeBlocks['projects'] = array(
 		'table'=>DB_TABLE_PREFIX.'projects',
-		'icon panel'=>'fa-cog',
+		'icon panel'=>'fas fa-project-diagram',
 		'label'=>ucfirst($_lang['progetti']),
 		'sex suffix'=>ucfirst($_lang['nuovi']),
 		'type'=>'info',
@@ -101,7 +102,7 @@ if (in_array(DB_TABLE_PREFIX.'projects',$App->tablesOfDatabase) && file_exists(P
 		);
 	$App->homeTables['projects'] = array(
 		'table'=>DB_TABLE_PREFIX.'projects',
-		'icon panel'=>'fa-cog',
+		'icon panel'=>'fas fa-project-diagram',
 		'label'=>ucfirst($_lang['ultimi']).' '.$_lang['progetti'],
 		'fields'=>array(
 			'title'=>array(
@@ -117,12 +118,12 @@ if (in_array(DB_TABLE_PREFIX.'projects',$App->tablesOfDatabase) && file_exists(P
 			)
 		);
 	}
-	
-/* Todo */
-if (in_array(DB_TABLE_PREFIX.'todo',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."todo/index.php")  == true) {
+
+// Todo 
+if (Permissions::checkAccessUserModule('todo',$App->userLoggedData,$App->user_modules_active) == true && in_array(DB_TABLE_PREFIX.'todo',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."todo/index.php")  == true) {
 	$App->homeBlocks['todo'] = array(
 		'table'=>DB_TABLE_PREFIX.'todo',
-		'icon panel'=>'fa-bookmark-o',
+		'icon panel'=>'fas fa-bookmark',
 		'label'=>ucfirst($_lang['da fare']),
 		'sex suffix'=>ucfirst($_lang['nuovi']),
 		'type'=>'info',
@@ -135,7 +136,7 @@ if (in_array(DB_TABLE_PREFIX.'todo',$App->tablesOfDatabase) && file_exists(PATH.
 		
 	$App->homeTables['todo'] = array(
 		'table'=>DB_TABLE_PREFIX.'todo',
-		'icon panel'=>'fa-bookmark-o',
+		'icon panel'=>'fas fa-bookmark',
 		'label'=>ucfirst($_lang['ultimi']).' '.$_lang['da fare'],
 		'fields'=>array(
 			'title'=>array(
@@ -151,12 +152,12 @@ if (in_array(DB_TABLE_PREFIX.'todo',$App->tablesOfDatabase) && file_exists(PATH.
 			)
 		);	
 	}
-	
-/* Invoices sales */
-if (in_array(DB_TABLE_PREFIX.'invoices_sales',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."invoices/index.php") == true) {
+
+// Invoices sales 
+if (Permissions::checkAccessUserModule('invoices',$App->userLoggedData,$App->user_modules_active) == true && in_array(DB_TABLE_PREFIX.'invoices_sales',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."invoices/index.php") == true) {
 	$App->homeBlocks['invoices_sales'] = array(
 		'table'=>DB_TABLE_PREFIX.'invoices_sales',
-		'icon panel'=>'fa-wpforms',
+		'icon panel'=>'fas fa-euro-sign',
 		'label'=>ucfirst($_lang['fatture vendite']),
 		'sex suffix'=>ucfirst($_lang['nuove']),
 		'type'=>'info',
@@ -178,7 +179,7 @@ if (in_array(DB_TABLE_PREFIX.'invoices_sales',$App->tablesOfDatabase) && file_ex
 			'fields'=>implode(',',$fields),
 			'order'=>"created DESC"
 			),
-		'icon panel'=>'fa-wpforms',
+		'icon panel'=>'fas fa-euro-sign',
 		'label'=>ucfirst($_lang['ultime']).' '.$_lang['fatture vendite'],
 		'fields'=>array(
 			'number'=>array(
@@ -208,12 +209,12 @@ if (in_array(DB_TABLE_PREFIX.'invoices_sales',$App->tablesOfDatabase) && file_ex
 			)
 		);	
 	}
-	
-/* Invoices purchases */
-if (in_array(DB_TABLE_PREFIX.'invoices_purchases',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."invoices/index.php") == true) {
+
+// Invoices purchases
+if (Permissions::checkAccessUserModule('invoices',$App->userLoggedData,$App->user_modules_active) == true && in_array(DB_TABLE_PREFIX.'invoices_purchases',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."invoices/index.php") == true) {
 	$App->homeBlocks['invoices_purchases'] = array(
 		'table'=>DB_TABLE_PREFIX.'invoices_purchases',
-		'icon panel'=>'fa-wpforms',
+		'icon panel'=>'fas fa-euro-sign',
 		'label'=>ucfirst($_lang['fatture acquisti']),
 		'sex suffix'=>ucfirst($_lang['nuove']),
 		'type'=>'info',
@@ -221,8 +222,8 @@ if (in_array(DB_TABLE_PREFIX.'invoices_purchases',$App->tablesOfDatabase) && fil
 		'url item'=>array (
 			'string'=>URL_SITE.'invoices/listItep',
 			'opz'=>array()
-			)
-		);	
+		)
+	);	
 	
 	$fields = array();
 	$fields[] = "i.*";
@@ -233,7 +234,7 @@ if (in_array(DB_TABLE_PREFIX.'invoices_purchases',$App->tablesOfDatabase) && fil
 			'fields'=>implode(',',$fields),
 			'order'=>"created DESC"
 			),
-		'icon panel'=>'fa-wpforms',
+		'icon panel'=>'fas fa-euro-sign',
 		'label'=>ucfirst($_lang['ultime']).' '.$_lang['fatture acquisti'],
 		'fields'=>array(
 			'number'=>array(
@@ -256,10 +257,11 @@ if (in_array(DB_TABLE_PREFIX.'invoices_purchases',$App->tablesOfDatabase) && fil
 			)
 		);	
 	}
-	
-/* Estimates  */
+
+/*	
+// Estimate 
 if (in_array(DB_TABLE_PREFIX.'estimates',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."estimates/index.php") == true) {
-	$App->homeBlocks['estimates'] = array(
+	$App->homeBlocks['estimates'] = array($fields = array();
 		'table'=>DB_TABLE_PREFIX.'estimates',
 		'icon panel'=>'fa-bullseye',
 		'label'=>ucfirst($_lang['preventivi']),
@@ -304,4 +306,86 @@ if (in_array(DB_TABLE_PREFIX.'estimates',$App->tablesOfDatabase) && file_exists(
 			)
 		);	
 	}
+	
+/* bilancio entries */
+
+
+if (Permissions::checkAccessUserModule('bilanciofamiliare',$App->userLoggedData,$App->user_modules_active) == true && in_array(DB_TABLE_PREFIX.'bilancio_familiare',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."bilanciofamiliare/index.php") == true) {
+
+	$App->homeBlocks['bilanciofamiliare-e'] = array(
+		'table'=>DB_TABLE_PREFIX.'bilancio_familiare',
+		'sqloption'=> array(
+			'clause'=>'created > ? AND type = 1'
+		),
+		'icon panel'=>'fas fa-euro-sign',
+		'label'=>ucfirst($_lang['bilancio entrate']),
+		'sex suffix'=>ucfirst($_lang['nuove']),
+		'type'=>'info',
+		'url'=>true,
+		'url item'=>array (
+			'string'=>URL_SITE.'bilanciofamiliare/listEntr',
+			'opz'=>array()
+			)
+		);	
+	
+	$App->homeTables['bilanciofamiliare-e'] = array(
+		'table'=>DB_TABLE_PREFIX.'bilancio_familiare',
+		'sqloption'=> array(
+			'clause'=>'created > ? AND type = 1'
+		),
+		'icon panel'=>'fas fa-euro-sign',
+		'label'=>ucfirst($_lang['ultime']).' '.$_lang['bilancio entrate'],
+		'fields'=>array(
+			'description'=>array(
+				'type'=>'varchar',
+				'label'=>ucfirst($_lang['descrizione']),
+				'url'=>true,
+				'url item'=>array(
+					'string'=>URL_SITE.'bilanciofamiliare/listEntr',
+					'opz'=>array(
+					)
+				)
+			)
+		)
+	);	
+	
+	$App->homeBlocks['bilanciofamiliare-u'] = array(
+		'table'=>DB_TABLE_PREFIX.'bilancio_familiare',
+		'sqloption'=> array(
+			'clause'=>'created > ? AND type = 0'
+		),
+		'icon panel'=>'fas fa-euro-sign',
+		'label'=>ucfirst($_lang['bilancio uscite']),
+		'sex suffix'=>ucfirst($_lang['nuove']),
+		'type'=>'info',
+		'url'=>true,
+		'url item'=>array (
+			'string'=>URL_SITE.'bilanciofamiliare/listOutp',
+			'opz'=>array()
+			)
+		);	
+	
+	$App->homeTables['bilanciofamiliare-u'] = array(
+		'table'=>DB_TABLE_PREFIX.'bilancio_familiare',
+		'sqloption'=> array(
+			'clause'=>'created > ? AND type = 0'
+		),
+		'icon panel'=>'fas fa-euro-sign',
+		'label'=>ucfirst($_lang['ultime']).' '.$_lang['bilancio uscite'],
+		'fields'=>array(
+			'description'=>array(
+				'type'=>'varchar',
+				'label'=>ucfirst($_lang['descrizione']),
+				'url'=>true,
+				'url item'=>array(
+					'string'=>URL_SITE.'bilanciofamiliare/listOutp',
+					'opz'=>array(
+					)
+				)
+			)
+		)
+	);	
+
+		
+}
 ?>

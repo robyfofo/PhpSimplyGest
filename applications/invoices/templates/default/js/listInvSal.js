@@ -1,4 +1,4 @@
-/* invoices/listInvSal.js v.1.0.0. 14/03/2019 */
+/* invoices/listInvSal.js v.1.2.0. 02/12/2019 */
 var requestSent = false;
 
 $(document).ready(function() {
@@ -21,24 +21,24 @@ $(document).ready(function() {
 			{"data":"total","targets":7,"className":"text-right"},
 			{"data":"totaltaxes","targets":8,"className":"text-right"},
 			{"data":"totalinvoice","targets":9,"className":"text-right"},
-			{"data":"pdf","targets":10,"orderable":false},
-			{"data":"actions","targets":11,"orderable":false,"className":"text-right"}
+			{"data":"pdf","targets":10,"orderable":false,"className":"actions"},
+			{"data":"actions","targets":11,"orderable":false,"className":"actions"}
   			],
 		language: {
 			sSearch: lang['search'],
-         lengthMenu: lang['lengthMenu'],
-         zeroRecords: lang['zeroRecords'],
-         info: lang['datatableInfo'],
-         infoEmpty: lang['infoEmpty'],
-         infoFiltered: lang['infoFiltered'],
-         loadingRecords: lang['loadingRecords'],
+         	lengthMenu: lang['lengthMenu'],
+         	zeroRecords: lang['zeroRecords'],
+         	info: lang['datatableInfo'],
+         	infoEmpty: lang['infoEmpty'],
+         	infoFiltered: lang['infoFiltered'],
+         	loadingRecords: lang['loadingRecords'],
     		processing:     lang['processing'],
-         paginate: {
-        		first:      lang['paginate']['first'],
+         	paginate: {
+       			first:      lang['paginate']['first'],
         		last:       lang['paginate']['last'],
         		next:       lang['paginate']['next'],
         		previous:   lang['paginate']['previous']
-    			}
+    		}
       	},
       ajax: {
 		 	type : "GET",
@@ -51,12 +51,12 @@ $(document).ready(function() {
 				alertSegnapagata();
 				return json.data;
             }       
-		 	}
-     
-		 
-    } );
-		
-	});
+		 },
+  		drawCallback: function(settings) {
+			$('#listDataID_paginate ul.pagination').addClass("pagination-sm");
+		}		 
+	});	
+});
 
 
 function alertDelete() {

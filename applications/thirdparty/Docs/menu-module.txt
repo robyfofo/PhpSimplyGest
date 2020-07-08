@@ -1,7 +1,7 @@
-<li class="%LICLASS%">
-	<a href="#"><i class="fa fa-users fa-fw"></i> %LABEL%<span class="fa arrow"></span></a>
-	<ul class="nav nav-second-level">
-		<li><a href="%URLSITE%%NAME%/listScat"><i class="fa fa-folder-open fa-fw"></i> Categorie</a></li>
-		<li><a href="%URLSITE%%NAME%/listItem"><i class="fa fa-users fa-fw"></i> Soggetti Terzi</a></li>
-	</ul>
-</li>
+{
+	"action":"thirdparty","name":"%NAME%","icon":"<i class=\"fas fa-users\"><\/i>","label":"%LABEL%","submenus":
+		[
+			{"action":"thirdparty","name":"listScat","icon":"<i class=\"fas fa-folder-open\"><\/i>","label":"Categorie"},
+			{"action":"thirdparty","name":"listItem","icon":"<i class=\"fas fa-users\"><\/i>","label":"Soggetti Terzi"}
+		]
+}

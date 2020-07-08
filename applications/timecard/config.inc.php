@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * timecard/config.inc.php v.1.0.0. 04/03/2019
+ * timecard/config.inc.php v.1.2.0. 21/12/2019
 */
 
 $App->params = new stdClass();
@@ -35,7 +35,7 @@ $App->params->ordersType['pite'] = 'DESC';
 $App->params->tables['pite'] = DB_TABLE_PREFIX.'timecard_predefinite';
 $App->params->fields['pite'] = array(
 	'id'=>array('label'=>'ID','required'=>false,'type'=>'int|8','autoinc'=>true,'nodb'=>true,'primary'=>true),
-	'id_user'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>true,'type'=>'int|8','defValue'=>$App->userLoggedData->id),
+	'users_id'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>true,'type'=>'int|8','defValue'=>$App->userLoggedData->id),
 	'title'=>array('label'=>$_lang['titolo'],'searchTable'=>true,'required'=>true,'type'=>'varchar|255'),
 	'content'=>array('label'=>$_lang['contenuto'],'searchTable'=>true,'required'=>false,'type'=>'text'),
 	'starttime'=>array('label'=>$_lang['ora inizio'],'searchTable'=>false,'required'=>false,'type'=>'time','validate'=>'timepicker'),

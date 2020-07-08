@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * thirdparty/items.php v.1.0.0. 31/10/2018
+ * thirdparty/items.php v.1.2.0. 16/12/2019
 */
 
 if (isset($_POST['itemsforpage']) && isset($_MY_SESSION_VARS[$App->sessionName]['ifp']) && $_MY_SESSION_VARS[$App->sessionName]['ifp'] != $_POST['itemsforpage']) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'ifp',$_POST['itemsforpage']);
@@ -51,8 +51,8 @@ switch(Core::$request->method) {
 	
 	case 'insertItem':
 		if ($_POST) {   		
-			/* parsa i post in base ai campi */
-			Form::parsePostByFields($App->params->fields['item'],$_lang,array());					
+			// parsa i post in base ai campi
+			Form::parsePostByFields($App->params->fields['item'],$_lang,array());				
 			if (Core::$resultOp->error == 0) {									
 				Sql::insertRawlyPost($App->params->fields['item'],$App->params->tables['item']);
 				if (Core::$resultOp->error == 0) {							   						   							   				
@@ -172,7 +172,7 @@ switch(Core::$request->method) {
 		$arr = array();
 		if (is_array($obj) && count($obj) > 0) {
 			foreach ($obj AS $key=>$value) {
-				$actions = '<a class="btn btn-default btn-circle" href="'.URL_SITE.Core::$request->action.'/'.($value->active == 0 ? 'active' : 'disactive').'Item/'.$value->id.'" title="'.($value->active == 0 ? ucfirst($_lang['attiva']).' '.$_lang['la voce'] : ucfirst($_lang['disattiva']).' '.$_lang['la voce']).'"><i class="fa fa-'.($value->active == 1 ? 'unlock' : 'lock').'"> </i></a><a class="btn btn-default btn-circle" href="'.URL_SITE.Core::$request->action.'/modifyItem/'.$value->id.'" title="'.ucfirst($_lang['modifica']).' '.$_lang['la voce'].'"><i class="fa fa-edit"> </i></a><a class="btn btn-default btn-circle confirmdelete" href="'.URL_SITE.Core::$request->action.'/deleteItem/'.$value->id.'" title="'.ucfirst($_lang['cancella']).' '.$_lang['la voce'].'"><i class="fa fa-cut"> </i></a>';
+				$actions = '<a class="btn btn-default btn-sm" href="'.URL_SITE.Core::$request->action.'/'.($value->active == 0 ? 'active' : 'disactive').'Item/'.$value->id.'" title="'.($value->active == 0 ? ucfirst($_lang['attiva']).' '.$_lang['la voce'] : ucfirst($_lang['disattiva']).' '.$_lang['la voce']).'"><i class="fas fa-'.($value->active == 1 ? 'unlock' : 'lock').'"></i></a><a class="btn btn-default btn-sm" href="'.URL_SITE.Core::$request->action.'/modifyItem/'.$value->id.'" title="'.ucfirst($_lang['modifica']).' '.$_lang['la voce'].'"><i class="far fa-edit"></i></a><a class="btn btn-default btn-sm confirmdelete" href="'.URL_SITE.Core::$request->action.'/deleteItem/'.$value->id.'" title="'.ucfirst($_lang['cancella']).' '.$_lang['la voce'].'"><i class="fa fa-trash-alt"></i></a>';
 				$tablefields = array(
 					'id'=>$value->id,
 					'category'=>$value->category,
@@ -215,8 +215,11 @@ switch((string)$App->viewMethod) {
 		$opt = array('tableCat'=>$App->params->tables['scat'],'type'=>0,'multilanguage'=>0,'ordering'=>0,'languages'=>$globalSettings['languages'],'lang'=>$_lang['user']);
 		$App->subcategories = Categories::getObjFromSubCategories($opt);				
 		$App->item->active = 1;
+		$App->item->stampa_quantita = 1;
+		$App->item->stampa_unita = 1;
+
 		if (Core::$resultOp->error == 1) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['item']);
-		$App->templateApp = 'formItem.tpl.php';
+		$App->templateApp = 'formItem.html';
 		$App->methodForm = 'insertItem';	
 		$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/formItem.js"></script>';
 	break;
@@ -232,7 +235,7 @@ switch((string)$App->viewMethod) {
 			$App->item = Sql::getRecord();
 			if (isset($App->item->id) && $App->item->id > 0) {
 				if (Core::$resultOp->error == 1) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['item']);
-				$App->templateApp = 'formItem.tpl.php';
+				$App->templateApp = 'formItem.html';
 				$App->methodForm = 'updateItem';	
 				$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/formItem.js"></script>';
 				} else {
@@ -245,8 +248,8 @@ switch((string)$App->viewMethod) {
 
 	case 'list':
 		$App->pageSubTitle = preg_replace('/%ITEMS%/',$_lang['voci'],$_lang['lista delle %ITEMS%']);
-		$App->templateApp = 'listItem.tpl.php';
-		$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/listItem.js"></script>';	
+		$App->templateApp = 'listItems.html';
+		$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/listItems.js"></script>';	
 	break;
 	
 	default:

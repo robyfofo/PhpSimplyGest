@@ -1,12 +1,5 @@
 <?php
-/**
- * Framework siti html-PHP-Mysql
- * PHP Version 7
- * @author Roberto Mantovani (<me@robertomantovani.vr.it>
- * @copyright 2009 Roberto Mantovani
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * admin/site-modules/module.class.php v.3.0.0. 04/11/2016
-*/
+/* wscms/modules/module.class.php v.3.5.2. 20/02/2018 */
 
 class Module {
 	private $action;
@@ -18,7 +11,7 @@ class Module {
 		Core::$request->action = $action;
 		$this->appTable = $table;
 		$this->error = 0;	
-		$this->message = '';
+		$this->message ='';
 		$this->messages = array();
 		}
 	}

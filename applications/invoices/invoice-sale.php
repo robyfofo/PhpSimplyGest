@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * invoices/invoice-sale.php v.1.0.0. 14/03/2019
+ * invoices/invoice-sale.php v.1.2.0. 13/12/2019
 */
 
 if (isset($_POST['itemsforpage']) && isset($_MY_SESSION_VARS[$App->sessionName]['ifp']) && $_MY_SESSION_VARS[$App->sessionName]['ifp'] != $_POST['itemsforpage']) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'ifp',$_POST['itemsforpage']);
@@ -91,7 +91,7 @@ switch(Core::$request->method) {
 	case 'insertInvSal':
 		if ($_POST) {
 			/* parsa i post in base ai campi */
-			Form::parsePostByFields($App->params->fields['InvSal'],$_lang,array());			
+			Form::parsePostByFields($App->params->fields['InvSal'],$_lang,array());		
 			if (Core::$resultOp->error == 0) {
 				DateFormat::checkDateTimeIsoIniEndInterval($_POST['dateins'],$_POST['datesca'],'>');
 				if (Core::$resultOp->error == 0) {									
@@ -240,6 +240,18 @@ switch(Core::$request->method) {
 		$and = '';
 		$fieldsValue = array();
 		
+		/* permissions query */
+		list($permClause,$fieldsValuesPermClause) = Permissions::getSqlQueryItemPermissionForUser($App->userLoggedData,array('fieldprefix'=>'ite.','onlyuser'=>true));
+		if (isset($permClause) && $permClause != '') {
+			$where .= $and.'('.$permClause.')';
+			$and = ' AND ';
+		}
+		if (is_array($fieldsValuesPermClause) && count($fieldsValuesPermClause) > 0) {
+			$fieldsValue = array_merge($fieldsValue,$fieldsValuesPermClause);	
+		}
+		/* end permissions items */
+
+		
 		/* aggiunge campi join */
 		//$App->params->fields['InvSal']['cus.ragione_sociale'] = array('searchTable'=>true,'type'=>'varchar');
 		//$App->params->fields['itap']['ite.total'] = array('searchTable'=>true,'type'=>'float');
@@ -269,7 +281,7 @@ switch(Core::$request->method) {
 		$fields[] = "SUM(art.price_total) + ((SUM(art.price_total) * ite.tax) / 100) + ((SUM(art.price_total) * ite.rivalsa) / 100) AS total_invoice";
 		
 		/* conta tutti i records */
-		$recordsTotal = Sql::countRecordQry($App->params->tables['InvSal'],'id','',array());
+		$recordsTotal = Sql::countRecordQry($App->params->tables['InvSal']." AS ite",'id',$where,$fieldsValue);
 		$recordsFiltered = $recordsTotal;
 
 		if ($filtering == true) {
@@ -287,8 +299,8 @@ switch(Core::$request->method) {
 		if (is_array($obj) && count($obj) > 0) {
 			foreach ($obj AS $key=>$value) {
 				/* crea la colonna actions */
-				$pdf = '<a class="btn btn-default btn-circle" href="'.URL_SITE.Core::$request->action.'/invoicesExpPdf/'.$value->id.'" title="'.ucfirst($_lang['esporta in pdf']).' '.$_lang['la voce'].'" target="_blank"><i class="fa fa-print"> </i></a>';
-				$actions = '<a class="btn btn-default btn-circle" href="'.URL_SITE.Core::$request->action.'/modifyInvSal/'.$value->id.'" title="'.ucfirst($_lang['modifica']).' '.$_lang['la voce'].'"><i class="fa fa-edit"> </i></a><a class="btn btn-default btn-circle confirmdelete" href="'.URL_SITE.Core::$request->action.'/deleteInvSal/'.$value->id.'" title="'.ucfirst($_lang['cancella']).' '.$_lang['la voce'].'"><i class="fa fa-cut"> </i></a>';						
+				$pdf = '<a class="btn btn-default btn-sm" href="'.URL_SITE.Core::$request->action.'/invoicesExpPdf/'.$value->id.'" title="'.ucfirst($_lang['esporta in pdf']).' '.$_lang['la voce'].'" target="_blank"><i class="fas fa-print"></i></a>';
+				$actions = '<a class="btn btn-default btn-sm" href="'.URL_SITE.Core::$request->action.'/modifyInvSal/'.$value->id.'" title="'.ucfirst($_lang['modifica']).' '.$_lang['la voce'].'"><i class="far fa-edit"></i></a><a class="btn btn-default btn-sm confirmdelete" href="'.URL_SITE.Core::$request->action.'/deleteInvSal/'.$value->id.'" title="'.ucfirst($_lang['cancella']).' '.$_lang['la voce'].'"><i class="fas fa-trash-alt"></i></a>';						
 				/* calcola tassa aggiuntiva */
 				$invoiceTotalTax = 0;
 				if ($value->tax > 0) $invoiceTotalTax = ($value->total * $value->tax) / 100;
@@ -303,11 +315,11 @@ switch(Core::$request->method) {
 				$value->totalInvoiceLabel = '€ '.number_format($value->total + $invoiceTotalTax + $invoiceTotalRivalsa,2,',','.');
 				$value->totalInvoiceLabel = '€ '.number_format($value->total_invoice,2,',','.');
 				
-				$pagata = ' <a href="#" class="btn btn-info btn-xs"><i class="fa fa-money success" aria-hidden="true"></i></a>';
-				if ($value->pagata == 1) $pagata = ' <a href="'.URL_SITE.Core::$request->action.'/pagaInvSal/'.$value->id.'" title="'.ucfirst($_lang['segna come pagata']).'" class="btn btn-success btn-xs segnapagata"><i class="fa fa-money success" aria-hidden="true"></i></a>';
-				if ($value->pagata == 0 && $App->nowDate > $value->datesca)
+				$pagata = ' <a href="#" class="btn btn-info btn-sm"><i class="fas fa-money success" aria-hidden="true"></i></a>';
+				if ($value->pagata == 1) $pagata = ' <a href="'.URL_SITE.Core::$request->action.'/pagaInvSal/'.$value->id.'" title="'.ucfirst($_lang['segna come pagata']).'" class="btn btn-success btn-sm segnapagata"><i class="fas fa-money-bill-alt success" aria-hidden="true"></i></a>';
+				if ($value->pagata == 0)
 				{
-					$pagata = ' <a href="'.URL_SITE.Core::$request->action.'/pagaInvSal/'.$value->id.'" title="'.ucfirst($_lang['segna come pagata']).'" class="btn btn-danger btn-xs segnapagata"><i class="fa fa-money success" aria-hidden="true"></i></a>';
+					$pagata = ' <a href="'.URL_SITE.Core::$request->action.'/pagaInvSal/'.$value->id.'" title="'.ucfirst($_lang['segna come pagata']).'" class="btn btn-danger btn-sm segnapagata"><i class="fas fa-money-bill-alt success" aria-hidden="true"></i></a>';
 
 				}
 								
@@ -354,8 +366,10 @@ switch((string)$App->viewMethod) {
 		$App->item->rivalsa = $App->company->rivalsa;
 		$App->item->tax = 0;			
 		$App->item->active = 1;
+		$App->item->stampa_quantita = 1;
+		$App->item->stampa_unita = 1;
 		if (Core::$resultOp->error == 1) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['InvSal']);
-		$App->templateApp = 'formInvSal.tpl.php';
+		$App->templateApp = 'formInvSal.html';
 		$App->methodForm = 'insertInvSal';	
 		$App->css[] = '<link href="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/css/formInvSal.css" rel="stylesheet">';
 		$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/formInvSal.js"></script>';
@@ -378,7 +392,9 @@ switch((string)$App->viewMethod) {
 			Sql::setOrder('id ASC');
 			if (Core::$resultOp->error <> 1) $obj = Sql::getRecords();	
 			/* sistemo dati */	
+			$tot_price_unity = 0;
 			$tot_price_total = 0;
+			$tot_quantity_total = 0;
 			$tot_price_tax = 0;
 			$tot_total = 0;
 			$arr = array();
@@ -390,7 +406,11 @@ switch((string)$App->viewMethod) {
 					$value->price_tax_label = '€ '.number_format($value->price_tax,2,',','.');
 					$value->total_label = '€ '.number_format($value->total,2,',','.');
 					
+					$value->invoice_numbel = $value->id_customer.'-'.intval($value->number).'-'.$value->number_year;
+					
+					$tot_price_unity += $value->price_unity;
 					$tot_price_total += $value->price_total;
+					$tot_quantity_total += $value->quantity;
 					$tot_price_tax += $value->price_tax;
 					$tot_total += $value->total;
 			
@@ -399,7 +419,9 @@ switch((string)$App->viewMethod) {
 				}
 			$App->item_articles = $arr;
 			
+			$App->item->art_tot_price_unity_label = '€ '.number_format($tot_price_unity,2,',','.');
 			$App->item->art_tot_price_total_label = '€ '.number_format($tot_price_total,2,',','.');
+			$App->item->art_tot_quantity_label = $tot_quantity_total;
 			$App->item->art_tot_price_tax_label = '€ '.number_format($tot_price_tax,2,',','.');
 			$App->item->art_tot_total_label = '€ '.number_format($tot_total,2,',','.');
 			
@@ -415,7 +437,7 @@ switch((string)$App->viewMethod) {
 			$App->item->invoiceTotalRivalsa_label = '€ '.number_format($App->item->invoiceTotalRivalsa,2,',','.');
 			$App->item->invoiceTotal_label = '€ '.number_format($App->item->invoiceTotal,2,',','.');
 		
-			$App->templateApp = 'formInvSal.tpl.php';
+			$App->templateApp = 'formInvSal.html';
 			$App->methodForm = 'updateInvSal';
 			$App->css[] = '<link href="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/css/formInvSal.css" rel="stylesheet">';
 			$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/formInvSal.js"></script>';
@@ -431,7 +453,7 @@ switch((string)$App->viewMethod) {
 		$App->item->dateins = $App->nowDate;
 		$App->item->datesca = $App->nowDate;
 		$App->pageSubTitle = preg_replace('/%ITEMS%/',$_lang['voci'],$_lang['lista delle %ITEMS%']);
-		$App->templateApp = 'listInvSal.tpl.php';
+		$App->templateApp = 'listInvSal.html';
 		$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/listInvSal.js"></script>';	
 	break;
 	

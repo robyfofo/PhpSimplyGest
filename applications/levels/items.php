@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * admin/levels/items.php v.1.0.0. 24/07/2018
+ * admin/levels/items.php v.1.2.0. 17/12/2019
 */
 
 if(isset($_POST['itemsforpage'])) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'ifp',$_POST['itemsforpage']);
@@ -99,8 +99,9 @@ switch((string)$App->viewMethod) {
 		$App->item->active = 1;
 		$App->item->modules = array();
 		if (Core::$resultOp->error == 1) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['item']);
-		$App->templateApp = 'formItem.tpl.php';
-		$App->methodForm = 'insertItem';	
+		$App->templateApp = 'formItem.html';
+		$App->methodForm = 'insertItem';
+		$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/formItem.js"></script>';	
 	break;
 	
 	case 'formMod':
@@ -109,8 +110,9 @@ switch((string)$App->viewMethod) {
 		$App->item = Sql::getRecord();
 		if (Core::$resultOp->error == 1) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['item']);
 		$App->item->modules = explode(',', $App->item->modules);
-		$App->templateApp = 'formItem.tpl.php';
-		$App->methodForm = 'updateItem';	
+		$App->templateApp = 'formItem.html';
+		$App->methodForm = 'updateItem';
+		$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/formItem.js"></script>';
 	break;
 
 	case 'list':
@@ -135,14 +137,9 @@ switch((string)$App->viewMethod) {
 		if (Core::$resultOp->error <> 1) $App->items = Sql::getRecords();
 		$App->pagination = Utilities::getPagination($App->page,Sql::getTotalsItems(),$App->itemsForPage);
 		$App->pageSubTitle = preg_replace('/%ITEMS%/',$_lang['voci'],$_lang['lista dei %ITEMS%']);
-		$App->templateApp = 'listItem.tpl.php';	
-	break;
-	
+		$App->templateApp = 'listItems.html';
+		$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/listItems.js"></script>';
+	break;	
 	default:
 	break;
-	}	
-
-
-/* imposta le variabili Savant */
-$App->globalSettings = $globalSettings;
-$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/module.js"></script>';
+}

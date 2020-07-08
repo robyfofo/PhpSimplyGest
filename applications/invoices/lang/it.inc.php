@@ -23,6 +23,9 @@ $_lang['cliente']  = "cliente";
 $_lang['tassa aggiuntiva'] = "tassa aggiuntiva";
 $_lang['inserisci una tassa aggiuntiva'] = "inserisci una tassa aggiuntiva";
 $_lang['articoli associati']  = "articoli associati";
+
+$_lang['aggiungi articolo']  = "aggiungi articolo";
+
 $_lang['inserisci testo articolo']  = "inserisci testo articolo";
 $_lang['totale movimenti'] = "total movimenti";
 $_lang['Fattura non trovata!'] = "Fattura non trovata!";

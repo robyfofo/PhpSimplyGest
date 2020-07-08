@@ -1,18 +1,17 @@
-/* core/profile.js v.1.0.0. 04/07/2018 */
-
-$(document).ready(function() {		
-
-	});
+/* wscms/core/password.js v.1.2.0. 01/12/2019 */
+$(document).ready(function() {
 	
-/* controllo password */	
-$('#passwordCKID').change(function() {
-	var pass = $('#passwordID').val();
-	var passCK = $('#passwordCKID').val();
-	if (pass !== passCK) {
-		bootbox.alert(messages['Le due password non corrispondono!']);
+	/* controllo password */	
+	$('#passwordCKID').change(function(){
+		var pass = $('#passwordID').val();
+		var passCK = $('#passwordCKID').val();
+		if(pass !== passCK) {
+			bootbox.alert(messages['Le due password non corrispondono!']);
 		}
 	});
-		
+	
+});
+
 $('.submittheform').click(function () {
 	$('input:invalid').each(function () {
 		// Find the tab-pane that this element is inside, and get the id
@@ -22,5 +21,5 @@ $('.submittheform').click(function () {
 		$('.nav a[href="#' + id + '"]').tab('show');
 		// Only want to do it once
 		return false;
-		});
 	});
+})

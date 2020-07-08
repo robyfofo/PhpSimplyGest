@@ -1,5 +1,1 @@
-<li class="%LICLASS%">
-	<a href="%URLSITE%%NAME%"><i class="fa fa-cog fa-fw"></i> %LABEL%</a>
-</li>
-
-{"name":"%NAME%","icon":"<i class=\"fa fa-cog fa-fw\"><\/i>","label":"%LABEL%"}
+{"name":"%NAME%","icon":"<i class=\"fas fa-project-diagram\"><\/i>","label":"%LABEL%"}

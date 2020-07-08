@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * users/items.php v.1.0.0. 24/09/2018
+ * users/items.php v.1.2.0. 16/12/2019
 */
 
 //print_r($App->user_levels);
@@ -235,8 +235,9 @@ switch((string)$App->viewMethod) {
 		$App->item->id_level = 0;		
 		$App->templatesAvaiable = $Module->getUserTemplatesArray();
 		if (Core::$resultOp->error == 1) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['item']);
-		$App->templateApp = 'formItem.tpl.php';
+		$App->templateApp = 'formItem.html';
 		$App->methodForm = 'insertItem';	
+		$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/formItem.js"></script>';
 	break;
 	
 	case 'formMod':
@@ -245,8 +246,9 @@ switch((string)$App->viewMethod) {
 		Sql::initQuery($App->params->tables['item'],array('*'),array($App->id),'id = ?');
 		$App->item = Sql::getRecord();
 		if (Core::$resultOp->error == 1) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['item']);
-		$App->templateApp = 'formItem.tpl.php';
+		$App->templateApp = 'formItem.html';
 		$App->methodForm = 'updateItem';	
+		$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/formItem.js"></script>';
 	break;
 
 	case 'list':
@@ -272,7 +274,8 @@ switch((string)$App->viewMethod) {
 		if (Core::$resultOp->error <> 1) $App->items = Sql::getRecords();
 		$App->pagination = Utilities::getPagination($App->page,Sql::getTotalsItems(),$App->itemsForPage);
 		$App->pageSubTitle =  preg_replace('/%ITEMS%/',$_lang['utenti'],$_lang['lista degli %ITEMS%']);	
-		$App->templateApp = 'listItem.tpl.php';	
+		$App->templateApp = 'listItems.html';	
+		$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/listItems.js"></script>';
 	break;
 	
 	default:

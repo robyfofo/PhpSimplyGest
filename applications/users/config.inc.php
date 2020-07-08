@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * admin/users/config.inc.php v.1.0.0. 05/07/2018
+ * users/config.inc.php v.1.2.0. 17/12/2019
 */
 
 $App->params = new stdClass();
@@ -15,7 +15,7 @@ Sql::initQuery(DB_TABLE_PREFIX.'modules',array('label','help_small','help'),arra
 $obj = Sql::getRecord();
 if (Core::$resultOp->error == 0 && is_object($obj)) $App->params = $obj;
 
-$App->params->codeVersion = ' 1.0.0.';
+$App->params->codeVersion = ' 1.2.0.';
 $App->params->pageTitle = $App->params->label;
 $App->params->breadcrumb = '<li class="active"><i class="icon-user"></i> '.$App->params->label.'</li>';
 

@@ -5,10 +5,10 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * app/index.php v.1.0.0. 14/03/2019
+ * app/index.php v.1.2.0. 28/11/2019
 */
-
-//ini_set('display_errors',1);
+session_start();
+ini_set('display_errors',1);
 
 define('PATH','');
 define('MAXPATH', str_replace("includes","",dirname(__FILE__)).'');
@@ -39,9 +39,8 @@ $Config = new Config();
 Config::setGlobalSettings($globalSettings);
 $Core = new Core();
 
-use PhpOffice\PhpSpreadsheet\Spreadsheet as GlobalSpreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx as GlobalXlsx;
-
+//use PhpOffice\PhpSpreadsheet\Spreadsheet as GlobalSpreadsheet;
+//use PhpOffice\PhpSpreadsheet\Writer\Xlsx as GlobalXlsx;
 
 //Sql::setDebugMode(1);
 
@@ -54,7 +53,7 @@ $_MY_SESSION_VARS = $my_session->my_session_read();
 /* variabili globali */
 $App = new stdClass;
 define('DB_TABLE_PREFIX',Sql::getTablePrefix());
-$App->templateBase = 'site.tpl.php';
+$App->templateBase = 'struttura.html';
 $renderTpl = true;
 $renderAjax = false;
 $App->templateApp = '';
@@ -100,11 +99,13 @@ Core::getRequest($globalSettings['requestoption']);
 
 if (!isset($_MY_SESSION_VARS['idUser'])){
 	if (Core::$request->action != "nopassword" && Core::$request->action != "nousername") Core::$request->action = 'login';
-	}
+}
 
 /* LIVELLI UTENTE */
 /* carica i livelli */
 $App->user_levels = Permissions::getUserLevels();
+//print_r($App->user_levels);die();
+
 if (Core::$resultOp->error == 1) die('Errore db livello utenti!');
 if (isset($App->userLoggedData->id_level)) {
 	$App->userLoggedData->labelRole = Permissions::getUserLevelLabel($App->user_levels,$App->userLoggedData->id_level,$App->userLoggedData->is_root);
@@ -121,7 +122,7 @@ $App->tablesOfDatabase = Sql::getTablesDatabase($globalSettings['database'][DATA
 foreach($globalSettings['module sections'] AS $key=>$value) {
 	Sql::initQuery(DB_TABLE_PREFIX.'modules',array('*'),array($key),'active = 1 AND section = ?','ordering ASC');
 	$App->modules[$key] = Sql::getRecords();
-	if (Core::$resultOp->error == 1) die('Errore db livello utenti!');
+	if (Core::$resultOp->error == 1) die('Errore db livello utenti e moduli!');
 	}
 
 /* carica i moduli disponibili per l'utente corrente */
@@ -131,9 +132,12 @@ if(isset($App->userLoggedData->id_level) && $App->userLoggedData->id_level > 0) 
 	$obj = new stdClass();
 	Sql::initQuery(DB_TABLE_PREFIX.'levels',array('*'),array($App->userLoggedData->id_level),'active = 1 AND id = ?');
 	$obj = Sql::getRecord();	
-	$App->user_modules_active = explode(',', $obj->modules);	
-	$App->user_first_module_active = $App->user_modules_active[0];
+	if (Core::$resultOp->error == 1) die('Errore db livello moduli per utente!');	
+	if (isset($obj->modules)) {
+		$App->user_modules_active = explode(',', $obj->modules);	
+		$App->user_first_module_active = $App->user_modules_active[0];
 	}
+}
 /* integra con i core */
 $App->user_modules_active = array_merge($App->user_modules_active, $App->modulesCore);
 
@@ -168,7 +172,6 @@ echo '<br>$action: '.$action;
 echo '<br>$index: '.$index;
 */
 
-
 if (file_exists(PATH."iniapp.php")) include_once(PATH."iniapp.php");
 
 if (file_exists(PATH.$pathApplications.$action.$index)) {
@@ -183,12 +186,20 @@ if (file_exists(PATH."endapp.php")) include_once(PATH."endapp.php");
 
 if ($App->coreModule == true) {
 	$pathtemplateApp = PATH.$pathApplications .= "templates/".$App->templateUser."/";
-	} else {
-		if ($App->templateApp != '') $App->templateApp = Core::$request->action."/templates/".$App->templateUser."/".$App->templateApp;
-		}
+} else {
+	if ($App->templateApp != '') $App->templateApp = Core::$request->action."/templates/".$App->templateUser."/".$App->templateApp;
+}
+		
+$pathtemplateBase = "templates/".$App->templateUser;
+$pathtemplateApp = $pathApplications;
 
-$pathtemplateBase = PATH."templates/".$App->templateUser;
-$pathtemplateApp = PATH.$pathApplications;
+/*
+echo 'aaaa'.$pathtemplateBase;
+echo 'bbbb'.$pathtemplateApp;
+echo 'cccc'.$App->templateBase;
+echo 'dddd'.$App->templateApp;
+die();
+*/
 
 /* genera il template */
 if ($renderTpl == true && $App->templateApp != '') {
@@ -202,17 +213,22 @@ if ($renderTpl == true && $App->templateApp != '') {
 		'CoreRequest'=>Core::$request,
 		'CoreResultOp'=>Core::$resultOp,
 		'MySessionVars'=>$_MY_SESSION_VARS,
+		'Session'   => $_SESSION,
 		'GlobalSettings'=>$globalSettings
 		);
-	$loader = new Twig_Loader_Filesystem($pathtemplateApp);	
-	$loader->addPath($pathtemplateBase,'base');
-	$twig = new Twig_Environment($loader, array(
+	
+	$loader = new \Twig\Loader\FilesystemLoader($pathtemplateBase);
+	$loader->addPath($pathtemplateApp);
+	$twig = new \Twig\Environment($loader, [
+		//'cache' => PATH_UPLOAD_DIR.'compilation_cache',
 		'autoescape'=>false,
 		'debug' => true
-		));
-	$twig->addExtension(new Twig_Extension_Debug());
-	$template = $twig->loadTemplate('@base/'.$App->templateBase);	
+	]);
+
+	$twig->addExtension(new \Twig\Extension\DebugExtension());
+	$template = $twig->load($App->templateBase);
 	echo $template->render($arrayVars);
+	
 	} else { if ($renderAjax != true) echo 'No templateApp found!';}
 	
 if ($renderAjax == true){

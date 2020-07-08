@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * timecard/aitems.php v.1.0.0. 03/03/2019
+ * timecard/aitems.php v.1.2.0. 21/12/2019
 */
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -162,17 +162,17 @@ switch(Core::$request->method) {
 		$limit = '';
 		if (isset($_REQUEST['start']) && $_REQUEST['length'] != '-1') {
 			$limit = " LIMIT ".$_REQUEST['length']." OFFSET ".$_REQUEST['start'];
-			}				
+		}				
 		/* end limit */	
 			
 		/* orders */
-		$orderFields = array('ite.id','ite.id_user','ite.id_project','ite.content','ite.datains','ite.starttime','ite.endtime','ite.worktime');
+		$orderFields = array('ite.id','ite.users_id','ite.id_project','ite.content','ite.datains','ite.starttime','ite.endtime','ite.worktime');
 		$order = array();	
 		if (isset($_REQUEST['order']) && is_array($_REQUEST['order']) && count($_REQUEST['order']) > 0) {		
 			foreach ($_REQUEST['order'] AS $key=>$value)	{				
 				$order[] = $orderFields[$value['column']].' '.$value['dir'];
-				}
 			}
+		}
 		/* end orders */		
 			
 		/* search */
@@ -185,12 +185,13 @@ switch(Core::$request->method) {
 		$App->params->fields['item']['usr.username'] = array('searchTable'=>true,'type'=>'float');
 		
 		/* permissions query */
-		/* se non è root visualizza le timecard proprie */
-		if ($App->userLoggedData->is_root == 0)
-		{
-		$where .= $and."ite.id_user = ?";
-		$and = ' AND ';
-		$fieldsValue[] = $App->userLoggedData->id;
+		list($permClause,$fieldsValuesPermClause) = Permissions::getSqlQueryItemPermissionForUser($App->userLoggedData,array('fieldprefix'=>'ite.','onlyuser'=>true));
+		if (isset($permClause) && $permClause != '') {
+			$where .= $and.'('.$permClause.')';
+			$and = ' AND ';
+		}
+		if (is_array($fieldsValuesPermClause) && count($fieldsValuesPermClause) > 0) {
+			$fieldsValue = array_merge($fieldsValue,$fieldsValuesPermClause);	
 		}
 		/* end permissions items */
 		
@@ -202,13 +203,13 @@ switch(Core::$request->method) {
 				if ($w != '') {
 					$where .= $and."(".$w.")";
 					$and = ' AND ';
-					}
+				}
 				if (is_array($fv) && count($fv) > 0) {
 					$fieldsValue = array_merge($fieldsValue,$fv);
 					$filtering = true;
-					}
 				}
 			}
+		}
 		/* end search */
 		
 		//echo  $where;
@@ -216,13 +217,13 @@ switch(Core::$request->method) {
 		
 		$table = $App->params->tables['item']." AS ite";
 		$table .= " LEFT JOIN ".$App->params->tables['prog']." AS pro  ON (ite.id_project = pro.id)";
-		$table .= " LEFT JOIN ".$App->params->tables['user']." AS usr  ON (ite.id_user = usr.id)";
+		$table .= " LEFT JOIN ".$App->params->tables['user']." AS usr  ON (ite.users_id = usr.id)";
 		$fields[] = "ite.*";
 		$fields[] = "pro.title AS project";
 		$fields[] = "usr.username AS username";
 		
 		/* conta tutti i records */
-		$recordsTotal = Sql::countRecordQry($App->params->tables['item'],'id','',array());
+		$recordsTotal = Sql::countRecordQry($App->params->tables['item'],'id',$where,$fieldsValue);
 		$recordsFiltered = $recordsTotal;
 		
 		if ($filtering == true) 
@@ -240,7 +241,7 @@ switch(Core::$request->method) {
 		$arr = array();
 		if (is_array($obj) && count($obj) > 0) {
 			foreach ($obj AS $key=>$value) {
-				$actions = '<a class="btn btn-default btn-circle confirmdelete" href="'.URL_SITE.Core::$request->action.'/deleteAite/'.$value->id.'" title="'.ucfirst($_lang['cancella']).' '.$_lang['la voce'].'"><i class="fa fa-cut"> </i></a>';
+				$actions = '<a class="btn btn-sm btn-default confirmdelete" href="'.URL_SITE.Core::$request->action.'/deleteAite/'.$value->id.'" title="'.ucfirst($_lang['cancella']).' '.$_lang['la voce'].'"><i class="fas fa-trash-alt"></i></a>';
 				$tablefields = array(
 					'id'=>$value->id,
 					'id_user'=>$value->username,
@@ -283,8 +284,8 @@ switch((string)$App->viewMethod) {
 
 	case 'list':				
 		$App->pageSubTitle = $_lang['lista delle voci'];
-		$App->templateApp = 'listAite.tpl.php';
-		$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/listAite.js"></script>';
+		$App->templateApp = 'listAitems.html';
+		$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/listAitems.js"></script>';
 	break;	
 	
 	default:
