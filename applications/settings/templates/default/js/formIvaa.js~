@@ -105,7 +105,7 @@ $('.modifyArtItem').on('click',function(event) {
 		//alert($id);
 		if ($id > 0) {
 			$.ajax({
-				url: siteUrl+coreRequestAction+'/getArticleAjaxItem',
+				url: siteUrl+CoreRequestAction+'/getArticleAjaxItem',
 				async: "true",
 				cache: "false",
 				type: "POST",

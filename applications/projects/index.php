@@ -31,6 +31,13 @@ switch(substr(Core::$request->method,-4,4)) {
 		include_once(PATH.$App->pathApplications.Core::$request->action."/ajax.php");			
 	break;
 	
+	case 'Expo':
+		$App->sessionName .= '-expo';
+		if (!isset($_MY_SESSION_VARS[$App->sessionName]['page'])) $_MY_SESSION_VARS = $my_session->addSessionsModuleVars($_MY_SESSION_VARS,$App->sessionName,array('page'=>1,'ifp'=>'10','srcTab'=>''));
+		$Module = new Module(Core::$request->action,'');
+		if (file_exists(PATH.$App->pathApplications.Core::$request->action."/export.php")) include_once(PATH.$App->pathApplications.Core::$request->action."/export.php");
+	break;
+	
 	default:
 		if (!isset($_MY_SESSION_VARS[$App->sessionName]['page'])) $_MY_SESSION_VARS = $my_session->addSessionsModuleVars($_MY_SESSION_VARS,$App->sessionName,array('page'=>1,'ifp'=>'10'));
 		$Module = new Module($App->sessionName,$App->params->tables['item']);

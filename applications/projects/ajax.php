@@ -9,6 +9,60 @@
 */
 
 switch(Core::$request->method) {
+	
+	case 'listTimecardsAjax':
+		$idproject = intval(Core::$request->param);
+		if ($idproject > 0) {
+			$output = '';
+			
+			if (Permissions::checkAccessUserModule('timecard',$App->userLoggedData,$App->user_modules_active) == true && in_array(DB_TABLE_PREFIX.'timecard',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."timecard/index.php")) {
+				
+				//  preleva tutte le timecard del progetto
+				$table = $App->params->tables['time'];
+				$fields = array('*');
+				$fieldsVal = array($idproject);
+				$where = 'id_project = ?';
+				
+				// tempo ricerca
+				$when = (isset(Core::$request->params[0]) && Core::$request->params[0] != '' ? Core::$request->params[0] : 'cm');
+								
+				if ($when == 'cm') $where .= " AND MONTH(datains) = MONTH(CURRENT_DATE()) AND YEAR(datains) = YEAR(CURRENT_DATE())";
+				if ($when == 'pm') {
+					$where .= " AND MONTH(datains) = MONTH(CURRENT_DATE()) - 1";
+					// aggiunge l'anno in base al mese (se il mese corrente è 1 aggiunte l'anno precedente)
+					if (intval(date('m')) == 1) {
+						$where .= " AND YEAR(datains) = YEAR(CURRENT_DATE()) - 1";
+					} else {
+						$where .= " AND YEAR(datains) = YEAR(CURRENT_DATE())";
+					}
+				}
+			
+				Sql::initQuery($table,$fields,$fieldsVal,$where);
+				Sql::setOrder('datains DESC');
+				$objalltime = Sql::getRecords();
+							
+				// crea output
+				$output .= '<div class="table-responsive"><table class="table table-fixed table-sm">';
+				$output .= '<thead>';
+					$output .= '<tr><th scope="col" class="col-3">'.ucfirst($_lang['data']).'</th><th scope="col" class="col-3">'.ucfirst($_lang['contenuto']).'</th><th scope="col" class="col-3">'.ucfirst($_lang['inizio']).' - '.ucfirst($_lang['fine']).'</th><th scope="col" class="col-3">'.ucfirst($_lang['tempo lavorato']).'</th></tr>';
+				$output .= '</thead>';
+				$output .= '<tbody>';
+				
+				if (is_array($objalltime) && count($objalltime) > 0) {
+					foreach ($objalltime AS $value) {
+						$output .= '<tr><th scope="row" class="col-3">'.$value->datains.'</th><td class="col-3">'.$value->content.'</td><td class="col-3">'.$value->starttime.' - '.$value->endtime.'</td><td class="col-3 text-right">'.$value->worktime.'</td></tr>';
+					}
+				}		
+				$output .= '</tbody>';
+				$output .= '</table></div>';
+			} else {
+				$output = 'Timecard non disponibile';
+			}
+			echo $output;
+		}
+		die();
+	break;
+	
 	case 'getTimecardsProjectAjax':	
 		$idproject = intval(Core::$request->param);
 		if ($idproject > 0) {

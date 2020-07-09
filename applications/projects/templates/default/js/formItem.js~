@@ -1,7 +1,7 @@
 /* projects/formItem.js v.1.0.1. 05/07/2017 */
 
 $(document).ready(function() {	
-	listPprojecttimecards(siteUrl+coreRequestAction+"/listTimecardsAjax/"+idproject);	
+	listPprojecttimecards(siteUrl+CoreRequestAction+"/listTimecardsAjax/"+idproject);	
 });
 		
 $('.submittheform').click(function () {
@@ -21,13 +21,13 @@ function listPprojecttimecards(url) {
 }
 
 $('#listProjectTimecardsAllID').click(function () {
-	listPprojecttimecards(siteUrl+coreRequestAction+"/listTimecardsAjax/"+idproject+"/All");	
+	listPprojecttimecards(siteUrl+CoreRequestAction+"/listTimecardsAjax/"+idproject+"/All");	
 });
 
 $('#listProjectTimecardsCmID').click(function () {
-	listPprojecttimecards(siteUrl+coreRequestAction+"/listTimecardsAjax/"+idproject+"/cm");	
+	listPprojecttimecards(siteUrl+CoreRequestAction+"/listTimecardsAjax/"+idproject+"/cm");	
 });
 
 $('#listProjectTimecardsPmID').click(function () {
-	listPprojecttimecards(siteUrl+coreRequestAction+"/listTimecardsAjax/"+idproject+"/pm");	
+	listPprojecttimecards(siteUrl+CoreRequestAction+"/listTimecardsAjax/"+idproject+"/pm");	
 });

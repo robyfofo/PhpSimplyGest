@@ -1,4 +1,4 @@
-/* settings/listIvaa.js v.1.0.0. 11/09/2018 */
+/* thirdparty/listItem.js v.1.0.0. 05/07/2018  */
 var requestSent = false;
 
 $(document).ready(function() {
@@ -7,15 +7,28 @@ $(document).ready(function() {
 		processing: true,
 		serverSide: true,
 		stateSave: true,
-		order: [
-			[1,"desc"]
+		ajax: {
+		 	type: "GET",
+		 	url: siteUrl+CoreRequestAction+"/listAjaxItem",
+		 	async: "true",
+			cache: "false",
+			dataSrc: function (json) {
+				alertDelete();
+				return json.data;
+			}       
+		},	
+		columns: [
+			{"data":"id","targets":0,"className":"idcol"},
+			{data: "category"},
+			{data: "type"},
+			{data: "ragione_sociale"},			
+			{data: "email"},
+			{ "data":"actions","targets":4,"orderable":false,"className":"actions"}
 		],
-		columns: [		
-			{ "data":"id","targets":0},
-			{ "data":"note","targets":1},
-			{ "data":"amount","targets":2,"className":"text-right"},
-			{ "data":"actions","targets":3,"orderable":false,"className":"text-right"}
-  		],		
+		columnDefs: [
+    		{orderable: false, "targets": 5},
+    		{className: "text-right",targets: 5},
+  		],
 		language: {
 			sSearch: lang['search'],
          lengthMenu: lang['lengthMenu'],
@@ -30,21 +43,16 @@ $(document).ready(function() {
         		last:       lang['paginate']['last'],
         		next:       lang['paginate']['next'],
         		previous:   lang['paginate']['previous']
-    			}
-      	},
-		ajax: {
-		 	type : "GET",
-		 	url : siteUrl+coreRequestAction+"/listAjaxIvaa",
-		 	async: "true",
-			cache: "false",
-			dataSrc: function ( json ) {
-				alertDelete();
-				return json.data;
-            }       
-			}
-		});
-	});
-	
+    		}
+		},
+      
+      drawCallback: function () {
+			$('#listDataID_paginate ul.pagination').addClass("pagination-sm");
+      }		 
+	});	
+});
+
+
 function alertDelete() {
 	$("#listDataID").on('click','.confirmdelete',function(e) {
 		e.preventDefault(e);

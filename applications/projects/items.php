@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * projects/items.php v.1.2.0. 21/12/2019
+ * projects/items.php v.1.2.0. 30/01/2020
 */
 
 if (isset($_POST['itemsforpage'])) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'ifp',$_POST['itemsforpage']);
@@ -21,11 +21,17 @@ Sql::setOrder('ragione_sociale ASC');
 $App->customers = Sql::getRecords();
 
 switch(Core::$request->method) {
+
 	case 'activeItem':
 	case 'disactiveItem':
-		Sql::manageFieldActive(substr(Core::$request->method,0,-4),$App->params->tables['item'],$App->id,array('label'=>$_lang['voce'],'attivata'=>$_lang['attivato'],'disattivata'=>$_lang['disattivato']));
-		$_SESSION['message'] = '0|'.Core::$resultOp->message;
-		ToolsStrings::redirect(URL_SITE.Core::$request->action.'/listItem');	
+		//if ($App->params->moduleAccessWrite == 0) { ToolsStrings::redirect(URL_SITE.'error/nopm'); }
+		if ($App->id > 0) {
+			Sql::manageFieldActive(substr(Core::$request->method,0,-4),$App->params->tables['item'],$App->id,array('label'=>$_lang['voce'],'attivata'=>$_lang['attivato'],'disattivata'=>$_lang['disattivato']));
+			$_SESSION['message'] = '0|'.Core::$resultOp->message;
+			ToolsStrings::redirect(URL_SITE.Core::$request->action.'/listItem');	
+		} else {
+			ToolsStrings::redirect(URL_SITE.'error/404');
+		}
 	break;
 	
 	case 'deleteItem':
@@ -102,6 +108,7 @@ switch(Core::$request->method) {
 	case 'modifyItem':				
 		$App->pageSubTitle = preg_replace('/%ITEM%/',$_lang['voce'],$_lang['modifica %ITEM%']);
 		$App->viewMethod = 'formMod';
+		
 	break;
 	
 	case 'updateItem':
@@ -145,7 +152,7 @@ switch(Core::$request->method) {
 		$limit = '';
 		if (isset($_REQUEST['start']) && $_REQUEST['length'] != '-1') {
 			$limit = " LIMIT ".$_REQUEST['length']." OFFSET ".$_REQUEST['start'];
-			}				
+		}				
 		/* end limit */	
 			
 		/* orders */
@@ -154,76 +161,65 @@ switch(Core::$request->method) {
 		if (isset($_REQUEST['order']) && is_array($_REQUEST['order']) && count($_REQUEST['order']) > 0) {		
 			foreach ($_REQUEST['order'] AS $key=>$value)	{				
 				$order[] = $orderFields[$value['column']].' '.$value['dir'];
-				}
 			}
+		}
 		/* end orders */		
 			
-		/* SEARCH QUERY */
-			
+		/* SEARCH QUERY */			
+		$whereAll = '';
+		$andAll = '';
+		$fieldsValueAll = array();
 		$where = '';
 		$and = '';
 		$fieldsValue = array();
 				
 		/* permissions query */
-		list($permClause,$fieldsValuesPermClause) = Permissions::getSqlQueryItemPermissionForUser($App->userLoggedData,array('fieldprefix'=>'i.','onlyuser'=>false));
+		list($permClause,$fieldsValuesPermClause) = Permissions::getSqlQueryItemPermissionForUser($App->userLoggedData,array('fieldprefix'=>'','onlyuser'=>false));
 		if (isset($permClause) && $permClause != '') {
+			$whereAll .= $andAll.'('.$permClause.')';
+			$andAll = ' AND ';
 			$where .= $and.'('.$permClause.')';
 			$and = ' AND ';
 		}
 		if (is_array($fieldsValuesPermClause) && count($fieldsValuesPermClause) > 0) {
+			$fieldsValueAll = array_merge($fieldsValueAll,$fieldsValuesPermClause);
 			$fieldsValue = array_merge($fieldsValue,$fieldsValuesPermClause);	
 		}
 		/* end permissions items */
 		
-		$filtering = false;		
+		/* SEARCH QUERY */
+		$filtering = false;
 		if (isset($_REQUEST['search']) && is_array($_REQUEST['search']) && count($_REQUEST['search']) > 0) {		
 			if (isset($_REQUEST['search']['value']) && $_REQUEST['search']['value'] != '') {
-				/* field query */				
 				list($w,$fv) = Sql::getClauseVarsFromAppSession($_REQUEST['search']['value'],$App->params->fields['item'],'');
 				if ($w != '') {
 					$where .= $and."(".$w.")";
 					$and = ' AND ';
-					if (is_array($fv) && count($fv) > 0) {
-						$fieldsValue = array_merge($fieldsValue,$fv);
-						$filtering = true;
-						}
-
-					if (is_array($fv) && count($fv) > 0) $fieldsValue = array_merge($fieldsValue,$fv);
-
-					}
-								
-				/* field array query */
-				$fields = array('item.status');
-				list($w,$fv) = Sql::getClauseVarsFromArray($_REQUEST['search']['value'],$fields,array());
-				if ($w != '') {
-					$where .= $and."(".$w.")";
-					$and = ' AND ';
-
-					if (is_array($fv) && count($fv) > 0) {
-						$fieldsValue = array_merge($fieldsValue,$fv);
-						$filtering = true;
-						}
-
-					if (is_array($fv) && count($fv) > 0) $fieldsValue = array_merge($fieldsValue,$fv);
-
-					}
-				
+				}
+				if (is_array($fv) && count($fv) > 0) {
+					$fieldsValue = array_merge($fieldsValue,$fv);
+					$filtering = true;
 				}
 			}
+		}
 		/* END SEARCH QUERY */
 		
-		//echo $where;
-		//print_r($fieldsValue);
+		$table = $App->params->tables['item'];
+		$fields[] = '*';
 		
-
-		/* conta tutti i records */
-		$recordsTotal = Sql::countRecordQry($App->params->tables['item'],'id','',array());
-
+		/* conta tutti i records */		
+		$recordsTotal = Sql::countRecordQry($table,'id',$whereAll,$fieldsValueAll);
+		$recordsFiltered = $recordsTotal;
 		
-		$table = $App->params->tables['item']." AS item";
-		$fields[] = "item.*";
+		if ($filtering == true) {
+			Sql::initQuery($table,$fields,$fieldsValue,$where,implode(', ', $order),'',array());
+			$obj = Sql::getRecords();
+			$recordsFiltered = count($obj);
+		}
+
 		Sql::initQuery($table,$fields,$fieldsValue,$where,implode(', ', $order),$limit);
-		if (Core::$resultOp->error <> 1) $obj = Sql::getRecords();
+		if ($Core::$resultOp->error <> 1) $obj = Sql::getRecords();
+		
 		/* sistemo dati */	
 		$arr = array();
 		if (is_array($obj) && count($obj) > 0) {
@@ -244,15 +240,14 @@ switch(Core::$request->method) {
 					'actions'=>$actions
 					);
 				$arr[] = $tablefields;
-				}
 			}
+		}
 		$App->items = $arr;
-		$recordsFiltered = $recordsTotal;
-		if ($filtering == true) $recordsFiltered = count($App->items);
+		
 		$json = array();
-		//$json['draw'] = intval($_REQUEST['draw']);
-		$json['recordsTotal'] = $recordsTotal;
-		$json['recordsFiltered'] = $recordsFiltered;	
+		$json['draw'] = intval($_REQUEST['draw']);
+		$json['recordsTotal'] = intval($recordsTotal);
+		$json['recordsFiltered'] = intval($recordsFiltered);		
 		$json['data'] = $App->items;	
 		echo json_encode($json);
 		die();
@@ -280,11 +275,13 @@ switch((string)$App->viewMethod) {
 		if (Core::$resultOp->error > 0) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['item']);
 		$App->templateApp = 'formItem.html';
 		$App->methodForm = 'insertItem';
+		$App->defaultJavascript = "var idproject = '0';";
 		$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/formItem.js"></script>';
 	break;
 	
 	case 'formMod':
 		$App->read_write_access = Permissions::checkReadWriteAccessOfItem($App->params->tables['item'],$App->id,$App->userLoggedData); // 0 = no access; 1 = read; 2 = read write; 
+			
 		if ($App->id) {
 			$App->item_todo = new stdClass;
 			/* preleva i todo del progetto */
@@ -307,6 +304,7 @@ switch((string)$App->viewMethod) {
 				if (Core::$resultOp->error == 1) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['item']);
 				$App->templateApp = 'formItem.html';
 				$App->methodForm = 'updateItem';
+				$App->defaultJavascript = "var idproject = '".$App->id."';";
 				$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/formItem.js"></script>';
 				} else {
 					ToolsStrings::redirect(URL_SITE.'error/404');

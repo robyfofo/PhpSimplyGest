@@ -34,7 +34,7 @@ $(document).ready(function() {
       	},
 		ajax: {
 		 	type : "GET",
-		 	url : siteUrl+coreRequestAction+"/listAjaxIvaa",
+		 	url : siteUrl+CoreRequestAction+"/listAjaxIvaa",
 		 	async: "true",
 			cache: "false",
 			dataSrc: function ( json ) {

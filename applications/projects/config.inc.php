@@ -29,6 +29,7 @@ $App->params->labels = array();
 $App->params->tables['cont'] = DB_TABLE_PREFIX.'contacts';
 $App->params->tables['time'] = DB_TABLE_PREFIX.'timecard';
 $App->params->tables['todo'] = DB_TABLE_PREFIX.'todo';
+$App->params->tables['thirdparty'] = DB_TABLE_PREFIX.'thirdparty';
 
 $App->params->status = $globalSettings['status project'];
 $App->params->statusTodo = $globalSettings['status to do'];

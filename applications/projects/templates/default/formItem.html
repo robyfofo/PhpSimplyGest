@@ -1,4 +1,39 @@
 <!-- projects/formItem.tpl.php v.1.2.0. 21/12/2019 -->
+<style type="text/css"><!--
+
+.table-fixed tbody {
+    height: 300px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.table-fixed thead,
+.table-fixed tbody,
+.table-fixed tr,
+.table-fixed td,
+.table-fixed th {
+    display: block;
+}
+
+.table-fixed tbody td,
+.table-fixed tbody th,
+.table-fixed thead > tr > th {
+    float: left;
+    position: relative;
+    &::after {
+        content: '';
+        clear: both;
+        display: block;
+    }
+}
+
+.table-fixed tbody th {
+	 clear: both;
+}
+
+
+--></style>
+
 <div class="row">
 	<div class="col-md-3 new"></div>
 	<div class="col-md-7 help-small-form">{% if App.params.help_small is defined %}{{ App.params.help_small }}{% endif %}</div>
@@ -13,6 +48,10 @@
 			<li class="nav-item">
 				<a class="nav-link" href="#todo" id="todo-tab" aria-controls="todo" aria-selected="true" data-toggle="tab">{{ Lang['da fare']|capitalize }}</a>
 			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#timecards" id="timecards-tab" aria-controls="timecards" aria-selected="true" data-toggle="tab">{{ Lang['timecards']|capitalize }}</a>
+			</li>
+
 			<li class="nav-item">
 				<a class="nav-link" href="#options" id="options-tab" aria-controls="options" aria-selected="true" data-toggle="tab">{{ Lang['opzioni']|capitalize }}</a>
 			</li>
@@ -95,6 +134,48 @@
 								
 				</div>
 <!-- fine sezione todo --> 
+
+<!-- sezione timecards --> 
+				<div class="tab-pane fade show" id="timecards" role="tabpanel" aria-labelledby="timecards">
+				
+{% if App.id > 0 %}							
+	<div class="row mb-4">
+		<div class="col-md-4">
+			<a id="listProjectTimecardsCmID" class="btn btn-primary btn-sm" href="javascript:void(0);" title="{{ Lang['visualizza il tempo lavorato il mese corrente']|capitalize }}">{{ Lang['tempo lavorato mese corrente']|capitalize }}</a>
+		</div>
+		<div class="col-md-4">
+			<a id="listProjectTimecardsPmID" class="btn btn-primary btn-sm" href="javascript:void(0);" title="{{ Lang['visualizza il tempo lavorato il mese precedente']|capitalize }}">{{ Lang['tempo lavorato mese precedente']|capitalize }}</a>
+		</div>
+		<div class="col-md-4">
+			<a  id="listProjectTimecardsAllID" class="btn btn-primary btn-sm" href="javascript:void(0);" title="{{ Lang['visualizza il tempo lavorato']|capitalize }}">{{ Lang['tempo lavorato']|capitalize }}</a>
+		</div>							
+	</div>
+{% endif %}
+
+
+					<div class="card mb-4">
+						<div class="card-body">
+							<div class="container" id="listProjectTimecardsID">
+							</div>
+						</div>
+					</div>
+					
+					{% if App.id > 0 %}							
+							<div class="row">
+								<div class="col-md-1">
+									<a class="btn btn-default btn-sm" href="{{ URLSITE }}{{ CoreRequest.action  }}/listTimecardsPdfExpo/{{ App.id }}/cm" title="{{ Lang['stampa il report del tempo lavorato il mese corrente']|capitalize }}" target="_blank"><i class="fas fa-print"></i></a>
+								</div>
+								<div class="col-md-1">
+									<a class="btn btn-default btn-sm" href="{{ URLSITE }}{{ CoreRequest.action  }}/listTimecardsPdfExpo/{{ App.id }}/pm" title="{{ Lang['stampa il report del tempo lavorato il mese precedente']|capitalize }}" target="_blank"><i class="fas fa-print"></i></a>
+								</div>
+								<div class="col-md-1">
+									<a class="btn btn-default btn-sm" href="{{ URLSITE }}{{ CoreRequest.action  }}/listTimecardsPdfExpo/{{ App.id }}" title="{{ Lang['stampa il report del tempo lavorato']|capitalize }}" target="_blank"><i class="fas fa-print"></i></a>
+								</div>							
+							</div>
+					{% endif %}
+								
+				</div>
+<!-- fine sezione todo -->
 
 <!-- sezione opzioni --> 
 				<div class="tab-pane fade show" id="options" role="tabpanel" aria-labelledby="options">

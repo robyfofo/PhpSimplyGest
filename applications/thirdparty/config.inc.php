@@ -29,7 +29,7 @@ $App->params->ordersType = array();
 $App->params->tables['item']  = DB_TABLE_PREFIX.'thirdparty';
 $App->params->fields['item']  = array(
 	'id'=>array('label'=>'ID','required'=>false,'type'=>'int|8','autoinc'=>true,'nodb'=>true,'primary'=>true),
-	'id_user'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>false,'type'=>'int|8','defValue'=>$App->userLoggedData->id),
+	'users_id'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>false,'type'=>'int|8','defValue'=>$App->userLoggedData->id),
 	'id_cat'=>array('label'=>'ID '.$_lang['categoria'],'required'=>true,'type'=>'int|8'),
 	'id_type'=>array('label'=>$_lang['tipo'],'required'=>false,'type'=>'int','defValue'=>0,'validate'=>'int|1'),
 	'ragione_sociale'=>array('label'=>$_lang['ragione sociale'],'searchTable'=>true,'required'=>true,'type'=>'varchar|255'),
