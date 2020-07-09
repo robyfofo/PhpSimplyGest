@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * timecard/pitems.php v.1.2.0. 21/12/2019
+ * timecard/pitems.php v.1.2.0. v.1.2.0. 31/01/2020
 */
 
 if (isset($_POST['itemsforpage'])) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'ifp',$_POST['itemsforpage']);
@@ -22,13 +22,12 @@ switch(Core::$request->method) {
 	case 'deletePite':
 		if ($App->id > 0) {
 			$App->itemOld = new stdClass;
-				Sql::initQuery($App->params->tables['pite'],array('id'),array($App->id),'id = ?');
-				Sql::deleteRecord();
-				if (Core::$resultOp->error == 0) {
-					Core::$resultOp->message = ucfirst(preg_replace('/%ITEM%/',$_lang['voce'],$_lang['%ITEM% cancellata'])).'!';
-					}
-				
-			}		
+			Sql::initQuery($App->params->tables['pite'],array('id'),array($App->id),'id = ?');
+			Sql::deleteRecord();
+			if (Core::$resultOp->error == 0) {
+				Core::$resultOp->message = 'aaa'.ucfirst(preg_replace('/%ITEM%/',$_lang['voce'],$_lang['%ITEM% cancellata'])).'!';
+			}				
+		}		
 		$App->viewMethod = 'list';
 	break;
 	
@@ -116,56 +115,77 @@ switch(Core::$request->method) {
 	case 'listAjaxPite':
 		//Core::setDebugMode(1);
 		//print_r($_REQUEST);
-		
 		/* limit */		
 		$limit = '';
 		if (isset($_REQUEST['start']) && $_REQUEST['length'] != '-1') {
 			$limit = " LIMIT ".$_REQUEST['length']." OFFSET ".$_REQUEST['start'];
-			}				
+		}				
 		/* end limit */	
-			
+					
 		/* orders */
 		$orderFields = array('id','title','content','starttime','endtime','worktime');
 		$order = array();	
 		if (isset($_REQUEST['order']) && is_array($_REQUEST['order']) && count($_REQUEST['order']) > 0) {		
 			foreach ($_REQUEST['order'] AS $key=>$value)	{				
 				$order[] = $orderFields[$value['column']].' '.$value['dir'];
-				}
 			}
+		}
 		/* end orders */		
-			
-		/* search */
-		/* aggiunge campi join */
+					
+		$table = $App->params->tables['pite'];
+		$fields[] = "*";
+
+		$whereAll = '';
+		$andAll = '';
+		$fieldsValueAll = array();
 		$where = '';
-		$and = '';
+		$and = '';	
+		$fieldsValue = array();	
 		
 		/* permissions query */
-		list($permClause,$fieldsValuesPermClause) = Permissions::getSqlQueryItemPermissionForUser($App->userLoggedData,array('fieldprefix'=>'i.','onlyuser'=>true));
+		list($permClause,$fieldsValuesPermClause) = Permissions::getSqlQueryItemPermissionForUser($App->userLoggedData,array('fieldprefix'=>'','onlyuser'=>true));
 		if (isset($permClause) && $permClause != '') {
+			$whereAll .= $andAll.'('.$permClause.')';
+			$andAll = ' AND ';
 			$where .= $and.'('.$permClause.')';
 			$and = ' AND ';
 		}
 		if (is_array($fieldsValuesPermClause) && count($fieldsValuesPermClause) > 0) {
+			$fieldsValueAll = array_merge($fieldsValueAll,$fieldsValuesPermClause);
 			$fieldsValue = array_merge($fieldsValue,$fieldsValuesPermClause);	
 		}
 		/* end permissions items */
 
-		$fieldsValue = array($App->userLoggedData->id);
-		if (isset($_REQUEST['search']) && is_array($_REQUEST['search']) && count($_REQUEST['search']) > 0) {		
+
+		// SEARCH QUERY 
+		$filtering = false;
+		if (isset($_REQUEST['search']) && is_array($_REQUEST['search']) && count($_REQUEST['search']) > 0) {				
 			if (isset($_REQUEST['search']['value']) && $_REQUEST['search']['value'] != '') {
-				list($w,$fv) = Sql::getClauseVarsFromAppSession($_REQUEST['search']['value'],$App->params->fields['item'],'');
+				list($w,$fv) = Sql::getClauseVarsFromAppSession($_REQUEST['search']['value'],$App->params->fields['pite'],'');			
 				if ($w != '') {
 					$where .= $and."(".$w.")";
 					$and = ' AND ';
-					}
-				if (is_array($fv) && count($fv) > 0) $fieldsValue = array_merge($fieldsValue,$fv);
-				
 				}
+				if (is_array($fv) && count($fv) > 0) {
+					$fieldsValue = array_merge($fieldsValue,$fv);
+					$filtering = true;
+				}			
 			}
-		/* end search */
+		}
+		// END SEARCH QUERY
+
 		
-		$table = $App->params->tables['pite']." AS ite";
-		$fields[] = "*";
+		/* conta tutti i records */
+		$recordsTotal = Sql::countRecordQry($table,'id',$whereAll,$fieldsValueAll);
+		$recordsFiltered = $recordsTotal;
+		
+		if ($filtering == true) {
+			Sql::initQuery($table,$fields,$fieldsValue,$where,implode(', ', $order),'',array());
+			$obj = Sql::getRecords();
+			$recordsFiltered = count($obj);
+		}
+
+		
 		Sql::initQuery($table,$fields,$fieldsValue,$where,implode(', ', $order),$limit);
 		if (Core::$resultOp->error <> 1) $obj = Sql::getRecords();
 		/* sistemo dati */	
@@ -183,14 +203,15 @@ switch(Core::$request->method) {
 					'actions'=>$actions
 					);
 				$arr[] = $tablefields;
-				}
 			}
+		}
 		$totalRows = Sql::getTotalsItems();
 		$App->items = $arr;
 		$json = array();
+		$json = array();
 		$json['draw'] = intval($_REQUEST['draw']);
-		$json['recordsTotal'] = $totalRows;
-		$json['recordsFiltered'] = $totalRows;
+		$json['recordsTotal'] = intval($recordsTotal);
+		$json['recordsFiltered'] = intval($recordsFiltered);		
 		$json['data'] = $App->items;	
 		echo json_encode($json);
 		die();

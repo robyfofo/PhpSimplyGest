@@ -9,7 +9,7 @@ $(document).ready(function() {
 		stateSave: true,
 		ajax: {
 			type: "GET",
-		 	url: siteUrl+CoreRequestAction+"/listAjaxPite",
+		 	url: siteUrl+coreRequestAction+"/listAjaxPite",
 		 	async: "true",
 			cache: "false",
 			dataSrc: function (json) {

@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * timecard/aitems.php v.1.2.0. 21/12/2019
+ * timecard/aitems.php v.1.2.0. 31/01/2020
 */
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -22,6 +22,8 @@ switch(Core::$request->method) {
 	
 	case 'exportXlsAite';
 		//Core::setDebugMode(1);
+		
+		//die('export');
 		/* orders */
 		$order = array();	
 		$order[] = 'datains DESC';
@@ -29,41 +31,47 @@ switch(Core::$request->method) {
 		$order[] = 'project DESC';
 		
 		$orderFields = array('ite.id','ite.id_user','ite.id_project','ite.content','ite.datains','ite.starttime','ite.endtime','ite.worktime');
-		
 		if (isset($_REQUEST['order']) && is_array($_REQUEST['order']) && count($_REQUEST['order']) > 0) {		
 			foreach ($_REQUEST['order'] AS $key=>$value)	{				
 				$order[] = $orderFields[$value['column']].' '.$value['dir'];
 				}
-			}
-			
+			}		
+		/* end orders */
 		
-		/* end orders */		
+		$table = $App->params->tables['item']." AS ite";
+		$fields[] = "ite.*";
 		
 		/* search */
+		$whereAll = '';
+		$andAll = '';
+		$fieldsValueAll = array();
 		$where = '';
-		$and = '';
-		$fieldsValue = array();
+		$and = '';	
+		$fieldsValue = array();	
 		
 		/* aggiunge campi join */	
 		$App->params->fields['item']['pro.title'] = array('searchTable'=>true,'type'=>'varchar');
 		$App->params->fields['item']['usr.username'] = array('searchTable'=>true,'type'=>'float');
 		
 		/* permissions query */
-		/* se non è root visualizza le timecard proprie */
-		if ($App->userLoggedData->is_root == 0) {
-			$where .= $and."ite.id_user = ?";
+		list($permClause,$fieldsValuesPermClause) = Permissions::getSqlQueryItemPermissionForUser($App->userLoggedData,array('fieldprefix'=>'ite.','onlyuser'=>true));
+		if (isset($permClause) && $permClause != '') {
+			$whereAll .= $andAll.'('.$permClause.')';
+			$andAll = ' AND ';
+			$where .= $and.'('.$permClause.')';
 			$and = ' AND ';
-			$fieldsValue[] = $App->userLoggedData->id;
 		}
-		/* end permissions items */
+		if (is_array($fieldsValuesPermClause) && count($fieldsValuesPermClause) > 0) {
+			$fieldsValueAll = array_merge($fieldsValueAll,$fieldsValuesPermClause);
+			$fieldsValue = array_merge($fieldsValue,$fieldsValuesPermClause);	
+		}
+		/* end permissions items */		
 		
-		
-		$_REQUEST['search'] = array();
-		if (Core::$request->param != '') $_REQUEST['search']['value'] = Core::$request->param;	
+		// SEARCH QUERY 
 		$filtering = false;
-		if (isset($_REQUEST['search']) && is_array($_REQUEST['search']) && count($_REQUEST['search']) > 0) {		
+		if (isset($_REQUEST['search']) && is_array($_REQUEST['search']) && count($_REQUEST['search']) > 0) {				
 			if (isset($_REQUEST['search']['value']) && $_REQUEST['search']['value'] != '') {
-				list($w,$fv) = Sql::getClauseVarsFromAppSession($_REQUEST['search']['value'],$App->params->fields['item'],'');
+				list($w,$fv) = Sql::getClauseVarsFromAppSession($_REQUEST['search']['value'],$App->params->fields['item'],'');			
 				if ($w != '') {
 					$where .= $and."(".$w.")";
 					$and = ' AND ';
@@ -71,29 +79,38 @@ switch(Core::$request->method) {
 				if (is_array($fv) && count($fv) > 0) {
 					$fieldsValue = array_merge($fieldsValue,$fv);
 					$filtering = true;
-				}
+				}			
 			}
 		}
-		/* end search */
+		// END SEARCH QUERY
 		
-		$table = $App->params->tables['item']." AS ite";
 		$table .= " LEFT JOIN ".$App->params->tables['prog']." AS pro  ON (ite.id_project = pro.id)";
-		$table .= " LEFT JOIN ".$App->params->tables['user']." AS usr  ON (ite.id_user = usr.id)";
-		$fields[] = "ite.*";
+		$table .= " LEFT JOIN ".$App->params->tables['user']." AS usr  ON (ite.users_id = usr.id)";
+
 		$fields[] = "pro.title AS project";
 		$fields[] = "usr.username AS username";
 		
+		/* conta tutti i records */
+		$recordsTotal = Sql::countRecordQry($table,'ite.id',$whereAll,$fieldsValueAll);
+		$recordsFiltered = $recordsTotal;
+		
+		if ($filtering == true) {
+			Sql::initQuery($table,$fields,$fieldsValue,$where,implode(', ', $order),'',array());
+			$obj = Sql::getRecords();
+			$recordsFiltered = count($obj);
+		}
+	
 		Sql::initQuery($table,$fields,$fieldsValue,$where,implode(', ', $order),'');
 		if (Core::$resultOp->error <> 1) $obj = Sql::getRecords();
 		
-		//print_r($obj);
-		//die();
+		//print_r($obj);die();
 		
 		if (is_array($obj) && count($obj) > 0) {
 			foreach ($obj AS $key=>$value) {
 				$data[] = array
 				(
 				'Data'			=> $value->datains,
+				'Utente'			=>$value->username,
 				'Contenuto'		=> $value->content,
 				'Inizio'			=> $value->starttime,
 				'Fine'			=> $value->endtime,
@@ -102,7 +119,7 @@ switch(Core::$request->method) {
 			}				
 		}
 		
-		if (count($data) == 0) ToolsStrings::redirect(URL_SITE.'error/404');
+		//if (count($data) == 0) ToolsStrings::redirect(URL_SITE.'error/404');
 		
 		// Create new Spreadsheet object
 		$spreadSheet = new Spreadsheet();
@@ -133,22 +150,16 @@ switch(Core::$request->method) {
 	break;
 	
 	case 'deleteAite':
-		if ($App->id > 0) 
-		{
+		if ($App->id > 0) {
 			Sql::initQuery($App->params->tables['item'],array('id'),array($App->id),'id = ?');
 			Sql::deleteRecord();
-			if (Core::$resultOp->error == 0) 
-			{
-				$_SESSION['message'] = '0|'.ucfirst(preg_replace('/%ITEM%/',$_lang['voce'],$_lang['%ITEM% cancellato'])).'!';
+			if (Core::$resultOp->error == 0) {
+				$_SESSION['message'] = '0|'.ucfirst(preg_replace('/%ITEM%/',$_lang['voce'],$_lang['%ITEM% cancellata'])).'!';
 				ToolsStrings::redirect(URL_SITE.Core::$request->action.'/listAite');
-			}
-			else 
-			{
+			} else {
 				ToolsStrings::redirect(URL_SITE.'error');
 			}	
-		}	
-		else 
-		{
+		}	else {
 			ToolsStrings::redirect(URL_SITE.'error/404');
 		}	
 		die();
@@ -174,11 +185,16 @@ switch(Core::$request->method) {
 			}
 		}
 		/* end orders */		
-			
-		/* search */
+		
+		$table = $App->params->tables['item']." AS ite";
+		$fields[] = "ite.*";
+
+		$whereAll = '';
+		$andAll = '';
+		$fieldsValueAll = array();
 		$where = '';
-		$and = '';
-		$fieldsValue = array();
+		$and = '';	
+		$fieldsValue = array();	
 		
 		/* aggiunge campi join */	
 		$App->params->fields['item']['pro.title'] = array('searchTable'=>true,'type'=>'varchar');
@@ -187,19 +203,22 @@ switch(Core::$request->method) {
 		/* permissions query */
 		list($permClause,$fieldsValuesPermClause) = Permissions::getSqlQueryItemPermissionForUser($App->userLoggedData,array('fieldprefix'=>'ite.','onlyuser'=>true));
 		if (isset($permClause) && $permClause != '') {
+			$whereAll .= $andAll.'('.$permClause.')';
+			$andAll = ' AND ';
 			$where .= $and.'('.$permClause.')';
 			$and = ' AND ';
 		}
 		if (is_array($fieldsValuesPermClause) && count($fieldsValuesPermClause) > 0) {
+			$fieldsValueAll = array_merge($fieldsValueAll,$fieldsValuesPermClause);
 			$fieldsValue = array_merge($fieldsValue,$fieldsValuesPermClause);	
 		}
-		/* end permissions items */
+		/* end permissions items */		
 		
-		
+		// SEARCH QUERY 
 		$filtering = false;
-		if (isset($_REQUEST['search']) && is_array($_REQUEST['search']) && count($_REQUEST['search']) > 0) {		
+		if (isset($_REQUEST['search']) && is_array($_REQUEST['search']) && count($_REQUEST['search']) > 0) {				
 			if (isset($_REQUEST['search']['value']) && $_REQUEST['search']['value'] != '') {
-				list($w,$fv) = Sql::getClauseVarsFromAppSession($_REQUEST['search']['value'],$App->params->fields['item'],'');
+				list($w,$fv) = Sql::getClauseVarsFromAppSession($_REQUEST['search']['value'],$App->params->fields['item'],'');			
 				if ($w != '') {
 					$where .= $and."(".$w.")";
 					$and = ' AND ';
@@ -207,34 +226,27 @@ switch(Core::$request->method) {
 				if (is_array($fv) && count($fv) > 0) {
 					$fieldsValue = array_merge($fieldsValue,$fv);
 					$filtering = true;
-				}
+				}			
 			}
 		}
-		/* end search */
+		// END SEARCH QUERY
 		
-		//echo  $where;
-		//print_r($fieldsValue);
-		
-		$table = $App->params->tables['item']." AS ite";
+	
 		$table .= " LEFT JOIN ".$App->params->tables['prog']." AS pro  ON (ite.id_project = pro.id)";
 		$table .= " LEFT JOIN ".$App->params->tables['user']." AS usr  ON (ite.users_id = usr.id)";
-		$fields[] = "ite.*";
 		$fields[] = "pro.title AS project";
 		$fields[] = "usr.username AS username";
 		
 		/* conta tutti i records */
-		$recordsTotal = Sql::countRecordQry($App->params->tables['item'],'id',$where,$fieldsValue);
+		$recordsTotal = Sql::countRecordQry($table,'ite.id',$whereAll,$fieldsValueAll);
 		$recordsFiltered = $recordsTotal;
 		
-		if ($filtering == true) 
-		{
+		if ($filtering == true) {
 			Sql::initQuery($table,$fields,$fieldsValue,$where,implode(', ', $order),'',array());
 			$obj = Sql::getRecords();
 			$recordsFiltered = count($obj);
 		}
 
-
-		//Core::setDebugMode(1);
 		Sql::initQuery($table,$fields,$fieldsValue,$where,implode(', ', $order),$limit);
 		if (Core::$resultOp->error <> 1) $obj = Sql::getRecords();
 		/* sistemo dati */	
@@ -258,6 +270,7 @@ switch(Core::$request->method) {
 			}
 		$totalRows = Sql::getTotalsItems();
 		$App->items = $arr;
+		$json = array();
 		$json = array();
 		$json['draw'] = intval($_REQUEST['draw']);
 		$json['recordsTotal'] = intval($recordsTotal);

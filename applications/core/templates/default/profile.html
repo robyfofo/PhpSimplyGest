@@ -95,11 +95,13 @@
 					
 					    	</div>
 					    	<div class="col-md-4">
+					    	
 					    		{% if App.item.avatar is defined and App.item.avatar != '' %}								
 									<img src="{{ URLSITE }}ajax/renderuseravatarfromdb.php?id={{ App.id }}" alt="{{ App.item.name }} avatar" style="max-height: 90px;">					
-				            {% endif %}				
+				            	{% endif %}				
 					    	</div>
 						</div>
+						
 						<div class="form-group row">
 							<label for="templateID" class="col-md-3 col-form-label">{{ Lang['template']|capitalize }}</label>
 							<div class="col-md-7">

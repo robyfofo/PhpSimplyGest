@@ -9,7 +9,7 @@ $(document).ready(function() {
 		stateSave: true,
 		ajax: {
 		 	type: "GET",
-		 	url: siteUrl+CoreRequestAction+"/listAjaxAite",
+		 	url: siteUrl+coreRequestAction+"/listAjaxAite",
 		 	async: "true",
 			cache: "false",
 			dataSrc: function (json) {	
@@ -81,7 +81,7 @@ function exportFormat() {
 		e.preventDefault(e);
 		var table = $('#listDataID').DataTable();
 		var filter = table.search();
-		var location = siteUrl+CoreRequestAction+'/exportXlsAite';
+		var location = siteUrl+coreRequestAction+'/exportXlsAite';
 		if (filter != '') location = location +'/'+filter;
 		window.location.replace(location);
 	});

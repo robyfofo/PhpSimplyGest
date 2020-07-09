@@ -7,9 +7,6 @@
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * timecard/index.php v.1.2.0. 10/12/2019
 */
-
-//Core::setDebugMode(1);
-
 include_once(PATH.$App->pathApplications.Core::$request->action."/lang/".$_lang['user'].".inc.php");
 include_once(PATH.$App->pathApplications.Core::$request->action."/config.inc.php");
 include_once(PATH.$App->pathApplications.Core::$request->action."/classes/class.module.php");
@@ -70,6 +67,7 @@ switch(substr(Core::$request->method,-4,4)) {
 		$App->defaultJavascript = "defaultTimeIni = '".$App->timeIniTimecard."';";
 		$App->defaultJavascript .= "defaultTimeEnd = '".$App->timeEndTimecard."';";
 	break;
+	
 	default:
 		$App->css[] = '<link href="'.URL_SITE.'templates/'.$App->templateUser.'/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">';
 		$App->css[] = '<link href="'.URL_SITE.'templates/'.$App->templateUser.'/plugins/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">';
