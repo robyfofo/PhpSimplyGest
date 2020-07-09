@@ -5,7 +5,7 @@
 * @author Roberto Mantovani (<me@robertomantovani.vr.it>
 * @copyright 2009 Roberto Mantovani
 * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
-* app/home/index.php v.1.2.0. 05/12/2019
+* app/home/index.php v.1.2.0. 09/07/2020
 */
 
 //Core::setDebugMode(1);
@@ -97,11 +97,14 @@ switch(Core::$request->method) {
 		$App->panelsDanger = count($App->panels['danger']);
 		$App->panelsSuccess = count($App->panels['success']);
 		
-		/* prendo i dati per moduli base */
+		// prendo i dati per moduli base
 		if (file_exists(PATH.$App->pathApplications."home/base.php")) include_once(PATH.$App->pathApplications."home/base.php");
 	
-		/* prendo i dati per moduli custom */
+		// prendo i dati per moduli custom
 		if (file_exists(PATH.$App->pathApplications."home/custom.php")) include_once(PATH.$App->pathApplications."home/custom.php");
+		
+		// prendo i dati per moduli custom */
+		if (file_exists(PATH.$App->pathApplications."home/charts.php")) include_once(PATH.$App->pathApplications."home/charts.php");
 			
 	break;	
 }
@@ -334,63 +337,6 @@ if (is_array($App->homeTables) && count($App->homeTables) > 0) {
 		}
 	}
 $App->homeTables = $arr;	
-
-
-/*
-// get data for charts 
-$chartsdata = array();
-$date = DateTime::createFromFormat('Y-m-d',$App->nowDate);
-$date->modify('-12 month');
-for ($x=1;$x<=12;$x++) {
-	$date->modify('+1 month');
-	$d = $date->format('Y-m');
-	
-	$dini = $d . '-01';
-	$dend = $d . '-31';
-	
-	$vendite = 0;
-	$acquisti = 0;
-
-	// trova le fatture aquisti del mese 
-	$table = DB_TABLE_PREFIX."invoices_purchases AS i";
-	$fields = array("i.id,i.dateins,(SELECT SUM(price_total) FROM ".DB_TABLE_PREFIX."invoices_purchases_articles AS a WHERE i.id = a.id_invoice) AS total");
-	$fieldsVals = array($dini,$dend);
-	$where = "i.dateins BETWEEN ? AND ?";	
-		
-	Sql::initQuery($table,$fields,$fieldsVals,$where,'','','',false);
-	$obj = Sql::getRecords();
-	Core::setDebugMode(0);
-	if (is_array($obj) && count($obj) > 0) {
-		foreach ($obj AS $value) {
-			if (isset($value->total) && $value->total > 0)  $acquisti += $value->total;			
-			}
-		}
-
-	// trova le fatture vendite del mese 
-	$table = DB_TABLE_PREFIX."invoices_sales AS i";
-	$fields = array("i.id,i.dateins,(SELECT SUM(a.price_total) + ((SUM(a.price_total) * i.tax) / 100) + ((SUM(a.price_total) * i.rivalsa) / 100) FROM ".DB_TABLE_PREFIX."invoices_sales_articles AS a WHERE i.id = a.id_invoice) AS total");
-	$fieldsVals = array($dini,$dend);
-	$where = "i.dateins BETWEEN ? AND ?";	
-	Sql::initQuery($table,$fields,$fieldsVals,$where,'','','',false);
-	$obj = Sql::getRecords();
-	if (is_array($obj) && count($obj) > 0) {
-		foreach ($obj AS $value) {
-			if (isset($value->total) && $value->total > 0)  $vendite += $value->total;			
-			}
-		}
-
-
-	
-	$chartsdata[$d] = "{ y: '".$d."', v: ".$vendite.", a: ".$acquisti." }";
-	
-	}		
-$App->chartsdata = implode(',',$chartsdata);				
-// include jscript for charts
-$App->css[] = '<link href="'.URL_SITE.'templates/'.$App->templateUser.'/vendor/morrisjs/morris.css" rel="stylesheet">';
-$App->jscript[] = '<script src="'.URL_SITE.'templates/'.$App->templateUser.'/vendor/raphael/raphael.min.js"></script>';
-$App->jscript[] = '<script src="'.URL_SITE.'templates/'.$App->templateUser.'/vendor/morrisjs/morris.min.js"></script>';			
-$App->includeJscriptPHPBottom = Core::$request->action."/templates/".$App->templateUser."/js/chartsdata.js.php";
-*/
 
 $App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/module.js"></script>';
 ?>

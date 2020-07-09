@@ -37,19 +37,87 @@
 	{% endif %}
 </div>
 
+{% if App.invoices_bilancio_fiscale_12 is defined %}
+
 <div class="row">
 	<div class="col-lg-12">
-		<div class="card mb-4">
-			<div class="card-header">
- 				<i class="fas fa-chart-bar"></i> {{ Lang['bilancio ultimi 12 mesi']|title }}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+ 				<i class="fa fa-bar-chart-o fa-fw"></i> {{ Lang['bilancio ultimi 12 mesi']|title }}
 			</div>
 			<!-- /.panel-heading -->
-			<div class="card-body">				
-				<div id="sales-chart"></div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-lg-12">
+						<div id="invoices-bilancio-fiscale-12-chart"></div>
+					</div>
+				</div>
+				<!-- /.row -->
 			</div>
+			<!-- /.panel-body -->
 		</div>
+		<!-- /.panel -->
 	</div>
 </div>
+
+{% endif %}
+
+
+
+
+
+{% if App.ricaviannoprecedentechartsdata is defined  or App.ricaviannocorrentechartsdata is defined %} 
+	<div class="row">
+
+	{% if App.ricaviannoprecedentechartsdata is defined %}
+	
+	<div class="col-lg-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+ 				<i class="fa fa-bar-chart-o fa-fw"></i> {{ Lang['fiscale anno']|title }} {{ App.annoprecedente }}
+			</div>
+			<!-- /.panel-heading -->
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-lg-12">
+						<div id="invoices-fiscale-anno-precedente-chart"></div>
+					</div>
+				</div>
+				<!-- /.row -->
+			</div>
+			<!-- /.panel-body -->
+		</div>
+		<!-- /.panel -->
+	</div>
+	
+	
+	{% endif %}
+	
+	{% if App.ricaviannocorrentechartsdata is defined %}
+	
+	<div class="col-lg-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+ 				<i class="fa fa-bar-chart-o fa-fw"></i> {{ Lang['fiscale anno']|title }} {{ App.annocorrente }}
+			</div>
+			<!-- /.panel-heading -->
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-lg-12">
+						<div id="invoices-fiscale-anno-corrente-chart"></div>
+					</div>
+				</div>
+				<!-- /.row -->
+			</div>
+			<!-- /.panel-body -->
+		</div>
+		<!-- /.panel -->
+	</div>
+	
+	
+	{% endif %}
+	</div>
+{% endif %}
 
 <div class="row">
 	{% if App.homeTables is iterable %}
