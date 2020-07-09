@@ -30,6 +30,8 @@ switch(Core::$request->method) {
 				Sql::initQuery($App->params->tables['InvSal'],array('*'),array($id_invoice),'id = ?');
 				$App->invoice = Sql::getRecord();
 				
+				$App->invoice->number_complete = $App->invoice->id_customer.'-'.$App->invoice->number.'-'.$App->invoice->number_year;
+				
 				//print_r($App->invoice); die();
 				
 				if (Core::$resultOp->error == 0) {
@@ -110,7 +112,7 @@ switch(Core::$request->method) {
 								$headpdf[0]['titolo'] = $App->company->ragione_sociale;
 								$headpdf[1]['titolo'] = $App->company->street.' - '.$App->company->zip_code.' - '.$App->company->city.' ('.$App->company->province.')';
 								$headpdf[2]['titolo'] = $_lang['P. IVA'].' '.$App->company->partita_iva.' - '.$_lang['C. Fiscale'].' '.$App->company->codice_fiscale;
-								$headpdf[3]['titolo'] = '<strong>'.strtoupper($_lang['fattura']).'</strong> '.$_lang['nr.'].' <b>'.$App->invoice->number.'</b> '.$_lang['del'].' <b>'.DateFormat::convertDateFormats($App->invoice->dateins,'Y-m-d',$_lang['data format'],$App->nowDate).'</b>';	
+								$headpdf[3]['titolo'] = '<strong>'.strtoupper($_lang['fattura']).'</strong> '.$_lang['nr.'].' <b>'.$App->invoice->number_complete.'</b> '.$_lang['del'].' <b>'.DateFormat::convertDateFormats($App->invoice->dateins,'Y-m-d',$_lang['data format'],$App->nowDate).'</b>';	
 	
 								
 															
@@ -229,7 +231,7 @@ switch(Core::$request->method) {
 								/* FINE TOTALI */
 								
 								//Output the pdf as stream, but uncompress
-								$namefile = ucfirst($_lang['fattura']).'-'.$App->invoice->number.".pdf";
+								$namefile = ucfirst($_lang['fattura']).'-'.$App->invoice->number_complete.".pdf";
 								$applicationtype = "application/pdf";   
 								header("Content-type: $applicationtype");
 								header("Content-Disposition: attachment; filename=".basename($namefile).";");

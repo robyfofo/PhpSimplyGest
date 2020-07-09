@@ -1,6 +1,8 @@
-/* invoices/formInvSal.js v.1.2.0. 03/12/2019 */
+/* invoices/formInvSal.js v.1.2.0. 01/07/2020 */
 var requestSent = false;
 $(document).ready(function() {	
+
+	checkNumberInvoice();
 	
 	$('#dateinsDPID').datetimepicker({
 		locale: user_lang,
@@ -37,13 +39,68 @@ $(document).ready(function() {
 	});
 	
 }); // end document
+
+
+$('#numberID') .on('change',function(event) {
+	checkNumberInvoice();
+})
+
+
+function getNumberInvoice() {
+	var number_customers_id = $('#number_customers_idID').html();
+	var number_year = $('#number_yearID').html();
+
+	$.ajax({
+			url: siteUrl+coreRequestAction+'/getNumberInvoiceAjaxSr',
+			async: "false",
+			cache: "false",
+			type: "POST",
+			data: {'number_customers_id':number_customers_id,'number_year':number_year},
+	})
+	.done(function(data) {
+		$('#numberID').val(data);
+		checkNumberInvoice();	
+	})		
+	.fail(function() {
+		alert("Ajax failed to fetch data article for module");
+	})	
+}
 	
+function checkNumberInvoice() {
+	var number_customers_id = $('#number_customers_idID').html();
+	var number_year = $('#number_yearID').html();
+	var number = $('#numberID').val();
+	var id = $('#idID').val();		
+
+	$.ajax({
+			url: siteUrl+coreRequestAction+'/checkNumberInvoiceAjaxSr',
+			async: "false",
+			cache: "false",
+			type: "POST",
+			data: {'number_customers_id':number_customers_id,'number_year':number_year,'number':number,'id':id},
+	})
+	.done(function(data) {
+		if (data == 0) {
+			var message_check_number = '<p class="text-success">' + messages['numero fattura valido'] + '</p>';		
+			var result_check_number = 0;
+		} else {
+			var message_check_number = '<p class="text-danger">' + messages['numero fattura esiste'] + '</p>';
+			var result_check_number = 1;
+		}		
+		$('#message_check_numberID').html(message_check_number);
+		$('#result_check_numberID').val(result_check_number);	
+	})		
+	.fail(function() {
+		alert("Ajax failed to fetch data article for module");
+	})	
+}
+
 $('#id_customerID').on('change',function(event) {
 	var id = $('#id_customerID').val();
 	if (id > 0) {
 		$.ajax({
 			url: siteUrl+'thirdparty/getItemAjaxItem',
-			async: "true",
+			async: "false",
 			cache: "false",
 			type: "POST",
 			data: {'id':id},
@@ -77,6 +134,10 @@ $('#id_customerID').on('change',function(event) {
 			} else {
 				$('#stampa_unitaID').attr( "checked",false );
 			}
+			
+			$('#number_customers_idID').html(data.id);
+			
+			getNumberInvoice();
 			
 		})		
 		.fail(function() {
@@ -159,7 +220,13 @@ function refreshValuesFromTax() {
 	}
 	
 $('.submittheform').click(function () {
+	
+	if ($('#result_check_numberID').val() == 1) {
+		$('.nav a[href="#datibase"]').tab('show');
+		return false;
+	}
 	$('input:invalid').each(function () {
+	
 		// Find the tab-pane that this element is inside, and get the id
 		var $closest = $(this).closest('.tab-pane');
 		var id = $closest.attr('id');
@@ -167,15 +234,15 @@ $('.submittheform').click(function () {
 		$('.nav a[href="#' + id + '"]').tab('show');
 		// Only want to do it once
 		return false;
-		});
 	});
+});
 
 $('.modifyArtInvSal').on('click',function(event) {
 	var $id = $(this).data("id");	
 	//alert($id);
 	if ($id > 0) {
 		$.ajax({
-			url: siteUrl+CoreRequestAction+'/getArticleAjaxInvSal',
+			url: siteUrl+coreRequestAction+'/getArticleAjaxInvSal',
 			async: "true",
 			cache: "false",
 			type: "POST",

@@ -11,7 +11,7 @@ $(document).ready(function() {
 		paging: true,
 		ajax: {
 		 	type : "GET",
-		 	url : siteUrl+CoreRequestAction+"/listAjaxInvPur",
+		 	url : siteUrl+coreRequestAction+"/listAjaxInvPur",
 		 	async: "true",
 			cache: "false",
 			dataSrc: function ( json ) {

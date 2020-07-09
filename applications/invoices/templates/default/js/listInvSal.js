@@ -1,4 +1,4 @@
-/* invoices/listInvSal.js v.1.2.0. 02/12/2019 */
+/* invoices/listInvSal.js v.1.2.0. 01/07/2020 */
 var requestSent = false;
 
 $(document).ready(function() {
@@ -16,7 +16,7 @@ $(document).ready(function() {
 			{"data":"datescalocal","targets":2},
 			{"data":"pagata","targets":3,"orderable":false},
 			{"data":"customer","targets":4},
-			{"data":"number","targets":5},
+			{"data":"invoice_number","targets":5},
 			{"data":"note","targets":6},
 			{"data":"total","targets":7,"className":"text-right"},
 			{"data":"totaltaxes","targets":8,"className":"text-right"},
@@ -42,7 +42,7 @@ $(document).ready(function() {
       	},
       ajax: {
 		 	type : "GET",
-		 	url : siteUrl+CoreRequestAction+"/listAjaxInvSal",
+		 	url : siteUrl+coreRequestAction+"/listAjaxInvSal",
 		 	async: "true",
 			cache: "false",
 			dataSrc: function ( json ) {

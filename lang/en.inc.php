@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * language EN v.1.0.0. 05/10/2018
+ * language EN v.1.2.0. 01/07/2020
 */
 
 $_lang['user'] = 'en';
@@ -23,9 +23,10 @@ $_lang['datepicker time format'] = "H:i";
 $_lang['charset'] = 'en-EN';
 $_lang['charset date'] = 'en_EN';
 
-/* labels */
+// labels
 $_lang['months'] = array('1' => 'january','2' => 'february','3' => 'march','4' => 'april','5' => 'may','6' => 'june','7' => 'july','8' => 'august','9' => 'september','10' => 'october','11' => 'november','12' => 'december');
 $_lang['days'] = array('0' => 'sunday','1' => 'monday','2' => 'tuesday','3' => 'wednesday','4' => 'thursday','5' => 'friday','6' => 'saturday');
+$_lang['anno'] = "year";
 $_lang['codice'] = "code";
 $_lang['aiuto'] = "help";
 $_lang['aiuto breve'] = "small help";
@@ -56,11 +57,9 @@ $_lang['primo'] = "first";
 $_lang['prima'] = "first";
 $_lang['primi'] = "first";
 $_lang['prime'] = "first";
-
 $_lang['tutto'] = "all";
 $_lang['tutti'] = "all";
 $_lang['tutte'] = "all";
-
 $_lang['Sei sicuro?'] = "Are you sure?";
 $_lang['caricamento'] = "loading";
 $_lang['processo dati'] = "data processing";
@@ -73,13 +72,13 @@ $_lang['accesso'] = "accesso";
 $_lang['tipo accesso'] = "tipo accesso";
 $_lang['pubblico'] = "pubblico";
 $_lang['privato'] = "privato";
-
+$_lang['amministratore'] = "administrator";
+$_lang['amministrazione'] = "admin";
 $_lang['nr.'] = "nr.";
 $_lang['del'] = 'del';
 $_lang['tipo'] = "type";
 $_lang['moduli disponibili'] = "moduli disponibili";
 $_lang['numero'] = "number";
-
 $_lang['data'] = "date";
 $_lang['data scadenza'] = "expired date";
 $_lang['scadenza'] = "expired";
@@ -88,7 +87,6 @@ $_lang['inizio'] = "inizio";
 $_lang['fine'] = "fine";
 $_lang['tempo'] = "tempo";
 $_lang['tempo totale'] = "tempo totale";
-
 $_lang['immagine zoom'] = "zoom image";
 $_lang['immagine'] = "image";
 $_lang['immagini'] = "images";
@@ -96,6 +94,8 @@ $_lang['immagini'] = "images";
 $_lang['partita IVA'] = "partita IVA";
 $_lang['P. IVA'] = "P. IVA";
 $_lang['P.IVA'] = "P.IVA";
+$_lang['IVA'] = "P. IVA";
+$_lang['iva'] = "iva";
 $_lang['codice fiscale'] = "codice fiscale";
 $_lang['C. Fiscale'] = "C. Fiscale";
 $_lang['C.F.'] = "C.F.";
@@ -107,8 +107,10 @@ $_lang['cap'] = "ZIP CODE";
 $_lang['c.a.p.'] = "ZIP CODE";
 $_lang['città'] = "city";
 $_lang['provincia'] = "country";
-$_lang['stato'] = "state";
+$_lang['stato'] = "status";
 $_lang['stati'] = "states";
+$_lang['nazione'] = "nation";
+$_lang['nazioni'] = "nations";
 $_lang['telefono'] = "telephone";
 $_lang['fax'] = "fax";
 $_lang['cellulare'] = "mobile";
@@ -119,16 +121,23 @@ $_lang['skype'] = "skype";
 $_lang['nome utente skype'] = "nome utente skype";
 $_lang['genitore'] = "parent";
 $_lang['fiscale'] = "fiscale";
-
+$_lang['banca'] = "bank";
+$_lang['fatturazione'] = "fatturazione";
+$_lang['testo no IVA'] = "testo no IVA";
+$_lang['testo rivalsa'] = "testo rivalsa";
+$_lang['intestatario'] = "intestatario";
+$_lang['iban'] = "iban";
+$_lang['bic swift'] = "bic swift";
+$_lang['rivalsa'] = "rivalsa";
+$_lang['riepilogo IVA'] = "riepilogo IVA";
+$_lang['gestione IVA'] = "gestione IVA";
+$_lang['gestione rivalsa'] = "gestione rivalsa";
 $_lang['email'] = "email";
 $_lang['indirizzo email'] = "email address";
 $_lang['indirizzo email valido'] = "valid email address";
-
 $_lang['nota'] = "nota";
-
 $_lang['soggetto terzo'] = "soggetto terzo";
 $_lang['soggetti terzi'] = "soggetti terzi";
-
 $_lang['titolo'] = "title";
 $_lang['descrizione'] = "description";
 $_lang['contenuto'] = "content";
@@ -143,51 +152,41 @@ $_lang['proprietario'] = "owner";
 $_lang['dati base'] = "main data";
 $_lang['opzioni'] = "options";
 $_lang['percentuale di completamento'] = "percentage of completion";
+$_lang['completato'] = "completamento";
+$_lang['completato - abb'] = "compl.";
 $_lang['selezionato'] = "selected";
 $_lang['status'] = "status";
 $_lang['costo orario'] = "cost for hour";
-
 $_lang['quantità'] = "quantità";
-
+$_lang['q.tà'] = "q.tà";
 $_lang['tassa'] = "tassa";
 $_lang['imponibile'] = "imponibile";
 $_lang['imposte'] = "imposte";
-
 $_lang['prezzo'] = "prezzo";
 $_lang['prezzo unità'] = "prezzo unità";
 $_lang['prezzo unitario'] = "prezzo unitario";
 $_lang['prezzo totale'] = "prezzo totale";
-
 $_lang['totale'] = "total";
+$_lang['totali'] = "totals";
 $_lang['totale onorario'] = "totale onorario";
-
 $_lang['importo'] = "importo";
 $_lang['importo lordo'] = "importo lordo";
-
 $_lang['pagamento'] = 'paymant';
 $_lang['modalità pagamento'] = "modalità pagamento";
-
 $_lang['bonifico bancario'] = "bonifico bancario";
-
-$_lang['rivalsa'] = "rivalsa";
-$_lang['riepilogo iva'] = "riepilogo iva";
-
 $_lang['destinatario'] = "destinatario";
-
 $_lang['lista %ITEMS%'] = "list %ITEMS%";
 $_lang['lista dei %ITEMS%'] = "list of %ITEMS%";
 $_lang['lista degli %ITEMS%'] = "list of %ITEMS%";
 $_lang['lista delle %ITEMS%'] = "list of %ITEMS%";
-
+$_lang['torna al %ITEM%'] = "back to %ITEM%";
 $_lang['torna alla lista %ITEMS%'] = "back to %ITEMS% list";
 $_lang['torna alla pagina %ITEM%'] = "torna alla pagina %ITEM%";
 $_lang['torna alla pagina'] = "torna alla pagina";
-
 $_lang['nuovo %ITEM%'] = "new %ITEM%";
 $_lang['nuova %ITEM%'] = 'new %ITEM%';
 $_lang['nuovi %ITEMS%'] = 'new %ITEMS%';
 $_lang['nuove %ITEMS%'] = 'new %ITEMS%';
-
 $_lang['username'] = "username";
 $_lang['nome utente'] = "username";
 $_lang['avatar'] = "avatar";
@@ -198,7 +197,6 @@ $_lang['livelli'] = "levels";
 $_lang['password'] = "password";
 $_lang['password di controllo'] = "password for check";
 $_lang['profilo utente'] = "user's profile";
-
 $_lang['timecard'] = "timecard";
 $_lang['progetti'] = "projects";
 $_lang['progetto'] = "project";
@@ -223,15 +221,15 @@ $_lang['nota'] = 'nota';
 $_lang['note'] = 'note';
 $_lang['percentuale'] = 'percentuale';
 $_lang['percentuali'] = 'percentuali';
+$_lang['tabella'] = 'tabella';
 
-/* actions */
+// actions
 $_lang['attivato'] = "activated";
 $_lang['attivata'] = "activated";
 $_lang['disattivato'] = "deactivated";
 $_lang['disattivata'] = "deactivated";
 $_lang['cancella'] = "delete";
 $_lang['cancella %ITEM%'] = "delete %ITEM%";
-
 $_lang['edita'] = "edit";
 $_lang['edita %ITEM%'] = "edit %ITEM%";
 $_lang['attiva'] = "active";
@@ -252,18 +250,20 @@ $_lang['applica'] = "apply";
 $_lang['indietro'] = "back";
 $_lang['resetta'] = "reset";
 $_lang['loggati'] = "login";
+$_lang['login'] = "login";
 $_lang['chiudi'] = "close";
-
 $_lang['gestisci'] = "manage";
-
 $_lang['esporta in pdf'] = "export in pdf";
 $_lang['esporta in formato xls'] = "esport in xls";
-
 $_lang['aggiungi'] = "add";
 $_lang['aggiungi %ITEM%'] = "add %ITEM%";
-
 $_lang['modifica'] = "modify";
 $_lang['modifica %ITEM%'] = "modify %ITEM%";
+$_lang['modifica il %ITEM%'] = "modifica il %ITEM%";
+$_lang['modifica la %ITEM%'] = "modifica la %ITEM%";
+$_lang['modifica i %ITEM%'] = "modifica i %ITEM%";
+$_lang['modifica gli %ITEM%'] = "modifica gli %ITEM%";
+$_lang['modifica la %ITEM%'] = "modifica la %ITEM%";
 $_lang['modifica la tua %ITEM%'] = "modifica la tua %ITEM%";
 $_lang['modifica profilo utente'] = "modify user's profile";
 
@@ -334,6 +334,8 @@ $_lang['indirizzo <strong>%EMAIL%</strong> risulta già presente nel nostro data
 
 $_lang['Errore! Ci sono ancora figli associati!'] = "Errore! Ci sono ancora figli associati!";
 $_lang['Errore! Ci sono ancora voci associate!'] = "Errore! Ci sono ancora voci associate!";
+$_lang['Errore! Ci sono ancora %ITEM% associati!'] = "Errore! Ci sono ancora %ITEM% associati!";
+$_lang['Errore! Ci sono ancora %ITEM% associate!'] = "Errore! Ci sono ancora %ITEM% associate!";
 
 $_lang['Intervallo ti tempo si sovrappone ad un altro inserito nella stessa data!'] = "Intervallo ti tempo si sovrappone ad un altro inserito nella stessa data!";
 $_lang['Intervallo tra le due date errato!'] = "Intervallo tra le due date errato!";

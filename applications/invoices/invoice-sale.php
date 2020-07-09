@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * invoices/invoice-sale.php v.1.2.0. 13/12/2019
+ * invoices/invoice-sale.php v.1.2.0. 01/07/2020
 */
 
 if (isset($_POST['itemsforpage']) && isset($_MY_SESSION_VARS[$App->sessionName]['ifp']) && $_MY_SESSION_VARS[$App->sessionName]['ifp'] != $_POST['itemsforpage']) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'ifp',$_POST['itemsforpage']);
@@ -21,65 +21,70 @@ Sql::setOrder('surname ASC, name ASC');
 $App->customers = Sql::getRecords();
 
 switch(Core::$request->method) {
-		
-	/* ARTICLES */
-	case 'deleteArtInvSal':
-		if ($App->id > 0) {
-			$id_art = (isset(Core::$request->params[0]) ? intval(Core::$request->params[0]) : 0);
-			if ($id_art > 0) {
-				Sql::initQuery($App->params->tables['ArtSal'],array('id'),array($id_art),'id = ?');
-				Sql::deleteRecord();
-				if (Core::$resultOp->error == 0) {
-					Core::$resultOp->message = ucfirst(preg_replace('/%ITEM%/',$_lang['articolo'],$_lang['%ITEM% cancellato'])).'!';
-					}
-				}
-			}
-		$App->viewMethod = 'formMod';
-		$App->tabActive = 2;
-	break;		
-	/* END ARTICLES */
 	
 	case 'pagaInvSal':
-		if ($App->id > 0) 
-		{  
-			Sql::setDebugMode(1);
+		if ($App->id > 0) {  
+
 			Sql::initQuery($App->params->tables['InvSal'],array('pagata'),array(1,$App->id),'id = ?');
 			Sql::updateRecord();
-			if (Core::$resultOp->error == 0)
-			{
-				$_SESSION['message'] = '0|'.ucfirst($_lang['fattura segnata come pagata']); 
-				ToolsStrings::redirect(URL_SITE.Core::$request->action.'/listInvSal');
-			}
-			else 
-			{
-				ToolsStrings::redirect(URL_SITE.'error');
-			}
-		} 
-		else 
-		{
+			if (Core::$resultOp->error > 0) { ToolsStrings::redirect(URL_SITE.'error/db'); }
+
+			$_SESSION['message'] = '0|'.ucfirst($_lang['fattura segnata come pagata']); 
+			ToolsStrings::redirect(URL_SITE.Core::$request->action.'/listInvSal');
+
+		} else {
 			ToolsStrings::redirect(URL_SITE.'error/404');
 		}
 		die();
 	break;
-	
+		
+	/* ARTICLES */
+	case 'deleteArtInvSal':
+		if ($App->id > 0) {
+			$id_art = (isset(Core::$request->params[0]) ? intval(Core::$request->params[0]) : 0);			
+			if ($id_art > 0) {
+				
+				// cancello il record
+				Sql::initQuery($App->params->tables['ArtSal'],array('id'),array($id_art),'id = ?');
+				Sql::deleteRecord();
+				if (Core::$resultOp->error > 0) { ToolsStrings::redirect(URL_SITE.'error/db'); }
+				
+				$_SESSION['message'] = '0|'.ucfirst(preg_replace('/%ITEM%/',$_lang['articolo'],$_lang['%ITEM% cancellato'])).'!';
+				ToolsStrings::redirect(URL_SITE.Core::$request->action.'/modifyInvSal/'.$App->id.'/tab/2');
+		
+			} else {
+				ToolsStrings::redirect(URL_SITE.'error/404');
+			}		
+		
+		} else {
+			ToolsStrings::redirect(URL_SITE.'error/404');
+		}	
+	break;		
+	/* END ARTICLES */
+		
 	case 'deleteInvSal':
 		if ($App->id > 0) {
-			$delete = true;
+			
 			/* controlla se ha figli */
-			if (Sql::countRecordQry($App->params->tables['ArtSal'],'id','id_invoice = ?',array($App->id)) > 0) {
-				Core::$resultOp->error = 2;
-				Core::$resultOp->message = $_lang['Errore! Ci sono ancora figli associati!'];
-				$delete = false;	
-				}
-			if ($delete == true && Core::$resultOp->error == 0) {
-				Sql::initQuery($App->params->tables['InvSal'],array('id'),array($App->id),'id = ?');
-				Sql::deleteRecord();
-				if (Core::$resultOp->error == 0) {
-					Core::$resultOp->message = ucfirst($_lang['voce cancellata']).'!';
-					}
-				}
-			}		
-		$App->viewMethod = 'list';
+			$count = Sql::countRecordQry($App->params->tables['ArtSal'],'id','id_invoice = ?',array($App->id));
+			if (Core::$resultOp->error > 0) { ToolsStrings::redirect(URL_SITE.'error/db'); }
+			if ($count > 0) {
+				$_SESSION['message'] = '2|'.ucfirst(preg_replace('/%ITEM%/',$_lang['articoli'],$_lang['Errore! Ci sono ancora %ITEM% associati!']));
+				ToolsStrings::redirect(URL_SITE.Core::$request->action.'/modifyInvSal/'.$App->id);	
+			}
+
+			// cancello il record
+			Sql::initQuery($App->params->tables['InvSal'],array('id'),array($App->id),'id = ?');
+			Sql::deleteRecord();
+			if (Core::$resultOp->error > 0) { ToolsStrings::redirect(URL_SITE.'error/db'); }
+			
+			$_SESSION['message'] = '0|'.ucfirst(preg_replace('/%ITEM%/',$_lang['voce-p'],$_lang['%ITEM% cancellata'])).'!';
+			ToolsStrings::redirect(URL_SITE.Core::$request->action.'/listInvSal');
+			
+				
+		} else {
+			ToolsStrings::redirect(URL_SITE.'error/404');
+		}	
 	break;
 	
 	case 'newInvSal':			
@@ -89,30 +94,48 @@ switch(Core::$request->method) {
 	break;
 	
 	case 'insertInvSal':
+	
 		if ($_POST) {
-			/* parsa i post in base ai campi */
-			Form::parsePostByFields($App->params->fields['InvSal'],$_lang,array());		
-			if (Core::$resultOp->error == 0) {
-				DateFormat::checkDateTimeIsoIniEndInterval($_POST['dateins'],$_POST['datesca'],'>');
-				if (Core::$resultOp->error == 0) {									
-					Sql::insertRawlyPost($App->params->fields['InvSal'],$App->params->tables['InvSal']);
-					if (Core::$resultOp->error == 0) {							   						   							   				
-		   			}
-		   		} else {
-						Core::$resultOp->message = $_lang['Intervallo tra le due date è errato!'];	 
-						}
-				}
-			} else {
-				Core::$resultOp->error = 1;
-				}			
-		list($id,$App->viewMethod,$App->pageSubTitle,Core::$resultOp->message) = Form::getInsertRecordFromPostResults(0,Core::$resultOp,array('label inserted'=>preg_replace('/%ITEM%/',$_lang['voce'],$_lang['%ITEM% inserito']),'label insert'=>preg_replace('/%ITEM%/',$_lang['voce'],$_lang['inserisci %ITEM%'])));				
-		$App->tabActive = 1;	
+			
+			// parsa i post in base ai campi
+			Form::parsePostByFields($App->params->fields['InvSal'],$_lang,array());
+			if (Core::$resultOp->error > 0) { 
+				$_SESSION['message'] = '1|'.implode('<br>', Core::$resultOp->messages);
+				ToolsStrings::redirect(URL_SITE.Core::$request->action.'/newInvSal');
+			}	
+			
+			// controllo date
+			DateFormat::checkDateFormatIniEndInterval($_POST['dateins'],$_POST['datesca'],'Y-m-d','>');
+			if (Core::$resultOp->error > 0) { 
+				$_SESSION['message'] = '1|'.$_lang['Intervallo tra le due date errato!'];
+				ToolsStrings::redirect(URL_SITE.Core::$request->action.'/newInvSal');
+			}
+			
+			// controllo numero fattura
+			if (Sql::countRecordQry($App->params->tables['InvSal'],'id','id_customer = ? AND number_year = ? AND number = ?',array(intval($_POST['id_customer']),intval($_POST['number_year']),intval($_POST['number']))) > 0) {
+				$_SESSION['message'] = '1|'.$_lang['il numero fattura esiste già!'];
+				ToolsStrings::redirect(URL_SITE.Core::$request->action.'/newInvSal');		
+			}		
+	
+			// memorizza record
+			Sql::insertRawlyPost($App->params->fields['InvSal'],$App->params->tables['InvSal']);
+			if (Core::$resultOp->error > 0) { ToolsStrings::redirect(URL_SITE.'error/db'); }
+			
+			$_SESSION['message'] = '0|'.ucfirst(preg_replace('/%ITEM%/',$_lang['voce'],$_lang['%ITEM% inserita'])).'!';
+			$tabActive = 1;
+			
+			ToolsStrings::redirect(URL_SITE.Core::$request->action.'/listInvSal');
+			
+		} else {
+			ToolsStrings::redirect(URL_SITE.'error/404');
+		}			
 	break;
 
 	case 'modifyInvSal':				
 		$App->pageSubTitle = preg_replace('/%ITEM%/',$_lang['voce'],$_lang['modifica %ITEM%']);
 		$App->viewMethod = 'formMod';
-		$App->tabActive = 2;
+		$App->tabActive = 1;
+		if ( (isset(Core::$request->params[0]) && Core::$request->params[0] == 'tab') && isset(Core::$request->params[1]) ) $App->tabActive = Core::$request->params[1];
 	break;
 	
 	case 'updateInvSal':
@@ -132,57 +155,85 @@ switch(Core::$request->method) {
 					$_POST = $Module->calculateArt($_POST);	
 									
 					if (isset($_POST['artFormMode']) &&  $_POST['artFormMode'] == 'ins') {
-						Form::parsePostByFields($App->params->fields['ArtSal'],$_lang,array());	
-						if (Core::$resultOp->error == 0) {
-							Sql::insertRawlyPost($App->params->fields['ArtSal'],$App->params->tables['ArtSal']);
-							if (Core::$resultOp->error == 0) {
-								Core::$resultOp->message = ucfirst(preg_replace('/%ITEM%/',$_lang['articolo'],$_lang['%ITEM% inserito'])).'!';
-								$App->tabActive = 2;
-								}
-							} else {
-								Core::$resultOp->error = 1;
-								}					
-						}
 						
-				
+						// parsa i campi
+						Form::parsePostByFields($App->params->fields['ArtSal'],$_lang,array());	
+						if (Core::$resultOp->error > 0) { 
+							$_SESSION['message'] = '1|'.implode('<br>', Core::$resultOp->messages);
+							ToolsStrings::redirect(URL_SITE.Core::$request->action.'/modifyInvSal/'.$App->id).'/tab/2';
+						}	
+
+						// memorizza record
+						Sql::insertRawlyPost($App->params->fields['ArtSal'],$App->params->tables['ArtSal']);
+						if (Core::$resultOp->error > 0) { ToolsStrings::redirect(URL_SITE.'error/db'); }
+						
+						$_SESSION['message'] = '0|'.ucfirst(preg_replace('/%ITEM%/',$_lang['articolo'],$_lang['%ITEM% inserito'])).'!';
+						$tabActive = 2;
+						
+						ToolsStrings::redirect(URL_SITE.Core::$request->action.'/modifyInvSal/'.$App->id.'/tab/'.$tabActive);
+
+					}
+										
 					if (isset($_POST['artFormMode']) &&  $_POST['artFormMode'] == 'mod') {
-						$id_art = (isset($_POST['id_article']) ? intval($_POST['id_article']) : 0);
-						Form::parsePostByFields($App->params->fields['ArtSal'],$_lang,array());	
-						if (Core::$resultOp->error == 0) {
-							Sql::updateRawlyPost($App->params->fields['ArtSal'],$App->params->tables['ArtSal'],'id',$id_art);	
-							if (Core::$resultOp->error == 0) {
-								Core::$resultOp->message = ucfirst(preg_replace('/%ITEM%/',$_lang['articolo'],$_lang['%ITEM% modificato'])).'!';
-								$App->tabActive = 2;
-								}
-							} else {//Sql::setDebugMode(1);
-								Core::$resultOp->error = 1;
-								}
-						}
-					}
 						
-				} else {
-					
-					/* form invoice */				
-					/* parsa i post in base ai campi */ 	
-					Form::parsePostByFields($App->params->fields['InvSal'],$_lang,array());
-					if (Core::$resultOp->error == 0) {
-						DateFormat::checkDateTimeIsoIniEndInterval($_POST['dateins'],$_POST['datesca'],'>');
-						if (Core::$resultOp->error == 0) {						
-							Sql::updateRawlyPost($App->params->fields['InvSal'],$App->params->tables['InvSal'],'id',$App->id);
-							if (Core::$resultOp->error == 0) {
-								$App->tabActive = 1;															
-								}
-							} else {
-								Core::$resultOp->message = $_lang['Intervallo tra le due date è errato!'];	 
-								}
-						}															
-					/* end form invoice */	
+						$id_art = (isset($_POST['id_article']) ? intval($_POST['id_article']) : 0);
+						
+						// parsa i campi
+						Form::parsePostByFields($App->params->fields['ArtSal'],$_lang,array());	
+						if (Core::$resultOp->error > 0) { 
+							$_SESSION['message'] = '1|'.implode('<br>', Core::$resultOp->messages);
+							ToolsStrings::redirect(URL_SITE.Core::$request->action.'/modifyInvSal/'.$App->id).'/tab/2';
+						}	
+						
+						// memorizza record
+						Sql::updateRawlyPost($App->params->fields['ArtSal'],$App->params->tables['ArtSal'],'id',$id_art);
+						if (Core::$resultOp->error > 0) { ToolsStrings::redirect(URL_SITE.'error/db'); }
+							
+						$_SESSION['message'] = '0|'.ucfirst(preg_replace('/%ITEM%/',$_lang['articolo'],$_lang['%ITEM% modificato'])).'!';
+						$tabActive = 2;
+						
+						ToolsStrings::redirect(URL_SITE.Core::$request->action.'/modifyInvSal/'.$App->id.'/tab/'.$tabActive);
+
 					}
 					
+				}
+						
 			} else {
-				Core::$resultOp->error = 1;
-				}			
-		list($id,$App->viewMethod,$App->pageSubTitle,Core::$resultOp->message) = Form::getUpdateRecordFromPostResults($App->id,Core::$resultOp,array('label done'=>$_lang['modifiche effettuate'],'label modified'=>preg_replace('/%ITEM%/',$_lang['voce'],$_lang['%ITEM% modificato']),'label modify'=>preg_replace('/%ITEM%/',$_lang['voce'],$_lang['modifica %ITEM%']),'label insert'=>preg_replace('/%ITEM%/',$_lang['voce'],$_lang['inserisci %ITEM%'])));		
+					
+				// form invoice */		
+				
+				// parsa i post in base ai campi
+				Form::parsePostByFields($App->params->fields['InvSal'],$_lang,array());
+   			if (Core::$resultOp->error > 0) { 
+					$_SESSION['message'] = '1|'.implode('<br>', Core::$resultOp->messages);
+					ToolsStrings::redirect(URL_SITE.Core::$request->action.'/modifyInvSal/'.$App->id);
+				}	
+
+				// controllo date
+				DateFormat::checkDateFormatIniEndInterval($_POST['dateins'],$_POST['datesca'],'Y-m-d','>');
+				if (Core::$resultOp->error > 0) { 
+					$_SESSION['message'] = '1|'.$_lang['Intervallo tra le due date errato!'];
+					ToolsStrings::redirect(URL_SITE.Core::$request->action.'/modifyInvSal/'.$App->id);
+				}
+				
+				// memorizza record
+				Sql::updateRawlyPost($App->params->fields['InvSal'],$App->params->tables['InvSal'],'id',$App->id);
+				if (Core::$resultOp->error > 0) { ToolsStrings::redirect(URL_SITE.'error/db'); }
+									
+				$_SESSION['message'] = '0|'.ucfirst(preg_replace('/%ITEM%/',$_lang['voce'],$_lang['%ITEM% modificata'])).'!';
+				$tabActive = 1;
+			}
+			
+			if (isset($_POST['applyForm']) && $_POST['applyForm'] == 'apply') {
+				ToolsStrings::redirect(URL_SITE.Core::$request->action.'/modifyInvSal/'.$App->id.'/tab/'.$tabActive);
+			} else {
+				ToolsStrings::redirect(URL_SITE.Core::$request->action.'/listInvSal');
+			}	
+			
+					
+		} else {
+			ToolsStrings::redirect(URL_SITE.'error/404');
+		}			
 	break;
 	
 /*  AJAX */
@@ -195,17 +246,12 @@ switch(Core::$request->method) {
 			$App->item = Sql::getRecord();
 			$json = json_encode($App->item);
 			echo $json;
-			}	
+		}	
 		die();	
 	break;
 
 /* END AJAX */
 
-	case 'messageInvSal':
-		Core::$resultOp->error = $App->id;
-		if (isset(Core::$request->params[0])) Core::$resultOp->message = urldecode(Core::$request->params[0]);
-		$App->viewMethod = 'list';		
-	break;
 
 	case 'listAjaxInvSal':
 		//Core::setDebugMode(1);
@@ -308,6 +354,9 @@ switch(Core::$request->method) {
 				/* calcola rivalsa */
 				$invoiceTotalRivalsa = 0;
 				if ($value->rivalsa > 0) $invoiceTotalRivalsa = ($value->total * $value->rivalsa) / 100;	
+				
+				// numero fattura automatico
+				$value->invoice_number = $value->id_customer.'-'.intval($value->number).'-'.$value->number_year;
 					
 				
 				$value->totalLabel = '€ '.number_format($value->total,2,',','.');
@@ -325,7 +374,7 @@ switch(Core::$request->method) {
 								
 				$tablefields = array(
 					'id'=>$value->id,
-					'number'=>$value->number,
+					'invoice_number' => $value->invoice_number,
 					'dateinslocal'=>DateFormat::convertDateFormats($value->dateins,'Y-m-d',$_lang['data format'],$App->nowDate),
 					'datescalocal'=>DateFormat::convertDateFormats($value->datesca,'Y-m-d',$_lang['data format'],$App->nowDate),
 					'pagata'=>$pagata,
@@ -368,6 +417,20 @@ switch((string)$App->viewMethod) {
 		$App->item->active = 1;
 		$App->item->stampa_quantita = 1;
 		$App->item->stampa_unita = 1;
+		
+		$App->item->id_customer = 0;
+		
+		$App->item->number = 1;
+		// preleva l'ultimo numero della fattura
+		$qryFields = array("MAX(number) + 1 AS newnumber");
+		$qryFieldsValues = array($App->item->id_customer,$App->params->defaultNumberYear);
+		$clause = 'id_customer = ? AND number_year = ?';
+		Sql::initQuery($App->params->tables['InvSal'],$qryFields,$qryFieldsValues,$clause);	
+		$obj = Sql::getRecord();
+		if (Core::$resultOp->error > 0) { ToolsStrings::redirect(URL_SITE.'error/db'); }
+		if (isset($obj->newnumber)) $App->item->number = $obj->newnumber;
+
+		
 		if (Core::$resultOp->error == 1) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['InvSal']);
 		$App->templateApp = 'formInvSal.html';
 		$App->methodForm = 'insertInvSal';	
@@ -405,8 +468,6 @@ switch((string)$App->viewMethod) {
 					$value->price_total_label = '€ '.number_format($value->price_total,2,',','.');
 					$value->price_tax_label = '€ '.number_format($value->price_tax,2,',','.');
 					$value->total_label = '€ '.number_format($value->total,2,',','.');
-					
-					$value->invoice_numbel = $value->id_customer.'-'.intval($value->number).'-'.$value->number_year;
 					
 					$tot_price_unity += $value->price_unity;
 					$tot_price_total += $value->price_total;

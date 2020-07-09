@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * invoices/invoice-purchase.php v.1.2.0. 21/12/2019
+ * invoices/invoice-purchase.php v.1.2.0. 01/07/2020
 */
 
 if (isset($_POST['itemsforpage']) && isset($_MY_SESSION_VARS[$App->sessionName]['ifp']) && $_MY_SESSION_VARS[$App->sessionName]['ifp'] != $_POST['itemsforpage']) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'ifp',$_POST['itemsforpage']);
@@ -25,38 +25,50 @@ switch(Core::$request->method) {
 	/* ARTICLES */
 	case 'deleteArtInvPur':
 		if ($App->id > 0) {
-			$id_art = (isset(Core::$request->params[0]) ? intval(Core::$request->params[0]) : 0);
+			$id_art = (isset(Core::$request->params[0]) ? intval(Core::$request->params[0]) : 0);		
 			if ($id_art > 0) {
+				
+				// cancello il record
 				Sql::initQuery($App->params->tables['ArtPur'],array('id'),array($id_art),'id = ?');
 				Sql::deleteRecord();
-				if (Core::$resultOp->error == 0) {
-					Core::$resultOp->message = ucfirst(preg_replace('/%ITEM%/',$_lang['articolo'],$_lang['%ITEM% cancellato'])).'!';
-					}
-				}
-			}
-		$App->viewMethod = 'formMod';
-		$App->tabActive = 2;
+				if (Core::$resultOp->error > 0) { ToolsStrings::redirect(URL_SITE.'error/db'); }
+				
+				$_SESSION['message'] = '0|'.ucfirst(preg_replace('/%ITEM%/',$_lang['articolo'],$_lang['%ITEM% cancellato'])).'!';
+				ToolsStrings::redirect(URL_SITE.Core::$request->action.'/modifyInvPur/'.$App->id.'/tab/2');
+		
+			} else {
+				ToolsStrings::redirect(URL_SITE.'error/404');
+			}		
+		
+		} else {
+			ToolsStrings::redirect(URL_SITE.'error/404');
+		}	
 	break;		
 	/* END ARTICLES */
 	
 	case 'deleteInvPur':
 		if ($App->id > 0) {
-			$delete = true;
+
 			/* controlla se ha figli */
-			if (Sql::countRecordQry($App->params->tables['ArtPur'],'id','id_invoice = ?',array($App->id)) > 0) {
-				Core::$resultOp->error = 2;
-				Core::$resultOp->message = $_lang['Errore! Ci sono ancora figli associati!'];
-				$delete = false;	
-				}
-			if ($delete == true && Core::$resultOp->error == 0) {
-				Sql::initQuery($App->params->tables['InvPur'],array('id'),array($App->id),'id = ?');
-				Sql::deleteRecord();
-				if (Core::$resultOp->error == 0) {
-					Core::$resultOp->message = ucfirst($_lang['voce-p cancellata']).'!';
-					}
-				}
-			}		
-		$App->viewMethod = 'list';
+			$count = Sql::countRecordQry($App->params->tables['ArtPur'],'id','id_invoice = ?',array($App->id));
+			if (Core::$resultOp->error > 0) { ToolsStrings::redirect(URL_SITE.'error/db'); }
+			if ($count > 0) {
+				$_SESSION['message'] = '2|'.ucfirst(preg_replace('/%ITEM%/',$_lang['articoli'],$_lang['Errore! Ci sono ancora %ITEM% associati!']));
+				ToolsStrings::redirect(URL_SITE.Core::$request->action.'/modifyInvPur/'.$App->id);	
+			}
+
+			// cancello il record
+			Sql::initQuery($App->params->tables['InvPur'],array('id'),array($App->id),'id = ?');
+			Sql::deleteRecord();
+			if (Core::$resultOp->error > 0) { ToolsStrings::redirect(URL_SITE.'error/db'); }
+			
+			$_SESSION['message'] = '0|'.ucfirst(preg_replace('/%ITEM%/',$_lang['voce-p'],$_lang['%ITEM% cancellata'])).'!';
+			ToolsStrings::redirect(URL_SITE.Core::$request->action.'/listInvPur');
+			
+				
+		} else {
+			ToolsStrings::redirect(URL_SITE.'error/404');
+		}	
 	break;
 	
 	case 'newInvPur':			
@@ -67,29 +79,39 @@ switch(Core::$request->method) {
 	
 	case 'insertInvPur':
 		if ($_POST) {
-			/* parsa i post in base ai campi */
-			Form::parsePostByFields($App->params->fields['InvPur'],$_lang,array());			
-			if (Core::$resultOp->error == 0) {
-				DateFormat::checkDateFormatIniEndInterval($_POST['dateins'],$_POST['datesca'],'Y-m-d','>');
-				if (Core::$resultOp->error == 0) {									
-					Sql::insertRawlyPost($App->params->fields['InvPur'],$App->params->tables['InvPur']);
-					if (Core::$resultOp->error == 0) {							   						   							   				
-		   			}
-		   		} else {
-						Core::$resultOp->message = $_lang['Intervallo tra le due date è errato!'];	 
-						}
-				}
-			} else {
-				Core::$resultOp->error = 1;
-				}			
-		list($id,$App->viewMethod,$App->pageSubTitle,Core::$resultOp->message) = Form::getInsertRecordFromPostResults(0,Core::$resultOp,array('label inserted'=>preg_replace('/%ITEM%/',$_lang['voce-p'],$_lang['%ITEM% inserito']),'label insert'=>preg_replace('/%ITEM%/',$_lang['voce-p'],$_lang['inserisci %ITEM%'])));				
-		$App->tabActive = 1;	
+			// parsa i post in base ai campi
+			Form::parsePostByFields($App->params->fields['InvPur'],$_lang,array());
+			if (Core::$resultOp->error > 0) { 
+				$_SESSION['message'] = '1|'.implode('<br>', Core::$resultOp->messages);
+				ToolsStrings::redirect(URL_SITE.Core::$request->action.'/newInvPur');
+			}	
+			
+			// controllo date
+			DateFormat::checkDateFormatIniEndInterval($_POST['dateins'],$_POST['datesca'],'Y-m-d','>');
+			if (Core::$resultOp->error > 0) { 
+				$_SESSION['message'] = '1|'.$_lang['Intervallo tra le due date errato!'];
+				ToolsStrings::redirect(URL_SITE.Core::$request->action.'/newInvPur/'.$App->id);
+			}
+	
+			// memorizza record
+			Sql::insertRawlyPost($App->params->fields['InvPur'],$App->params->tables['InvPur']);
+			if (Core::$resultOp->error > 0) { ToolsStrings::redirect(URL_SITE.'error/db'); }
+			
+			$_SESSION['message'] = '0|'.ucfirst(preg_replace('/%ITEM%/',$_lang['voce-p'],$_lang['%ITEM% inserita'])).'!';
+			$tabActive = 1;
+			
+			ToolsStrings::redirect(URL_SITE.Core::$request->action.'/listInvPur');
+			
+		} else {
+			ToolsStrings::redirect(URL_SITE.'error/404');
+		}			
 	break;
 
 	case 'modifyInvPur':				
 		$App->pageSubTitle = preg_replace('/%ITEM%/',$_lang['voce-p'],$_lang['modifica %ITEM%']);
 		$App->viewMethod = 'formMod';
-		$App->tabActive = 2;
+		$App->tabActive = 1;
+		if ( (isset(Core::$request->params[0]) && Core::$request->params[0] == 'tab') && isset(Core::$request->params[1]) ) $App->tabActive = Core::$request->params[1];
 	break;
 	
 	case 'updateInvPur':
@@ -105,62 +127,91 @@ switch(Core::$request->method) {
 				$_POST['quantity'] = $_POST['art_quantity'];
 				$_POST['tax'] = $_POST['art_tax'];
 				
-				if ($_POST['quantity'] > 0 && isset($_POST['price_unity'])) {			
+				if ($_POST['quantity'] > 0 && isset($_POST['price_unity'])) {		
+					
 					$_POST = $Module->calculateArt($_POST);	
 									
 					if (isset($_POST['artFormMode']) &&  $_POST['artFormMode'] == 'ins') {
+						
+						// parsa i campi
 						Form::parsePostByFields($App->params->fields['ArtPur'],$_lang,array());	
-						if (Core::$resultOp->error == 0) {
-							Sql::insertRawlyPost($App->params->fields['ArtPur'],$App->params->tables['ArtPur']);
-							if (Core::$resultOp->error == 0) {
-								Core::$resultOp->message = ucfirst(preg_replace('/%ITEM%/',$_lang['articolo'],$_lang['%ITEM% inserito'])).'!';
-								$App->tabActive = 2;
-								}
-							} else {
-								Core::$resultOp->error = 1;
-								}					
-						}
+						if (Core::$resultOp->error > 0) { 
+							$_SESSION['message'] = '1|'.implode('<br>', Core::$resultOp->messages);
+							ToolsStrings::redirect(URL_SITE.Core::$request->action.'/modifyInvPur/'.$App->id).'/tab/2';
+						}	
+
+						// memorizza record
+						Sql::insertRawlyPost($App->params->fields['ArtPur'],$App->params->tables['ArtPur']);
+						if (Core::$resultOp->error > 0) { ToolsStrings::redirect(URL_SITE.'error/db'); }
+						
+						$_SESSION['message'] = '0|'.ucfirst(preg_replace('/%ITEM%/',$_lang['articolo'],$_lang['%ITEM% inserito'])).'!';
+						$tabActive = 2;
+						
+						ToolsStrings::redirect(URL_SITE.Core::$request->action.'/modifyInvPur/'.$App->id.'/tab/'.$tabActive);
+						
+					}
 						
 				
 					if (isset($_POST['artFormMode']) &&  $_POST['artFormMode'] == 'mod') {
-						$id_art = (isset($_POST['id_article']) ? intval($_POST['id_article']) : 0);
-						Form::parsePostByFields($App->params->fields['ArtPur'],$_lang,array());	
-						if (Core::$resultOp->error == 0) {
-							Sql::updateRawlyPost($App->params->fields['ArtPur'],$App->params->tables['ArtPur'],'id',$id_art);	
-							if (Core::$resultOp->error == 0) {
-								Core::$resultOp->message = ucfirst(preg_replace('/%ITEM%/',$_lang['articolo'],$_lang['%ITEM% modificato'])).'!';
-								$App->tabActive = 2;
-								}
-							} else {
-								Core::$resultOp->error = 1;
-								}
-						}
-					}
 						
-				} else {
-					
-					/* form invoice */				
-					/* parsa i post in base ai campi */ 	
-					Form::parsePostByFields($App->params->fields['InvPur'],$_lang,array());
-					if (Core::$resultOp->error == 0) {
-						DateFormat::checkDateFormatIniEndInterval($_POST['dateins'],$_POST['datesca'],'Y-m-d','>');
-						if (Core::$resultOp->error == 0) {						
-							Sql::updateRawlyPost($App->params->fields['InvPur'],$App->params->tables['InvPur'],'id',$App->id);
-							if (Core::$resultOp->error == 0) {
-								$App->tabActive = 1;																
-								}
-							} else {
-								Core::$resultOp->message = $_lang['Intervallo tra le due date è errato!'];	 
-								}
-						}															
-					/* end form invoice */	
+						$id_art = (isset($_POST['id_article']) ? intval($_POST['id_article']) : 0);
+						
+						// parsa i campi
+						Form::parsePostByFields($App->params->fields['ArtPur'],$_lang,array());	
+						if (Core::$resultOp->error > 0) { 
+							$_SESSION['message'] = '1|'.implode('<br>', Core::$resultOp->messages);
+							ToolsStrings::redirect(URL_SITE.Core::$request->action.'/modifyInvPur/'.$App->id).'/tab/2';
+						}	
+						
+						// memorizza record
+						Sql::updateRawlyPost($App->params->fields['ArtPur'],$App->params->tables['ArtPur'],'id',$id_art);
+						if (Core::$resultOp->error > 0) { ToolsStrings::redirect(URL_SITE.'error/db'); }
+							
+						$_SESSION['message'] = '0|'.ucfirst(preg_replace('/%ITEM%/',$_lang['articolo'],$_lang['%ITEM% modificato'])).'!';
+						$tabActive = 2;
+						
+						ToolsStrings::redirect(URL_SITE.Core::$request->action.'/modifyInvPur/'.$App->id.'/tab/'.$tabActive);
+						
 					}
 					
+				}				
+						
 			} else {
-				Core::$resultOp->error = 1;
 
-				}			
-		list($id,$App->viewMethod,$App->pageSubTitle,Core::$resultOp->message) = Form::getUpdateRecordFromPostResults($App->id,Core::$resultOp,array('label done'=>$_lang['modifiche effettuate'],'label modified'=>preg_replace('/%ITEM%/',$_lang['voce'],$_lang['%ITEM% modificato']),'label modify'=>preg_replace('/%ITEM%/',$_lang['voce'],$_lang['modifica %ITEM%']),'label insert'=>preg_replace('/%ITEM%/',$_lang['voce'],$_lang['inserisci %ITEM%'])));			
+				// form invoice	
+										
+				// parsa i post in base ai campi */ 	
+				Form::parsePostByFields($App->params->fields['InvPur'],$_lang,array());
+   			if (Core::$resultOp->error > 0) { 
+					$_SESSION['message'] = '1|'.implode('<br>', Core::$resultOp->messages);
+					ToolsStrings::redirect(URL_SITE.Core::$request->action.'/modifyInvPur/'.$App->id);
+				}	
+				
+				// controllo date
+				DateFormat::checkDateFormatIniEndInterval($_POST['dateins'],$_POST['datesca'],'Y-m-d','>');
+				if (Core::$resultOp->error > 0) { 
+					$_SESSION['message'] = '1|'.$_lang['Intervallo tra le due date errato!'];
+					ToolsStrings::redirect(URL_SITE.Core::$request->action.'/modifyInvPur/'.$App->id);
+				}
+				
+				// memorizza record
+				Sql::updateRawlyPost($App->params->fields['InvPur'],$App->params->tables['InvPur'],'id',$App->id);
+				if (Core::$resultOp->error > 0) { ToolsStrings::redirect(URL_SITE.'error/db'); }
+									
+				$_SESSION['message'] = '0|'.ucfirst(preg_replace('/%ITEM%/',$_lang['voce-p'],$_lang['%ITEM% modificata'])).'!';
+				$tabActive = 1;
+			}
+					
+			
+			if (isset($_POST['applyForm']) && $_POST['applyForm'] == 'apply') {
+				ToolsStrings::redirect(URL_SITE.Core::$request->action.'/modifyInvPur/'.$App->id.'/tab/'.$tabActive);
+			} else {
+				ToolsStrings::redirect(URL_SITE.Core::$request->action.'/listInvPur');
+			}	
+					
+		} else {
+			ToolsStrings::redirect(URL_SITE.'error/404');
+		}			
 	break;
 	
 /*  AJAX */

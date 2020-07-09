@@ -183,7 +183,7 @@ $('.modifyArtInvPur').on('click',function(event) {
 	//alert($id);
 	if ($id > 0) {
 		$.ajax({
-			url: siteUrl+CoreRequestAction+'/getArticleAjaxInvPur',
+			url: siteUrl+coreRequestAction+'/getArticleAjaxInvPur',
 			async: "true",
 			cache: "false",
 			type: "POST",

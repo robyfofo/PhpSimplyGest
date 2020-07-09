@@ -31,4 +31,7 @@ $_lang['Errore lettura dati cliente!'] = "Error read customer data!";
 
 $_lang['segna come pagata'] = "segna come pagata";
 $_lang['fattura segnata come pagata'] = "fattura segnata come pagata!";
+
+$_lang['il numero fattura è valido!'] = "the invoice number is valid!";
+$_lang['il numero fattura esiste già!'] = "the invoice number already exist!";
 ?>

@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * invoices/config.inc.php v.1.2.0. 13/12/2019
+ * invoices/config.inc.php v.1.2.0. 01/07/2020
 */
 
 $App->params = new stdClass();
@@ -21,6 +21,7 @@ $App->params->pageTitle = $App->params->label;
 $App->params->breadcrumb = '<li class="active"><i class="icon-user"></i> '.$App->params->label.'</li>';
 
 $App->params->defaultTax = '0';
+$App->params->defaultNumberYear = '2020';
 
 $App->params->tables = array();
 $App->params->fields = array();
@@ -69,6 +70,7 @@ $App->params->fields['InvSal']  = array(
 	'datesca'=>array('label'=>$_lang['data scadenza'],'searchTable'=>true,'required'=>true,'type'=>'date','defValue'=>$App->nowDate,'validate'=>'datepicker'),
 	'number'=>array('label'=>$_lang['numero'],'searchTable'=>true,'required'=>true,'type'=>'varchar|20','defValue'=>''),
 	'note'=>array('label'=>$_lang['Note (visibili in fattura)'],'searchTable'=>true,'required'=>false,'type'=>'varchar|255','defValue'=>''),
+	'number_year'=>array('label'=>$_lang['anno'],'searchTable'=>true,'required'=>true,'type'=>'varchar|4','defValue'=>$App->params->defaultNumberYear,'validate'=>'int'),
 	'type'=>array('label'=>$_lang['tipo'],'searchTable'=>false,'required'=>true,'type'=>'int|1','defValue'=>'0','validate'=>'int'),
 	'tax'=>array('label'=>'IVA','searchTable'=>false,'required'=>false,'type'=>'int|2','defValue'=>'0','validate'=>'int'),
 	'rivalsa'=>array('label'=>'Rivalsa','searchTable'=>false,'required'=>false,'type'=>'int|2','defValue'=>'0','validate'=>'int'),
@@ -104,9 +106,9 @@ $App->params->fields['ArtPur']  = array(
 	'id_invoice'=>array('label'=>$_lang['voce'],'searchTable'=>false,'required'=>true,'type'=>'int|8','defValue'=>'0','validate'=>'int'),
 	'content'=>array('label'=>$_lang['contenuto'],'searchTable'=>false,'required'=>true,'type'=>'text','defValue'=>''),
 	'price_unity'=>array('label'=>$_lang['prezzo unitario'],'searchTable'=>true,'required'=>true,'type'=>'float|10,2','defValue'=>'0.00','validate'=>'float'),
-	'price_tax'=>array('label'=>$_lang['imponibile'],'searchTable'=>true,'required'=>true,'type'=>'float|10,2','defValue'=>'0.00','validate'=>'float'),
+	'price_tax'=>array('label'=>$_lang['imponibile'],'searchTable'=>true,'required'=>false,'type'=>'float|10,2','defValue'=>'0.00','validate'=>'float'),
 	'price_total'=>array('label'=>$_lang['prezzo totale'],'searchTable'=>true,'required'=>true,'type'=>'float|10,2','defValue'=>'0.00','validate'=>'float'),
-	'quantity'=>array('label'=>$_lang['quantità'],'searchTable'=>true,'required'=>true,'type'=>'int|4','defValue'=>'22','validate'=>'loat|4,1'),	
+	'quantity'=>array('label'=>$_lang['quantità'],'searchTable'=>true,'required'=>true,'type'=>'int|4','defValue'=>'22','validate'=>'float|4,1'),	
 	'tax'=>array('label'=>$_lang['tassa'],'searchTable'=>true,'required'=>true,'type'=>'int|2','defValue'=>'22'),
 	'created'=>array('label'=>$_lang['creazione'],'searchTable'=>false,'required'=>false,'type'=>'datatime','defValue'=>$App->nowDateTime,'validate'=>'datatimeiso'),
 	'active'=>array('label'=>$_lang['attiva'],'required'=>false,'type'=>'int|1','defValue'=>0,'validate'=>'int')
