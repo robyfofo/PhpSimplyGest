@@ -140,5 +140,18 @@ $(document).ready(function() {
 		container: "body"
 	});
 
+	$('#applicationForm2').on('submit', function (e) {
+		var selected = []
+    	selected = $('#progettoID').val()
+    	console.log(selected); //Get the multiple values selected in an array
+    	console.log(selected.length); //Length of the array
+   	
+    	if (selected.length == 0) {
+    		bootbox.alert(messages['Devi selezionare un progetto']);
+    		return false;
+    	}
+    	return true;
+	});
 		
 });
+

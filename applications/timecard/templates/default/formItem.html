@@ -1,4 +1,4 @@
-<!-- timecard/formItem.tpl.php v.1.2.0. 10/12/2019 -->
+<!-- timecard/formItem.tpl.php v.1.2.0. 16/07/2020 -->
 <style type="text/css">
 <!--
 #accordion h5 {
@@ -160,9 +160,10 @@
 					</div>					
 					
 					<div class="form-group row">
+					
 							<label for="progettoID" class="col-md-3 control-label">{{ Lang['progetto']|capitalize }}</label>
 							<div class="col-md-8">
-								<select name="progetto" class="selectpicker form-control" data-live-search="true" title="{{ Lang['seleziona un progetto']|capitalize }}">
+								<select name="progetto" id="progettoID" class="selectpicker form-control" data-live-search="true" title="{{ Lang['seleziona un progetto']|capitalize }}">
 									{% if App.progetti is iterable %}
 										{% for value in App.progetti %}
 											<option value="{{ value.id }}"{% if App.idProjectForSelect == value.id %} selected="selected" {% endif %}>{{ value.title }}</option>														
@@ -296,3 +297,8 @@
 
 	</div>
 </div>
+
+<script type="text/javascript" >
+
+
+</script>

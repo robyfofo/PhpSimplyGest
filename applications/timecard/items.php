@@ -32,6 +32,7 @@ $App->currentProjectId = 0;
 if (isset($App->projectForSelect->id)) $App->currentProjectId = $App->projectForSelect->id;
 		
 /* GESTIONE SELECT */
+
 $App->idProjectForSelect = $App->currentProjectId;
 if (isset($_MY_SESSION_VARS[$App->sessionName]['id_project'])) $App->idProjectForSelect = $_MY_SESSION_VARS[$App->sessionName]['id_project'];
 

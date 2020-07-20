@@ -80,7 +80,8 @@ switch(substr(Core::$request->method,-4,4)) {
 		if (!isset($_MY_SESSION_VARS[$App->sessionName]['data-timecard'])) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'data-timecard',$App->nowDate);
 		$Module = new Module($App->sessionName,$App->params->tables['item']);
 		include_once(PATH.$App->pathApplications.Core::$request->action."/items.php");	
-		$App->defaultJavascript = "defaultappdata = '".$_MY_SESSION_VARS[$App->sessionName]['data-timecard']."';";
+		$App->defaultJavascript = "messages['Devi selezionare un progetto'] = '".preg_replace('/%ITEM%/',$_lang['progetto'],$_lang['Devi selezionare un %ITEM%!'])."';";
+		$App->defaultJavascript .= "defaultappdata = '".$_MY_SESSION_VARS[$App->sessionName]['data-timecard']."';";
 		$App->defaultJavascript .= "defaultdata = '".$App->defaultFormData."';";
 		$App->defaultJavascript .= "defaultdata1 = '".$App->defaultFormData1."';";
 		$App->defaultJavascript .= "defaultTimeIni = '".$App->timeIniTimecard."';";
