@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * language EN v.1.2.0. 01/07/2020
+ * language EN v.1.2.0. 16/07/2020
 */
 
 $_lang['user'] = 'en';
@@ -318,6 +318,11 @@ $_lang['inserisci username e password'] = "enter username and password";
 $_lang['Devi inserire una %ITEM%!'] = "Devi inserire una %ITEM%!";
 $_lang['Devi inserire un %ITEM%!'] = "Devi inserire un %ITEM%!";
 
+$_lang['Devi selezionare una %ITEM%!'] = "Devi selezionare una %ITEM%!";
+$_lang['Devi selezionare un %ITEM%!'] = "Devi selezionare un %ITEM%!";
+
+$_lang['Devi inserire il campo %FIELD%!'] = " Devi inserire il campo %FIELD%!"; 
+
 $_lang['Inserisci una %ITEM%!'] = "Inserisci una %ITEM%!";
 $_lang['Inserisci un %ITEM%!'] = "Inserisci un %ITEM%!";
 
@@ -337,7 +342,7 @@ $_lang['Errore! Ci sono ancora voci associate!'] = "Errore! Ci sono ancora voci 
 $_lang['Errore! Ci sono ancora %ITEM% associati!'] = "Errore! Ci sono ancora %ITEM% associati!";
 $_lang['Errore! Ci sono ancora %ITEM% associate!'] = "Errore! Ci sono ancora %ITEM% associate!";
 
-$_lang['Intervallo ti tempo si sovrappone ad un altro inserito nella stessa data!'] = "Intervallo ti tempo si sovrappone ad un altro inserito nella stessa data!";
+$_lang['Intervallo ti tempo di sovrappone ad un altro inserito nella stessa data!'] = "Intervallo di tempo si sovrappone ad un altro inserito nella stessa data!";
 $_lang['Intervallo tra le due date errato!'] = "Intervallo tra le due date errato!";
 $_lang['La data inserita non è valida!'] = "La data inserita non è valida!";
 

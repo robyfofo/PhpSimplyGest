@@ -1,6 +1,8 @@
-/* timecard/items.js v.1.2.0. 10/12/2019 */
+/* timecard/items.js v.1.2.0. 12/08/2020 */
 
 $(document).ready(function() {
+
+	
 
 	$('.timedelconfirm').click(function(e) {
 		e.preventDefault(e);
@@ -109,7 +111,7 @@ $(document).ready(function() {
 	$("#startTimeID").on("dp.change", function (e) {
 		var d = new Date(e.date);
 		d.setHours(d.getHours()+1);
-		moment.locale(cur_lang);
+		moment.locale(user_lang);
 		t = moment(d).format("LT");
 		$('#endTimeID').val(t);
 	});	
@@ -141,16 +143,58 @@ $(document).ready(function() {
 	});
 
 	$('#applicationForm2').on('submit', function (e) {
-		var selected = []
-    	selected = $('#progettoID').val()
-    	console.log(selected); //Get the multiple values selected in an array
-    	console.log(selected.length); //Length of the array
-   	
-    	if (selected.length == 0) {
+	
+		let result = false;
+		var id_project = [];
+    	id_project = $('#progettoID').val();
+     	    	
+    	if (id_project.length > 0) {  		
+    		result = false;
+    	} else {
     		bootbox.alert(messages['Devi selezionare un progetto']);
-    		return false;
     	}
-    	return true;
+    	
+    	
+    	let data = $('#dataID').val();
+    	let startTime = $('#startTimeID').val();
+    	let endTime = $('#endTimeID').val();
+    	
+    	//console.log('id_project: ' + id_project);
+    	//console.log('data: ' + data);
+    	//console.log('startTime: ' + startTime);
+    	//console.log('endTime: ' + endTime);
+    	
+    	$.ajax({
+			url: siteUrl + coreRequestAction + '/ajaxCheckTimeInterval',
+			async: false,
+			cache: false,
+			timeout: 20000,
+			type: "POST",
+			data: {'id_project':id_project, 'data':data, 'startTime': startTime, 'endTime': endTime},
+			dataType: 'html'
+		})
+		.done(function(data) {
+			console.log(data);
+			if (data == 0) {
+				result = true;
+				console.log('form consentito');
+			} else {
+				bootbox.alert(messages['intervallo di tempo si sovrappone ad un altro inserito nella stessa data']);
+			}
+			
+		})		
+		.fail(function() {
+			alert("Ajax failed to fetch data article for module");
+		})	
+    	
+    	/*
+    	if (result == true) {
+    		console.log('form consentito');
+    	} else {
+    		console.log('form NON consentito');
+    	}
+    	*/
+    	return result;
 	});
 		
 });

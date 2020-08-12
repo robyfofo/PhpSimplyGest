@@ -36,6 +36,11 @@ class Sql extends Core {
 	static $pretitleparent = '';	
 	static $languages = array('it');
 	
+	public static $lang;
+	public static $optAddRowFields = 0;
+	public static $optImageFolder = '';
+	public static $optDetailAction = '';
+	
 	static $sqlnocache = ''; // SQL_NO_CACHE 
 	
 	public function __construct(){	
@@ -78,6 +83,47 @@ class Sql extends Core {
 		}
 		
 /* QUERY CUSTOM */		
+
+	public static function getPdoObjRecords(){			
+		$obj = array();		
+		$op_fieldTokeyObj = (isset(self::$options['fieldTokeyObj']) ? self::$options['fieldTokeyObj'] : '');		
+		$clause = self::$clause;
+		if ($clause != '') $clause = " WHERE ".$clause;			
+		if (self::$customQry == '') {
+			self::$qry = "SELECT ".implode(',',self::$fields)." FROM ".self::$table.$clause;		
+		} else {
+			self::$qry = self::$customQry.$clause;
+		}			
+		if (self::$order != '') self::$qry .= ' ORDER BY '.self::$order;		
+		if (self::$resultPaged == true) {
+			if (self::$debugMode == 1) echo '<br>Q0: '.self::$qry;	
+			self::$totalItems = self::findTotalItemsFromQuery(self::$qry);
+			if (self::$page > ceil(self::$totalItems/self::$itemsForPage) || intval(self::$page) == 0) self::$page = 1;
+			self::$firstId = self::findFirstId(self::$page,self::$totalItems,self::$itemsForPage);
+			$limitClause = " LIMIT ".self::$itemsForPage." OFFSET ".(int)self::$firstId;
+		} else {
+			$limitClause = '';
+		}	
+		if(self::$limit != '')	$limitClause = self::$limit;		
+		self::$qry .= $limitClause;		
+		if (self::$debugMode == 1) echo '<br>Q1: '.self::$qry;	
+		try{
+			$pdoCore = self::getInstanceDb();				
+			$pdoObject = $pdoCore->prepare(self::$qry);				
+			$pdoObject->execute(self::$fieldsValue);		
+			$pdoObject->setFetchMode(PDO::FETCH_OBJ);
+			self::$foundRows = $pdoCore->query("SELECT FOUND_ROWS()")->fetchColumn(); 
+		}
+		catch(PDOException $pe) {
+			self::$resultOp->message = "Errore lettura records table!";
+			self::$resultOp->error = 1;
+			if (self::$debugMode == 1) {
+				echo $pe->getMessage();				
+			}
+		}	
+		return $pdoObject;
+	}
+	
 	public static function getRecords(){	
 		$obj = array();		
 		/* opzioni */
@@ -781,6 +827,10 @@ class Sql extends Core {
 	/* GESTIONE VARIABILI */	
 	
 	/* set variabili */	
+	public static function getQuery(){
+		echo 'query: '.self::$qry;
+		return self::$qry;
+		}
 	public static function setItemsForPage($value){
 		self::$itemsForPage = $value;
 		}

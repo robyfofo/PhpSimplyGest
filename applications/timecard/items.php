@@ -43,6 +43,29 @@ echo ' - currentProjectId: '.$App->currentProjectId;
 */
 
 switch(Core::$request->method) {
+	
+	case 'ajaxCheckTimeInterval':
+		$id_project = (isset($_POST['id_project']) ? intval($_POST['id_project']) : 0);
+		if ($id_project > 0) {
+			
+			$data = DateFormat::convertDatepickerToIso($_POST['data'],$_lang['datepicker data format'],'Y-m-d',$_MY_SESSION_VARS[$App->sessionName]['data-timecard']);					
+			// controlla l'ora iniziale
+			$starttimeiso = DateFormat::convertDatepickerToIso($_POST['startTime'],$_lang['datepicker time format'],'H:i:s','00:00:01');
+			$endtimeiso = DateFormat::convertDatepickerToIso($_POST['endTime'],$_lang['datepicker time format'],'H:i:s','00:00:01');							
+			$datatimeisoini = $data .' '.$starttimeiso;
+			$datatimeisoend = $data .' '.$endtimeiso;
+			DateFormat::checkDateTimeIsoIniEndInterval($datatimeisoini,$datatimeisoend,'>');
+			if (Core::$resultOp->error == 0) {		
+				$Module->checkTimeInterval($App->userLoggedData->id,$id_project,$data,$starttimeiso,$endtimeiso,$opt=array());
+			}
+			
+		} else {
+			Core::$resultOp->error = 1;
+		}
+			
+		echo Core::$resultOp->error;
+		die();
+	break;
 
 	case 'modappData':
 		if (isset($_POST['appdata'])) {
@@ -143,7 +166,7 @@ switch(Core::$request->method) {
 	 						}
 
 						} else {
-		      			Core::$resultOp->message = $_lang['Intervallo ti tempo si sovrappone ad un altro inserito nella stessa data!'];
+		      			Core::$resultOp->message = $_lang['Intervallo di tempo si sovrappone ad un altro inserito nella stessa data!'];
 		      			Core::$resultOp->error = 1;
 						}									
 					} else {
@@ -194,7 +217,7 @@ switch(Core::$request->method) {
  								Core::$resultOp->message = ucfirst(preg_replace('/%ITEM%/',$_lang['tempo'],$_lang['%ITEM% inserito']))."!";
  						}
 					} else {
-	      			Core::$resultOp->message = $_lang['Intervallo ti tempo si sovrappone ad un altro inserito nella stessa data!'];
+	      			Core::$resultOp->message = $_lang['Intervallo di tempo si sovrappone ad un altro inserito nella stessa data!'];
 	      			Core::$resultOp->error = 1;
 					}							
  												
@@ -246,7 +269,7 @@ switch(Core::$request->method) {
 	 							}
 				 										 							
 							} else {
-		      				Core::$resultOp->message = $_lang['Intervallo ti tempo si sovrappone ad un altro inserito nella stessa data!'];
+		      				Core::$resultOp->message = $_lang['Intervallo di tempo si sovrappone ad un altro inserito nella stessa data!'];
 		      				Core::$resultOp->error = 1;
 								}			 							
 			 											
