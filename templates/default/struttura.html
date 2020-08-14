@@ -39,7 +39,8 @@
 			var siteTemplateUrl = '{{ URLSITE }}templates/{{ App.templateUser }}/';
 			var siteTemplatePath = '{{ PATHSITE }}templates/{{ App.templateUser }}/';			
 			var siteDocumentPath = '{{ PATHDOCUMENT }}';	
-			var CoreRequestAction = '{{ CoreRequest.action }}';			
+			var coreRequestAction = '{{ CoreRequest.action }}';
+			var currentModulePath = '{{ PATHSITE }}{{ App.pathApplications }}{{ CoreRequest.action }}/';				
 			var user_lang = "{{ Lang['user'] }}";
 			var messages = new Array();
 			messages['Sei sicuro?'] = '{{ Lang['Sei sicuro?']|e('js') }}';	

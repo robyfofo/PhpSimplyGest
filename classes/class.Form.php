@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- *	classes/class.Form.php v.1.0.0. 11/07/2018
+ *	classes/class.Form.php v.1.2.0. 01/07/2020
 */
 
 class Form extends Core {	
@@ -59,15 +59,29 @@ class Form extends Core {
 		}
 
 	public static function parsePostByFields($fields,$_lang,$opz) {
+		//print_r($fields);
 		$opzDef = array('stripmagicfields'=>true);	
 		$opz = array_merge($opzDef,$opz);
 		if (is_array($fields) && count($fields) > 0) {
 			foreach($fields AS $key=>$value) {
+				
 				$namefield = $key;
-				$labelField = (isset($value['label']) ? $value['label'] : '');				
+				
+				/*
+				echo '<br>namefield: '.$namefield;
+				echo ' - '.$_POST[$namefield];
+				*/
+				$labelField = (isset($value['label']) ? $value['label'] : '');	
+				
+				/* aggiorna con il default se vuoti */
+				if ( !isset($_POST[$namefield]) ) {			
+					if ( isset($value['defValue']) ) $_POST[$namefield] = $value['defValue'];
+				}
+			
 				
 				/* controlla se e richiesto */
 				if ( isset($value['required']) && $value['required'] == true ) {
+					//echo 'nome campo: '.$namefield;
 					if ( !isset($_POST[$namefield]) || (isset($_POST[$namefield]) && $_POST[$namefield] == '') ) {
 						self::$resultOp->error = 1;
 						self::$resultOp->messages[] = preg_replace('/%FIELD%/',$value['label'],$_lang['Devi inserire il campo %FIELD%!']);
@@ -75,11 +89,6 @@ class Form extends Core {
 					}				
 				}
 				
-				/* aggiorna con il default se vuoti */
-				if ( !isset($_POST[$namefield]) ) {						
-					if ( isset($value['defValue']) ) $_POST[$namefield] = $value['defValue'];
-				}
-
 				/* valida i campi se richiesto */
 				if ( isset($value['validate']) && $value['validate'] != false ) {
 					$_POST[$namefield] = self::validateField($namefield,$labelField,$value,$_lang);					

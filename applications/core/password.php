@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * core/password.php v.1.2.0. 30/11/2019
+ * core/password.php v.1.2.0. 13/08/2020
 */
 
 //Sql::setDebugMode(1);
@@ -28,10 +28,10 @@ switch(Core::$request->method) {
 			if ($password != '') {
 				if ($password === $passwordCK) {
 					$password = password_hash($password, PASSWORD_DEFAULT);
-					} else {
-						Core::$resultOp->error = 1;
-						Core::$resultOp->message = $_lang['Le due password non corrispondono!'];
-					}				
+				} else {
+					Core::$resultOp->error = 1;
+					Core::$resultOp->message = $_lang['Le due password non corrispondono!'];
+				}				
 			} else {
 				Core::$resultOp->error = 1;
 				Core::$resultOp->message = $_lang['Devi inserire la password!'];			
@@ -40,11 +40,11 @@ switch(Core::$request->method) {
 			if (Core::$resultOp->error == 0) {	
 				/* (tabella,campi(array),valori campi(array),where clause, limit, order, option , pagination(default false)) */
 				Sql::initQuery(DB_TABLE_PREFIX.'users',array('password'),array($password,$App->id),"id = ?");	
-				//Sql::updateRecord();
+				Sql::updateRecord();
 				if(Core::$resultOp->error == 0) {
 					Core::$resultOp->message = $_lang['Password modificata correttamente! Sarà effettiva al prossimo login.'];
 				}	
-				$App->id	 = $_POST['id'];					         	
+			$App->id	 = $_POST['id'];					         	
 			}			
 		} else {
 			Core::$resultOp->error = 1;

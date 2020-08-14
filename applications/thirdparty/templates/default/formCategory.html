@@ -1,4 +1,4 @@
-<!-- thirdparty/formScat.html v.1.2.0. 17/12/2019 -->
+<!-- thirdparty/formCategory.html v.1.2.0. 13/08/2020 -->
 <div class="row">
 	<div class="col-md-12 pb-2 module-titles">
 	{{ App.pageTitle }} <small>V. {{ App.params.codeVersion}}</small> - {{ App.pageSubTitle }}
@@ -36,8 +36,8 @@
 							<div class="col-md-7">							
 								<select name="parent" id="parentID" class="custom-select">
 									<option value="0"></option>
-									{% if App.parents is iterable %}
-										{% for key,value in App.parents %}
+									{% if App.categories is iterable %}
+										{% for key,value in App.categories %}
 											<option value="{{ value.id }}"{% if App.item.parent == value.id %} selected="selected"{% endif %}>{{ value.levelString }}{{ value.title|e('html') }}</option>														
 										{% endfor %}
 									{% endif %}

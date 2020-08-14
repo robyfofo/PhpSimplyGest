@@ -124,25 +124,29 @@ class DateFormat extends Core  {
 	  	$errors = DateTime::getLastErrors();
 		return ($errors['warning_count'] == 0 && $errors['error_count'] == 0) ? true : false;
 		}
-
-		
+	
 	public static function sum_the_time($times) {
   		//$times = array($time1, $time2);
   		$seconds = 0;
-  		foreach ($times as $time) {
-			list($hour,$minute,$second) = explode(':', $time);
-			$seconds += $hour*3600;
-			$seconds += $minute*60;
-			$seconds += $second;
+  		$sum_time = '00:00:00';
+  		if (isset($times) && is_array($times) && count($times) > 0) {
+ 			foreach ($times as $time) {
+				list($hour,$minute,$second) = explode(':', $time);
+				$seconds += $hour*3600;
+				$seconds += $minute*60;
+				$seconds += $second;
   			}
-		$hours = floor($seconds/3600);
-		$seconds -= $hours*3600;
-		$minutes  = floor($seconds/60);
-		$seconds -= $minutes*60;
-  		// return "{$hours}:{$minutes}:{$seconds}";
-		return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds); // Thanks to Patrick
-		}
-
+			$hours = floor($seconds/3600);
+			$seconds -= $hours*3600;
+			$minutes  = floor($seconds/60);
+			$seconds -= $minutes*60;
+			
+			$sum_time = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds); // Thanks to Patrick
+  		}
+   		// return "{$hours}:{$minutes}:{$seconds}";
+		return $sum_time;
+	}
+	
 	public static function explodeDateTimeIso($datetime) {
 		$d = explode(' ',$datetime);
 		list($date,$time) = $d;

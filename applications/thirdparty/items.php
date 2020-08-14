@@ -5,12 +5,12 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * thirdparty/items.php v.1.2.0. 16/12/2019
+ * thirdparty/items.php v.1.2.0. 13/08/2020
 */
 
 if (isset($_POST['itemsforpage']) && isset($_MY_SESSION_VARS[$App->sessionName]['ifp']) && $_MY_SESSION_VARS[$App->sessionName]['ifp'] != $_POST['itemsforpage']) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'ifp',$_POST['itemsforpage']);
 if (isset($_POST['searchFromTable']) && isset($_MY_SESSION_VARS[$App->sessionName]['srcTab']) && $_MY_SESSION_VARS[$App->sessionName]['srcTab'] != $_POST['searchFromTable']) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'srcTab',$_POST['searchFromTable']);
-if (isset($_POST['id_cat']) && isset($_MY_SESSION_VARS[$App->sessionName]['id_cat']) && $_MY_SESSION_VARS[$App->sessionName]['id_cat'] != $_POST['id_cat']) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'id_cat',$_POST['id_cat']);
+if (isset($_POST['categories_id']) && isset($_MY_SESSION_VARS[$App->sessionName]['categories_id']) && $_MY_SESSION_VARS[$App->sessionName]['categories_id'] != $_POST['categories_id']) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'categories_id',$_POST['categories_id']);
 
 /* preleva i tipi */
 Sql::initQuery($App->params->tables['type'],array('*'),array(),'active = 1','');
@@ -161,10 +161,10 @@ switch(Core::$request->method) {
 		
 		$table = $App->params->tables['item']." AS ite";
 		$table .= " LEFT JOIN ".$App->params->tables['type']." AS t ON (ite.id_type = t.id)";
-		$table .= " LEFT JOIN ".$App->params->tables['scat']." AS sca ON (ite.id_cat = sca.id)";
+		$table .= " LEFT JOIN ".$App->params->tables['cate']." AS cate ON (ite.categories_id = cate.id)";
 		$fields[] = "ite.*";
 		$fields[] = "t.title AS type";
-		$fields[] = "sca.title AS category";
+		$fields[] = "cate.title AS category";
 		Sql::initQuery($table,$fields,$fieldsValue,$where,implode(', ', $order),$limit);
 		if (Core::$resultOp->error <> 1) $obj = Sql::getRecords();
 
@@ -209,11 +209,17 @@ switch(Core::$request->method) {
 
 switch((string)$App->viewMethod) {
 	case 'formNew':
-		$App->item = new stdClass;	
-		$App->subcategories = new stdClass();
-		/* select per subcategories */
-		$opt = array('tableCat'=>$App->params->tables['scat'],'type'=>0,'multilanguage'=>0,'ordering'=>0,'languages'=>$globalSettings['languages'],'lang'=>$_lang['user']);
-		$App->subcategories = Categories::getObjFromSubCategories($opt);				
+		$App->item = new stdClass;
+		
+		// select per categories
+		$App->categories = new stdClass();		
+		$opt = array(
+		'tableCat'			=>	$App->params->tables['cate'],
+		'tableItems'		=> $App->params->tables['item'],
+		'lang'				=> $_lang['user']
+		);
+		$App->categories = Subcategories::getObjFromSubCategories($opt);
+					
 		$App->item->active = 1;
 		$App->item->stampa_quantita = 1;
 		$App->item->stampa_unita = 1;
@@ -227,10 +233,16 @@ switch((string)$App->viewMethod) {
 	case 'formMod':
 		if ($App->id) {
 			$App->item = new stdClass;
-			$App->subcategories = new stdClass();		
-			/* select per subcategories */
-			$opt = array('tableCat'=>$App->params->tables['scat'],'type'=>0,'multilanguage'=>0,'ordering'=>0,'hideId'=>0,'hideSons'=>0,'rifId'=>'id','rifIdValue'=>$App->id,'lang'=>$_lang['user']);
-			$App->subcategories = Categories::getObjFromSubCategories($opt);				
+		
+			// select per categories */
+			$App->categories = new stdClass();		
+			$opt = array(
+			'tableCat'			=>	$App->params->tables['cate'],
+			'tableItems'		=> $App->params->tables['item'],
+			'lang'				=> $_lang['user']
+			);
+			$App->categories = Subcategories::getObjFromSubCategories($opt);
+
 			Sql::initQuery($App->params->tables['item'],array('*'),array($App->id),'id = ?');
 			$App->item = Sql::getRecord();
 			if (isset($App->item->id) && $App->item->id > 0) {

@@ -368,14 +368,13 @@ $_lang['testo errore accesso'] = "Non hai i permessi per accedere alla risorsa r
 $_lang['Error 404!'] = "Errore 404!";
 $_lang['Database Error!'] = "Errore database!";
 $_lang['Mail Error!'] = "Errore invio mail!";
+$_lang['Module Error!'] = "Errore modulo!";
 
 $_lang['testo errore generico'] = "Il server ha riscontrato qualcosa di inaspettato che non gli ha permesso di completare la richiesta. Ci scusiamo.";
 $_lang['testo errore accesso'] = "Non hai i permessi per accedere alla risorsa richiesta.";
 $_lang['testo errore 404'] = "Ci dispiace ma la pagina che state cercando non esiste!";
 $_lang['testo errore database'] = "Ci sono errori nell'accesso al database oppure alle query per la gestione dei dati!";
 $_lang['testo errore mail'] = "Non è stato possibile inviare emails per un problema di server! ";
-
-
 
 $_lang['titolo sezione richiesta username'] = "Richiesta nome utente";
 

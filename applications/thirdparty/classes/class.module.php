@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * third-party/module.class.php v.1.2.0. 06/12/2019
+ * third-party/module.class.php v.1.2.0. 13/08/2020
 */
 
 class Module {
@@ -34,27 +34,5 @@ class Module {
 			}
 		return $obj;
 	}
-		
-	public function listMainData($fields,$page,$itemsForPage,$languages,$opt=array()) {
-		$optDef = array('lang'=>'it','type'=>0,'multilanguage'=>0,'tableItems'=>'','levelString'=>'<i class="fas fa-chevron-right "></i>&nbsp;');	
-		$opt = array_merge($optDef,$opt);	
-		$qry = "SELECT c.id AS id,
-		c.parent AS parent,c.title,c.active AS active,
-		(SELECT COUNT(id) FROM ".$this->table." AS s WHERE s.parent = c.id)  AS sons,
-		(SELECT COUNT(id) FROM ".$opt['tableItems']." AS ite WHERE ite.id_cat = c.id)  AS items,";
-		$qry .= "(SELECT p.title FROM ".$this->table." AS p WHERE c.parent = p.id)  AS titleparent";
-		$qry .= " FROM ".$this->table." AS c
-		WHERE c.parent = :parent";
-		Sql::resetListDataVar();
-		$this->mainData = Sql::getListParentData($qry,array(),0,$opt);
-		}
-		
-	public function getMainData(){
-		return $this->mainData;
-		}	
-
-	public function getPagination(){
-		return $this->pagination;
-		}		
-	}
+}
 ?>

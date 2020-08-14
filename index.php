@@ -5,10 +5,10 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * app/index.php v.1.2.0. 28/11/2019
+ * app/index.php v.1.2.0. 13/08/2020
 */
 session_start();
-ini_set('display_errors',1);
+//ini_set('display_errors',1);
 
 define('PATH','');
 define('MAXPATH', str_replace("includes","",dirname(__FILE__)).'');
@@ -32,15 +32,14 @@ include_once(PATH."classes/class.Sql.php");
 include_once(PATH."classes/class.Utilities.php");
 include_once(PATH."classes/class.DateFormat.php");
 include_once(PATH."classes/class.Categories.php");
+include_once(PATH."classes/class.Subcategories.php");
+include_once(PATH."classes/class.Products.php");
 include_once(PATH."classes/class.Form.php");
 include_once(PATH."classes/class.Mails.php");
 
 $Config = new Config();
 Config::setGlobalSettings($globalSettings);
 $Core = new Core();
-
-//use PhpOffice\PhpSpreadsheet\Spreadsheet as GlobalSpreadsheet;
-//use PhpOffice\PhpSpreadsheet\Writer\Xlsx as GlobalXlsx;
 
 //Sql::setDebugMode(1);
 
@@ -165,12 +164,7 @@ if (in_array(Core::$request->action,$App->modulesCore) == true) {
 	$action = '';
 	$index = Core::$request->action.'.php';
 	}
-	
-/*
-echo '<br>$pathApplications: '.$pathApplications;
-echo '<br>$action: '.$action;
-echo '<br>$index: '.$index;
-*/
+
 
 if (file_exists(PATH."iniapp.php")) include_once(PATH."iniapp.php");
 
@@ -192,14 +186,6 @@ if ($App->coreModule == true) {
 		
 $pathtemplateBase = "templates/".$App->templateUser;
 $pathtemplateApp = $pathApplications;
-
-/*
-echo 'aaaa'.$pathtemplateBase;
-echo 'bbbb'.$pathtemplateApp;
-echo 'cccc'.$App->templateBase;
-echo 'dddd'.$App->templateApp;
-die();
-*/
 
 /* genera il template */
 if ($renderTpl == true && $App->templateApp != '') {

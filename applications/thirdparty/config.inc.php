@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * third-party/config.inc.php v.1.2.0. 13/12/2019
+ * third-party/config.inc.php v.1.2.0. 12/08/2020
 */
 
 $App->params = new stdClass();
@@ -23,14 +23,14 @@ $App->params->tables = array();
 $App->params->fields = array();
 $App->params->uploadDirs = array();
 $App->params->uploadPaths = array();
-$App->params->ordersType = array();
+$App->params->ordersTypes = array();
 
 /* ITEMS */
 $App->params->tables['item']  = DB_TABLE_PREFIX.'thirdparty';
 $App->params->fields['item']  = array(
 	'id'=>array('label'=>'ID','required'=>false,'type'=>'int|8','autoinc'=>true,'nodb'=>true,'primary'=>true),
 	'users_id'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>false,'type'=>'int|8','defValue'=>$App->userLoggedData->id),
-	'id_cat'=>array('label'=>'ID '.$_lang['categoria'],'required'=>true,'type'=>'int|8'),
+	'categories_id'=>array('label'=>'ID '.$_lang['categoria'],'required'=>true,'type'=>'int|8'),
 	'id_type'=>array('label'=>$_lang['tipo'],'required'=>false,'type'=>'int','defValue'=>0,'validate'=>'int|1'),
 	'ragione_sociale'=>array('label'=>$_lang['ragione sociale'],'searchTable'=>true,'required'=>true,'type'=>'varchar|255'),
 	'name'=>array('label'=>$_lang['nome'],'searchTable'=>true,'required'=>false,'type'=>'varchar|50'),
@@ -57,8 +57,9 @@ $App->params->fields['item']  = array(
 	);	
 	
 /* SUBCATEGORIES */
-$App->params->tables['scat']  = DB_TABLE_PREFIX.'thirdparty_subcategories';
-$App->params->fields['scat']  = array(
+$App->params->orderTypes['cate'] = 'DESC';
+$App->params->tables['cate']  = DB_TABLE_PREFIX.'thirdparty_categories';
+$App->params->fields['cate']  = array(
 	'id'=>array('label'=>'ID','required'=>false,'type'=>'int|8','autoinc'=>true,'nodb'=>true,'primary'=>true),
 	'users_id'=>array('label'=>$_lang['proprietario'],'searchTable'=>false,'required'=>false,'type'=>'int|8','defValue'=>$App->userLoggedData->id),
 	'parent'=>array('label'=>'Parent','required'=>false,'type'=>'int','defValue'=>0,'validate'=>'int'),

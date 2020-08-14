@@ -1,5 +1,13 @@
 <?php
-/* wscms/core/error.php v.3.5.4. 16/09/2019 */
+/**
+ * Framework App PHP-Mysql
+ * PHP Version 7
+ * @author Roberto Mantovani (<me@robertomantovani.vr.it>
+ * @copyright 2009 Roberto Mantovani
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * core/error.php v.1.2.0. 13/08/2020
+*/
+
 
 /* variabili ambiente */
 $App->pageTitle = 'Error';
@@ -33,6 +41,14 @@ switch(Core::$request->method) {
 		$App->error_subtitle = $_lang['Database Error!'];
 		$App->error_content = $_lang['testo errore database'];
 		$App->error_contentAlt = (Core::$request->param != '' ? Core::$request->param : '');
+	break;
+	
+	case 'module':
+		$App->error_title = $_lang['Errore!'];		
+		$App->error_subtitle = $_lang['Module Error!'];
+		$module = (Core::$request->param != '' ? Core::$request->param : '');
+		$App->error_content = preg_replace('/%MODULE%/',$module,$_lang['Errore nel modulo %MODULE%!']);
+		$App->error_contentAlt = (Core::$request->params[0] != '' ? Core::$request->params[0] : '');
 	break;
 	
 	default:

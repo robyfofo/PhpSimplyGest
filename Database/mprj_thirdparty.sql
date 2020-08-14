@@ -28,8 +28,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `mprj_thirdparty` (
   `id` int(8) NOT NULL,
-  `id_cat` int(8) NOT NULL DEFAULT '0',
-  `id_user` int(8) NOT NULL DEFAULT '0',
+  `categories_id` int(8) NOT NULL DEFAULT '0',
+  `users_id` int(8) NOT NULL DEFAULT '0',
   `name` varchar(50) DEFAULT NULL,
   `surname` varchar(50) DEFAULT NULL,
   `street` varchar(100) DEFAULT NULL,

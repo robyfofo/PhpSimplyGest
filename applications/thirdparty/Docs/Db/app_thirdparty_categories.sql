@@ -23,10 +23,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `app_thirdparty_subcategories`
+-- Struttura della tabella `app_thirdparty_categories`
 --
 
-CREATE TABLE `app_thirdparty_subcategories` (
+CREATE TABLE `app_thirdparty_categories` (
   `id` int(8) NOT NULL,
   `parent` int(8) NOT NULL,
   `id_user` int(8) NOT NULL DEFAULT '0',
@@ -40,9 +40,9 @@ CREATE TABLE `app_thirdparty_subcategories` (
 --
 
 --
--- Indici per le tabelle `app_thirdparty_subcategories`
+-- Indici per le tabelle `app_thirdparty_categories`
 --
-ALTER TABLE `app_thirdparty_subcategories`
+ALTER TABLE `app_thirdparty_categories`
   ADD PRIMARY KEY (`id`),
   ADD KEY `parent` (`parent`),
   ADD KEY `active` (`active`),
@@ -53,9 +53,9 @@ ALTER TABLE `app_thirdparty_subcategories`
 --
 
 --
--- AUTO_INCREMENT per la tabella `app_thirdparty_subcategories`
+-- AUTO_INCREMENT per la tabella `app_thirdparty_categories`
 --
-ALTER TABLE `app_thirdparty_subcategories`
+ALTER TABLE `app_thirdparty_categories`
   MODIFY `id` int(8) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

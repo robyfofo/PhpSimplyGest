@@ -16,6 +16,24 @@
 	</div>
 </div>
 
+<div class="form-group row">
+	<div class="col-md-1">
+		<select name="itemsforpage" id="itemsforpageID" class="custom-select custom-select-sm" onchange="this.form.submit();" >
+			<option value="5"{% if App.itemsForPage == 5 %} selected="selected"{% endif %}>5</option>
+			<option value="10"{% if App.itemsForPage == 10 %} selected="selected"{% endif %}>10</option>
+			<option value="25"{% if App.itemsForPage == 25 %} selected="selected"{% endif %}>25</option>
+			<option value="50"{% if App.itemsForPage == 50 %} selected="selected"{% endif %}>50</option>
+			<option value="100"{% if App.itemsForPage == 100 %} selected="selected"{% endif %}>100</option>
+		</select>
+	</div>
+	<label for="itemsforpageID" class="col-md-2 col-form-label form-control-sm">{{ Lang['voci per pagina']| capitalize }}</label>
+
+	<label for="searchFromTableID" class="offset-md-6 col-md-1 col-form-label form-control-sm" style="text-align:right;">{{ Lang['cerca']|capitalize }}</label>
+	<div class="col-md-2">
+		<input type="search" name="searchFromTable" id="searchFromTableID" class="form-control form-control-sm"  value="{% if MySessionVars[App.sessionName]['srcTab'] is defined and  MySessionVars[App.sessionName]['srcTab'] != '' %}{{  MySessionVars[App.sessionName]['srcTab'] }}{% endif %}" onchange="this.form.submit();">	
+	</div>
+</div>
+
 <div class="card shadow mt-3 mb-4">
 	<div class="card-body">
 		<div class="table-responsive">

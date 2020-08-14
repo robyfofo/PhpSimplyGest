@@ -44,15 +44,15 @@ class Permissions extends Core {
 		//print_r($userModulesActive);
 		if (isset($userLoggedData->is_root) && $userLoggedData->is_root === 1) {
 			return true;
+		} else {
+			/* se è un modulo cre da l'accsso comunque */
+			if (in_array($moduleName,$userModulesActive)) {
+				 return true;
 			} else {
-				/* se è un modulo cre da l'accsso comunque */
-				 if (in_array($moduleName,$userModulesActive)) {
-				 	return true;
-					} else {
-						return false;
-						}				 	
-				}
-			}
+				return false;
+			}				 	
+		}
+	}
 
 	public static function getSqlQueryItemPermissionForUser($userLoggedData,$opt=array()) {
 		$optDef = array('onlyuser'=>false,'fieldprefix'=>'');	
@@ -83,17 +83,17 @@ class Permissions extends Core {
 		/* get item data */
 		if ($id > 0) {
 			$item = new stdClass;
-			Sql::initQuery($table,array('id,id_user,access_type'),array($id),'id = ?');
+			Sql::initQuery($table,array('id,users_id,access_type'),array($id),'id = ?');
 			$item = Sql::getRecord();
 			if (isset($item->id) && $item->id > 0) {
 
 				/* if is ownwer read write */
-				if ($userLoggedData->id === $item->id_user) {
+				if ($userLoggedData->id === $item->users_id) {
 					$access = 2;
 					}
 				
 				/* if is not ownwer but item is public read */
-				if ($userLoggedData->id <> $item->id_user && $item->access_type == 0) {
+				if ($userLoggedData->id <> $item->users_id && $item->access_type == 0) {
 					$access = 1;
 					}
 			

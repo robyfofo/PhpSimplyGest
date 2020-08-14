@@ -1,4 +1,4 @@
-<!-- thirdparty/formItem.tpl.php v.1.2.0. 06/12/2019 -->
+<!-- thirdparty/formItem.html v.1.2.0. 13/08/2020 -->
 <div class="row">
 	<div class="col-md-12 pb-2 module-titles">
 	{{ App.pageTitle }} <small>V. {{ App.params.codeVersion}}</small> - {{ App.pageSubTitle }}
@@ -158,9 +158,9 @@
 						<div class="form-group row">
 							<label for="id_catID" class="col-md-2 control-label">{{ Lang['categoria']|capitalize }}</label>
 							<div class="col-md-5">							
-								<select name="id_cat" id="id_catID" class="custom-select">
-									{% if App.subcategories is iterable and App.subcategories|length > 0 %}
-										{% for key,value in App.subcategories %}
+								<select name="categories_id" id="categories_idID" class="custom-select">
+									{% if App.categories is iterable and App.categories|length > 0 %}
+										{% for key,value in App.categories %}
 											<option value="{{ value.id }}"{% if App.item.id_cat == value.id %} selected="selected"{% endif %}>{{ value.levelString }}{{ value.title|e('html') }}</option>														
 										{% endfor %}
 									{% endif %}
