@@ -1,12 +1,8 @@
-<!-- invoices/formInvPur.tpl.php v.1.2.0. 21/12/2019 -->
+<!-- invoices/formInvPur.html v.1.2.0. 14/08/2020 -->
 <div class="row">
-	<div class="col-md-3 new">
- 	</div>
-	<div class="col-md-7 help-small-form">
-		{% if App.params.help_small is defined %}{{ App.params.help_small }}{% endif %}
-	</div>
-	<div class="col-md-2 help">
-	</div>
+	<div class="col-md-3 new"></div>
+	<div class="col-md-7 help-small-form">{% if App.params.help_small is defined %}{{ App.params.help_small }}{% endif %}</div>
+	<div class="col-md-2 help"></div>
 </div>
 <div class="card shadow mt-3 mb-4">
 	<div class="card-body">	
@@ -36,7 +32,7 @@
 					<fieldset>
 						<div class="form-group row">
 							<label for="dateinsID" class="col-md-2 control-label">{{ Lang['data']|capitalize }}</label>
-							<div class="col-md-2 col-xs-2 input-group date" id="dateinsDPID">
+							<div class="col-sm-6 col-md-4  col-xl-2 input-group date" id="dateinsDPID">
 								<input required type="text" name="dateins" class="form-control" placeholder="{{ Lang['inserisci una data']|capitalize }}" id="dateinsID" value="">
 								<span class="input-group-addon calendar-icon">
 									<i class="fa fa-calendar"></i>
@@ -45,7 +41,7 @@
 						</div>
 						<div class="form-group row">
 							<label for="datescaID" class="col-md-2 control-label">{{ Lang['data scadenza']|capitalize }}</label>
-							<div class="col-md-2 col-xs-2 input-group date" id="datescaDPID">
+							<div class="col-sm-6 col-md-4  col-xl-2 input-group date" id="datescaDPID">
 								<input required type="text" name="datesca" class="form-control" placeholder="{{ Lang['inserisci una data di scadenza']|capitalize }}" id="datescaID" value="">
 								<span class="input-group-addon calendar-icon">
 									<i class="fa fa-calendar"></i>

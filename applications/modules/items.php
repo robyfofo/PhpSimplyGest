@@ -78,7 +78,7 @@ switch(Core::$request->method) {
 				$_SESSION['message'] = '0|'.ucfirst(preg_replace('/%ITEM%/',$_lang['voce'],$_lang['%ITEM% inserito']));
 				ToolsStrings::redirect(URL_SITE.Core::$request->action.'/listItem');				
 			} else {
-				echo $_SESSION['message'] = '1|'.implode('<br>', Core::$resultOp->messages);
+				$_SESSION['message'] = '1|'.implode('<br>', Core::$resultOp->messages);
 				ToolsStrings::redirect(URL_SITE.Core::$request->action.'/newItem');
 			}
 		} else {

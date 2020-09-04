@@ -191,7 +191,7 @@ switch(Core::$request->method) {
 		/* end limit */	
 
 		/* orders */
-		$orderFields = array('id','dateins','amount','description');
+		$orderFields = array('dateins','amount','description');
 		$order = array();
 		/* default da sessione */
 		if (isset($_MY_SESSION_VARS[$App->sessionName]['order']) && $_MY_SESSION_VARS[$App->sessionName]['order'] != '') {

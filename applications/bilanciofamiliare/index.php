@@ -25,6 +25,9 @@ if (isset($_POST['id'])) $App->id = intval($_POST['id']);
 	
 $App->patchdatapicker = 1;
 
+$App->annocorrente = date('Y');
+$App->annoprecedente = date('Y',strtotime("-1 year"));
+
 
 switch(substr(Core::$request->method,-4,4)) {
 	case 'Entr':

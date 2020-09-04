@@ -123,7 +123,7 @@ $('.modifyArtItem').on('click',function(event) {
 		//alert($id);
 		if ($id > 0) {
 			$.ajax({
-				url: siteUrl+CoreRequestAction+'/getArticleAjaxItem',
+				url: siteUrl+coreRequestAction+'/getArticleAjaxItem',
 				async: "true",
 				cache: "false",
 				type: "POST",

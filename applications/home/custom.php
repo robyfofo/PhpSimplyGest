@@ -1,6 +1,16 @@
 <?php
 
-if (Permissions::checkAccessUserModule('timecard',$App->userLoggedData,$App->user_modules_active) == true && in_array(DB_TABLE_PREFIX.'timecard',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."timecard/index.php")) {
+
+
+
+if (
+
+in_array(DB_TABLE_PREFIX.'timecard',$App->tablesOfDatabase) &&
+file_exists(PATH.$App->pathApplications."timecard/index.php") &&
+Permissions::checkIfModulesIsReadable('timecard',$App->userLoggedData) === true
+
+)
+{
 
 	$App->homeBlocks['timecard'] = array(
 		'table'=>DB_TABLE_PREFIX.'timecard',
@@ -18,7 +28,7 @@ if (Permissions::checkAccessUserModule('timecard',$App->userLoggedData,$App->use
 			'string'=>URL_SITE.'timecard',
 			'opz'=>array()
 			)
-		);	
+		);
 
 
 	$App->homeTables['timecard'] = array(
@@ -50,10 +60,22 @@ if (Permissions::checkAccessUserModule('timecard',$App->userLoggedData,$App->use
 		);
 
 
+	} else {
+		//echo 'non accesso timecard';
 	}
-// Thirdparty 
+// Thirdparty
 
-if (Permissions::checkAccessUserModule('thirdparty',$App->userLoggedData,$App->user_modules_active) == true && in_array(DB_TABLE_PREFIX.'thirdparty',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."thirdparty/index.php") == true) {
+
+if (
+
+in_array(DB_TABLE_PREFIX.'thirdparty',$App->tablesOfDatabase) &&
+file_exists(PATH.$App->pathApplications."thirdparty/index.php") &&
+Permissions::checkIfModulesIsReadable('thirdparty',$App->userLoggedData) === true
+
+)
+{
+
+
 	$App->homeBlocks['thirdparty'] = array(
 		'table'=>DB_TABLE_PREFIX.'thirdparty',
 		'icon panel'=>'fas fa-users',
@@ -65,8 +87,8 @@ if (Permissions::checkAccessUserModule('thirdparty',$App->userLoggedData,$App->u
 			'string'=>URL_SITE.'third-party/listItem',
 			'opz'=>array()
 			)
-		);	
-		
+		);
+
 	$App->homeTables['contacts'] = array(
 		'table'=>DB_TABLE_PREFIX.'thirdparty',
 		'icon panel'=>'fas fa-users',
@@ -83,11 +105,19 @@ if (Permissions::checkAccessUserModule('thirdparty',$App->userLoggedData,$App->u
 					)
 				)
 			)
-		);	
+		);
 	}
 
-// Projects 
-if (Permissions::checkAccessUserModule('projects',$App->userLoggedData,$App->user_modules_active) == true && in_array(DB_TABLE_PREFIX.'projects',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."projects/index.php") == true) {
+// Projects
+if (
+
+in_array(DB_TABLE_PREFIX.'projects',$App->tablesOfDatabase) &&
+file_exists(PATH.$App->pathApplications."projects/index.php") &&
+Permissions::checkIfModulesIsReadable('projects',$App->userLoggedData) === true
+
+)
+{
+
 	$App->homeBlocks['projects'] = array(
 		'table'=>DB_TABLE_PREFIX.'projects',
 		'icon panel'=>'fas fa-project-diagram',
@@ -119,9 +149,16 @@ if (Permissions::checkAccessUserModule('projects',$App->userLoggedData,$App->use
 		);
 	}
 
-// Todo 
-if (Permissions::checkAccessUserModule('todo',$App->userLoggedData,$App->user_modules_active) == true && in_array(DB_TABLE_PREFIX.'todo',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."todo/index.php")  == true) {
-	$App->homeBlocks['todo'] = array(
+// Todo
+if (
+
+in_array(DB_TABLE_PREFIX.'todo',$App->tablesOfDatabase) &&
+file_exists(PATH.$App->pathApplications."todo/index.php") &&
+Permissions::checkIfModulesIsReadable('todo',$App->userLoggedData) === true
+
+)
+{
+		$App->homeBlocks['todo'] = array(
 		'table'=>DB_TABLE_PREFIX.'todo',
 		'icon panel'=>'fas fa-bookmark',
 		'label'=>ucfirst($_lang['da fare']),
@@ -132,8 +169,8 @@ if (Permissions::checkAccessUserModule('todo',$App->userLoggedData,$App->user_mo
 			'string'=>URL_SITE.'todo',
 			'opz'=>array()
 			)
-		);	
-		
+		);
+
 	$App->homeTables['todo'] = array(
 		'table'=>DB_TABLE_PREFIX.'todo',
 		'icon panel'=>'fas fa-bookmark',
@@ -150,11 +187,18 @@ if (Permissions::checkAccessUserModule('todo',$App->userLoggedData,$App->user_mo
 					)
 				)
 			)
-		);	
+		);
 	}
 
-// Invoices sales 
-if (Permissions::checkAccessUserModule('invoices',$App->userLoggedData,$App->user_modules_active) == true && in_array(DB_TABLE_PREFIX.'invoices_sales',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."invoices/index.php") == true) {
+// Invoices sales
+if (
+
+in_array(DB_TABLE_PREFIX.'invoices_sales',$App->tablesOfDatabase) &&
+file_exists(PATH.$App->pathApplications."invoices/index.php") &&
+Permissions::checkIfModulesIsReadable('invoices',$App->userLoggedData) === true
+
+)
+{
 	$App->homeBlocks['invoices_sales'] = array(
 		'table'=>DB_TABLE_PREFIX.'invoices_sales',
 		'icon panel'=>'fas fa-euro-sign',
@@ -166,13 +210,13 @@ if (Permissions::checkAccessUserModule('invoices',$App->userLoggedData,$App->use
 			'string'=>URL_SITE.'invoices/listItes',
 			'opz'=>array()
 			)
-		);	
-		
+		);
+
 	$fields[] = "i.id,i.number,i.tax,i.rivalsa,i.created AS created";
 	$fields[] = "(SELECT SUM(a.price_total) FROM ".DB_TABLE_PREFIX."invoices_sales_articles AS a WHERE i.id = a.id_invoice) AS total";
 	$formula = 'SUM(a.price_total)';
 	$formula = 'SUM(a.price_total) + ((SUM(a.price_total) * i.tax) / 100) + ((SUM(a.price_total) * i.rivalsa) / 100)';
-	$fields[] = "(SELECT ".$formula." FROM ".DB_TABLE_PREFIX."invoices_sales_articles AS a WHERE i.id = a.id_invoice) AS onorario";	
+	$fields[] = "(SELECT ".$formula." FROM ".DB_TABLE_PREFIX."invoices_sales_articles AS a WHERE i.id = a.id_invoice) AS onorario";
 	$App->homeTables['invoices_sales'] = array(
 		'table'=>DB_TABLE_PREFIX.'invoices_sales AS i',
 		'sqloption'=> array(
@@ -207,11 +251,18 @@ if (Permissions::checkAccessUserModule('invoices',$App->userLoggedData,$App->use
 				'url item'=>array()
 				)
 			)
-		);	
+		);
 	}
 
 // Invoices purchases
-if (Permissions::checkAccessUserModule('invoices',$App->userLoggedData,$App->user_modules_active) == true && in_array(DB_TABLE_PREFIX.'invoices_purchases',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."invoices/index.php") == true) {
+if (
+
+in_array(DB_TABLE_PREFIX.'invoices_purchases',$App->tablesOfDatabase) &&
+file_exists(PATH.$App->pathApplications."invoices/index.php") &&
+Permissions::checkIfModulesIsReadable('invoices',$App->userLoggedData) === true
+
+)
+{
 	$App->homeBlocks['invoices_purchases'] = array(
 		'table'=>DB_TABLE_PREFIX.'invoices_purchases',
 		'icon panel'=>'fas fa-euro-sign',
@@ -223,11 +274,11 @@ if (Permissions::checkAccessUserModule('invoices',$App->userLoggedData,$App->use
 			'string'=>URL_SITE.'invoices/listItep',
 			'opz'=>array()
 		)
-	);	
-	
+	);
+
 	$fields = array();
 	$fields[] = "i.*";
-	$fields[] = "(SELECT SUM(a.price_total) + SUM(a.price_tax) FROM ".DB_TABLE_PREFIX."invoices_purchases_articles AS a WHERE i.id = a.id_invoice) AS total ";	
+	$fields[] = "(SELECT SUM(a.price_total) + SUM(a.price_tax) FROM ".DB_TABLE_PREFIX."invoices_purchases_articles AS a WHERE i.id = a.id_invoice) AS total ";
 	$App->homeTables['invoices_purchases'] = array(
 		'table'=>DB_TABLE_PREFIX.'invoices_purchases AS i',
 		'sqloption'=> array(
@@ -255,11 +306,11 @@ if (Permissions::checkAccessUserModule('invoices',$App->userLoggedData,$App->use
 				'url item'=>array()
 				)
 			)
-		);	
+		);
 	}
 
-/*	
-// Estimate 
+/*
+// Estimate
 if (in_array(DB_TABLE_PREFIX.'estimates',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."estimates/index.php") == true) {
 	$App->homeBlocks['estimates'] = array($fields = array();
 		'table'=>DB_TABLE_PREFIX.'estimates',
@@ -273,10 +324,10 @@ if (in_array(DB_TABLE_PREFIX.'estimates',$App->tablesOfDatabase) && file_exists(
 			'opz'=>array()
 			)
 		);
-	
+
 	$fields = array();
 	$fields[] = "i.*";
-	$fields[] = "(SELECT SUM(a.price_total) + SUM(a.price_tax) FROM ".DB_TABLE_PREFIX."estimates_articles AS a WHERE i.id = a.id_estimate) AS total ";	
+	$fields[] = "(SELECT SUM(a.price_total) + SUM(a.price_tax) FROM ".DB_TABLE_PREFIX."estimates_articles AS a WHERE i.id = a.id_estimate) AS total ";
 	$App->homeTables['estimates'] = array(
 		'table'=>DB_TABLE_PREFIX.'estimates AS i',
 		'sqloption'=> array(
@@ -304,13 +355,19 @@ if (in_array(DB_TABLE_PREFIX.'estimates',$App->tablesOfDatabase) && file_exists(
 				'url item'=>array()
 				)
 			)
-		);	
+		);
 	}
-	
-/* bilancio entries */
+*/
 
+// bilancio familiare
+if (
 
-if (Permissions::checkAccessUserModule('bilanciofamiliare',$App->userLoggedData,$App->user_modules_active) == true && in_array(DB_TABLE_PREFIX.'bilancio_familiare',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."bilanciofamiliare/index.php") == true) {
+in_array(DB_TABLE_PREFIX.'bilancio_familiare',$App->tablesOfDatabase) &&
+file_exists(PATH.$App->pathApplications."bilanciofamiliare/index.php") &&
+Permissions::checkIfModulesIsReadable('bilanciofamiliare',$App->userLoggedData) === true
+
+)
+{
 
 	$App->homeBlocks['bilanciofamiliare-e'] = array(
 		'table'=>DB_TABLE_PREFIX.'bilancio_familiare',
@@ -326,8 +383,8 @@ if (Permissions::checkAccessUserModule('bilanciofamiliare',$App->userLoggedData,
 			'string'=>URL_SITE.'bilanciofamiliare/listEntr',
 			'opz'=>array()
 			)
-		);	
-	
+		);
+
 	$App->homeTables['bilanciofamiliare-e'] = array(
 		'table'=>DB_TABLE_PREFIX.'bilancio_familiare',
 		'sqloption'=> array(
@@ -347,8 +404,8 @@ if (Permissions::checkAccessUserModule('bilanciofamiliare',$App->userLoggedData,
 				)
 			)
 		)
-	);	
-	
+	);
+
 	$App->homeBlocks['bilanciofamiliare-u'] = array(
 		'table'=>DB_TABLE_PREFIX.'bilancio_familiare',
 		'sqloption'=> array(
@@ -363,8 +420,8 @@ if (Permissions::checkAccessUserModule('bilanciofamiliare',$App->userLoggedData,
 			'string'=>URL_SITE.'bilanciofamiliare/listOutp',
 			'opz'=>array()
 			)
-		);	
-	
+		);
+
 	$App->homeTables['bilanciofamiliare-u'] = array(
 		'table'=>DB_TABLE_PREFIX.'bilancio_familiare',
 		'sqloption'=> array(
@@ -384,8 +441,8 @@ if (Permissions::checkAccessUserModule('bilanciofamiliare',$App->userLoggedData,
 				)
 			)
 		)
-	);	
+	);
 
-		
+
 }
 ?>

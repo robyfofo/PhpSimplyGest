@@ -5,7 +5,7 @@
 * @author Roberto Mantovani (<me@robertomantovani.vr.it>
 * @copyright 2009 Roberto Mantovani
 * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
-* app/home/index.php v.1.2.0. 09/07/2020
+* app/home/index.php v.1.3.0. 24/08/2020
 */
 
 //Core::setDebugMode(1);
@@ -26,13 +26,10 @@ $obj = Sql::getRecord();
 if (Core::$resultOp->error == 0 && isset($obj) && count((array)$obj) > 1) $App->params = $obj;
 if (!isset($App->params->label) || (isset($App->params->label) && $App->params->label == '')) die('Error reading module settings!');
 
-$tablesDb = Sql::getTablesDatabase($globalSettings['database'][DATABASE]['name']);
-
-//print_r($tablesDb);
-//print_r($App->tablesOfDatabase);
+$App->tablesOfDatabase = Sql::getTablesDatabase($globalSettings['database'][DATABASE]['name']);
 
 /* variabili ambiente */
-$App->codeVersion = ' 1.0.0.';
+$App->codeVersion = ' 1.3.0.';
 $App->pageTitle = $App->params->label;
 $App->pageSubTitle = $_lang['pagesubtitle'];
 $Module = new Module('','home');
@@ -104,7 +101,7 @@ switch(Core::$request->method) {
 		if (file_exists(PATH.$App->pathApplications."home/custom.php")) include_once(PATH.$App->pathApplications."home/custom.php");
 		
 		// prendo i dati per moduli custom */
-		if (file_exists(PATH.$App->pathApplications."home/charts.php")) include_once(PATH.$App->pathApplications."home/charts.php");
+		//if (file_exists(PATH.$App->pathApplications."home/charts.php")) include_once(PATH.$App->pathApplications."home/charts.php");
 			
 	break;	
 }

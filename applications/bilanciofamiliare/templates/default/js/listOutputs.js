@@ -35,11 +35,17 @@ $(document).ready(function() {
       	},
       ajax: {
 		 	type : "GET",
-		 	url : siteUrl+CoreRequestAction+"/listAjaxOutp",
+		 	url : siteUrl+coreRequestAction+"/listAjaxOutp",
 		 	async: "true",
 			cache: "false",
 			dataSrc: function ( json ) {
-				//Make your callback here.				
+				//Make your callback here.	
+				$('#totali_uscite').html(json.totali_uscite);	
+				$('#totali_uscite_ultimo_anno').html(json.totali_uscite_ultimo_anno);	
+				$('#totali_uscite_anno_precedente').html(json.totali_uscite_anno_precedente);
+				$('#totali_uscite_anno_corrente').html(json.totali_uscite_anno_corrente);
+				$('#totali_uscite_tabella').html(json.totali_uscite_tabella);
+			
 				return json.data;
 			}
       },

@@ -10,7 +10,19 @@
 	padding-right:6px;
 	padding-left:6px;
 	flex: 0 0 2%;
-	
+	max-width: 10.33333%;
+}
+
+@media (min-width: 768px) {
+	.col-1-span {
+   		max-width: 10.33333%;
+	}
+}
+
+@media (min-width: 768px) {
+	.col-1-span {
+   		max-width: 12.33333%;
+	}
 }
 --></style>
 <div class="row">
@@ -44,7 +56,7 @@
 					<fieldset>
 						<div class="form-group row">
 							<label for="dateinsID" class="col-md-2 control-label">{{ Lang['data']|capitalize }}</label>
-							<div class="col-md-2 col-xs-2 input-group date" id="dateinsDPID">
+							<div class="col-sm-6 col-md-4  col-xl-2 input-group date" id="dateinsDPID">
 								<input required="required" type="text" name="dateins" class="form-control" placeholder="{{ Lang['inserisci una data']|capitalize }}" id="dateinsID" value="">
 								<span class="input-group-addon calendar-icon">
 									<i class="fa fa-calendar"></i>
@@ -53,7 +65,7 @@
 						</div>
 						<div class="form-group row">
 							<label for="datescaID" class="col-md-2 control-label">{{ Lang['data scadenza']|capitalize }}</label>
-							<div class="col-md-2 col-xs-2 input-group date" id="datescaDPID">
+							<div class="col-sm-6 col-md-4  col-xl-2 input-group date" id="datescaDPID">
 								<input required="required" type="text" name="datesca" class="form-control" placeholder="{{ Lang['inserisci una data di scadenza']|capitalize }}" id="datescaID" value="">
 								<span class="input-group-addon calendar-icon">
 									<i class="fa fa-calendar"></i>
@@ -68,7 +80,7 @@
 								<span class="control-span" id="number_customers_idID">{{ App.item.id_customer|e('html') }}</span>
 					    	</div>
 					    	<span class="control-span">-</span>
-							<div class="col-md-1">
+							<div class="col-sm-2 col-md-2  col-xl-1">
 								<input required="required" type="text" name="number" class="form-control" id="numberID" placeholder="{{ Lang['inserisci un numero']|capitalize }}" value="{{ App.item.number|e('html') }}">
 					    	</div>
 					    	<span class="control-span">-</span>

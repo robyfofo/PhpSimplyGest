@@ -16,16 +16,27 @@ switch(Core::$request->method) {
 			Form::parsePostByFields($App->params->fields['item'],$_lang,array());
 			if (Core::$resultOp->error == 0) {							
 				Sql::updateRawlyPost($App->params->fields['item'],$App->params->tables['item'],'id',$App->id);
-				if (Core::$resultOp->error == 0) {																
-					}
-				}										
+				if ( Core::$resultOp->error > 0 ) { ToolsStrings::redirect(URL_SITE.'error/db'); die(); }
+				$_SESSION['message'] = '0|'.ucfirst(preg_replace('/%ITEM%/',$_lang['voce'],$_lang['%ITEM% modificati']));
+				ToolsStrings::redirect(URL_SITE.Core::$request->action.'/editItem');
+				die();				
 			} else {
-				Core::$resultOp->error = 1;
-				}			
-		list($id,$App->viewMethod,$App->pageSubTitle,Core::$resultOp->message) = Form::getUpdateRecordFromPostResults($App->id,Core::$resultOp,$_lang,array());		
+				$_SESSION['message'] = '1|'.implode('<br>', Core::$resultOp->messages);
+				ToolsStrings::redirect(URL_SITE.Core::$request->action.'/editItem');
+				die();
+			}										
+		} else {
+			ToolsStrings::redirect(URL_SITE.'error/404'); die();
+		}			
 	break;
 	default;	
-		$App->viewMethod = 'formMod';	
+		$App->item = new stdClass;			
+		Sql::initQuery($App->params->tables['item'],array('*'),array($App->id),'id = ?');
+		$App->item = Sql::getRecord();
+		if (Core::$resultOp->error == 1) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['item']);
+		$App->methodForm = 'updateItem';	
+		$App->pageSubTitle = preg_replace('/%ITEM%/',$_lang['voci'],$_lang['modifica %ITEM%']);
+		$App->viewMethod = 'form';	
 	break;	
 	}
 
@@ -33,13 +44,8 @@ switch(Core::$request->method) {
 /* SEZIONE SWITCH VISUALIZZAZIONE TEMPLATE (LIST, FORM, ECC) */
 
 switch((string)$App->viewMethod) {
-	case 'formMod':
-		$App->item = new stdClass;			
-		Sql::initQuery($App->params->tables['item'],array('*'),array($App->id),'id = ?');
-		$App->item = Sql::getRecord();
-		if (Core::$resultOp->error == 1) Utilities::setItemDataObjWithPost($App->item,$App->params->fields['item']);
-		$App->templateApp = 'formItem.tpl.php';
-		$App->methodForm = 'updateItem';	
+	case 'form':		
+		$App->templateApp = 'formItem.html';		
 		$App->jscript[] = '<script src="'.URL_SITE.'application/'.Core::$request->action.'/templates/'.$App->templateUser.'/js/formItem.js"></script>';
 	break;
 

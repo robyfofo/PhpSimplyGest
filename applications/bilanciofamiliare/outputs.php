@@ -115,25 +115,55 @@ switch(Core::$request->method) {
 		/* end orders */		
 
 		/* search */
+		$whereAll = 'type = 0';
+		$andAll = ' AND ';
+		$fieldsValueAll = array();
+		
 		$where = 'type = 0';
 		$and = ' AND ';
-		$fieldsValue = array();
+		$fieldsValue = array();	
+			
+		$where1 = 'type = 0';
+		$and1 = ' AND ';
+		$fieldsValue1 = array();
+		
+		$where2 = 'type = 0';
+		$and2 = ' AND ';
+		$fieldsValue2 = array();
+		
+		$where3 = 'type = 0';
+		$and3 = ' AND ';
+		$fieldsValue3 = array();
+		
 		
 		/* permissions query */
 		list($permClause,$fieldsValuesPermClause) = Permissions::getSqlQueryItemPermissionForUser($App->userLoggedData,array('onlyuser'=>true));
 		if (isset($permClause) && $permClause != '') {
 			$where .= $and.'('.$permClause.')';
 			$and = ' AND ';
+			$where1 .= $and1.'('.$permClause.')';
+			$and1 = ' AND ';
+			$where2 .= $and2.'('.$permClause.')';
+			$and2 = ' AND ';
+			$where3 .= $and3.'('.$permClause.')';
+			$and3 = ' AND ';
+			
+			$whereAll .= $andAll.'('.$permClause.')';
+			$andAll = ' AND ';
 		}
 		if (is_array($fieldsValuesPermClause) && count($fieldsValuesPermClause) > 0) {
-			$fieldsValue = array_merge($fieldsValue,$fieldsValuesPermClause);	
+			$fieldsValue = array_merge($fieldsValue,$fieldsValuesPermClause);
+			$fieldsValue1 = array_merge($fieldsValue1,$fieldsValuesPermClause);	
+			$fieldsValue2 = array_merge($fieldsValue2,$fieldsValuesPermClause);	
+			$fieldsValue3 = array_merge($fieldsValue3,$fieldsValuesPermClause);	
+			
+			$fieldsValueAll = array_merge($fieldsValueAll,$fieldsValuesPermClause);
 		}
 		/* end permissions items */
 		
 		/* aggiunge campi join */
 		//$App->params->fields['InvSal']['cus.ragione_sociale'] = array('searchTable'=>true,'type'=>'varchar');
-		//$App->params->fields['itap']['ite.total'] = array('searchTable'=>true,'type'=>'float');
-		
+		//$App->params->fields['itap']['ite.total'] = array('searchTable'=>true,'type'=>'float');		
 		
 		$filtering = false;
 		if (isset($_REQUEST['search']) && is_array($_REQUEST['search']) && count($_REQUEST['search']) > 0) {		
@@ -155,7 +185,7 @@ switch(Core::$request->method) {
 		$fields[] = '*';
 	
 		/* conta tutti i records */
-		$recordsTotal = Sql::countRecordQry($App->params->tables['items'],'id','type = 0',array());
+		$recordsTotal = Sql::countRecordQry($App->params->tables['items'],'id',$whereAll,$fieldsValueAll);
 		$recordsFiltered = $recordsTotal;
 
 		if ($filtering == true) {
@@ -164,17 +194,42 @@ switch(Core::$request->method) {
 			$recordsFiltered = count($obj);
 
 		}
+		
+		// trova il totale di tutto
+		Sql::initQuery($table,array('SUM(amount) AS totale'),$fieldsValue,$where,'','',array());
+		$objTot = Sql::getRecord();
+		$totoutput = 0;
+		if (isset($objTot->totale)) $totoutput = $objTot->totale;
+		
+		// trova il totale di anno corrente
+		Sql::initQuery($table,array('SUM(amount) AS totale'),$fieldsValue1,$where1.$and1.'YEAR(dateins) = YEAR(CURDATE())','','',array());
+		$objTot1 = Sql::getRecord();
+		$totoutput_anno_corrente = 0;
+		if (isset($objTot1->totale)) $totoutput_anno_corrente = $objTot1->totale;
+		
+		// trova il totale di anno precedente
+		Sql::initQuery($table,array('SUM(amount) AS totale'),$fieldsValue2,$where2.$and2.'YEAR(dateins) = YEAR(CURDATE()) - 1','','',array());
+		$objTot2 = Sql::getRecord();
+		$totoutput_anno_precedente = 0;
+		if (isset($objTot2->totale)) $totoutput_anno_precedente = $objTot2->totale;
+		
+		// trova il totale di ultimo anno solare	
+		$date = DateTime::createFromFormat('Y-m-d',$App->nowDate);
+		$date->modify('-12 month');
+		$dini = $date->format('Y-m-d');
+		$fieldsValue3 = array_merge($fieldsValue3,array($dini,$App->nowDate));									
+		Sql::initQuery($table,array('SUM(amount) AS totale'),$fieldsValue3,$where3.$and3.'dateins BETWEEN ? AND ?','','',array());
+		$objTot3 = Sql::getRecord();
+		$totoutput_ultimo_anno = 0;
+		if (isset($objTot3->totale)) $totoutput_ultimo_anno = $objTot3->totale;
+
 
 		Sql::initQuery($table,$fields,$fieldsValue,$where,implode(', ', $order),$limit,array());
 		if (Core::$resultOp->error <> 1) $obj = Sql::getRecords();
 		//print_r($obj);
 		/* sistemo dati */	
 		$arr = array();
-		$totentry = 0;
-		$totoutput = 0;
-		$_SESSION['totentry'] = 0;
-		$_SESSION['totoutput'] = 0;
-		
+		$totoutput_tabella = 0;		
 		if (is_array($obj) && count($obj) > 0) {
 			foreach ($obj AS $key=>$value) {
 				/* crea la colonna actions */
@@ -183,7 +238,7 @@ switch(Core::$request->method) {
 				$output = $value->amount;
 				if ( $value->type == 0) {
 					$output = $value->amount;
-					$totoutput = $totoutput + $value->amount;
+					$totoutput_tabella += $value->amount;
 				}
 				
 				$tablefields = array(
@@ -205,6 +260,13 @@ switch(Core::$request->method) {
 		$json['recordsTotal'] = intval($recordsTotal);
 		$json['recordsFiltered'] = intval($recordsFiltered);		
 		$json['data'] = $App->items;	
+		
+		$json['totali_uscite'] = '€ '.number_format($totoutput,2,',','.');
+		$json['totali_uscite_ultimo_anno'] = '€ '.number_format($totoutput_ultimo_anno,2,',','.');
+		$json['totali_uscite_anno_precedente'] = '€ '.number_format($totoutput_anno_precedente,2,',','.');
+		$json['totali_uscite_anno_corrente'] = '€ '.number_format($totoutput_anno_corrente,2,',','.');
+		$json['totali_uscite_tabella'] = '€ '.number_format($totoutput_tabella,2,',','.');
+
 		echo json_encode($json);
 		die();
 	break;

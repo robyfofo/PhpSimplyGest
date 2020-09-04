@@ -38,7 +38,7 @@
 						<div class="form-group row">
 							<label for="amountID" class="col-md-2 control-label">{{ App.params.fields['items']['amount']['label']|capitalize }}</label>
 							<div class="col-md-7">
-<input type="text" class="form-control" name="amount" id="titleID" value="{{ App.item.amount|e('html') }}" placeholder="{{ Lang['inserisci una %ITEM%']|replace({'%ITEM%': Lang['voce-e']})|capitalize }}" {% if App.params.fields['items']['amount']['required'] == true %} required="required" oninvalid="this.setCustomValidity('{{ Lang['Devi inserire una %ITEM%!']|replace({'%ITEM%': Lang['voce-e']}) }}')" oninput="setCustomValidity('')"{% endif %}>
+<input type="text" class="form-control" name="amount" id="titleID" value="{{ App.item.amount|e('html') }}" placeholder="{{ Lang['inserisci una %ITEM%']|replace({'%ITEM%': Lang['voce-o']})|capitalize }}" {% if App.params.fields['items']['amount']['required'] == true %} required="required" oninvalid="this.setCustomValidity('{{ Lang['Devi inserire una %ITEM%!']|replace({'%ITEM%': Lang['voce-e']}) }}')" oninput="setCustomValidity('')"{% endif %}>
 							</div>
 						</div>
 						<div class="form-group row">

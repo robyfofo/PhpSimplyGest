@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * levels/config.inc.php v.1.2.0. 17/12/2019
+ * levels/config.inc.php v.1.3.0. 25/08/2020
 */
 
 $App->params = new stdClass();
@@ -18,6 +18,8 @@ if (Core::$resultOp->error == 0 && is_object($obj)) $App->params = $obj;
 $App->params->codeVersion = ' 1.2.0.';
 $App->params->pageTitle = $App->params->label;
 $App->params->breadcrumb = '<li class="active"><i class="icon-user"></i> '.$App->params->label.'</li>';
+
+$App->module_home_id = 3;
 
 $App->params->tables = array();
 $App->params->fields = array();
@@ -32,4 +34,6 @@ $App->params->fields['item'] = array(
 	'modules'=>array('label'=>$_lang['moduli'],'searchTable'=>false,'required'=>false,'type'=>'varchar|255','defValue'=>'','validate'=>'explodearray'),
 	'active'=>array('label'=>$_lang['attiva'],'required'=>false,'type'=>'int|1','defValue'=>0)
 	);
+	
+$App->params->tables['ass-item'] = DB_TABLE_PREFIX.'modules_levels_access';
 ?>

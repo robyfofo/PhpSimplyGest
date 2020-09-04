@@ -91,7 +91,7 @@ function checkNumberInvoice() {
 		$('#result_check_numberID').val(result_check_number);	
 	})		
 	.fail(function() {
-		alert("Ajax failed to fetch data article for module");
+		alert("Ajax failed to fetch data of invoice number check");
 	})	
 }
 

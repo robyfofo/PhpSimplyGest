@@ -19,9 +19,65 @@
  				{{ Lang['totali']|capitalize }} {{ Lang['voci-e']|capitalize }}
 			</div>
 			<div class="card-body">
+				<div class="row no-gutters align-items-left">
+					<div class="col-lg-7 text-right">
+						{{ Lang['totali']|capitalize }}:						
+					</div>
+					<div class="col-lg-5 text-right">
+						<span class="text-success" id="totali_entrate"></span>						
+					</div>					
+          		</div>
+				<div class="row no-gutters align-items-left">
+					<div class="col-lg-7 text-right">
+						{{ Lang['totali']|capitalize }} {{ Lang['ultimo'] }} {{ Lang['anno'] }}:
+					</div>
+					<div class="col-lg-5 text-right">
+						<span class="text-success" id="totali_entrate_ultimo_anno"></span>
+					</div>
+	          	</div>
+          	</div>
+		</div>
+	</div>
+	
+	<div class="col-xl-3 col-md-6 mb-4">
+		<div class="card border-left-success shadow h-100 py-2 card-block">
+			<div class="card-header card-header-block">
+ 				{{ Lang['totali']|capitalize }} {{ Lang['voci-e']|capitalize }} {{ Lang['anno']|capitalize }} {{ App.annoprecedente }}
+			</div>
+			<div class="card-body">
 				<div class="row no-gutters align-items-center">
 					<div class="col-lg-12 text-right">
-						<span class="text-success" id="totali_entrate"></span>
+						<span class="text-success" id="totali_entrate_anno_precedente"></span>
+					</div>
+          	</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-xl-3 col-md-6 mb-4">
+		<div class="card border-left-success shadow h-100 py-2 card-block">
+			<div class="card-header card-header-block">
+ 				{{ Lang['totali']|capitalize }} {{ Lang['voci-e']|capitalize }} {{ Lang['anno']|capitalize }} {{ App.annocorrente }}
+			</div>
+			<div class="card-body">
+				<div class="row no-gutters align-items-center">
+					<div class="col-lg-12 text-right">
+						<span class="text-success" id="totali_entrate_anno_corrente"></span>
+					</div>
+          	</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-xl-3 col-md-6 mb-4">
+		<div class="card border-left-success shadow h-100 py-2 card-block">
+			<div class="card-header card-header-block">
+ 				{{ Lang['totali']|capitalize }} {{ Lang['voci-e']|capitalize }} {{ Lang['tabella']|capitalize }}
+			</div>
+			<div class="card-body">
+				<div class="row no-gutters align-items-center">
+					<div class="col-lg-12 text-right">
+						<span class="text-success" id="totali_entrate_tabella"></span>
 					</div>
           	</div>
 			</div>

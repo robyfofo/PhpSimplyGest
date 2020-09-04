@@ -39,7 +39,7 @@ $(document).ready(function() {
       	},
 		ajax: {
 		 	type : "GET",
-		 	url : siteUrl+CoreRequestAction+"/listAjaxItem",
+		 	url : siteUrl+coreRequestAction+"/listAjaxItem",
 		 	async: "true",
 			cache: "false",
 			dataSrc: function ( json ) {

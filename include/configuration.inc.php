@@ -1,11 +1,11 @@
 <?php
 /**
- * Framework App PHP-Mysql
+ * Framework App PHP-MySQL
  * PHP Version 7
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * app/include/configuration.inc.php v.1.2.0. 24/12/2019
+ * app/include/configuration.inc.php v.1.3.0. 24/08/2020
 */
 
 /* specifiche altervista */
@@ -18,8 +18,8 @@ if (isset($_SERVER['HTTPS'])) $http = 'https://';
 
 /* SERVER */
 $globalSettings['site name'] = "PhpSimplyGest";
-$globalSettings['code version'] = '1.2.0.';
-$globalSettings['folder site'] = 'phprojekt.altervista.org/phpsimplygest120/';
+$globalSettings['code version'] = '1.3.0.';
+$globalSettings['folder site'] = 'phprojekt.altervista.org/phpsimplygest130/';
 $globalSettings['site host'] = '192.168.1.10/';
 $globalSettings['server timezone'] = '';
 
@@ -27,16 +27,16 @@ $globalSettings['server timezone'] = '';
 $database = 'remote';
 if ($servermode == 'locale') $database = 'locale';
 $globalSettings['database'] = array(
-	'locale'=>array('user'=>'root','password'=>'fofofofo','host'=>'localhost','name'=>'phprojekt.altervista_phpsimplygest120','tableprefix'=>'psg120_'),
+	'locale'=>array('user'=>'root','password'=>'fofofofo','host'=>'localhost','name'=>'phprojekt.altervista_phpsimplygest130','tableprefix'=>'psg130_'),
 	'remote'=>array('user'=>'phprojekt','password'=>'robyfofo','host'=>'localhost','name'=>'phprojekt.altervista','tableprefix'=>'psg_')
-	);
+);
 
-$cookies = 'altphpsimplygest_id';
-if ($servermode == 'locale') $cookies = 'loc'.$cookies; 
+$cookies = 'phpsimplygest130ID';
+if ($servermode == 'locale') $cookies = 'loc'.$cookies;
 
 /* MAIL */
 $globalSettings['default email'] = 'robymant66@vodafone.it';
-$globalSettings['dafault email label'] = 'PhpSimplyGest';
+$globalSettings['default email label'] = 'PhpSimplyGest';
 $globalSettings['send email debug'] = 1;
 $globalSettings['email debug'] = 'me@robertomantovani.vr.it';
 /* configurazioni server */
@@ -57,7 +57,7 @@ $globalSettings['site code key'] = '123456789';
 
 /* LANGUAGE */
 $globalSettings['default language'] = 'it';
-$globalSettings['languages'] = array('it');
+$globalSettings['languages'] = array('it','en');
 
 /* UPLOAD */
 $globalSettings['image type available'] = array('JPG','PNG','GIF');
@@ -74,12 +74,11 @@ $globalSettings['meta tags page'] = array(
 	'keyword'=>'php, mysql, ammministrazione, sezione, amministrativa, sito, gestione, progetti, timecard, tempo, lavoro, modulare'
 );
 
-
-
 /* DA NON MODIFICARE */
 
 $globalSettings['status to do'] = array('n.d.','visto','in lavorazione','sospeso','cancellato','rifiutato','finito');
 $globalSettings['status project'] = array('n.d.','preventivato','in lavorazione','sospeso','cancellato','rifiutato','finito');
+$globalSettings['article type'] = array('0'=>'def acquisto e vendita','1'=>'def acquisto','2'=>'def vendita');
 
 /* impostationi Request url */
 $globalSettings['requestoption'] = array(
@@ -91,7 +90,7 @@ $globalSettings['requestoption'] = array(
 	'othermodules' => array()
 	);
 
-$globalSettings['module sections'] = array('Moduli Generali Sito','Impostazioni','Root');
+$globalSettings['module sections'] = array('Moduli Applicativo','Impostazioni','Root');
 $globalSettings['languages'] = array('it','en');
 
 define('SITE_NAME', $globalSettings['site name']);
@@ -121,8 +120,7 @@ define('SESSIONS_GC_TIME',2592000);
 
 /* COOKIES */
 define('SESSIONS_COOKIE_NAME',$cookies);
-define('AD_SESSIONS_COOKIE_NAME','ad_'.$cookies);
-define('DATA_SESSIONS_COOKIE_NAME','data_'.$cookies); 
+define('DATA_SESSIONS_COOKIE_NAME','data_'.$cookies);
 
 define('SITE_CODE_KEY',$globalSettings['site code key']);
 

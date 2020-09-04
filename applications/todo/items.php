@@ -99,7 +99,7 @@ switch(Core::$request->method) {
 		$limit = '';
 		if (isset($_REQUEST['start']) && $_REQUEST['length'] != '-1') {
 			$limit = " LIMIT ".$_REQUEST['length']." OFFSET ".$_REQUEST['start'];
-			}				
+		}				
 		/* end limit */	
 			
 		/* orders */
@@ -108,26 +108,34 @@ switch(Core::$request->method) {
 		if (isset($_REQUEST['order']) && is_array($_REQUEST['order']) && count($_REQUEST['order']) > 0) {		
 			foreach ($_REQUEST['order'] AS $key=>$value)	{				
 				$order[] = $orderFields[$value['column']].' '.$value['dir'];
-				}
 			}
+		}
 		/* end orders */		
 		
+		/* SEARCH QUERY */			
+		$whereAll = '';
+		$andAll = '';
+		$fieldsValueAll = array();
 		$where = '';
 		$and = '';
+		$fieldsValue = array();
 		
 		/* permissions query */
-		list($permClause,$fieldsValuesPermClause) = Permissions::getSqlQueryItemPermissionForUser($App->userLoggedData,array('fieldprefix'=>'i.','onlyuser'=>true));
+		list($permClause,$fieldsValuesPermClause) = Permissions::getSqlQueryItemPermissionForUser($App->userLoggedData,array('fieldprefix'=>'i.','onlyuser'=>false));
 		if (isset($permClause) && $permClause != '') {
+			$whereAll .= $andAll.'('.$permClause.')';
+			$andAll = ' AND ';
 			$where .= $and.'('.$permClause.')';
 			$and = ' AND ';
 		}
 		if (is_array($fieldsValuesPermClause) && count($fieldsValuesPermClause) > 0) {
+			$fieldsValueAll = array_merge($fieldsValueAll,$fieldsValuesPermClause);
 			$fieldsValue = array_merge($fieldsValue,$fieldsValuesPermClause);	
 		}
 		/* end permissions items */
 
-			
-		/* search */
+
+		/* SEARCH QUERY */
 		/* aggiunge campi join */
 		$whereFields = array(
 			'project'=>array('field'=>'p.title','type'=>'datafield'),
@@ -142,7 +150,7 @@ switch(Core::$request->method) {
 				if ($w != '') {
 					$wf[] = $w;
 					$wfv = $fv;
-					}
+				}
 									
 				/* aggiungi query join */				
 				if (is_array($whereFields) && count($whereFields) > 0) {	
@@ -152,8 +160,7 @@ switch(Core::$request->method) {
 					$valueF = '';
 					foreach ($whereFields AS $keyqw=>$valueqw) {	
 						
-						switch($valueqw['type']) {
-							
+						switch($valueqw['type']) {							
 							case 'datalabelint':
 								$keys = preg_grep( '/'.$_REQUEST['search']['value'].'/', $App->params->status );
 								//print_r($keys);
@@ -163,11 +170,10 @@ switch(Core::$request->method) {
 									foreach ($keys AS $keyk=>$valuek) {
 										$f[] = $valueqw['field'].' = ?';
 										$fv[] = $keyk;
-										}								
-									}							
+									}								
+								}							
 								if (is_array($f) && count($f) > 0) $valueF .= ' OR '.implode(' OR ',$f);
-								if (is_array($fv) && count($fv) > 0) $valueFV = array_merge($valueFV,$fv);
-						
+								if (is_array($fv) && count($fv) > 0) $valueFV = array_merge($valueFV,$fv);						
 							break;
 							
 							default;			 					
@@ -175,16 +181,16 @@ switch(Core::$request->method) {
 								$fv = array('%a'.$_REQUEST['search']['value'].'%');
 								$valueFV = array_merge($valueFV,$fv);							
 							break;							
-							}						
+						}						
 						
-						}
+					}
 						
 					$wf1[] = $valueF;
 					$wfv1 = $valueFV;
 						
 					if (is_array($wf1) && count($wf1) > 0) $wf = array_merge($wf,$wf1);
 					if (is_array($wfv1) && count($wfv1) > 0) $wfv = array_merge($wfv,$wfv1);
-					}
+				}
 					
 
 				/* aggiunge query ricerca */				
@@ -267,42 +273,10 @@ switch((string)$App->viewMethod) {
 			$App->templateApp = 'formItem.html';
 			$App->methodForm = 'updateItem';
 			$App->jscript[] = '<script src="'.URL_SITE.$App->pathApplications.Core::$request->action.'/templates/'.$App->templateUser.'/js/formItem.js"></script>';	
-			} else {
-				ToolsStrings::redirect(URL_SITE.Core::$request->action.'/listItem');
-				}	
+		} else {
+			ToolsStrings::redirect(URL_SITE.Core::$request->action.'/listItem');
+		}	
 	break;
-
-	case 'list':
-		$App->items = new stdClass;			
-		$App->itemsForPage = (isset($_MY_SESSION_VARS[$App->sessionName]['ifp']) ? $_MY_SESSION_VARS[$App->sessionName]['ifp'] : 5);
-		$App->page = (isset($_MY_SESSION_VARS[$App->sessionName]['page']) ? $_MY_SESSION_VARS[$App->sessionName]['page'] : 1);				
-		$qryFields = array('i.*','p.title AS project');
-		$qryFieldsValues = array();
-		$qryFieldsValuesClause = array();
-		$clause = '';
-		if (isset($_MY_SESSION_VARS[$App->sessionName]['srcTab']) && $_MY_SESSION_VARS[$App->sessionName]['srcTab'] != '') {
-			list($sessClause,$qryFieldsValuesClause) = Sql::getClauseVarsFromAppSession($_MY_SESSION_VARS[$App->sessionName]['srcTab'],$App->params->fields['item'],'',array('tableAlias'=>'i'));
-			}		
-		if (isset($sessClause) && $sessClause != '') $clause .= $sessClause;
-		if (is_array($qryFieldsValuesClause) && count($qryFieldsValuesClause) > 0) {
-			$qryFieldsValues = array_merge($qryFieldsValues,$qryFieldsValuesClause);	
-			}
-		Sql::initQuery($App->params->tables['item']." AS i LEFT JOIN ".$App->params->tables['prog']." AS p ON (i.id_project = p.id)",$qryFields,$qryFieldsValues,$clause);
-		Sql::setItemsForPage($App->itemsForPage);	
-		Sql::setPage($App->page);		
-		Sql::setResultPaged(true);
-		if (Core::$resultOp->error <> 1) $obj = Sql::getRecords();
-		
-		/* sistemo dati */		
-		$arr = array();
-		if (is_array($obj) && count($obj) > 0) {
-			foreach ($obj AS $key=>$value) {
-				$s = $App->params->status[$value->status];
-				$value->statusLabel = (isset($_lang[$App->params->status[$value->status]]) ? $_lang[$App->params->status[$value->status]] : $App->params->status[$value->status]);
-				$arr[] = $value;
-				}
-			}
-		$App->items = $arr;
 
 	case 'list':
 		$App->pageSubTitle = preg_replace('/%ITEMS%/',$_lang['voci'],$_lang['lista dei %ITEMS%']);

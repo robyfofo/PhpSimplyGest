@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * classes/class.DateFormat.php v.1.0.0. 24/07/2018
+ * classes/class.DateFormat.php v.1.3.0. 02/09/2020
 */
 
 class DateFormat extends Core  {
@@ -17,18 +17,18 @@ class DateFormat extends Core  {
 	private static $hours = 0;
 	private static $minutes = 0;
 	private static $seconds = 0;
-	
-	public function __construct() {	
+
+	public function __construct() {
 		parent::__construct();
 		}
-		
+
 	public static function checkDateTimeIsoIniEndInterval($datetimeisoini,$datetimeisoend,$compare='>') {
 		$res = true;
 		$res = self::checkDateTimeIso($datetimeisoini);
 		if ($res == true) $res = self::checkDateTimeIso($datetimeisoend);
 		if ($res == true) {
 			$dateini = DateTime::createFromFormat('Y-m-d H:i:s',$datetimeisoini);
-			$dateend = DateTime::createFromFormat('Y-m-d H:i:s',$datetimeisoend);	
+			$dateend = DateTime::createFromFormat('Y-m-d H:i:s',$datetimeisoend);
 			switch ($compare) {
   				default:
   					if ($dateini->getTimestamp() > $dateend->getTimestamp()) {
@@ -36,12 +36,12 @@ class DateFormat extends Core  {
   						$res = false;
   						}
   				break;
-  				}	  					
-		
+  				}
+
 			}
 		return $res;
 		}
-		
+
 	public static function checkDateFormatIniEndInterval($dateini,$dateend,$format,$compare='>') {
 		$res = true;
 		if ($format == '') $format = 'Y-m-d H:i:s';
@@ -49,7 +49,7 @@ class DateFormat extends Core  {
 		if ($res == true) $res = self::checkDateFormat($dateend,$format);
 		if ($res == true) {
 			$dini = DateTime::createFromFormat($format,$dateini);
-			$dend = DateTime::createFromFormat($format,$dateend);	
+			$dend = DateTime::createFromFormat($format,$dateend);
 			switch ($compare) {
   				default:
   					if ($dini->getTimestamp() > $dend->getTimestamp()) {
@@ -58,21 +58,21 @@ class DateFormat extends Core  {
   						} else {
   							}
   				break;
-  				}	  							
+  				}
 			}
 		return $res;
 		}
 
 
-		
+
 	/* DATEPICKER */
 	public static function checkDateTimeFromDatepicker($datetime,$format) {
 		if ($format == '') $format = 'd/m/Y H:i:s';
     	$d = DateTime::createFromFormat($format,$datetime);
       $errors = DateTime::getLastErrors();
-		return ($errors['warning_count'] == 0 && $errors['error_count'] == 0) ? true : false;	
+		return ($errors['warning_count'] == 0 && $errors['error_count'] == 0) ? true : false;
 		}
-		
+
 	public static function convertDatepickerToIso($datetime,$formatPick,$formatISO,$defaultDateTime) {
 		/* controlla default data se iso */
 		if ($formatPick == '') $format = 'd/m/Y';
@@ -84,10 +84,10 @@ class DateFormat extends Core  {
 			/* converto in iso */
 			$d = DateTime::createFromFormat($formatPick,$datetime);
 			$errors = DateTime::getLastErrors();
-			$datetimeIso = ($errors['warning_count'] == 0 && $errors['error_count'] == 0) ? $d->format($formatISO)  : $defaultDateTime;			
+			$datetimeIso = ($errors['warning_count'] == 0 && $errors['error_count'] == 0) ? $d->format($formatISO)  : $defaultDateTime;
 			} else {
 				$datetimeIso = $defaultDateTime;
-				}	
+				}
 		return $datetimeIso;
 		}
 
@@ -99,7 +99,11 @@ class DateFormat extends Core  {
 		return ($errors['warning_count'] == 0 && $errors['error_count'] == 0) ? true : false;
 		}
 
-
+	public static function checkDateIso($dateiso) {
+		$d = DateTime::createFromFormat('Y-m-d',$dateiso);
+		$errors = DateTime::getLastErrors();
+		return ($errors['warning_count'] == 0 && $errors['error_count'] == 0) ? true : false;
+	}
 
 	/* LAYOUT */
 	public static function getDateTimeIsoFormatString($datetimeIso='',$format='',$langMonts,$langDays,$opt) {
@@ -107,24 +111,24 @@ class DateFormat extends Core  {
 		$s = self::getDateString($format,$langMonts,$langDays);
 		return $s;
 		}
-	
+
 
 	/* TOOLS */
-	
+
 	public static function convertDateFormats($date,$formatinput,$formatoutput,$defaultDate) {
-		if (self::checkDateTimeIso($defaultDate) == false) $defaultDate = date('Y-m-d H:i:s');
+		if (self::checkDateIso($defaultDate) == false) $defaultDate = date('Y-m-d');
 		$d = DateTime::createFromFormat($formatinput,$date);
 		$errors = DateTime::getLastErrors();
-		$date = ($errors['warning_count'] == 0 && $errors['error_count'] == 0) ? $d->format($formatoutput)  : $defaultDate;			
+		$date = ($errors['warning_count'] == 0 && $errors['error_count'] == 0) ? $d->format($formatoutput)  : $defaultDate;
 		return $date;
-		}
-		
+	}
+
 	public static function checkDateFormat($date,$format) {
 	  	$d = DateTime::createFromFormat($format,$date);
 	  	$errors = DateTime::getLastErrors();
 		return ($errors['warning_count'] == 0 && $errors['error_count'] == 0) ? true : false;
 		}
-	
+
 	public static function sum_the_time($times) {
   		//$times = array($time1, $time2);
   		$seconds = 0;
@@ -140,23 +144,23 @@ class DateFormat extends Core  {
 			$seconds -= $hours*3600;
 			$minutes  = floor($seconds/60);
 			$seconds -= $minutes*60;
-			
+
 			$sum_time = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds); // Thanks to Patrick
   		}
    		// return "{$hours}:{$minutes}:{$seconds}";
 		return $sum_time;
 	}
-	
+
 	public static function explodeDateTimeIso($datetime) {
 		$d = explode(' ',$datetime);
 		list($date,$time) = $d;
 		self::$dateVars = explode('-',$date);
-		self::$timeVars =  explode(':',$time);		
+		self::$timeVars =  explode(':',$time);
 		self::$day = self::$dateVars[2];
-		self::$month = self::$dateVars[1];	
-		self::$year = self::$dateVars[0];	
+		self::$month = self::$dateVars[1];
+		self::$year = self::$dateVars[0];
 		self::$hours = self::$timeVars[0];
-		self::$minutes = self::$timeVars[1];	
+		self::$minutes = self::$timeVars[1];
 		self::$seconds = self::$timeVars[2];
 		}
 
@@ -173,59 +177,59 @@ class DateFormat extends Core  {
 		$format = preg_replace('/%HH%/',self::$hours,$format);
 		$format = preg_replace('/%II%/',self::$minutes,$format);
 		$s = $format;
-		
+
 		switch ($format) {
 			case 'dd StringMonth YYYY':
 				$s = self::$day. ' '.ucfirst($langMonts[$month]).' '.self::$year;
 			break;
-			
+
 			case 'StringDay StringMonth YYYY':
 				$s = self::$day. ' '.ucfirst($langMonts[$month]).' '.self::$year;
 			break;
-			
+
 			case 'StringMonth dd, YYYY':
 				$s = ucfirst($langMonts[$month]).' '.self::$day. ', '.self::$year;
 			break;
-			
+
 			case 'StringMonth':
 				$s = ucfirst($langMonts[$month]);
 			break;
-			
+
 			case 'dd/mm/YYYY':
 			/* dd/mm/YYYY */
 				$s = self::$day.'/'.self::$month.'/'.self::$year;
 			break;
-			
+
 			case 'hh:mm':
 			/* dd/mm/YYYY */
 				$s = self::$hours.':'.self::$minutes;
 			break;
-						
+
 			case 'YYYY-mm-dd':
 				$s = self::$year.'-'.self::$month.'-'.self::$day;
 			break;
-			
+
 			case 'dd':
 				$s = self::$day;
 			break;
 
 			}
-		return $s;		
+		return $s;
 		}
 
 	public static function getDayOfDate($langDays,$opt) {
-		$optDef = array();	
+		$optDef = array();
 		$opt = array_merge($optDef,$opt);
 		$dt = self::$year.'-'.self::$month.'-'.self::$day;
 		$date = DateTime::createFromFormat('Y-m-d',$dt);
 		$errors = DateTime::getLastErrors();
-		if ($errors['error_count'] > 0 && $errors['warning_count']) { 
-			return 'n.d.';		
+		if ($errors['error_count'] > 0 && $errors['warning_count']) {
+			return 'n.d.';
 			} else {
-				$d = intval($date->format('N'));	
+				$d = intval($date->format('N'));
 				$ds = $langDays[$d];
 				return $ds;
-				}	
+				}
 		}
 
 	}

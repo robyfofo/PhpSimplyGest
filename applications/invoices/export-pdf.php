@@ -174,7 +174,7 @@ switch(Core::$request->method) {
 								
 								$pdf->ezSetY($y);
 																
-								$colspdf = array('titolo'=>strtoupper($_lang['modalità pagamento']),'testo'=>strtoupper($_lang['scadenze'])); 
+								$colspdf = array('titolo'=>mb_strtoupper($_lang['modalità pagamento'],'UTF-8'),'testo'=>strtoupper($_lang['scadenze'])); 
 								$datapdf = array();
 								$datapdf[1]['titolo'] = '<b>'.ucwords($_lang['bonifico bancario']).'</b>';
 								$datapdf[1]['testo'] = '<b>'.DateFormat::convertDateFormats($App->invoice->datesca,'Y-m-d',$_lang['data format'],$App->nowDate).'</b>';

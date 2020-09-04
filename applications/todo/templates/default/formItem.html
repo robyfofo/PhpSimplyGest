@@ -1,12 +1,8 @@
-<!-- todo/formItem.tpl.php v.1.2.0. 21/12/2019 -->
+<!-- todo/formItem.tpl.php v.1.2.0. 19/08/2020 -->
 <div class="row">
-	<div class="col-md-3 new">
- 	</div>
-	<div class="col-md-7 help-small-form">
-		{% if App.params.help_small is defined %}{{ App.params.help_small }}{% endif %}
-	</div>
-	<div class="col-md-2 help">
-	</div>
+	<div class="col-md-3 new"></div>
+	<div class="col-md-7 help-small-form">{% if App.params.help_small is defined %}{{ App.params.help_small }}{% endif %}</div>
+	<div class="col-md-2 help"></div>
 </div>
 <div class="card shadow mt-3 mb-4">
 	<div class="card-body">
@@ -17,7 +13,10 @@
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" href="#options" id="options-tab" aria-controls="options" aria-selected="true" data-toggle="tab">{{ Lang['opzioni']|capitalize }}</a>
-			</li>					
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#permissions" id="permissions-tab" aria-controls="permissions" aria-selected="true" data-toggle="tab">{{ Lang['accesso']|capitalize }}</a>
+			</li>				
   		</ul>
 		<form id="applicationForm" class="form-horizontal" action="{{ URLSITE}}{{ CoreRequest.action }}/{{ App.methodForm }}"  enctype="multipart/form-data" method="post">
 		
@@ -44,7 +43,7 @@
 						<div class="form-group row">						
 							<label for="id_projectID" class="col-md-2 control-label">{{ Lang['progetto']|capitalize }}</label>
 							<div class="col-md-5">
-								<select name="id_project" class="form-control selectpicker" data-style="btn-info" data-live-search="true" title="{{ Lang['seleziona un %ITEM%']|replace({'%ITEM%': Lang['progetto']})|capitalize }}">
+								<select name="id_project" class="selectpicker" data-live-search="true" title="{{ Lang['seleziona un %ITEM%']|replace({'%ITEM%': Lang['progetto']})|capitalize }}">
 									{% if App.progetti is iterable %}
 										{% for value in App.progetti %}
 											<option value="{{ value.id }}"{% if (App.item.id_project is defined) and (App.item.id_project == value.id)  %} selected="selected" {% endif %}>{{ value.title }}</option>														
@@ -56,7 +55,7 @@
 						<div class="form-group row">
 							<label for="statusID" class="col-md-2 control-label">{{ Lang['status']|capitalize }}</label>
 							<div class="col-md-3">
-								<select name="status" class="form-control selectpicker" data-style="btn-info" data-live-search="true" title="{{ Lang['seleziona uno %ITEM%']|replace({'%ITEM%': Lang['status']})|capitalize }}">
+								<select name="status" class="selectpicker" data-live-search="true" title="{{ Lang['seleziona uno %ITEM%']|replace({'%ITEM%': Lang['status']})|capitalize }}">
 									{% if App.params.status is iterable %}
 										{% for key,value in App.params.status %}	
 											<option value="{{ key }}"{% if key == App.item.status %} selected="selected"{% endif %}>{{ (Lang[value] is defined and Lang[value] != '') ? Lang[value]|capitalize : value|capitalize }}</option>														
@@ -76,6 +75,26 @@
 					</fieldset>
 				</div>
 <!-- sezione opzioni -->
+
+<!-- tab permissions -->
+				<div class="tab-pane fade show" id="permissions" role="tabpanel" aria-labelledby="permissions">	
+					<fieldset>	
+						<!-- /* set type */ -->
+						<div class="form-group form-inline">	
+							<label for="access_type_public" class="col-md-3">{{ Lang['pubblico']|capitalize }}</label>
+							<input{% if App.item.access_type == 0 %} checked="checked"{% endif %} value="0" id="access_type_public" name="access_type" type="radio"> 
+						</div>
+						<div class="form-group form-inline">	
+							<label for="access_type_private" class="col-md-3">{{ Lang['privato']|capitalize }}</label>
+							<input{% if App.item.access_type == 1 %} checked="checked"{% endif %} value="1" id="access_type_private" name="access_type" type="radio"> 
+						</div>
+						<div class="form-group form-inline">	
+							<label for="access_type_users" class="col-md-3">{{ Lang['utenti']|capitalize }}</label>
+							<input{% if App.item.access_type == 2 %} checked="checked"{% endif %} value="2" id="access_type_users" name="access_type" type="radio"> 
+						</div>
+					</fieldset>	
+				</div>
+<!-- fine tab permissions -->
 			</div>
 <!--/Tab panes -->			
 			<hr>

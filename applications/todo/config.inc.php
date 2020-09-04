@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public	License
- * todo/config.inc.php v.1.2.0. 21/12/2019
+ * todo/config.inc.php v.1.2.0. 19/08/2020
 */
 
 $App->params = new stdClass();
@@ -15,7 +15,7 @@ Sql::initQuery(DB_TABLE_PREFIX.'modules',array('label','help_small','help'),arra
 $obj = Sql::getRecord();
 if (Core::$resultOp->error == 0 && is_object($obj)) $App->params = $obj;
 
-$App->params->codeVersion = ' 1.0.0.';
+$App->params->codeVersion = ' 1.2.0.';
 $App->params->pageTitle = ucfirst($_lang['da fare']);
 $App->params->breadcrumb = '<li class="active"><i class="fa fa-bookmark-o"></i> '.ucfirst($_lang['da fare']).'</li>';
 
@@ -40,8 +40,9 @@ $App->params->fields['item'] = array(
 	'title'=>array('label'=>ucfirst($_lang['titolo']),'searchTable'=>true,'required'=>true,'type'=>'varchar|100'),
 	'content'=>array('label'=>ucfirst($_lang['contenuto']),'searchTable'=>true,'required'=>false,'type'=>'text'),
 	'status'=>array('label'=>$_lang['status'],'searchTable'=>true,'required'=>false,'type'=>'int','defValue'=>0,'validate'=>'int|1','validate'=>'int'),
-	'access_read'=>array('label'=>$_lang['accesso lettura'],'searchTable'=>true,'required'=>false,'type'=>'text','defValue'=>'none'),
-	'access_write'=>array('label'=>$_lang['accesso scrittura'],'searchTable'=>true,'required'=>false,'type'=>'text','defValue'=>'none'),
+	'access_type'=>array('label'=>$_lang['tipo accesso'],'searchTable'=>false,'required'=>true,'type'=>'int|1','defValue'=>0,'validate'=>'int'),	
+	'access_read'=>array('label'=>$_lang['accesso lettura'],'searchTable'=>false,'required'=>false,'type'=>'text','defValue'=>'none'),
+	'access_write'=>array('label'=>$_lang['accesso scrittura'],'searchTable'=>false,'required'=>false,'type'=>'text','defValue'=>'none'),
 	'created'=>array('label'=>$_lang['creazione'],'searchTable'=>false,'required'=>false,'type'=>'datatime','defValue'=>$App->nowDateTime,'validate'=>'datatimeiso'),
 	'active'=>array('label'=>$_lang['attiva'],'required'=>false,'type'=>'int|1','defValue'=>0,'validate'=>'int')
 	);

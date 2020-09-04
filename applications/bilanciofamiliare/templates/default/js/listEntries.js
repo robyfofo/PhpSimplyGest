@@ -34,13 +34,17 @@ $(document).ready(function() {
       	},
       ajax: {
 		 	type : "GET",
-		 	url : siteUrl+CoreRequestAction+"/listAjaxEntr",
+		 	url : siteUrl+coreRequestAction+"/listAjaxEntr",
 		 	async: "true",
 			cache: "false",
 			dataSrc: function ( json ) {
 				//Make your callback here.		
-				var totali_entrate = json.totali_entrate;	
-				$('#totali_entrate').html(totali_entrate);	
+				
+				$('#totali_entrate').html(json.totali_entrate);	
+				$('#totali_entrate_ultimo_anno').html(json.totali_entrate_ultimo_anno);	
+				$('#totali_entrate_anno_precedente').html(json.totali_entrate_anno_precedente);
+				$('#totali_entrate_anno_corrente').html(json.totali_entrate_anno_corrente);
+				$('#totali_entrate_tabella').html(json.totali_entrate_tabella);
 				return json.data;
 			}
       },

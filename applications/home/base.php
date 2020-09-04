@@ -1,6 +1,19 @@
 <?php
+/*
+echo (in_array(DB_TABLE_PREFIX.'users',$App->tablesOfDatabase) ? 'in array true' : 'in array false');
+echo (file_exists(PATH.$App->pathApplications."users/index.php") ? 'file exist true' : 'file exist false');
+echo (Permissions::checkIfModulesIsReadable('users',$App->userLoggedData) === true ? 'permission true' : 'permission false');
+*/
 /* users */
-if (Permissions::checkAccessUserModule('users',$App->userLoggedData,$App->user_modules_active) == true && in_array(DB_TABLE_PREFIX.'users',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."users/index.php") && Permissions::checkAccessUserModule('users',$App->userLoggedData,$App->user_modules_active,$App->modulesCore) == true) {
+if (
+
+in_array(DB_TABLE_PREFIX.'users',$App->tablesOfDatabase) && 
+file_exists(PATH.$App->pathApplications."users/index.php") && 
+Permissions::checkIfModulesIsReadable('users',$App->userLoggedData) === true
+
+) 
+
+{
 	$App->homeBlocks['users'] = array(
 		'table'=>DB_TABLE_PREFIX.'users',
 		'sqloption'=>array('clause'=>'is_root = 0','usersid'=>0),
@@ -42,5 +55,7 @@ if (Permissions::checkAccessUserModule('users',$App->userLoggedData,$App->user_m
 			)
 		);
 
+	} else {
+		//echo 'non accesso user';
 	}
 ?>

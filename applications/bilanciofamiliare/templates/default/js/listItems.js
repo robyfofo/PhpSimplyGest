@@ -37,7 +37,7 @@ $(document).ready(function() {
       	},
       ajax: {
 		 	type : "GET",
-		 	url : siteUrl+CoreRequestAction+"/listAjaxItem",
+		 	url : siteUrl+coreRequestAction+"/listAjaxItem",
 		 	async: "true",
 			cache: "false",
 			dataSrc: function ( json ) {
@@ -58,7 +58,7 @@ $(document).ready(function() {
 
 function getTotals() {
 	
-	$.getJSON( siteUrl+CoreRequestAction+'/getAjaxTotalItem' , function(dataJson) {
+	$.getJSON( siteUrl+coreRequestAction+'/getAjaxTotalItem' , function(dataJson) {
 	
 		$('#totali_entrate_dodici_mesi').html('&euro; '+dataJson.totali_entrate_dodici_mesi);
 		$('#totali_uscite_dodici_mesi').html('&euro; '+dataJson.totali_uscite_dodici_mesi);

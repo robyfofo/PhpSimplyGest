@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * invoices/config.inc.php v.1.2.0. 01/07/2020
+ * invoices/config.inc.php v.1.2.0. 14/08/2020
 */
 
 $App->params = new stdClass();

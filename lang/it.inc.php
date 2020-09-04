@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * language IT v.1.2.0. 16/07/2020
+ * language IT v.1.3.0. 16/07/2020
 */
 
 $_lang['user'] = 'it';
@@ -147,6 +147,8 @@ $_lang['contenuti HTML'] = "contenuti HTML";
 $_lang['creazione'] = "creazione";
 $_lang['accesso scrittura'] = "accesso scrittura";
 $_lang['accesso lettura'] = "accesso lettura";
+$_lang['scrittura'] = "scrittura";
+$_lang['lettura'] = "lettura";
 $_lang['template'] = "template";
 $_lang['proprietario'] = "proprietario";
 $_lang['dati base'] = "dati base";
