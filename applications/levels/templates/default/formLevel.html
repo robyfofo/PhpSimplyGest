@@ -6,7 +6,7 @@
 </div>
 
 <div class="card shadow mt-3 mb-4">
-	<div class="card-body">	
+	<div class="card-body">
 		<!-- Nav tabs -->
 		<ul class="nav nav-tabs" id="formTab" role="tablist">
 			<li class="nav-item">
@@ -18,12 +18,12 @@
 			<li class="nav-item">
 				<a class="nav-link" href="#options" id="options-tab" data-toggle="tab" role="tab" aria-controls="options" aria-selected="false">{{ Lang['opzioni']|capitalize }}</a>
 			</li>
-		</ul>	
+		</ul>
 		<form id="applicationForm" class="form-horizontal" role="form" action="{{ URLSITE }}{{ CoreRequest.action }}/{{ App.methodForm }}"  enctype="multipart/form-data" method="post">
 			<!-- Tab panes -->
-			<div class="tab-content" id="formTabContent">	
-				
-				<div class="tab-pane fade show active" id="datibase" role="tabpanel" aria-labelledby="datibase-tab">			
+			<div class="tab-content" id="formTabContent">
+
+				<div class="tab-pane fade show active" id="datibase" role="tabpanel" aria-labelledby="datibase-tab">
 					<fieldset>
 						<div class="form-group row">
 							<label for="title_itID" class="col-md-2 control-label">{{ Lang['titolo']|capitalize }}</label>
@@ -33,8 +33,8 @@
 						</div>
 					</fieldset>
 				</div>
-				
-	<!-- sezione moduli --> 
+
+	<!-- sezione moduli -->
 				<div class="tab-pane fade" id="modules" role="tabpanel" aria-labelledby="modules-tab">
 					<div class="form-group row">
 						<label class="col-md-3 control-label">{{ Lang['moduli attivi']|capitalize }}</label>
@@ -42,49 +42,50 @@
 							{{ Lang['accessi']|capitalize }}
 						</div>
 					</div>
-				  
-				 
-					<fieldset class="mt-3">	
-					
+
+
+					<fieldset class="mt-3">
+
 						{% for sectionKey,sectionModules in App.modules %}
-							{% for module in sectionModules %}								
+							{% for module in sectionModules %}
 								<div class="form-group row">
 									<label class="col-md-3 control-label">{{ module.label }}</label>
-									
-									
-									
-									<div class="col-md-4">	
-									
-									
-																	
+
+
+
+									<div class="col-md-4">
+
+
+
 	<div class="form-check-inline">
   		<label class="form-check-label{% if App.level_modules[module.name].read_access == 1 %} text-success{% endif %}">
   			{{ Lang['lettura']|capitalize }}
     		<input type="checkbox" class="form-check-input" name="modules_read[{{ module.id }}]" id="" value="1" {% if App.level_modules[module.name].read_access is defined and App.level_modules[module.name].read_access == 1 %} checked="checked"{% endif %}>
   		</label>
 	</div>
+
 	<div class="form-check-inline">
-  		<label class="form-check-label{% if App.level_modules[module.name].read_write == 1 %} text-success{% endif %}">
+  		<label class="form-check-label{% if App.level_modules[module.name].write_access == 1 %} text-success{% endif %}">
     		{{ Lang['scrittura']|capitalize }}
     		<input type="checkbox" class="form-check-input" name="modules_write[{{ module.id }}]" id="" value="1" {% if App.level_modules[module.name].write_access is defined and App.level_modules[module.name].write_access == 1 %} checked="checked"{% endif %}>
   		</label>
 	</div>
-						
+
 						    		</div>
-						    		
+
 									<div class="col-md-5">
 										{{ module.content }}
 						    		</div>
-								</div>				
-						
+								</div>
+
 							{% endfor %}
 						{% endfor %}
-									
+
 					</fieldset>
 				</div>
-	<!-- sezione moduli -->	  
-	<!-- sezione opzioni --> 
-				<div class="tab-pane fade show" id="options" role="tabpanel" aria-labelledby="options">			
+	<!-- sezione moduli -->
+	<!-- sezione opzioni -->
+				<div class="tab-pane fade show" id="options" role="tabpanel" aria-labelledby="options">
 					<fieldset>
 						<div class="form-group row">
 							<label for="activeID" class="col-md-2 control-label">{{ Lang['attiva']|capitalize }}</label>
@@ -94,10 +95,10 @@
 				  		</div>
 					</fieldset>
 				</div>
-	<!-- sezione opzioni -->	
-			 
+	<!-- sezione opzioni -->
+
 			</div>
-			<!--/Tab panes -->			
+			<!--/Tab panes -->
 			<hr>
 			<div class="form-group row">
 				<div class="col-md-6 col-xs-12 text-center">
@@ -109,7 +110,7 @@
 						<button type="submit" name="applyForm" value="apply" class="btn btn-primary submittheform">{{ Lang['applica']|capitalize }}</button>
 					{% endif %}
 				</div>
-				<div class="col-md-6 col-xs-12 text-right">			
+				<div class="col-md-6 col-xs-12 text-right">
 					<a href="{{ URLSITE }}{{ CoreRequest.action }}/listItem" title="{{ Lang['torna alla lista']|capitalize }}" class="btn btn-success">{{ Lang['indietro']|capitalize }}</a>
 				</div>
 			</div>

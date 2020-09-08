@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * users/index.php v.1.2.0. 17/12/2019
+ * users/index.php v.1.3.0. 07/09/2020
 */
 
 //Core::setDebugMode(1);
@@ -23,13 +23,14 @@ $App->id = intval(Core::$request->param);
 if (isset($_POST['id'])) $App->id = intval($_POST['id']);
 
 $App->formTabActive = 1;
-	
-switch(substr(Core::$request->method,-4,4)) {		
+if (isset($_SESSION[$App->sessionName]['formTabActive'])) $_SESSION[$App->sessionName]['formTabActive'] = $App->formTabActive;
+
+switch(substr(Core::$request->method,-4,4)) {
 	default:
 		if (!isset($_MY_SESSION_VARS['page'])) $_MY_SESSION_VARS = $my_session->addSessionsModuleVars($_MY_SESSION_VARS,$App->sessionName,array('page'=>1,'ifp'=>'10'));
 		$Module = new Module(Core::$request->action,$App->params->tables['item']);
-		include_once(PATH.$App->pathApplications.Core::$request->action."/items.php");	
+		include_once(PATH.$App->pathApplications.Core::$request->action."/users.php");
 		$App->defaultJavascript = "messages['Le due password non corrispondono!'] = '".addslashes($_lang['Le due password non corrispondono!'])."';";
 	break;
-	}
+}
 ?>

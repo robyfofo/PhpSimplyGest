@@ -1,11 +1,11 @@
 /* Custom Styles */
 
 .module-titles {
-	
+
 }
 
 .divider-top-module-list {
-	
+
 }
 .nav > li > a {
 	position: relative;
@@ -83,7 +83,7 @@
 table.listData .img-fluid {
 	width:80px;height:80px;
 }
- 
+
 table.listData .segnapagata {
 	padding: 0.1rem 0.3rem;
 }
@@ -115,3 +115,27 @@ table.listData td.actions .btn {
 .calendar-icon {
 	padding:5px;
 }
+
+
+.row-submitapply {
+	text-align: center !important;
+}
+
+.btn-apply {
+	margin-left:70px;
+}
+
+.row-back {
+	text-align: right;
+}
+
+@media (max-width:768px) {
+	 .row-back {
+	   text-align: center;
+	   padding-top: 10px;
+	 }
+
+	 .btn-apply {
+	 	margin-left: 10px;
+	 }
+ }

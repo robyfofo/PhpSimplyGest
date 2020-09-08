@@ -5,17 +5,17 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * users/config.inc.php v.1.2.0. 17/12/2019
+ * users/config.inc.php v.1.3.0. 04/09/2020
 */
 
 $App->params = new stdClass();
 $App->params->label = 'Utenti';
-/* prende i dati del modulo */
-Sql::initQuery(DB_TABLE_PREFIX.'modules',array('label','help_small','help'),array('users'),'name = ?');
+// prende i dati del modulo
+Sql::initQuery(DB_TABLE_PREFIX.'modules',array('name','label','help_small','help'),array('users'),'name = ?');
 $obj = Sql::getRecord();
 if (Core::$resultOp->error == 0 && is_object($obj)) $App->params = $obj;
 
-$App->params->codeVersion = ' 1.2.0.';
+$App->params->codeVersion = ' 1.3.0.';
 $App->params->pageTitle = $App->params->label;
 $App->params->breadcrumb = '<li class="active"><i class="icon-user"></i> '.$App->params->label.'</li>';
 
@@ -25,7 +25,10 @@ $App->params->uploadDirs = array();
 $App->params->uploadPaths = array();
 $App->params->ordersType = array();
 
-/* ITEMS */
+$App->params->moduleAccessRead = (Permissions::checkIfModulesIsReadable($App->params->name,$App->userLoggedData) === true ? 1 : 0);
+$App->params->moduleAccessWrite = (Permissions::checkIfModulesIsWritable($App->params->name,$App->userLoggedData) === true ? 1 : 0);
+
+// ITEMS
 $App->params->tables['item']  = DB_TABLE_PREFIX.'users';
 $App->params->fields['item']  = array(
 	'id'=>array('label'=>'ID','required'=>false,'type'=>'int|8','autoinc'=>true,'nodb'=>true,'primary'=>true),
@@ -51,5 +54,5 @@ $App->params->fields['item']  = array(
 	'hash'=>array('label'=>$_lang['hash'],'searchTable'=>false,'type'=>'varchar|255'),
 	'created'=>array('label'=>$_lang['creazione'],'searchTable'=>false,'required'=>false,'type'=>'datatime'),
 	'active'=>array('label'=>$_lang['attiva'],'required'=>false,'type'=>'int|1','defValue'=>1,'validate'=>'int')
-	);	
+);
 ?>

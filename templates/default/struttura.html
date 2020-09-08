@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ Lang['user'] }}">
 	<head>
-	
+
 		<title>{{ App.metaTitlePage|e('html_attr') }}</title>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,20 +14,19 @@
   		<!-- Custom fonts for this template-->
   		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
   		<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-  		
+
 		<!-- Other Plugin CSS -->
 		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/lightbox/css/lightbox.min.css" rel="stylesheet">
 
   		<!-- Custom styles for this template-->
   		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/css/sb-admin-2.min.css" rel="stylesheet">
-  		
+
   		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 		<link href="{{ URLSITE }}templates/{{ App.templateUser }}/css/custom.css" rel="stylesheet">
 
-    
 		<!-- CSS for Page -->
-		{% if App.css is iterable %}							
+		{% if App.css is iterable %}
 			{% for key,value in App.css %}
 				{{ value|raw }}
 			{% endfor %}
@@ -36,24 +35,24 @@
 		<!-- default vars useful for javascript -->
 		<script language="javascript">
 			var siteUrl = '{{ URLSITE }}';
-			var sitePath = '{{ PATHSITE }}';			
+			var sitePath = '{{ PATHSITE }}';
 			var siteTemplateUrl = '{{ URLSITE }}templates/{{ App.templateUser }}/';
-			var siteTemplatePath = '{{ PATHSITE }}templates/{{ App.templateUser }}/';			
-			var siteDocumentPath = '{{ PATHDOCUMENT }}';	
+			var siteTemplatePath = '{{ PATHSITE }}templates/{{ App.templateUser }}/';
+			var siteDocumentPath = '{{ PATHDOCUMENT }}';
 			var coreRequestAction = '{{ CoreRequest.action }}';
-			var currentModulePath = '{{ PATHSITE }}{{ App.pathApplications }}{{ CoreRequest.action }}/';				
+			var currentModulePath = '{{ PATHSITE }}{{ App.pathApplications }}{{ CoreRequest.action }}/';
 			var user_lang = "{{ Lang['user'] }}";
 			var messages = new Array();
-			messages['Sei sicuro?'] = '{{ Lang['Sei sicuro?']|e('js') }}';	
+			messages['Sei sicuro?'] = '{{ Lang['Sei sicuro?']|e('js') }}';
 			{% if (App.defaultJavascript is defined) and (App.defaultJavascript != '') %}
-				{{ App.defaultJavascript|raw }}  	
+				{{ App.defaultJavascript|raw }}
 			{% endif %}
 		</script>
 
-		{% if App.includeJscriptPHPTop is defined and App.includeJscriptPHPTop != '' %}			
+		{% if App.includeJscriptPHPTop is defined and App.includeJscriptPHPTop != '' %}
 			{{ include(App.includeJscriptPHPTop|raw) }}
 		{% endif %}
-		
+
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-88049854-1"></script>
 	<script>
@@ -64,7 +63,7 @@
 	</script>
 
 	</head>
-	
+
 	<body id="page-top">
 
 		<!-- Page Wrapper -->
@@ -81,10 +80,10 @@
 				</a>
       			<!-- Divider -->
       			<hr class="sidebar-divider">
-      			
+
   				{% if App.rightCodeMenu is defined and App.rightCodeMenu != '' %}
 					{{ App.rightCodeMenu|raw }}
-				{% endif %}  
+				{% endif %}
 
       			<!-- Divider -->
       			<hr class="sidebar-divider d-none d-md-block">
@@ -108,25 +107,25 @@
 						<!-- Sidebar Toggle (Topbar) -->
 						<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
 							<i class="fa fa-bars"></i>
-						</button>						
+						</button>
 						<div class="module-titles">
 							{{ App.pageTitle }} <sup><small>V. {{ App.codeVersion }}</small></sup> - {{ App.pageSubTitle|capitalize }}
 						</div>
-						
+
 						<div class="topbar-divider d-none d-sm-block"></div>
-						
+
 						<!-- Topbar Navbar -->
 						<ul class="navbar-nav ml-auto">
-							
+
 							<div class="topbar-divider d-none d-sm-block"></div>
-						
+
 							<!-- Nav Item - User Information -->
 							<li class="nav-item dropdown no-arrow">
 								<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									<span class="mr-2 d-none d-lg-inline text-gray-600 small">
 										{% if App.userLoggedData.name is defined %}{{ App.userLoggedData.name }}{% endif %} {% if App.userLoggedData.surname is defined %}{{ App.userLoggedData.surname }}{% endif %}
-										
-										{% if App.userLoggedData.labelRole is defined %}<br>({{ App.userLoggedData.labelRole }}){% endif %}	
+
+										{% if App.userLoggedData.labelRole is defined %}<br>({{ App.userLoggedData.labelRole }}){% endif %}
 									</span>
 									<img alt="{{ App.userLoggedData.username }}" class="img-profile rounded-circle" src="{{ URLSITE }}ajax/renderuseravatarfromdb.php?id={{ App.userLoggedData.id }}">
 						  		</a>
@@ -152,7 +151,7 @@
 			        <div class="container-fluid">
 			          	{% if (App.systemMessages is defined) and (App.systemMessages != '') %}
 							{{ App.systemMessages|raw }}
-						{% endif %}	
+						{% endif %}
 						{{ include(App.templateApp) }}
         			</div>
         			<!-- /.container-fluid -->
@@ -199,7 +198,7 @@
 				</div>
 			</div>
 	  	</div>
-	  	
+
 	  {% if (App.params.help is defined) and (App.params.help != '') %}
 		<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
@@ -224,39 +223,39 @@
 		<!-- Bootstrap core JavaScript-->
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/jquery/jquery.min.js"></script>
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-	
+
 		<!-- Core plugin JavaScript-->
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/jquery-easing/jquery.easing.min.js"></script>
 
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/bootbox/js/bootbox.min.js"></script>
-		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/lightbox/js/lightbox.min.js"></script>	
-		
+		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/lightbox/js/lightbox.min.js"></script>
+
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/tinymce/tinymce.min.js"></script>
-		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/tinymce/config/tinymce.config.js"></script>	
-				
+		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/plugins/tinymce/config/tinymce.config.js"></script>
+
   		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/datatables/jquery.dataTables.min.js"></script>
   		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-  
+
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/js/default.js"></script>
 
-		
-		{% if App.jscript is iterable %}							
+
+		{% if App.jscript is iterable %}
 			{% for key,value in App.jscript %}
 				{{ value|raw }}
 			{% endfor %}
 		{% endif %}
-		
+
 		<!-- Custom scripts for all pages-->
 		<script src="{{ URLSITE }}templates/{{ App.templateUser }}/js/sb-admin-2.min.js"></script>
 
-		{% if App.jscriptLast is iterable %}							
+		{% if App.jscriptLast is iterable %}
 			{% for key,value in App.jscriptLast %}
 				{{ value|raw }}
 			{% endfor %}
 		{% endif %}
-		
-					
-		{% if App.includeJscriptPHPBottom is defined and App.includeJscriptPHPBottom != '' %}			
+
+
+		{% if App.includeJscriptPHPBottom is defined and App.includeJscriptPHPBottom != '' %}
 			{{ include(App.includeJscriptPHPBottom|raw) }}
 		{% endif %}
 

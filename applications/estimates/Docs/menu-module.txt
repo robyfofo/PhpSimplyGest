@@ -1,3 +1,0 @@
-<li class="%LICLASS%">
-	<a href="%URLSITE%%NAME%/listItem"><i class="fa fa-bullseye fa-fw"></i> %LABEL%</a>
-</li>
