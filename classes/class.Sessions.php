@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * classes/class.Sessions.php v.1.0.0. 02/07/2018
+ * classes/class.Sessions.php v.1.3.0. 14/09/2020
 */
 
 class my_session {

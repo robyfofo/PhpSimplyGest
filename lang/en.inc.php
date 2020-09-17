@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * language EN v.1.2.0. 16/07/2020
+ * language EN v.1.3.0. 14/09/2020
 */
 
 $_lang['user'] = 'en';
@@ -215,6 +215,12 @@ $_lang['contatto'] = "contact";
 $_lang['contatti'] = "contacts";
 $_lang['categoria'] = 'category';
 $_lang['categorie'] = 'categories';
+
+$_lang['prodotto'] = "prodotto";
+$_lang['prodotti'] = "prodotti";
+$_lang['tag'] = "tag";
+$_lang['tags'] = "tags";
+
 $_lang['home'] = 'home';
 $_lang['impostazioni'] = 'impostazioni';
 $_lang['nota'] = 'nota';
@@ -222,6 +228,17 @@ $_lang['note'] = 'note';
 $_lang['percentuale'] = 'percentuale';
 $_lang['percentuali'] = 'percentuali';
 $_lang['tabella'] = 'tabella';
+
+$_lang['nome file'] = 'nome file';
+$_lang['nome file originale'] = 'nome file originale';
+$_lang['attivazione'] = "activation";
+
+$_lang['valore'] = "value";
+$_lang['valore stringa'] = "value string";
+$_lang['valore intero'] = "value int";
+$_lang['valore float'] = "value float";
+$_lang['valore tipo'] = "value type";
+$_lang['valori'] = "values";
 
 // actions
 $_lang['attivato'] = "activated";
@@ -307,7 +324,7 @@ $_lang['indirizzo <strong>%EMAIL%</strong> è libero'] = "the address <strong>%E
 
 $_lang['Password modificata correttamente! Sarà effettiva al prossimo login.'] = "Password modificata correttamente! Sarà effettiva al prossimo login.";
 
-/* errors */ 
+/* errors */
 $_lang['Il file indicato è troppo grande! Il file deve avere la dimensione massima di %MAZSIZE% KByte! Se esisteva è stato mantenuto il file precedente.'] = "The indicated file is too big! The file must have the maximum size of %MAZSIZE% KByte! If it existed, the previous file was retained.";
 $_lang['Le due password non corrispondono! Sarà comunque mantenuta quella precedentemente memorizzata.'] = "The two passwords do not match! The previously memorized one will be retained";
 $_lang['Le due password non corrispondono!'] = "The two passwords do not match!";
@@ -321,7 +338,7 @@ $_lang['Devi inserire un %ITEM%!'] = "Devi inserire un %ITEM%!";
 $_lang['Devi selezionare una %ITEM%!'] = "Devi selezionare una %ITEM%!";
 $_lang['Devi selezionare un %ITEM%!'] = "Devi selezionare un %ITEM%!";
 
-$_lang['Devi inserire il campo %FIELD%!'] = " Devi inserire il campo %FIELD%!"; 
+$_lang['Devi inserire il campo %FIELD%!'] = " Devi inserire il campo %FIELD%!";
 
 $_lang['Inserisci una %ITEM%!'] = "Inserisci una %ITEM%!";
 $_lang['Inserisci un %ITEM%!'] = "Inserisci un %ITEM%!";
@@ -346,11 +363,24 @@ $_lang['Intervallo ti tempo di sovrappone ad un altro inserito nella stessa data
 $_lang['Intervallo tra le due date errato!'] = "Intervallo tra le due date errato!";
 $_lang['La data inserita non è valida!'] = "La data inserita non è valida!";
 
+$_lang['Errore nel modulo %MODULE%!'] = "Errore in module %MODULE%!";
 $_lang['Errore!'] = "Errore!";
 $_lang['Internal Server Error!'] = "Errore Interno Server";
 $_lang['Access Error!'] = "Access Denied!";
+$_lang['testo errore generico'] = "The server encountered something unexpected that did not allow it to complete the request. We apologize";
+$_lang['testo errore accesso'] = "You don't have permission to access the requested resource.";
+$_lang['Error 404!'] = "Error 404!";
+$_lang['Database Error!'] = "Error database!";
+$_lang['Mail Error!'] = "Errore send email!";
+$_lang['Module Error!'] = "Errore module!";
+$_lang['Permissions Error!'] = "Error permissions!";
+
 $_lang['testo errore generico'] = "The server encountered something unexpected that didn't allow it to complete the request. We apologize.";
 $_lang['testo errore accesso'] = "You do not have permission to access the requested resource.";
+$_lang['testo errore 404'] = "Sorry but the page you are looking for does not exist!";
+$_lang['testo errore database'] = "There are errors in accessing the database or data management queries!";
+$_lang['testo errore mail'] = "It was not possible to send emails due to a server problem!";
+$_lang['testo errore permessi'] = "You don't have right permission to do the request action!";
 
 $_lang['nousername core - title'] = "Request user name.";
 $_lang['nousername core - subtitle'] = "Request user name. Request your forgotten user name";
@@ -369,7 +399,7 @@ $_lang['nopassword core - testo'] = "After filling the fields correctly the syst
 $_lang['nopassword core - errore controllo nome utente'] = "The user name you entered does not exist! We invite you to repeat the procedure or contact your system administrator.";
 $_lang['nopassword core - errore invio email'] = "Error in sending email! Please repeat the procedure or contact your system administrator.";
 $_lang['nopassword core - conferma invio email'] = "The new password was sent to you by an email to the associated address and stored in the system!";
-$_lang['nopassword core - errore database'] = "Database error! The new password was NOT stored in the system! We invite you to repeat the procedure or contact your system administrator.";			
+$_lang['nopassword core - errore database'] = "Database error! The new password was NOT stored in the system! We invite you to repeat the procedure or contact your system administrator.";
 $_lang['nopassword core - soggetto email'] = "Sending forgotten password from %SITENAME%";
 $_lang['nopassword core - contenuto email'] = "<p>As request we send you the new password associated with the <b>%USERNAME%</b> member of the site <b>%SITENAME%</b></p><p>Password: <b>%PASSWORD%</b></p>";
 ?>

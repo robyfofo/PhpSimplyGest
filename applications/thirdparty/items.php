@@ -17,6 +17,16 @@ Sql::initQuery($App->params->tables['type'],array('*'),array(),'active = 1','');
 Sql::setOptions(array('fieldTokeyObj'=>'id'));
 $App->types = Sql::getRecords();
 
+$App->categories = new stdClass();
+Subcategories::setDbTable($App->params->tables['cate']);
+Subcategories::setDbTablItem($App->params->tables['item']);
+Subcategories::$fieldKey =	'id';
+$App->categories = Subcategories::getObjFromSubCategories();
+
+if (!is_array($App->categories) || (is_array($App->categories) && count($App->categories) == 0)) {
+	$_SESSION['message'] = '2|'.ucfirst(preg_replace('/%ITEM%/',$_lang['categoria'],$_lang['Devi creare o attivare almeno una %ITEM%'].'!'));
+	ToolsStrings::redirect(URL_SITE.Core::$request->action.'/listCate');
+}
 
 switch(Core::$request->method) {
 	case 'getItemAjaxItem';
@@ -210,15 +220,6 @@ switch(Core::$request->method) {
 switch((string)$App->viewMethod) {
 	case 'formNew':
 		$App->item = new stdClass;
-		
-		// select per categories
-		$App->categories = new stdClass();		
-		$opt = array(
-		'tableCat'			=>	$App->params->tables['cate'],
-		'tableItems'		=> $App->params->tables['item'],
-		'lang'				=> $_lang['user']
-		);
-		$App->categories = Subcategories::getObjFromSubCategories($opt);
 					
 		$App->item->active = 1;
 		$App->item->stampa_quantita = 1;
@@ -234,15 +235,7 @@ switch((string)$App->viewMethod) {
 		if ($App->id) {
 			$App->item = new stdClass;
 		
-			// select per categories */
-			$App->categories = new stdClass();		
-			$opt = array(
-			'tableCat'			=>	$App->params->tables['cate'],
-			'tableItems'		=> $App->params->tables['item'],
-			'lang'				=> $_lang['user']
-			);
-			$App->categories = Subcategories::getObjFromSubCategories($opt);
-
+		
 			Sql::initQuery($App->params->tables['item'],array('*'),array($App->id),'id = ?');
 			$App->item = Sql::getRecord();
 			if (isset($App->item->id) && $App->item->id > 0) {

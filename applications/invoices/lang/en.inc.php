@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * Invoices language EN v.1.0.0. 12/03/2019
+ * Invoices language EN v.1.3.0. 08/09/2020
 */
 
 $_lang['voce']  = "invoice sale";
@@ -23,15 +23,14 @@ $_lang['cliente']  = "customer";
 $_lang['tassa aggiuntiva'] = "added tax";
 $_lang['inserisci una tassa aggiuntiva'] = "insert an added tax";
 $_lang['articolì associati']  = "articles associated";
+$_lang['aggiungi articolo']  = "add article";
 $_lang['inserisci testo articolo']  = "insert article text";
 $_lang['totale articolì'] = "total articles";
 $_lang['Fattura non trovata!'] = "Invoice not found!";
 $_lang['Errore lettura dati fattura!'] = "Error read invoice data!";
 $_lang['Errore lettura dati cliente!'] = "Error read customer data!";
-
 $_lang['segna come pagata'] = "segna come pagata";
 $_lang['fattura segnata come pagata'] = "fattura segnata come pagata!";
-
 $_lang['il numero fattura è valido!'] = "the invoice number is valid!";
 $_lang['il numero fattura esiste già!'] = "the invoice number already exist!";
 ?>

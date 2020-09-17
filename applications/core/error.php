@@ -51,6 +51,13 @@ switch(Core::$request->method) {
 		$App->error_contentAlt = (Core::$request->params[0] != '' ? Core::$request->params[0] : '');
 	break;
 
+	case 'nopm':
+		$App->error_title = $_lang['Errore!'];
+		$App->error_subtitle = $_lang['Permissions Error!'];
+		$App->error_content = $_lang['testo errore permessi'];
+		$App->error_contentAlt = (Core::$request->param != '' ? Core::$request->param : '');
+	break;
+
 	default:
 		$App->error_title = $_lang['Errore!'];
 		$App->error_subtitle = $_lang['Internal Server Error!'];

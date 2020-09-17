@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * classes/class.DateFormat.php v.1.3.0. 02/09/2020
+ * classes/class.DateFormat.php v.1.3.0. 08/09/2020
 */
 
 class DateFormat extends Core  {
@@ -20,7 +20,7 @@ class DateFormat extends Core  {
 
 	public function __construct() {
 		parent::__construct();
-		}
+	}
 
 	public static function checkDateTimeIsoIniEndInterval($datetimeisoini,$datetimeisoend,$compare='>') {
 		$res = true;
@@ -34,13 +34,12 @@ class DateFormat extends Core  {
   					if ($dateini->getTimestamp() > $dateend->getTimestamp()) {
   						Core::$resultOp->error = 1;
   						$res = false;
-  						}
+  					}
   				break;
-  				}
-
-			}
-		return $res;
+  			}
 		}
+		return $res;
+	}
 
 	public static function checkDateFormatIniEndInterval($dateini,$dateend,$format,$compare='>') {
 		$res = true;

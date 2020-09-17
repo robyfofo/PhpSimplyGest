@@ -5,17 +5,17 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * third-party/config.inc.php v.1.2.0. 12/08/2020
+ * third-party/config.inc.php v.1.3.0. 14/09/2020
 */
 
 $App->params = new stdClass();
 $App->params->label = ucfirst($_lang['soggetti terzi']); 
 /* prende i dati del modulo */
-Sql::initQuery(DB_TABLE_PREFIX.'modules',array('label','help_small','help'),array('third-party'),'name = ?');
+Sql::initQuery(DB_TABLE_PREFIX.'modules',array('name','label','help_small','help'),array('thirdparty'),'name = ?');
 $obj = Sql::getRecord();
 if (Core::$resultOp->error == 0 && is_object($obj)) $App->params = $obj;
 
-$App->params->codeVersion = ' 1.2.0.';
+$App->params->codeVersion = ' 1.3.0.';
 $App->params->pageTitle = $App->params->label;
 $App->params->breadcrumb = '<li class="active"><i class="icon-user"></i> '.$App->params->label.'</li>';
 
@@ -23,7 +23,11 @@ $App->params->tables = array();
 $App->params->fields = array();
 $App->params->uploadDirs = array();
 $App->params->uploadPaths = array();
-$App->params->ordersTypes = array();
+$App->params->orderTypes = array();
+
+$App->params->moduleAccessRead = (Permissions::checkIfModulesIsReadable($App->params->name,$App->userLoggedData) === true ? 1 : 0);
+$App->params->moduleAccessWrite = (Permissions::checkIfModulesIsWritable($App->params->name,$App->userLoggedData) === true ? 1 : 0);
+
 
 /* ITEMS */
 $App->params->tables['item']  = DB_TABLE_PREFIX.'thirdparty';

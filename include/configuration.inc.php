@@ -60,8 +60,8 @@ $globalSettings['default language'] = 'it';
 $globalSettings['languages'] = array('it','en');
 
 /* UPLOAD */
-$globalSettings['image type available'] = array('JPG','PNG','GIF');
-$globalSettings['file type available'] = array('DOC','PDF','SQL');
+$globalSettings['image type available'] = array('jpg','png','gif');
+$globalSettings['file type available'] = array('doc','pdf','xls');
 
 /* APP */
 $globalSettings['site owner'] = 'Roberto Mantovani';

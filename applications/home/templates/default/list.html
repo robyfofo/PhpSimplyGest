@@ -1,4 +1,4 @@
-<!-- 	app/home/list.html v.1.2.0. 05/12/2019 -->
+<!-- 	app/home/list.html v.1.3.0. 16/09/2020 -->
 
 <div class="row">
 	<div class="col-lg-4 new">
@@ -21,13 +21,17 @@
 						<div class="card-body">
 							<div class="row no-gutters align-items-center">
 								<div class="col mr-2">
-									<div class="text-xs font-weight-bold text-{{ value['class'] }} text-uppercase mb-1">{{ value['sex suffix'] }} {{ value['label'] }}</div>
-	                      	<div class="h5 mb-0 font-weight-bold text-gray-800">{{ value['items'] }}</div>
+									<div class="text-xs font-weight-bold text-{{ value['class'] }} text-uppercase mb-1">
+										{{ value['sex suffix'] }} {{ value['label'] }}
+									</div>
+	                      			<div class="h5 mb-0 font-weight-bold text-gray-800">
+										  {{ value['items'] }}
+									</div>
 								</div>
 								<div class="col-auto">
-	                      <i class="{{ value['icon panel'] }} fa-2x text-gray-300"></i>
-	                    	</div>
-	                	</div>
+									  <i class="{{ value['icon panel'] }} fa-2x text-gray-300"></i>
+	                    		</div>
+	                		</div>
 						</div>
 					</div>
 				</div>
@@ -61,10 +65,6 @@
 </div>
 
 {% endif %}
-
-
-
-
 
 {% if App.ricaviannoprecedentechartsdata is defined  or App.ricaviannocorrentechartsdata is defined %} 
 	<div class="row">
@@ -134,7 +134,7 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div class="table-responsive">
-										<table class="table table-bordered table-hover table-striped listDataHome">
+										<table class="table table-bordered table-hover table-striped table-sm listDataHome" style="font-size:small">
 											<thead>
 												<tr>
 													<th><small>Data<small></th>
