@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * app/modules/config.inc.php v.1.2.0. 21/11/2018
+ * app/modules/config.inc.php v.1.3.0. 18/09/2020
 */
 
 $App->params = new stdClass();
@@ -21,7 +21,7 @@ $App->params->uploadPaths = array();
 $App->params->uploadDirs = array();
 $App->params->ordersType = array();
 
-$App->params->codeVersion = ' 1.2.0.';
+$App->params->codeVersion = ' 1.3.0.';
 $App->params->pageTitle = $App->params->label;
 $App->params->breadcrumb = '<li class="active"><i class="icon-user"></i> '.$App->params->label.'</li>';
 

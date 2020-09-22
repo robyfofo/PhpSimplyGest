@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * modules/index.php v.1.2.0. 05/12/2019
+ * modules/index.php v.1.3.0. 18/09/2020
 */
 
 //Core::setDebugMode(1);
@@ -25,7 +25,7 @@ if (isset($_POST['id'])) $App->id = intval($_POST['id']);
 switch(substr(Core::$request->method,-4,4)) {	
 	default:
 		$Module = new Module(Core::$request->action,$App->params->tables['item']);
-		include_once(PATH.$App->pathApplications.Core::$request->action."/items.php");
+		include_once(PATH.$App->pathApplications.Core::$request->action."/modules.php");
 	break;							
 }	
 ?>

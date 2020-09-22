@@ -39,7 +39,7 @@ switch(Core::$request->method) {
 	break;
 
 	case 'newItem':
-		if ($App->params->moduleAccessWrite == 0) { ToolsStrings::redirect(URL_SITE_ADMIN.'error/nopm'); }
+		if ($App->params->moduleAccessWrite == 0) { ToolsStrings::redirect(URL_SITE.'error/nopm'); }
 		$App->item = new stdClass;
 		$App->item->created = $App->nowDateTime;
 		$App->item->active = 1;

@@ -15,7 +15,7 @@ switch(Core::$request->method) {
 		if ($idproject > 0) {
 			$output = '';
 			
-			if (Permissions::checkAccessUserModule('timecard',$App->userLoggedData,$App->user_modules_active) == true && in_array(DB_TABLE_PREFIX.'timecard',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."timecard/index.php")) {
+			if (in_array(DB_TABLE_PREFIX.'thirdparty',$App->tablesOfDatabase) && file_exists(PATH.$App->pathApplications."thirdparty/index.php") && Permissions::checkIfModulesIsReadable('thirdparty',$App->userLoggedData) === true) {
 				
 				//  preleva tutte le timecard del progetto
 				$table = $App->params->tables['time'];
@@ -84,8 +84,8 @@ switch(Core::$request->method) {
 			if (is_array($objalltime) && count($objalltime) > 0) {
 				foreach ($objalltime AS $valuealltime) {
 					$totalltime[] = $valuealltime->worktime;			
-					}
 				}
+			}
 				
 			/*  preleva tutte le timecard del mese corrente*/	
 			$datarifini = $monthyear.'-01';
@@ -98,8 +98,8 @@ switch(Core::$request->method) {
 			if (is_array($objmonthtime) && count($objmonthtime) > 0) {
 				foreach ($objmonthtime AS $valuemonthtime) {
 					$totmonthtime[] = $valuemonthtime->worktime;			
-					}
-				}				
+				}
+			}				
 
 			/*  preleva tutte le timecard del mese precedente */				
 			$datarifini = $premonthyear.'-01';
@@ -112,8 +112,8 @@ switch(Core::$request->method) {
 			if (is_array($objpremonthtime) && count($objpremonthtime) > 0) {
 				foreach ($objpremonthtime AS $valuepremonthtime) {
 					$totpremonthtime[] = $valuepremonthtime->worktime;			
-					}
-				}				
+				}
+			}				
 						
 			$valuetotalltime = DateFormat::sum_the_time($totalltime);
 			$valuetotmonthtime = DateFormat::sum_the_time($totmonthtime);

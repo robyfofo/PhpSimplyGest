@@ -5,18 +5,18 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * company/config.inc.php v.1.0.0. 02/11/2017
+ * app/company/config.inc.php v.1.3.0. 17/09/2020
 */
 
 $App->params = new stdClass();
 $App->params->label = 'Azienda';
 
 /* prende i dati del modulo */
-Sql::initQuery(DB_TABLE_PREFIX.'modules',array('label','help_small','help'),array('company'),'name = ?');
+Sql::initQuery(DB_TABLE_PREFIX.'modules',array('section','name','label','help_small','help'),array('company'),'name = ?');
 $obj = Sql::getRecord();
 if (Core::$resultOp->error == 0 && isset($obj) && isset($obj->label)) $App->params = $obj;
 
-$App->params->codeVersion = ' 1.2.0.';
+$App->params->codeVersion = ' 1.3.0.';
 $App->params->pageTitle = $App->params->label;
 $App->params->breadcrumb = '<li class="active"><i class="icon-user"></i> '.$App->params->label.'</li>';
 
@@ -57,5 +57,5 @@ $App->params->fields['item']  = array(
 	'intestatario'=>array('label'=>$_lang['intestatario'],'searchTable'=>true,'required'=>true,'type'=>'varchar'),
 	'iban'=>array('label'=>$_lang['iban'],'searchTable'=>true,'required'=>true,'type'=>'varchar'),
 	'bic_swift'=>array('label'=>$_lang['bic swift'],'searchTable'=>false,'required'=>true,'type'=>'varchar')
-	);
+);
 ?>

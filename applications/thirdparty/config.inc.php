@@ -11,7 +11,7 @@
 $App->params = new stdClass();
 $App->params->label = ucfirst($_lang['soggetti terzi']); 
 /* prende i dati del modulo */
-Sql::initQuery(DB_TABLE_PREFIX.'modules',array('name','label','help_small','help'),array('thirdparty'),'name = ?');
+Sql::initQuery(DB_TABLE_PREFIX.'modules',array('section','name','label','help_small','help'),array('thirdparty'),'name = ?');
 $obj = Sql::getRecord();
 if (Core::$resultOp->error == 0 && is_object($obj)) $App->params = $obj;
 

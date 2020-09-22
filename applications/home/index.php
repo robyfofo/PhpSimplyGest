@@ -24,8 +24,6 @@ $obj = Sql::getRecord();
 if (Core::$resultOp->error == 0 && isset($obj) && count((array)$obj) > 1) $App->params = $obj;
 if (!isset($App->params->label) || (isset($App->params->label) && $App->params->label == '')) die('Error reading module settings!');
 
-$App->tablesOfDatabase = Sql::getTablesDatabase($globalSettings['database'][DATABASE]['name']);
-
 /* variabili ambiente */
 $App->codeVersion = ' 1.3.0.';
 $App->pageTitle = $App->params->label;

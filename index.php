@@ -5,10 +5,10 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * app/index.php v.1.3.0. 07/09/2020
+ * app/index.php v.1.3.1. 17/09/2020
 */
 session_start();
-ini_set('display_errors',1);
+//ini_set('display_errors',1);
 
 define('PATH','');
 define('MAXPATH', str_replace("includes","",dirname(__FILE__)).'');
@@ -72,6 +72,9 @@ $App->nowTime = date('H:i:s');
 $App->nowDateIta = date('d/m/Y');
 $App->nowDateTimeIta = date('d/m/Y H:i:s');
 $App->nowTimeIta = date('H:i:s');
+
+// caricla l'eleco delle tabelle database
+$App->tablesOfDatabase = Sql::getTablesDatabase($globalSettings['database'][DATABASE]['name']);
 
 $App->userLoggedData = new stdClass();
 /* carica dati utente loggato */

@@ -106,7 +106,11 @@ $_lang['via'] = "street";
 $_lang['cap'] = "ZIP CODE";
 $_lang['c.a.p.'] = "ZIP CODE";
 $_lang['città'] = "city";
+$_lang['comune'] = "comune";
+$_lang['comuni'] = "comuni";
 $_lang['provincia'] = "country";
+$_lang['province'] = "countries";
+$_lang['targa'] = "targa";
 $_lang['stato'] = "status";
 $_lang['stati'] = "states";
 $_lang['nazione'] = "nation";
@@ -295,6 +299,8 @@ $_lang['inserisci una nuova %ITEM%'] = "insert a new %ITEM%";
 $_lang['seleziona uno %ITEM%'] = "seleziona uno %ITEM%";
 $_lang['seleziona una %ITEM%'] = "seleziona una %ITEM%";
 $_lang['seleziona un %ITEM%'] = "seleziona un %ITEM%";
+
+$_lang['gestisci %ITEM%'] = "gestisci %ITEM%";
 
 /* MESSAGES */
 /* indications */;

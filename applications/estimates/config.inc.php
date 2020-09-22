@@ -5,13 +5,13 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * estimates/config.inc.php v.1.3.0. 08/09/2020
+ * app/estimates/config.inc.php v.1.3.0. 08/09/2020
 */
 
 $App->params = new stdClass();
 
 /* prende i dati del modulo */
-Sql::initQuery(DB_TABLE_PREFIX.'modules',array('name','label','help_small','help'),array('estimates'),'name = ?');
+Sql::initQuery(DB_TABLE_PREFIX.'modules',array('section','name','label','help_small','help'),array('estimates'),'name = ?');
 $obj = Sql::getRecord();
 if (Core::$resultOp->error == 0 && isset($obj) && count((array)$obj) > 1) $App->params = $obj;
 if (!isset($App->params->label) || (isset($App->params->label) && $App->params->label == '')) die('Error reading module settings!');
