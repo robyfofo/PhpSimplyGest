@@ -106,10 +106,12 @@ $_lang['via'] = "street";
 $_lang['cap'] = "ZIP CODE";
 $_lang['c.a.p.'] = "ZIP CODE";
 $_lang['città'] = "city";
-$_lang['comune'] = "comune";
-$_lang['comuni'] = "comuni";
+$_lang['comune'] = "city";
+$_lang['comuni'] = "cities";
+$_lang['altro comune'] = "other city";
 $_lang['provincia'] = "country";
 $_lang['province'] = "countries";
+$_lang['altra provincia'] = "other country";
 $_lang['targa'] = "targa";
 $_lang['stato'] = "status";
 $_lang['stati'] = "states";
@@ -321,6 +323,8 @@ $_lang['%ITEM% inserita'] = "%ITEM% inserita";
 
 $_lang['%ITEM% modificato'] = "%ITEM% modificato";
 $_lang['%ITEM% modificata'] = "%ITEM% modificata";
+$_lang['%ITEM% modificati'] = "%ITEM% modificati";
+$_lang['%ITEM% modificate'] = "%ITEM% modificate";
 
 $_lang['%ITEM% cancellato'] = "%ITEM% cancellato";
 $_lang['%ITEM% cancellata'] = "%ITEM% cancellata";

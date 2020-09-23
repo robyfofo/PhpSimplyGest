@@ -1,6 +1,52 @@
 /* customers/formCompany.js  v.1.3.0. 17/09/2020 */
 
 $(document).ready(function() {	
+
+    /*
+    $('#location_comuni_idID').change(function () {
+        let id = $('#location_comuni_idID').val();
+        let nome = $('#location_comuni_idID option:selected').text();
+        $('#cityID').val(nome);
+    });
+    */
+
+    var options = {
+        langCode    : charset_lang,
+        cache       : true,
+        ajax          : {
+            url     : siteUrl+coreRequestAction+'/getComuniAjaxItem',
+            type    : 'POST',
+
+            dataType: 'json',
+            // Use "{{{q}}}" as a placeholder and Ajax Bootstrap Select will
+            // automatically replace it with the value of the search query.
+            data    : {
+                q: '{{{q}}}'
+            }
+        },
+        locale        : {
+            emptyTitle: 'Select and Begin Typing'
+        },
+        log           : 3,
+        preprocessData: function (data) {
+            var i, l = data.length, array = [];
+            if (l) {
+                for (i = 0; i < l; i++) {
+                    array.push($.extend(true, data[i], {
+                        text : data[i].nome,
+                        value: data[i].id
+                    }));
+                }
+            }
+            // You must always return a valid array when processing data. The
+            // data argument passed is a clone and cannot be modified directly.
+            return array;
+        }
+    };
+
+    $('.selectpicker').selectpicker().filter('.with-ajax').ajaxSelectPicker(options);
+    $('select.after-init').append('<option value="6336" data-subtext="" selected="selected">San Michele Mondovì</option>').selectpicker('refresh');
+    $('select').trigger('change');
 	
 });
 		

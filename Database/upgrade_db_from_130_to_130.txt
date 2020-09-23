@@ -1,0 +1,5 @@
+ALTER TABLE `psg130_company` ADD `location_province_id` INT(10) NOT NULL DEFAULT '0' AFTER `bic_swift`, ADD `location_nations_id` INT(10) NOT NULL DEFAULT '0' AFTER `location_province_id`, ADD INDEX (`location_province_id`), ADD INDEX (`location_nations_id`);
+
+ALTER TABLE `psg130_company` ADD `location_comuni_id` INT(10) NOT NULL DEFAULT '0' , ADD INDEX (`location_comuni_id`) ;
+ALTER TABLE `psg130_company` CHANGE `state` `nation` VARCHAR(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+ALTER TABLE `psg130_company` CHANGE `province` `provincia` VARCHAR(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;

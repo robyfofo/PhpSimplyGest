@@ -42,6 +42,7 @@
 			var coreRequestAction = '{{ CoreRequest.action }}';
 			var currentModulePath = '{{ PATHSITE }}{{ App.pathApplications }}{{ CoreRequest.action }}/';
 			var user_lang = "{{ Lang['user'] }}";
+			var charset_lang = "{{ Lang['charset'] }}";
 			var messages = new Array();
 			messages['Sei sicuro?'] = '{{ Lang['Sei sicuro?']|e('js') }}';
 			{% if (App.defaultJavascript is defined) and (App.defaultJavascript != '') %}

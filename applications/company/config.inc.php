@@ -5,7 +5,7 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * app/company/config.inc.php v.1.3.0. 17/09/2020
+ * app/company/config.inc.php v.1.3.0. 23/09/2020
 */
 
 $App->params = new stdClass();
@@ -26,6 +26,10 @@ $App->params->uploadDirs = array();
 $App->params->uploadPaths = array();
 $App->params->ordersType = array();
 
+$App->params->tables['nations'] = DB_TABLE_PREFIX.'location_nations';
+$App->params->tables['province'] = DB_TABLE_PREFIX.'location_province';
+$App->params->tables['comuni'] = DB_TABLE_PREFIX.'location_comuni';
+
 /* ITEMS */
 $App->params->tables['item']  = DB_TABLE_PREFIX.'company';
 $App->params->fields['item']  = array(
@@ -34,10 +38,11 @@ $App->params->fields['item']  = array(
 	'name'=>array('label'=>$_lang['nome'],'searchTable'=>true,'required'=>true,'type'=>'varchar'),
 	'surname'=>array('label'=>$_lang['cognome'],'searchTable'=>true,'required'=>false,'type'=>'varchar'),
 	'street'=>array('label'=>$_lang['via'],'searchTable'=>false,'required'=>false,'type'=>'varchar'),
-	'city'=>array('label'=>$_lang['città'],'searchTable'=>false,'required'=>false,'type'=>'varchar'),
+
+	'location_comuni_id'	=> array('label'=>$_lang['comune'],'searchTable'=>false,'required'=>false,'type'=>'int|10','defValue'=>0),
+	'city'=>array('label'=>$_lang['altro comune'],'searchTable'=>false,'required'=>false,'type'=>'varchar|150'),
+
 	'zip_code'=>array('label'=>$_lang['c.a.p.'],'searchTable'=>false,'required'=>false,'type'=>'varchar'),
-	'province'=>array('label'=>$_lang['provincia'],'searchTable'=>false,'required'=>false,'type'=>'varchar'),
-	'state'=>array('label'=>$_lang['nazione'],'searchTable'=>false,'required'=>false,'type'=>'varchar'),
 	'telephone'=>array('label'=>$_lang['telefono'],'searchTable'=>false,'required'=>false,'type'=>'varchar'),
 	'email'=>array('label'=>$_lang['email'],'searchTable'=>true,'required'=>false,'type'=>'varchar'),
 	'mobile'=>array('label'=>$_lang['cellulare'],'searchTable'=>true,'required'=>false,'type'=>'varchar'),
@@ -56,6 +61,13 @@ $App->params->fields['item']  = array(
 	'banca'=>array('label'=>$_lang['banca'],'searchTable'=>true,'required'=>true,'type'=>'varchar'),
 	'intestatario'=>array('label'=>$_lang['intestatario'],'searchTable'=>true,'required'=>true,'type'=>'varchar'),
 	'iban'=>array('label'=>$_lang['iban'],'searchTable'=>true,'required'=>true,'type'=>'varchar'),
-	'bic_swift'=>array('label'=>$_lang['bic swift'],'searchTable'=>false,'required'=>true,'type'=>'varchar')
+	'bic_swift'=>array('label'=>$_lang['bic swift'],'searchTable'=>false,'required'=>true,'type'=>'varchar'),
+
+	'provincia'				=> array('label'=>$_lang['altra provincia'],'searchTable'=>true,'required'=>false,'type'=>'varchar|150','defValue'=>''),
+	'location_province_id'	=> array('label'=>$_lang['provincia'],'searchTable'=>false,'required'=>false,'type'=>'int|10','defValue'=>0),
+
+	'nation'				=> array('label'=>$_lang['nazione'],'searchTable'=>true,'required'=>false,'type'=>'varchar|150','defValue'=>''),
+	'location_nations_id'	=> array('label'=>$_lang['nazione'],'searchTable'=>false,'required'=>false,'type'=>'int|10','defValue'=>0),
+
 );
 ?>

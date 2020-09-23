@@ -108,8 +108,10 @@ $_lang['c.a.p.'] = "C.A.P.";
 $_lang['città'] = "città";
 $_lang['comune'] = "comune";
 $_lang['comuni'] = "comuni";
+$_lang['altro comune'] = "altro comune";
 $_lang['provincia'] = "provincia";
 $_lang['province'] = "province";
+$_lang['altra provincia'] = "altra provincia";
 $_lang['targa'] = "targa";
 $_lang['stato'] = "stato";
 $_lang['stati'] = "stati";
@@ -327,6 +329,8 @@ $_lang['%ITEM% inserita'] = "%ITEM% inserita";
 
 $_lang['%ITEM% modificato'] = "%ITEM% modificato";
 $_lang['%ITEM% modificata'] = "%ITEM% modificata";
+$_lang['%ITEM% modificati'] = "%ITEM% modificati";
+$_lang['%ITEM% modificate'] = "%ITEM% modificate";
 
 $_lang['%ITEM% cancellato'] = "%ITEM% cancellato";
 $_lang['%ITEM% cancellata'] = "%ITEM% cancellata";
