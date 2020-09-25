@@ -105,7 +105,6 @@ $App->rightCodeMenu = '';
 				$outputMenu = preg_replace('/%NAME%/',$moduleLabel,$outputMenu);
 				$App->rightCodeMenu .= $outputMenu;
 				$x1++;
-
 			}
 		} 
 	}
@@ -113,27 +112,17 @@ $App->rightCodeMenu = '';
 }
 
 $subdivsettings = '<li class="nav-item">
-<a class="nav-link'.(isset($App->params->section) && $App->params->section == 0 ? ' collapsed' : '').'" data-toggle="collapse" data-target="#collapseappsettings" aria-expanded="true" aria-controls="collapseappsettings" href="#"><i class="fas fa-cog"></i> <span>'.ucfirst($_lang['impostazioni']).'</span></a><div id="collapseappsettings" class="collapse'.(isset($App->params->section) && $App->params->section == 1 ? ' show' : '').'" aria-labelledby="headingappsettings" data-parent="#accordionSidebar"><div class="bg-white py-2 collapse-inner rounded">%MENU%</div></div></li>';
+<a class="nav-link'.(!isset($App->params->section) || (isset($App->params->section) && $App->params->section == 0) ? ' collapsed' : '').'" data-toggle="collapse" data-target="#collapseappsettings" aria-expanded="true" aria-controls="collapseappsettings" href="#"><i class="fas fa-cog"></i> <span>'.ucfirst($_lang['impostazioni']).'</span></a><div id="collapseappsettings" class="collapse'.(isset($App->params->section) && $App->params->section == 1 ? ' show' : '').'" aria-labelledby="headingappsettings" data-parent="#accordionSidebar"><div class="bg-white py-2 collapse-inner rounded">%MENU%</div></div></li>';
 $settingsMenu = '';
-
-/*
-$App->rightCodeMenu .= '
-	<li class="nav-item">
-	<a class="nav-link'.(isset($App->params->section) && $App->params->section == 0 ? ' collapsed' : '').'" data-toggle="collapse" data-target="#collapseappsettings" aria-expanded="true" aria-controls="collapseappsettings" href="#"><i class="fas fa-cog"></i> <span>'.ucfirst($_lang['impostazioni']).'</span></a><div id="collapseappsettings" class="collapse'.(isset($App->params->section) && $App->params->section == 1 ? ' show' : '').'" aria-labelledby="headingappsettings" data-parent="#accordionSidebar"><div class="bg-white py-2 collapse-inner rounded">
-	';
-*/
-// settings
 
 if (is_array($App->modules[1]) && count($App->modules[1]) > 0) {
 	$x1 = 0;
-
 	foreach($App->modules[1] AS $module) {
 		if (Permissions::checkIfModulesIsReadable($module->name,$App->userLoggedData) === true) {
 			$outputMenu = '';
 			//$menu = json_decode($module->code_menu) or die('Errore nel campo menu. Formato Json non valido!'.$module->code_menu);
 			$menu = json_decode($module->code_menu);
 			$havesubmenu = 0;
-
 			$moduleName = (isset($module->name) ? $module->name : '');
 			$moduleLabel = (isset($module->label) ? $module->label : '');
 			$menuName = (isset($menu->name) ? $menu->name : '');
@@ -142,8 +131,6 @@ if (is_array($App->modules[1]) && count($App->modules[1]) > 0) {
 			$menuLabel = (isset($menu->label) ? $menu->label : '');
 			$havesubmenu = 0;
 			$outputMenu = '<a class="collapse-item" href="'.URL_SITE.$moduleName.'/'.$menuAction.'">'.$menuIcon.' '.$menuLabel.'</a>';
-
-
 			// sostituiso il modulename con la localizzazione se esiste
 			if (isset($_lang[$moduleLabel])) $moduleLabel = $_lang[$moduleLabel];
 			$outputMenu = preg_replace('/%LABEL%/',$moduleLabel,$outputMenu);
@@ -152,11 +139,9 @@ if (is_array($App->modules[1]) && count($App->modules[1]) > 0) {
 			$settingsMenu .= $outputMenu;
 		} 
 	}
-
 	if ($settingsMenu != '') $App->rightCodeMenu .= preg_replace('/%MENU%/',$settingsMenu,$subdivsettings);
 	if ($x1 > 0) $App->rightCodeMenu .= '';
 }
-
 
 // root
 if (is_array($App->modules[2]) && count($App->modules[2]) > 0) {
@@ -240,6 +225,4 @@ if (is_array($App->modules[2]) && count($App->modules[2]) > 0) {
 	}
 	if ($x1 > 0) $App->rightCodeMenu .= '';
 }
-
-//die();
 ?>

@@ -40,7 +40,12 @@ switch(Core::$request->method) {
 			if (Core::$resultOp->error == 0) {	
 				/* (tabella,campi(array),valori campi(array),where clause, limit, order, option , pagination(default false)) */
 				Sql::initQuery(DB_TABLE_PREFIX.'users',array('password'),array($password,$App->id),"id = ?");	
-				//Sql::updateRecord();
+
+				// commentare nella demo phprojekt.altervista
+
+				Sql::updateRecord();
+
+
 				if(Core::$resultOp->error == 0) {
 					Core::$resultOp->message = $_lang['Password modificata correttamente! Sarà effettiva al prossimo login.'];
 				}	

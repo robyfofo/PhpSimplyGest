@@ -56,7 +56,9 @@ if (isset($_POST['submit'])) {
 				/* aggiorno la password nel db */						
 				/* (tabella,campi(array),valori campi(array),where clause, limit, order, option , pagination(default false)) */
 				Sql::initQuery(DB_TABLE_PREFIX.'users',array('password'),array($criptPassw,$App->item->id),"id = ?");
-//Sql::updateRecord();
+
+// da commentare su deno altervista
+Sql::updateRecord();
 				if (Core::$resultOp->error == 0) {	
 					$opt = array();
 					$opt['fromEmail'] = $globalSettings['default email'];

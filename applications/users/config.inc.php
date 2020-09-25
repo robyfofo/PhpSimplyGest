@@ -5,13 +5,13 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * users/config.inc.php v.1.3.0. 04/09/2020
+ * app/users/config.inc.php v.1.3.0. 24/09/2020
 */
 
 $App->params = new stdClass();
 $App->params->label = 'Utenti';
 // prende i dati del modulo
-Sql::initQuery(DB_TABLE_PREFIX.'modules',array('name','label','help_small','help'),array('users'),'name = ?');
+Sql::initQuery(DB_TABLE_PREFIX.'modules',array('section','name','label','help_small','help'),array('users'),'name = ?');
 $obj = Sql::getRecord();
 if (Core::$resultOp->error == 0 && is_object($obj)) $App->params = $obj;
 
@@ -28,7 +28,11 @@ $App->params->ordersType = array();
 $App->params->moduleAccessRead = (Permissions::checkIfModulesIsReadable($App->params->name,$App->userLoggedData) === true ? 1 : 0);
 $App->params->moduleAccessWrite = (Permissions::checkIfModulesIsWritable($App->params->name,$App->userLoggedData) === true ? 1 : 0);
 
-// ITEMS
+$App->params->tables['nations'] = DB_TABLE_PREFIX.'location_nations';
+$App->params->tables['province'] = DB_TABLE_PREFIX.'location_province';
+$App->params->tables['comuni'] = DB_TABLE_PREFIX.'location_comuni';
+
+// items
 $App->params->tables['item']  = DB_TABLE_PREFIX.'users';
 $App->params->fields['item']  = array(
 	'id'=>array('label'=>'ID','required'=>false,'type'=>'int|8','autoinc'=>true,'nodb'=>true,'primary'=>true),
@@ -37,10 +41,11 @@ $App->params->fields['item']  = array(
 	'name'=>array('label'=>$_lang['nome'],'searchTable'=>true,'required'=>false,'type'=>'varchar|50'),
 	'surname'=>array('label'=>$_lang['cognome'],'searchTable'=>true,'required'=>false,'type'=>'varchar|50'),
 	'street'=>array('label'=>$_lang['via'],'searchTable'=>false,'required'=>false,'type'=>'varchar|100'),
-	'city'=>array('label'=>$_lang['città'],'searchTable'=>false,'required'=>false,'type'=>'varchar|100'),
+
+	'location_comuni_id'	=> array('label'=>$_lang['comune'],'searchTable'=>false,'required'=>false,'type'=>'int|10','defValue'=>0),
+	'city'=>array('label'=>$_lang['altro comune'],'searchTable'=>false,'required'=>false,'type'=>'varchar|150'),
+
 	'zip_code'=>array('label'=>$_lang['cap'],'searchTable'=>false,'required'=>false,'type'=>'varchar|10'),
-	'province'=>array('label'=>$_lang['provincia'],'searchTable'=>false,'required'=>false,'type'=>'varchar|100'),
-	'state'=>array('label'=>$_lang['stato'],'searchTable'=>false,'required'=>false,'type'=>'varchar|100'),
 	'telephone'=>array('label'=>$_lang['telefono'],'searchTable'=>false,'required'=>false,'type'=>'varchar|20'),
 	'email'=>array('label'=>$_lang['email'],'searchTable'=>true,'required'=>true,'type'=>'varchar|255'),
 	'mobile'=>array('label'=>$_lang['cellulare'],'searchTable'=>true,'required'=>false,'type'=>'varchar'),
@@ -53,6 +58,13 @@ $App->params->fields['item']  = array(
 	'is_root'=>array('label'=>'Root','searchTable'=>false,'type'=>'int|1','defValue'=>0),
 	'hash'=>array('label'=>$_lang['hash'],'searchTable'=>false,'type'=>'varchar|255'),
 	'created'=>array('label'=>$_lang['creazione'],'searchTable'=>false,'required'=>false,'type'=>'datatime'),
-	'active'=>array('label'=>$_lang['attiva'],'required'=>false,'type'=>'int|1','defValue'=>1,'validate'=>'int')
+	'active'=>array('label'=>$_lang['attiva'],'required'=>false,'type'=>'int|1','defValue'=>1,'validate'=>'int'),
+
+	'provincia'				=> array('label'=>$_lang['altra provincia'],'searchTable'=>true,'required'=>false,'type'=>'varchar|150','defValue'=>''),
+	'location_province_id'	=> array('label'=>$_lang['provincia'],'searchTable'=>false,'required'=>false,'type'=>'int|10','defValue'=>0),
+
+	'nation'				=> array('label'=>$_lang['nazione'],'searchTable'=>true,'required'=>false,'type'=>'varchar|150','defValue'=>''),
+	'location_nations_id'	=> array('label'=>$_lang['nazione'],'searchTable'=>false,'required'=>false,'type'=>'int|10','defValue'=>0),
+
 );
 ?>

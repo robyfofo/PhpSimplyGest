@@ -100,28 +100,69 @@
 								<input type="text" name="street" class="form-control" id="streetID" placeholder="{{ Lang['inserisci una %ITEM%']|replace({'%ITEM%': Lang['via']})|capitalize }}" value="{{ App.item.street|e('html') }}">
 					    	</div>
 						</div>
+						<hr>
 						<div class="form-group row">
-							<label for="cityID" class="col-md-2 control-label">{{ Lang['città']|capitalize }}</label>
+							<label for="location_comuni_idID" class="col-md-2 control-label">{{ App.params.fields['item']['location_comuni_id']['label']|capitalize }}</label>
 							<div class="col-md-7">
-								<input type="text" name="city" class="form-control" id="cityID" placeholder="{{ Lang['inserisci una %ITEM%']|replace({'%ITEM%': Lang['città']})|capitalize }}" value="{{ App.item.city|e('html') }}">
+								<div class="form-group">
+								<select id="location_comuni_idID" name="location_comuni_id" class="selectpicker with-ajax form-control" data-live-search="true" title="{{ Lang['seleziona un %ITEM%']|replace({'%ITEM%': Lang['comune']})|capitalize }}">
+									
+									{% if App.comune.selected.id > 0 %}
+									<option value="{{ App.comune.selected.id }}" data-subtext="" selected>
+										{{ App.comune.selected.nome }}
+									</option>
+									{% endif %}
+
+								</select></div>		
 					    	</div>
 						</div>
+
+						<div class="form-group row">
+							<label for="cityID" class="col-md-2 control-label">{{ App.params.fields['item']['city']['label']|capitalize }}</label>
+							<div class="col-md-7">
+								<input type="text" name="city" class="form-control" id="cityID" placeholder="{{ Lang['inserisci una città']|capitalize }}" value="{{ App.item.city|e('html') }}">
+					    	</div>
+						</div>	
+						<hr>
 						<div class="form-group row">
 							<label for="zip_codeID" class="col-md-2 control-label">{{ Lang['cap']|capitalize }}</label>
 							<div class="col-md-2">
 								<input type="text" name="zip_code" class="form-control" id="zip_codeID" placeholder="{{ Lang['inserisci un %ITEM%']|replace({'%ITEM%': Lang['c.a.p.']})|capitalize }}" value="{{ App.item.zip_code|e('html') }}">
 					    	</div>
 						</div>
+						<hr>
 						<div class="form-group row">
-							<label for="provinceID" class="col-md-2 control-label">{{ Lang['provincia']|capitalize }}</label>
+							<label for="location_province_idID" class="col-md-2 control-label">{{ App.params.fields['item']['location_province_id']['label']|capitalize }}</label>
 							<div class="col-md-7">
-								<input type="text" name="province" class="form-control" id="provinceID" placeholder="{{ Lang['inserisci una %ITEM%']|replace({'%ITEM%': Lang['provincia']})|capitalize }}" value="{{ App.item.province|e('html') }}">
+								<select name="location_province_id" class="selectpicker form-control" data-live-search="true" title="{{ Lang['seleziona una %ITEM%']|replace({'%ITEM%': Lang['provincia']})|capitalize }}">
+									<option value="0"{% if 0 == App.item.location_province_id %} selected="selected"{% endif %}>{{ Lang['altra provincia']|capitalize }}</option>	
+									{% if App.province is iterable %}
+										{% for key,value in App.province %}	
+											<option value="{{ value.id }}"{% if value.id == App.item.location_province_id %} selected="selected"{% endif %}>{{ value.nome|e('html') }}</option>														
+										{% endfor %}
+									{% endif %}		
+								</select>		
+					    	</div>
+						</div>		
+
+						<div class="form-group row">
+							<label for="provinciaID" class="col-md-2 control-label">{{ App.params.fields['item']['provincia']['label']|capitalize }}</label>
+							<div class="col-md-7">
+								<input type="text" name="provincia" class="form-control" id="provinciaID" placeholder="{{ Lang['inserisci una provincia']|capitalize }}" value="{{ App.item.provincia|e('html') }}">
 					    	</div>
 						</div>
+						<hr>
 						<div class="form-group row">
-							<label for="provinceID" class="col-md-2 control-label">{{ Lang['stato']|capitalize }}</label>
+							<label for="location_nations_idID" class="col-md-2 control-label">{{ App.params.fields['item']['location_nations_id']['label']|capitalize }}</label>
 							<div class="col-md-7">
-								<input type="text" name="state" class="form-control" id="stateID" placeholder="{{ Lang['inserisci un %ITEM%']|replace({'%ITEM%': Lang['stato']})|capitalize }}" value="{{ App.item.state|e('html') }}">
+								<select name="location_nations_id" class="selectpicker form-control" data-live-search="true" title="{{ Lang['seleziona una %ITEM%']|replace({'%ITEM%': Lang['nazione']})|capitalize }}">
+									{% if App.nations is iterable %}
+										{% for key,value in App.nations %}	
+											{% set titleField = "title_#{Lang['user']}" %}
+											<option value="{{ value.id }}"{% if value.id == App.item.location_nations_id %} selected="selected"{% endif %}>{{ attribute(value, titleField)|e('html') }}</option>														
+										{% endfor %}
+									{% endif %}		
+								</select>		
 					    	</div>
 						</div>
 					</fieldset>

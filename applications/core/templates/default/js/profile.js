@@ -1,12 +1,11 @@
-/* app/users/formUser.js v.1.3.0. 29/09/2020 */
-
-$(document).ready(function() {	
-
+/* app/core/password.js v.1.3.0. 24/09/2020 */
+$(document).ready(function() {
+	
 	var options = {
         langCode    : charset_lang,
         cache       : true,
         ajax          : {
-            url     : siteUrl+coreRequestAction+'/getComuniAjaxItem',
+            url     : siteUrl+'ajax/getJsonComuniFromDbId.php',
             type    : 'POST',
 
             dataType: 'json',
@@ -38,48 +37,9 @@ $(document).ready(function() {
 
     $('.selectpicker').selectpicker().filter('.with-ajax').ajaxSelectPicker(options);
     $('select').trigger('change');
-
-   /* controllo ajax username */
-	$('#usernameID').change(function(){
-		var username = $('#usernameID').val();
-		var id = $('#idID').val();
-		$.ajax({
-			url: siteUrl+'users/checkUserAjaxItem/',
-			type: "POST",
-			data: 'username='+username+'&id='+id,
-			success: function(result) {
-				var mess = result;
-				$('#usernameMessageID').html(mess);
-				}				
-			});
-		});
-		
-	/* controllo ajax username */
-	$('#emailID').change(function(){
-		var email = $('#emailID').val();
-		var id = $('#idID').val();
-		$.ajax({
-			url: siteUrl+'users/checkEmailAjaxItem/',
-			type: "POST",
-			data: 'email='+email+'&id='+id,
-			success: function(result) {
-				var mess = result;
-				$('#emailMessageID').html(mess);
-				}				
-			});
-		});
-		
-	/* controllo password */	
-	$('#passwordCFID').change(function(){
-		var pass = $('#passwordID').val();
-		var passCF = $('#passwordCFID').val();
-		if(pass !== passCF) {
-			bootbox.alert(messages['Le due password non corrispondono!']);
-			}
-		});	
-		
-	});
 	
+});
+
 $('.submittheform').click(function () {
 	$('input:invalid').each(function () {
 		// Find the tab-pane that this element is inside, and get the id
@@ -89,5 +49,5 @@ $('.submittheform').click(function () {
 		$('.nav a[href="#' + id + '"]').tab('show');
 		// Only want to do it once
 		return false;
-		});
 	});
+})

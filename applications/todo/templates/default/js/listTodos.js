@@ -1,4 +1,4 @@
-/* todo/listItem.js v.1.2.0. 21/12/2019 */
+/* app/todo/listTodos.js v.1.3.0. 24/09/2020 */
 var requestSent = false;
 
 $(document).ready(function() {
@@ -18,10 +18,10 @@ $(document).ready(function() {
 				alertDelete();
 				return json.data;
             }       
-		 	},	
+		},	
 		order: [
 			[2,"asc"]
-			],
+		],
 
 		columns: [			
 			{ "data":"id","targets":0,"className":"idcol"},
@@ -29,29 +29,28 @@ $(document).ready(function() {
 			{ "data":"title","targets":2},
 			{ "data":"statuslabel","targets":3},
 			{ "data":"actions","targets":4,"orderable":false,"className":"actions"}
-  			],
+  		],
 		language: {
 			sSearch: lang['search'],
-         lengthMenu: lang['lengthMenu'],
-         zeroRecords: lang['zeroRecords'],
-         info: lang['datatableInfo'],
-         infoEmpty: lang['infoEmpty'],
-         infoFiltered: lang['infoFiltered'],
-         loadingRecords: lang['loadingRecords'],
+         	lengthMenu: lang['lengthMenu'],
+         	zeroRecords: lang['zeroRecords'],
+         	info: lang['datatableInfo'],
+         	infoEmpty: lang['infoEmpty'],
+         	infoFiltered: lang['infoFiltered'],
+         	loadingRecords: lang['loadingRecords'],
     		processing:     lang['processing'],
-         paginate: {
+         	paginate: {
         		first:      lang['paginate']['first'],
         		last:       lang['paginate']['last'],
         		next:       lang['paginate']['next'],
         		previous:   lang['paginate']['previous']
-    			}
+    		}
       	},
       drawCallback: function () {
 			$('#listDataID_paginate ul.pagination').addClass("pagination-sm");
       }		 
 	});	
 });
-
 
 function alertDelete() {
 	$("#listDataID").on('click','.confirmdelete',function(e) {
@@ -60,7 +59,7 @@ function alertDelete() {
 		bootbox.confirm(messages['Sei sicuro?'],function(confirmed) {
 			if(confirmed) {
 				window.location.replace(location);
-				}
-			});
-		});     
-	};
+			}
+		});
+	});     
+};

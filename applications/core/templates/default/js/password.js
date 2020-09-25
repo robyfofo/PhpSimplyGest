@@ -1,4 +1,4 @@
-/* wscms/core/password.js v.1.2.0. 01/12/2019 */
+/* app/core/password.js v.1.3.0. 24/09/2020 */
 $(document).ready(function() {
 	
 	/* controllo password */	

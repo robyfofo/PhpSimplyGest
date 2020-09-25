@@ -5,17 +5,17 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public	License
- * todo/config.inc.php v.1.2.0. 19/08/2020
+ * app/todo/config.inc.php v.1.3.0. 24/09/2020
 */
 
 $App->params = new stdClass();
 $App->params->label = ucfirst($_lang['da fare']);
 /* prende i dati del modulo */
-Sql::initQuery(DB_TABLE_PREFIX.'modules',array('label','help_small','help'),array('todo'),'name = ?');
+Sql::initQuery(DB_TABLE_PREFIX.'modules',array('section','name','label','help_small','help'),array('todo'),'name = ?');
 $obj = Sql::getRecord();
 if (Core::$resultOp->error == 0 && is_object($obj)) $App->params = $obj;
 
-$App->params->codeVersion = ' 1.2.0.';
+$App->params->codeVersion = ' 1.3.0.';
 $App->params->pageTitle = ucfirst($_lang['da fare']);
 $App->params->breadcrumb = '<li class="active"><i class="fa fa-bookmark-o"></i> '.ucfirst($_lang['da fare']).'</li>';
 
@@ -23,11 +23,13 @@ $App->params->tables = array();
 $App->params->fields = array();
 $App->params->uploadDirs = array();
 $App->params->uploadPaths = array();
-$App->params->ordersType = array();
+$App->params->orderTypes = array();
 $App->params->labels = array();
 
-$App->params->tables['prog'] = DB_TABLE_PREFIX.'projects';
+$App->params->moduleAccessRead = (Permissions::checkIfModulesIsReadable($App->params->name,$App->userLoggedData) === true ? 1 : 0);
+$App->params->moduleAccessWrite = (Permissions::checkIfModulesIsWritable($App->params->name,$App->userLoggedData) === true ? 1 : 0);
 
+$App->params->tables['prog'] = DB_TABLE_PREFIX.'projects';
 $App->params->status = $globalSettings['status to do'];
 
 /* ITEMS */

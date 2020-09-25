@@ -5,13 +5,29 @@
  * @author Roberto Mantovani (<me@robertomantovani.vr.it>
  * @copyright 2009 Roberto Mantovani
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * users/users.php v.1.3.0. 07/09/2020
+ * app/users/users.php v.1.3.0. 24/09/2020
 */
 
 if(isset($_POST['itemsforpage'])) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'ifp',$_POST['itemsforpage']);
 if(isset($_POST['searchFromTable'])) $_MY_SESSION_VARS = $my_session->addSessionsModuleSingleVar($_MY_SESSION_VARS,$App->sessionName,'srcTab',$_POST['searchFromTable']);
 
 switch(Core::$request->method) {
+
+	case 'getComuniAjaxItem';
+		//Core::setDebugMode(1);
+		$comuniArray = array();
+		$comuniArray[] = array('nome'=>'Altro comune','id'=>0);
+		$q = $_POST['q']; //This is the textbox value
+		if ($q != '') {
+			Sql::initQuery($App->params->tables['comuni'],array('id,nome'),array('%'.$q.'%'),'nome LIKE ? AND active = 1');
+			$pdoObject = Sql::getPdoObjRecords();
+			while ($row = $pdoObject->fetch()) {
+					$comuniArray[] = array('nome'=>$row->nome,'id'=>$row->id);
+			}		
+		}
+		echo json_encode($comuniArray);
+		die();
+	break;
 
 	case 'activeItem':
 	case 'disactiveItem':
@@ -39,6 +55,16 @@ switch(Core::$request->method) {
 	break;
 
 	case 'newItem':
+		$App->province = new stdClass;
+		Sql::initQuery($App->params->tables['province'],array('*'),array(),'active = 1','nome ASC');
+		$App->province = Sql::getRecords();
+		if (Core::$resultOp->error > 0) { ToolsStrings::redirect(URL_SITE.'error/db'); }
+
+		$App->nations = new stdClass;
+		Sql::initQuery($App->params->tables['nations'],array('*'),array(),'active = 1','title_'.$_lang['user'].' ASC');
+		$App->nations = Sql::getRecords();
+		if (Core::$resultOp->error > 0) { ToolsStrings::redirect(URL_SITE.'error/db'); }
+
 		if ($App->params->moduleAccessWrite == 0) { ToolsStrings::redirect(URL_SITE.'error/nopm'); }
 		$App->item = new stdClass;
 		$App->item->created = $App->nowDateTime;
@@ -50,24 +76,47 @@ switch(Core::$request->method) {
 		$App->viewMethod = 'form';
 	break;
 
-	case 'modifyItem':
-		if ($App->params->moduleAccessWrite == 0) { ToolsStrings::redirect(URL_SITE.'error/nopm'); }
-		$App->item = new stdClass;
-		$App->templatesAvaiable = $Module->getUserTemplatesArray();
-		Sql::initQuery($App->params->tables['item'],array('*'),array($App->id),'id = ?');
-		$App->item = Sql::getRecord();
-		if (!isset($App->item->id) || (isset($App->item->id) && $App->item->id < 1)) { ToolsStrings::redirect(URL_SITE.'error/404'); }
-		$App->pageSubTitle = preg_replace('/%ITEM%/',$_lang['utente'],$_lang['modifica %ITEM%']);
-		$App->methodForm = 'updateItem';
-		$App->viewMethod = 'form';
-	break;
-
 	case 'insertItem':
 		if ($App->params->moduleAccessWrite == 0) { ToolsStrings::redirect(URL_SITE_ADMIN.'error/nopm'); }
 		if ($_POST) {
 			$_POST['is_root'] = 0;
 			if (!isset($_POST['created'])) $_POST['created'] = $App->nowDateTime;
 			if (!isset($_POST['active'])) $_POST['active'] = 0;
+
+			if (isset($_POST['location_comuni_id']) && intval($_POST['location_comuni_id']) > 0) {
+				$App->comuni = new stdClass;
+				Sql::initQuery($App->params->tables['comuni'],array('nome'),array(intval($_POST['location_comuni_id'])),'id = ? AND active = 1');
+				$App->comune = Sql::getRecord();
+				if (isset($App->comune->nome)) {
+					$_POST['city'] = $App->comune->nome;
+				}
+			} else {
+				$_POST['location_comuni_id'] = 0;
+			}
+			
+			if (isset($_POST['location_province_id']) && intval($_POST['location_province_id']) > 0) {
+				$App->provincia = new stdClass;
+				Sql::initQuery($App->params->tables['province'],array('nome'),array(intval($_POST['location_province_id'])),'id = ? AND active = 1');
+				$App->provincia = Sql::getRecord();
+				if (isset($App->provincia->nome)) {
+					$_POST['provincia'] = $App->provincia->nome;
+				}
+			} else {
+				$_POST['location_province_id'] = 0;
+			}
+
+			$_POST['nation'] = '';
+			if (isset($_POST['location_nations_id']) && intval($_POST['location_nations_id']) > 0) {
+				$App->nation = new stdClass;
+				Sql::initQuery($App->params->tables['nations'],array('title_'.$_lang['user']),array(intval($_POST['location_nations_id'])),'id = ? AND active = 1');
+				$App->nation = Sql::getRecord();
+				$field = 'title_'.$_lang['user'];
+				if (isset($App->nation->$field)) {
+					$_POST['nation'] =$App->nation->$field;
+				}
+			} else {
+				$_POST['location_nations_id'] = 0;
+			}
 
 			// recupero dati avatar
 			list($_POST['avatar'],$_POST['avatar_info']) = $Module->getAvatarData(0,$_lang);
@@ -119,7 +168,7 @@ switch(Core::$request->method) {
 				Sql::insertRawlyPost($App->params->fields['item'],$App->params->tables['item']);
 				if (Core::$resultOp->error > 0) {ToolsStrings::redirect(URL_SITE.'error/404');}
 
-				$_SESSION['message'] = '0|'.ucfirst(preg_replace('/%ITEM%/',$_lang['utente'],$_lang['%ITEM% inserito']));
+				$_SESSION['message'] = '0|'.ucfirst(preg_replace('/%ITEM%/',$_lang['utente'],$_lang['%ITEM% inserito'])).'!';
 				ToolsStrings::redirect(URL_SITE.Core::$request->action.'/listItem');
 
 			} else {
@@ -133,12 +182,77 @@ switch(Core::$request->method) {
 		}
 	break;
 
+	case 'modifyItem':
+		$App->province = new stdClass;
+		Sql::initQuery($App->params->tables['province'],array('*'),array(),'active = 1','nome ASC');
+		$App->province = Sql::getRecords();
+		if (Core::$resultOp->error > 0) { ToolsStrings::redirect(URL_SITE.'error/db'); }
+
+		$App->nations = new stdClass;
+		Sql::initQuery($App->params->tables['nations'],array('*'),array(),'active = 1','title_'.$_lang['user'].' ASC');
+		$App->nations = Sql::getRecords();
+		if (Core::$resultOp->error > 0) { ToolsStrings::redirect(URL_SITE.'error/db'); }	
+		
+		if ($App->params->moduleAccessWrite == 0) { ToolsStrings::redirect(URL_SITE.'error/nopm'); }
+		$App->item = new stdClass;
+		$App->templatesAvaiable = $Module->getUserTemplatesArray();
+		Sql::initQuery($App->params->tables['item'],array('*'),array($App->id),'id = ?');
+		$App->item = Sql::getRecord();
+		if (!isset($App->item->id) || (isset($App->item->id) && $App->item->id < 1)) { ToolsStrings::redirect(URL_SITE.'error/404'); }
+		
+		$App->comune = new stdClass;
+		$App->comune->selected = new stdClass;	
+		if (isset($App->item->location_comuni_id) && $App->item->location_comuni_id > 0) {
+			$App->comune->selected->id = $App->item->location_comuni_id;
+			$App->comune->selected->nome = $App->item->city;
+		}		
+								
+		$App->pageSubTitle = preg_replace('/%ITEM%/',$_lang['utente'],$_lang['modifica %ITEM%']);
+		$App->methodForm = 'updateItem';
+		$App->viewMethod = 'form';
+	break;
+
 	case 'updateItem':
 		if ($App->params->moduleAccessWrite == 0) { ToolsStrings::redirect(URL_SITE_ADMIN.'error/nopm'); }
 		if ($_POST) {
 			$_POST['is_root'] = 0;
 			if (!isset($_POST['created'])) $_POST['created'] = $App->nowDateTime;
 			if (!isset($_POST['active'])) $_POST['active'] = 0;
+
+			if (isset($_POST['location_comuni_id']) && intval($_POST['location_comuni_id']) > 0) {
+				$App->comuni = new stdClass;
+				Sql::initQuery($App->params->tables['comuni'],array('nome'),array(intval($_POST['location_comuni_id'])),'id = ? AND active = 1');
+				$App->comune = Sql::getRecord();
+				if (isset($App->comune->nome)) {
+					$_POST['city'] = $App->comune->nome;
+				}
+			} else {
+				$_POST['location_comuni_id'] = 0;
+			}
+			
+			if (isset($_POST['location_province_id']) && intval($_POST['location_province_id']) > 0) {
+				$App->provincia = new stdClass;
+				Sql::initQuery($App->params->tables['province'],array('nome'),array(intval($_POST['location_province_id'])),'id = ? AND active = 1');
+				$App->provincia = Sql::getRecord();
+				if (isset($App->provincia->nome)) {
+					$_POST['provincia'] = $App->provincia->nome;
+				}
+			} else {
+				$_POST['location_province_id'] = 0;
+			}
+
+			$_POST['nation'] = '';
+			if (isset($_POST['location_nations_id']) && intval($_POST['location_nations_id']) > 0) {
+				$App->nation = new stdClass;
+				Sql::initQuery($App->params->tables['nations'],array('title_'.$_lang['user']),array(intval($_POST['location_nations_id'])),'id = ? AND active = 1');
+				$App->nation = Sql::getRecord();
+				$field = 'title_'.$_lang['user'];
+				if (isset($App->nation->$field)) {
+					$_POST['nation'] =$App->nation->$field;
+				}
+			} else {
+				$_POST['location_nations_id'] = 0;
+			}
 
 			/* requpero i vecchi dati */
 			$App->oldItem = new stdClass;

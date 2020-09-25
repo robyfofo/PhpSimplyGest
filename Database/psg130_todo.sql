@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Creato il: Ago 19, 2020 alle 16:07
+-- Creato il: Set 24, 2020 alle 16:59
 -- Versione del server: 5.7.31-0ubuntu0.18.04.1
 -- Versione PHP: 7.2.24-0ubuntu0.18.04.6
 
@@ -17,16 +17,16 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `phprojekt.altervista_frameworkapp120`
+-- Database: `phprojekt.altervista_phpsimplygest130`
 --
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `app120_todo`
+-- Struttura della tabella `psg130_todo`
 --
 
-CREATE TABLE `app120_todo` (
+CREATE TABLE `psg130_todo` (
   `id` int(8) NOT NULL,
   `users_id` int(8) NOT NULL DEFAULT '0',
   `id_project` int(8) NOT NULL,
@@ -45,9 +45,9 @@ CREATE TABLE `app120_todo` (
 --
 
 --
--- Indici per le tabelle `app120_todo`
+-- Indici per le tabelle `psg130_todo`
 --
-ALTER TABLE `app120_todo`
+ALTER TABLE `psg130_todo`
   ADD PRIMARY KEY (`id`),
   ADD KEY `active` (`active`),
   ADD KEY `id_project` (`id_project`),
@@ -58,9 +58,9 @@ ALTER TABLE `app120_todo`
 --
 
 --
--- AUTO_INCREMENT per la tabella `app120_todo`
+-- AUTO_INCREMENT per la tabella `psg130_todo`
 --
-ALTER TABLE `app120_todo`
+ALTER TABLE `psg130_todo`
   MODIFY `id` int(8) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
